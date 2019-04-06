@@ -13,7 +13,6 @@
     "buefy": "^0.7.3",
     "vue": "^2.6.6",
     "vue-awesome": "^3.5.1",
-    "vue-carousel": "^0.18.0",
     "vue-loader": "^15.7.0",
     "vue-router": "^3.0.1"
   },
