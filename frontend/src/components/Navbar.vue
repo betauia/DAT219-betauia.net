@@ -25,7 +25,7 @@
           </a>
 
           <a class="navbar-item">
-            <router-link to="/about">About</router-link>
+            <router-link to="/blog">Blog</router-link>
           </a>
 
           <a class="navbar-item">

@@ -18,7 +18,8 @@
         </div>
         <div class="column is-6 content has-text-centered center">
           <div class="copyright">
-            Copyright &copy; 2008 - {{ (new Date()).getFullYear() }}  Beta Engineering &amp; Technology Association.
+          Copyright &copy; 2008 - {{ (new Date()).getFullYear() }}
+          Beta Engineering &amp; Technology Association.
           </div>
           <div class="social">
             <a href="https://www.facebook.com/beta.linjeforening" title="Facebook" target="_blank">
@@ -55,8 +56,8 @@ import 'vue-awesome/icons/brands/instagram';
 
 export default {
 
-}
-</script>s
+};
+</script>
 
 <style lang="scss" scoped>
   a {

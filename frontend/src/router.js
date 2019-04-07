@@ -18,6 +18,10 @@ export default new Router({
       component: () => import(/* webpackChunkName: "disclaimer" */ './components/Disclaimer.vue'),
     },
     {
+      path: '/blog',
+      component: () => import(/* webpackChunkName: "disclaimer" */ './components/Blog.vue'),
+    },
+    {
       path: '*',
       component: () => import(/* webpackChunkName: "about" */ './components/NotFound.vue'),
     },

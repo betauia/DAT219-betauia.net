@@ -1,7 +1,7 @@
 <template>
 
 <div class="Intro">
-  <section class="intro hero is-link is-fullheight-with-navbar has-bg-img">
+  <section class="intro hero is-link is-fullheight-with-navbar has-bg-img fontBlack">
     <div class="hero-body">
     <div class="header container is-widescreeen has-text-centered">
       <h1 class="title is-1"> Beta Engineering &amp; Technology Association </h1>
@@ -11,9 +11,9 @@
     </div>
   </div>
   </section>
-<section class="about hero is-fullheight is-info is-bold">
+<section class="about hero is-fullheight is-primary is-bold">
     <div class="hero-body">
-    <div class="container is-widescreeen">
+    <div class="container is-widescreen">
       <h1 class="title is-2"> About Beta </h1>
       <p class="subtitle">
         Beta er linjeforeningen for Data Ingeniør Studenter ved Universitetet i Agder.
@@ -58,7 +58,8 @@
   background-size:cover;
   }
 
- p, h1 {
+
+ .fontBlack {
     color: #ffffff;
     text-shadow: #0f0f0f 2px 2px 0;
   }
