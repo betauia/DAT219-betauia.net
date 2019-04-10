@@ -9,50 +9,50 @@ using Microsoft.EntityFrameworkCore;
 // All requests are tested and working //
 namespace betauia.Controllers
 {
-    [Route("api/UserApi")]
+    [Route("api/PageApi")]
     [ApiController]
-    public class UserApiController : ControllerBase
+    public class PageApiController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public UserApiController(ApplicationDbContext context)
+        public PageApiController(ApplicationDbContext context)
         {
-            // Set the databasecontext
+            // Set the dbcontext
             _context = context;
         }
-
-        // GET: Get all users
+        
+        // GET: Get all pages
         [HttpGet]
         public IActionResult GetAll()
         {
             // Return with 200 OK status code
-            return Ok(_context.Users.ToList());
+            return Ok(_context.Pages.ToList());
         }
 
         // GET: Get user by id
         [HttpGet("{id}")]
-        public async Task<ActionResult<ApplicationUser>> GetApplicationUser(string id)
+        public IActionResult GetApplicationUser(int id)
         {
             // Get user by id
-            var applicationUser = await _context.Users.FindAsync(id);
+            var pageModel = _context.Pages.Find(id);
             
             // Check if user is valid
-            if (applicationUser == null)
+            if (pageModel == null)
                 return NotFound();
 
             // Return user
-            return applicationUser;
+            return Ok(pageModel);
         }
         
         // PUT: Update user by id
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutApplicationUser(string id, ApplicationUser applicationUser)
+        public async Task<IActionResult> PutApplicationUser(int id, PageModel pageModel)
         {
             // Check if id matches user id
-            if (id != applicationUser.Id) return BadRequest();
+            if (id != pageModel.Id) return BadRequest();
 
             // Set the current state to say that some or all of its properties has been modified
-            _context.Entry(applicationUser).State = EntityState.Modified;
+            _context.Entry(pageModel).State = EntityState.Modified;
 
             try
             {
@@ -62,19 +62,19 @@ namespace betauia.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 // Check if the user was created
-                if (!ApplicationUserExists(id)) return NotFound();
+                if (!PageModelExists(id)) return NotFound();
                 else throw;
             }
 
-            return Ok(applicationUser);
+            return Ok(pageModel);
         }
         
         // POST: Add new user
         [HttpPost]
-        public IActionResult Post(ApplicationUser applicationUser)
+        public IActionResult Post(PageModel applicationUser)
         {
             // Return if id is set to avoid overwriting an existing user
-            if (applicationUser.Id != null) return BadRequest();
+            if (applicationUser.Id != 0) return BadRequest();
 
             // Add and save
             _context.Add(applicationUser);
@@ -85,23 +85,23 @@ namespace betauia.Controllers
         
         // DELETE: Delete user by id
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ApplicationUser>> DeleteApplicationUser(string id)
+        public IActionResult DeleteApplicationUser(int id)
         {
             // Receive and check if user is valid
-            var applicationUser = await _context.Users.FindAsync(id);
-            if (applicationUser == null) return NotFound();
+            var pageModel = _context.Pages.Find(id);
+            if (pageModel == null) return NotFound();
 
             // Remove and update
-            _context.Users.Remove(applicationUser);
-            await _context.SaveChangesAsync();
+            _context.Pages.Remove(pageModel);
+            _context.SaveChanges();
 
-            return applicationUser;
+            return Ok(pageModel);
         }
 
         // Function to check if a user by id exists
-        private bool ApplicationUserExists(string id)
+        private bool PageModelExists(int id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.Pages.Any(e => e.Id == id);
         }
     }
 }

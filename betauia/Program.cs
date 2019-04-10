@@ -32,7 +32,8 @@ namespace betauia
                 DbInitializer.Initialize(db, um);
             }
 
-            host.Run();        }
+            host.Run();        
+        }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)

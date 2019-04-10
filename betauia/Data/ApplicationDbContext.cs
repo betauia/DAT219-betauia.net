@@ -13,5 +13,7 @@ namespace betauia.Data
             : base(options)
         {
         }
+
+        public DbSet<PageModel> Pages { get; set; }
     }
 }
