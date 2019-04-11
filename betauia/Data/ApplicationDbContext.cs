@@ -14,12 +14,9 @@ namespace betauia.Data
         {
             
         }
-<<<<<<< HEAD
 
         public DbSet<PageModel> Pages { get; set; }
-=======
         
         public DbSet<BlogPost> Posts { get; set; }
->>>>>>> 6d74ed85018f42bbd7b9d44723fd300e97c15f19
     }
 }

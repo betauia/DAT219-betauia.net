@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 using System.Collections.Generic;
-=======
 using System;
->>>>>>> 6d74ed85018f42bbd7b9d44723fd300e97c15f19
 using betauia.Models;
 using Microsoft.AspNetCore.Identity;
 
@@ -18,17 +15,14 @@ namespace betauia.Data
             var user = new ApplicationUser { Email = "user@gmail.com", UserName = "user@gmail.com", FullName = "User name", NickName = "Nickname" };
             um.CreateAsync(user, "Password1.").Wait();
 
-<<<<<<< HEAD
             db.Pages.AddRange(new List<PageModel>
             {
                 new PageModel { Name = "My Page", Title = "Page title", SubTitle = "Page subtitle", Content = "text" },
                 new PageModel { Name = "My Page2", Title = "Page title2", SubTitle = "Page subtitle2", Content = "text2" },
                 new PageModel { Name = "My Page3", Title = "Page title3", SubTitle = "Page subtitle3", Content = "text3" }
             });
-=======
             var post = new BlogPost ("Hello world", "test content",DateTime.UtcNow);
             db.Add(post);
->>>>>>> 6d74ed85018f42bbd7b9d44723fd300e97c15f19
 
             db.SaveChanges();
         }
