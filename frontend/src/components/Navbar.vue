@@ -109,9 +109,6 @@ $colors: (
 </style-->
 <style lang="scss">
 #nav {
-  #navbar{
-  color: #448ef6;
-}
   padding: 26px;
   height: 30px;
   a {
