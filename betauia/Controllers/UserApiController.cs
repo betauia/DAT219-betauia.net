@@ -51,9 +51,10 @@ namespace betauia.Controllers
             // Check if id matches user id
             if (id != applicationUser.Id) return BadRequest();
 
+           
             // Set the current state to say that some or all of its properties has been modified
             _context.Entry(applicationUser).State = EntityState.Modified;
-
+            
             try
             {
                 // Save changes
@@ -65,7 +66,7 @@ namespace betauia.Controllers
                 if (!ApplicationUserExists(id)) return NotFound();
                 else throw;
             }
-
+            
             return Ok(applicationUser);
         }
         

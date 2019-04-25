@@ -17,9 +17,9 @@ namespace betauia.Data
 
             db.Pages.AddRange(new List<PageModel>
             {
-                new PageModel { Name = "My Page", Title = "Page title", SubTitle = "Page subtitle", Content = "text" },
-                new PageModel { Name = "My Page2", Title = "Page title2", SubTitle = "Page subtitle2", Content = "text2" },
-                new PageModel { Name = "My Page3", Title = "Page title3", SubTitle = "Page subtitle3", Content = "text3" }
+                new PageModel("My Page1", "Page title", "Page subtitle", "text"),
+                new PageModel("My Page2", "Page title", "Page subtitle", "text"),
+                new PageModel("My Page3", "Page title", "Page subtitle", "text"),
             });
             var post = new BlogPost ("Hello world", "test content",DateTime.UtcNow);
             db.Add(post);

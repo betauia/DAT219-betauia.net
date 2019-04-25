@@ -18,13 +18,12 @@ namespace betauia.Controllers
         }
 
         [HttpGet("id")]
-        public IActionResult Get(int id)
+        public IActionResult GetBlogPost(int id)
         {
-            Debug.Write("id found");
-            var peer = _context.Posts.Find(id);
-            if (peer == null)
+            var blogPostModel = _context.Posts.Find(id);
+            if (blogPostModel == null)
                 return NotFound();
-            return Ok(peer);
+            return Ok(blogPostModel);
         }
 
         [HttpGet]
@@ -42,7 +41,7 @@ namespace betauia.Controllers
             
             _context.Add(blogPost);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(Get), new {id = blogPost.Id}, blogPost);
+            return CreatedAtAction(nameof(GetBlogPost), new {id = blogPost.Id}, blogPost);
         }
 
         [HttpPut("{id}")]
