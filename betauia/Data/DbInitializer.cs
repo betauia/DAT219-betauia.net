@@ -21,7 +21,7 @@ namespace betauia.Data
                 new PageModel("My Page2", "Page title", "Page subtitle", "text"),
                 new PageModel("My Page3", "Page title", "Page subtitle", "text"),
             });
-            var post = new BlogPost ("Hello world", "test content",DateTime.UtcNow);
+            var post = new BlogPost ("Hello world", "test content");
             db.Add(post);
 
             db.SaveChanges();

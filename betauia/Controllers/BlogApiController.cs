@@ -1,12 +1,12 @@
-using System.Diagnostics;
 using System.Linq;
 using betauia.Data;
 using betauia.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace betauia.Controllers
 {
-    [Route("api/Blog")]
+    [Route("api/BlogApi")]
     [ApiController]
     public class BlogApiController : ControllerBase
     {
@@ -17,20 +17,22 @@ namespace betauia.Controllers
             _context = context;
         }
 
-        [HttpGet("id")]
-        public IActionResult GetBlogPost(int id)
-        {
-            var blogPostModel = _context.Posts.Find(id);
-            if (blogPostModel == null)
-                return NotFound();
-            return Ok(blogPostModel);
-        }
-
         [HttpGet]
         public IActionResult GetAll()
         {
             // Return with 200 OK status code
             return Ok(_context.Posts.ToList());
+        }
+        
+        [HttpGet("id")]
+        public IActionResult GetBlogPost(int id)
+        {
+            var blogPostModel = _context.Posts.Find(id);
+            
+            if (blogPostModel == null)
+                return NotFound();
+            
+            return Ok(blogPostModel);
         }
         
         [HttpPost]
@@ -49,6 +51,12 @@ namespace betauia.Controllers
         {
             if (!_context.Posts.Any(p => p.Id == blogPost.Id))
                 return NotFound();
+            
+            blogPost.UpdateEditTime();
+
+            var post = _context.Posts.Find(blogPost.Id);
+            blogPost.CreationDate = post.CreationDate;
+            _context.Entry(post).State = EntityState.Detached;
 
             _context.Update(blogPost);
             _context.SaveChanges();
