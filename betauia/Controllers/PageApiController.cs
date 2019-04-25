@@ -14,7 +14,6 @@ namespace betauia.Controllers
     public class PageApiController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-
         public PageApiController(ApplicationDbContext context)
         {
             // Set the dbcontext
@@ -50,10 +49,15 @@ namespace betauia.Controllers
         {
             // Check if id matches user id
             if (id != pageModel.Id) return BadRequest();
-
+            pageModel.UpdateEditTime();
+            
+            var page = _context.Pages.Find(id);
+            pageModel.CreationTime = page.CreationTime;
+            _context.Entry(page).State = EntityState.Detached;
+            
             // Set the current state to say that some or all of its properties has been modified
             _context.Entry(pageModel).State = EntityState.Modified;
-
+            
             try
             {
                 // Save changes
@@ -65,22 +69,21 @@ namespace betauia.Controllers
                 if (!PageModelExists(id)) return NotFound();
                 else throw;
             }
-
             return Ok(pageModel);
         }
-        
+ 
         // POST: Add new user
         [HttpPost]
-        public IActionResult Post(PageModel applicationUser)
+        public IActionResult Post(PageModel pageModel)
         {
             // Return if id is set to avoid overwriting an existing user
-            if (applicationUser.Id != 0) return BadRequest();
-
+            if (pageModel.Id != 0) return BadRequest();
+            
             // Add and save
-            _context.Add(applicationUser);
+            _context.Add(pageModel);
             _context.SaveChanges();
 
-            return CreatedAtAction(nameof(GetApplicationUser), new {id = applicationUser.Id}, applicationUser);
+            return CreatedAtAction(nameof(GetApplicationUser), new {id = pageModel.Id}, pageModel);
         }
         
         // DELETE: Delete user by id

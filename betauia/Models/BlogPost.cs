@@ -4,20 +4,24 @@ namespace betauia.Models
 {
     public class BlogPost
     {       
-        public BlogPost(string title, string content, DateTime postTime)
+        public BlogPost(string title, string content)
         {
             Title = title;
             Content = content;
-            if (postTime == DateTime.MinValue)
-            {
-                postTime = DateTime.UtcNow;
-            }
-            PostTime = postTime;
+            
+            CreationDate = DateTime.UtcNow;
+            LastEditDate = CreationDate;
+        }
+
+        public void UpdateEditTime()
+        {
+            LastEditDate = DateTime.UtcNow;
         }
 
         public int Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }        
-        public DateTime PostTime { get; set; }
+        public DateTime CreationDate { get; set; }
+        public DateTime LastEditDate { get; set; }
     }
 }
