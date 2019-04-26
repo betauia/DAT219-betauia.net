@@ -1,5 +1,6 @@
 <template>
   <div class="blog">
+    <div id="padding">
     <ul v-if="posts && posts.length">
       <li v-for="post of posts" v-bind:key="post">
         <p>
@@ -13,13 +14,20 @@
       <li v-for="error of errors" v-bind:key="error">{{error.message}}</li>
     </ul>
   </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
+
+#padding {
+  padding: 20px;
+}
+
 .rigth {
   text-align: left;
   padding-inline-start: 15%;
 }
+
 </style>
 
 
@@ -36,7 +44,7 @@ export default {
 
   created() {
     axios
-      .get('http://jsonplaceholder.typicode.com/posts')
+      .get('/api/BlogApi')
       .then((response) => {
         this.posts = response.data;
       })

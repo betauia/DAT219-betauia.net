@@ -1,11 +1,10 @@
 module.exports = {
   devServer: {
     proxy: {
-      '/api': {
-        target: 'http://localhost:2900',
-      },
-      '/dummy': {
-        target: 'https://jsonplaceholder.typicode.com/posts',
+      '^/api': {
+        target: 'https://localhost:5001',
+        ws: true,
+        changeOrigin: true,
       },
     },
   },
