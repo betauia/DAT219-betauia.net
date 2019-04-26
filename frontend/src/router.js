@@ -22,6 +22,10 @@ export default new Router({
       component: () => import(/* webpackChunkName: "disclaimer" */ './components/Blog.vue'),
     },
     {
+      path: '/login',
+      component: () => import(/* webpackChunkName: "login" */ './components/_LoginModal.vue'),
+    },
+    {
       path: '*',
       component: () => import(/* webpackChunkName: "about" */ './components/NotFound.vue'),
     },

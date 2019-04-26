@@ -51,11 +51,10 @@
         </div>
 
         <div class="navbar-end">
-          <div class="navbar-item">
-            <router-link to="/login">
-            <LoginModal></LoginModal>
-            </router-link>
-          </div>
+          <a class="navbar-item">
+            <router-link to="/login">Login</router-link>
+          </a>
+
           <div class="navbar-item">
             <SponsorsGallery CompanyName="Anzyz" />
           </div>
@@ -67,13 +66,11 @@
 </template>
 
 <script>
-import LoginModal from '@/components/LoginModal.vue';
 import SponsorsGallery from '@/components/SponsorsGallery.vue';
 
 export default {
   name: 'Intro',
   components: {
-    LoginModal,
     SponsorsGallery,
   },
 };
