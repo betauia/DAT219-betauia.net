@@ -3,13 +3,11 @@
     <div id="padding">
     <ul v-if="posts && posts.length">
       <li v-for="post of posts" v-bind:key="post">
-        <p>
-          <strong>{{post.title}}</strong>
-        </p>
-        <p>{{post.body}}</p>
+          <div id="padding">
+            <post v-bind:post="post"/>
+          </div>
       </li>
     </ul>
-
     <ul v-if="errors && errors.length">
       <li v-for="error of errors" v-bind:key="error">{{error.message}}</li>
     </ul>
@@ -33,8 +31,12 @@
 
 <script>
 import axios from 'axios';
+import BlogPost from '@/components/BlogPost.vue';
 
 export default {
+  components:{
+    'post':BlogPost
+  },  
   data() {
     return {
       posts: [],
