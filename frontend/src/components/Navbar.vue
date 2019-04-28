@@ -1,120 +1,65 @@
 <template>
-    <div id="navbar">
-    <link rel="stylesheet" href="https://unpkg.com/buefy/dist/buefy.min.css">
-    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
-        <div id="nav">
-            <nav class="navbar is-info is-fixed-top">
-      <div class="navbar-brand">
-        <a class="navbar-item" ><router-link to="/">
-          <img src="@/assets/img/logo.png" width="112" height="28">
-          </router-link>
+  <nav class="navbar mobile is-primary">
+    <div class="navbar-brand">
+      <a class="navbar-item">
+        <router-link to="/">
+        <img src="@/assets/img/logo.png">
+        </router-link>
+      </a>
+      <a class="navbar-item">
+        <a href="https://tools.uia.no/bitbucket/projects/DAT219G19V/repos/betauia/browse">
+        <b-icon pack="fab" icon="gitlab"></b-icon>
         </a>
-        <div class="navbar-burger burger" data-target="navbar">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </div>
-
-      <div id="navbar" class="navbar-menu">
-        <div class="navbar-start">
-          <br><br>
-            <a class="navbar-item">
-            <router-link to="/">Home</router-link>
-          </a>
-
-          <a class="navbar-item">
-            <router-link to="/blog">Blog</router-link>
-          </a>
-
-          <a class="navbar-item">
-            <router-link to="/for-bedrifter">For Bedrifter</router-link>
-          </a>
-
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">
-              <router-link to="/events">Events</router-link>
-            </a>
-            <div class="navbar-dropdown is-boxed">
-              <a class="navbar-item">
-                <router-link to="/events/betalan">Betalan</router-link>
-              </a>
-              <a class="navbar-item">
-                <router-link to="/events/retro">Retrokveld</router-link>
-              </a>
-              <a class="navbar-item">
-                <router-link to="/events/bedpress">Bedpress</router-link>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="navbar-end">
-          <a class="navbar-item">
-            <router-link to="/login">Login</router-link>
-          </a>
-
-          <div class="navbar-item">
-            <SponsorsGallery CompanyName="Anzyz" />
-          </div>
-        </div>
-      </div>
-    </nav>
+      </a>
+      <a class="navbar-item">
+        <router-link to="/blog">Blog</router-link>
+      </a>
+      <a class="navbar-item">
+        <router-link to="/events">Events</router-link>
+      </a>
     </div>
+
+    <div class="navbar-menu">
+      <div class="navbar-end padding">
+        <b-dropdown position="is-bottom-left" aria-role="menu">
+          <a class="navbar-item" slot="trigger" role="button">
+            <span>Login</span>
+            <b-icon icon="menu-down"></b-icon>
+          </a>
+
+          <b-dropdown-item aria-role="menu-item" custom paddingless>
+            <form action>
+              <div class="modal-card" style="width:300px;">
+                <section class="modal-card-body">
+                  <b-field label="Email">
+                    <b-input type="email" placeholder="Your email" required></b-input>
+                  </b-field>
+
+                  <b-field label="Password">
+                    <b-input type="password" password-reveal
+                    placeholder="Your password"
+                    required></b-input>
+                  </b-field>
+
+                  <b-checkbox>Remember me</b-checkbox>
+                </section>
+                <footer class="modal-card-foot">
+                  <button class="button is-primary">Login</button>
+                </footer>
+              </div>
+            </form>
+          </b-dropdown-item>
+        </b-dropdown>
+      </div>
     </div>
+  </nav>
 </template>
 
+
 <script>
-import SponsorsGallery from '@/components/SponsorsGallery.vue';
-
-export default {
-  name: 'Intro',
-  components: {
-    SponsorsGallery,
-  },
-};
+export default {};
 </script>
-<!--style lang="scss">
-@import "~bulma/sass/utilities/_all";
 
-// Set your colors
-$primary: #6356AB;
-$primary-invert: findColorInvert($primary);
-
-// Setup $colors to use as bulma classes
-$colors: (
-    "white": ($white, $black),    color: #f5f8fc;
-
-    "black": ($black, $white),    color: #f5f8fc;
-
-    "light": ($light, $light-i    color: #f5f8fc;
-
-    "dark": ($dark, $dark-inve    color: #f5f8fc;
-
-    "primary": ($primary, $primary-invert),
-    "info": ($info, $info-invert),
-    "success": ($success, $success-invert),
-    "warning": ($warning, $warning-invert),
-    "danger": ($danger, $danger-invert),
-);
-
-@import "~bulma";
-@import "~buefy/src/scss/buefy";
-
-@import './assets/css/global.css';
-</style-->
 <style lang="scss">
-#nav {
-  padding: 26px;
-  height: 30px;
-  a {
-    font-weight: bold;
-    color: #8bc7ff;
-    font-size: 18px;
-    &.router-link-exact-active {
-      color: #003d74;
-    }
-  }
-}
+
 </style>

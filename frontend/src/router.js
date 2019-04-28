@@ -19,11 +19,7 @@ export default new Router({
     },
     {
       path: '/blog',
-      component: () => import(/* webpackChunkName: "disclaimer" */ './components/Blog.vue'),
-    },
-    {
-      path: '/login',
-      component: () => import(/* webpackChunkName: "login" */ './components/_LoginModal.vue'),
+      component: () => import(/* webpackChunkName: "disclaimer" */ './views/Blog.vue'),
     },
     {
       path: '*',
