@@ -5,14 +5,14 @@ namespace betauia.Models
 {
     public class EventModel
     {
-        public EventModel(string title, string subTitle, string description, string content, DateTime eventTime, /*ApplicationUser author, */string image, int atendees, bool isPublic)
+        public EventModel(string title, string subTitle, string description, string content, DateTime eventTime, string author, string image, int atendees, bool isPublic)
         {
             Title = title;
             SubTitle = subTitle;
             Description = description;
             Content = content;
             EventTime = eventTime;
-            //Author = author;
+            Author = author;
             Image = image;
             Atendees = atendees;
             IsPublic = isPublic;
@@ -27,7 +27,7 @@ namespace betauia.Models
         public string Image { get; set; }
         public int Atendees { get; set; }
         public bool IsPublic { get; set; }
-        //private ApplicationUser Author { get; set; }
+        public string Author { get; set; }
         public DateTime EventTime { get; set; }
     }
 }

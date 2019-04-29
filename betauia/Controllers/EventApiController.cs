@@ -14,7 +14,7 @@ namespace betauia.Controllers
         private readonly ApplicationDbContext _context;
         
         public EventApiController(ApplicationDbContext context)
-        {
+                 {
             // Set the dbcontext
             _context = context;
         }
