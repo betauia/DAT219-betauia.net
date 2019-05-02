@@ -1,9 +1,9 @@
 <template>
   <div class="Intro">
-    <section class="intro hero is-link is-fullheight-with-navbar tower-img fontBlack">
+    <section class="intro hero is-link is-fullheight tower-img fontBlack">
       <div class="hero-body">
         <div class="header container is-widescreeen has-text-centered">
-          <h1 class="title is-1">Beta Engineering &amp; Technology Association</h1>
+          <h1 class="title is-1" v-smooth-scroll>Beta Engineering &amp; Technology Association</h1>
           <p class="subtitle is-3">"insert inspirational quote"</p>
         </div>
       </div>
@@ -11,7 +11,7 @@
     <section class="about hero is-fullheight is-primary is-bold">
       <div class="hero-body">
         <div class="container is-widescreen">
-          <h1 class="title is-2">About Beta</h1>
+          <h1 class="title is-2" v-smooth-scroll>About Beta</h1>
           <p class="subtitle">
             Beta er linjeforeningen for Data Ingeniør Studenter ved Universitetet i Agder.
             Beta er en non-profit organisasjon. Det betyr at Beta driver ikke for å tjene penger,
@@ -25,16 +25,15 @@
     <section class="help hero is-fullheight is-danger retro-img">
       <div class="hero-body">
         <div class="container is-widescreeen">
-          <h1 class="title is-2">Har du lyst til å være med å hjelpe til?</h1>
+          <h1 class="title is-2" v-smooth-scroll>Har du lyst til å være med å hjelpe til?</h1>
           <p class="subtitle">lyst til bli med i styret for BETA ?</p>
         </div>
       </div>
     </section>
-
     <section class="board-members hero is-fullheight is-success is-bold">
       <div class="hero-body">
         <div class="container is-widescreeen">
-          <h1 class="title has-text-centered is-1">Styret</h1>
+          <h1 class="title has-text-centered is-1" v-smooth-scroll>Styret</h1>
           <p class="subtitle">
             <BoardMemebers></BoardMemebers>
           </p>
