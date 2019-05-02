@@ -22,6 +22,22 @@ export default new Router({
       component: () => import(/* webpackChunkName: "disclaimer" */ './views/Blog.vue'),
     },
     {
+      path: '/events',
+      component: () => import(/* webpackChunkName: "events" */ './views/Events.vue'),
+    },
+    {
+      path: '/account/login',
+      component: () => import(/* webpackChunkName: "events" */ './components/Account/Login.vue'),
+    },
+    {
+      path: '/account/register',
+      component: () => import(/* webpackChunkName: "events" */ './components/Account/Register.vue'),
+    },
+    {
+      path: '/test',
+      component: () => import(/* webpackChunkName: "test" */ './views/Test.vue'),
+    },
+    {
       path: '*',
       component: () => import(/* webpackChunkName: "about" */ './components/NotFound.vue'),
     },

@@ -1,30 +1,15 @@
 <template>
-  <div class='blog'>
-    <div id='padding'>
-      <ul v-if='posts && posts.length'>
-        <li v-for='post of posts' v-bind:key='post'>
-          <div id='padding'>
-            <post v-bind:post='post'/>
-          </div>
-        </li>
-      </ul>
-      <ul v-if='errors && errors.length'>
-        <li v-for='error of errors' v-bind:key='error'>{{error.message}}</li>
-      </ul>
-    </div>
+  <div id='posts'>
+    <ul v-if='posts && posts.length'>
+      <div v-for='post of posts' v-bind:key='post'>
+      <post v-bind:post='post'> </post>
+      </div>
+    </ul>
+    <ul v-if='errors && errors.length'>
+      <li v-for='error of errors' v-bind:key='error'>{{error.message}}</li>
+    </ul>
   </div>
 </template>
-
-<style lang='scss' scoped>
-#padding {
-  padding: 20px;
-}
-
-.rigth {
-  text-align: left;
-  padding-inline-start: 15%;
-}
-</style>
 
 
 <script>

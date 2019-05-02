@@ -16,6 +16,7 @@
     "node-sass": "^4.12.0",
     "vue": "^2.6.6",
     "vue-awesome": "^3.5.1",
+    "vue-cookie-law": "^1.10.0",
     "vue-loader": "^15.7.0",
     "vue-router": "^3.0.1"
   },

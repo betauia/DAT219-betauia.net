@@ -1,15 +1,19 @@
 <template>
-  <div class='Posts'>
+  <div class='Events'>
       <div class='column padding'>
         <div class='card'>
           <header class='card-header'>
-            <p class='card-header-title'>{{post.title}}</p>
+            <p class='card-header-title'>{{event.title}}</p>
           </header>
           <div class='card-content'>
             <div class='content'>
-              {{post.content}}
+              <ul>
+                  <li>subTitle: {{event.subTitle}}</li>
+                  <li>Description: {{event.description}}</li>
+                  <li>Content: {{event.content}}</li>
+                  <li>EventTime: {{event.eventTime}}</li>
+              </ul>
               <br>
-              <div class='italic' >Last edited at: {{post.lastEditDate}} </div>
             </div>
           </div>
         </div>
@@ -19,9 +23,9 @@
 
 <script>
 export default {
-  name: 'Posts',
+  name: 'Events',
   props: {
-    post: Object,
+    event: Object,
   },
 };
 </script>
