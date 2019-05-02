@@ -35,7 +35,19 @@ namespace betauia.Data
             var Event = new EventModel("Betalan", "På tide med et nytt lan", "Lanet skal skje whenever",
                 "Det skal skje mange events osv.", DateTime.Now, "Author", "imagepath", 0, true);
             db.Add(Event);
+
             
+            const int numSeats = 20;
+
+            var seatMap = new SeatMapModel(numSeats, 100);
+            
+            for (var i = 1; i <= numSeats; i++)
+            {
+                var seat = new SeatModel(i) {Owner = seatMap};
+                db.Add(seat);
+            }
+            
+            db.Add(seatMap);
             
             db.SaveChanges();
         }

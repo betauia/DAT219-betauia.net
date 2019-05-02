@@ -19,5 +19,7 @@ namespace betauia.Data
         
         public DbSet<BlogPost> Posts { get; set; }
         public DbSet<EventModel> Events { get; set; }
+        public DbSet<SeatMapModel> SeatMap { get; set; }
+        public DbSet<SeatModel> Seats { get; set; }
     }
 }
