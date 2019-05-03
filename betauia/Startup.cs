@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using IdentityServer4;
 using betauia.Data;
 using betauia.Models;
+using IdentityServer4.Stores;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -54,8 +55,14 @@ namespace betauia
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
 
-            services.AddIdentityServer()                
-                .AddSigningCredential(new X509Certificate2("cert.pfx","Erikdakool"));
+            services.AddSingleton<IClientStore, CustomClientStore>();
+
+            services.AddIdentityServer()
+                .AddSigningCredential(new X509Certificate2("cert.pfx", "Erikdakool"))
+                .AddInMemoryApiResources(Config.GetApiResources())
+                .AddInMemoryClients(Config.GetClients())
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
+                .AddAspNetIdentity<ApplicationUser>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,6 +86,8 @@ namespace betauia
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            app.UseIdentityServer();
 
             app.UseMvc(routes =>
             {

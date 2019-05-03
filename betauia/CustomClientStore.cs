@@ -12,21 +12,22 @@ namespace betauia
         {
             new Client
             {
-                ClientId = "myClient",
-                ClientName = "My Custom Client",
-                AccessTokenLifetime = 60 * 60 * 24,
-                AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-                RequireClientSecret = false,
-                AllowedScopes = 
-                {
-                    "myAPIs"
-                }
+
             }
         };
 
         public Task<Client> FindClientByIdAsync(string clientId)
         {
             return Task.FromResult(AllClients.FirstOrDefault(c => c.ClientId == clientId));
+        }
+
+        public static List<IdentityResource> GetIdentityResources()
+        {
+            return new List<IdentityResource>
+            {
+                new IdentityResources.OpenId(),
+                new IdentityResources.Profile()
+            };
         }
     }
 }
