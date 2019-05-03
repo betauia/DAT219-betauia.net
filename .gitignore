@@ -33,3 +33,5 @@ tags
 
 ## Persistent undo
 [._]*.un~
+
+app.db
