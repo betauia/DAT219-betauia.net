@@ -39,9 +39,7 @@ namespace betauia.Controllers
         public IActionResult PostSeatMap(SeatMapModel seatMap)
         {
             const int numSeats = 20;
-            
-            seatMap = new SeatMapModel(numSeats, 100);
-            
+    
             if (seatMap.Id != 0)
                 return BadRequest();
             
@@ -55,6 +53,18 @@ namespace betauia.Controllers
 
             _context.SaveChanges();
             return Created("Ok", seatMap);
+        }
+
+        [HttpDelete("id")]
+        public IActionResult DeleteMap(int id)
+        {
+            var seatMap = _context.Seats.Find(id);
+            if (seatMap == null)
+                return NotFound();
+
+            _context.Remove(seatMap);
+            _context.SaveChanges();
+            return Ok(seatMap);
         }
     }
 }
