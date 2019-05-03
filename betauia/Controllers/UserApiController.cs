@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 // All requests are tested and working //
 namespace betauia.Controllers
 {
-    [Route("api/User")]
+    [Route("api/user")]
     [ApiController]
     public class UserApiController : ControllerBase
     {
