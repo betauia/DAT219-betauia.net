@@ -6,5 +6,7 @@ namespace betauia.Models
     {
         public string FullName { get; set; }
         public string NickName { get; set; }
+        
+        public  virtual string claimTest { get; set; }
     }
 }
