@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Net.Mime;
 using betauia.Data;
+using betauia.Models;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -32,6 +33,17 @@ namespace betauia.Controllers
                 return NotFound();
 
             return Ok(SeatMapModel);
+        }
+
+        [HttpPost]
+        public IActionResult PostSeatMap(SeatMapModel seatMapModel)
+        {
+            if (seatMapModel.Id != 0)
+                return BadRequest();
+
+            _context.Add(seatMapModel);
+            _context.SaveChanges();
+            return Created("Ok", seatMapModel);
         }
     }
 }
