@@ -1,12 +1,8 @@
 <template>
   <div class='app'>
     <title>Betauia.net</title>
-    <div class='columns'>
-      <div class='column is-10 is-offset padding center'>
         <Navbar></Navbar>
         <router-view/>
-      </div>
-    </div>
     <Footer></Footer>
   </div>
 </template>

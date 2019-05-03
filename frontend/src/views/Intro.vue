@@ -1,14 +1,14 @@
 <template>
   <div class="Intro">
-    <section class="intro hero is-link is-fullheight tower-img fontBlack">
+    <section class="intro hero is-fullheight tower-img">
       <div class="hero-body">
         <div class="header container is-widescreeen has-text-centered">
-          <h1 class="title is-1" v-smooth-scroll>Beta Engineering &amp; Technology Association</h1>
-          <p class="subtitle is-3">"insert inspirational quote"</p>
+          <h1 class="title is-1 fontBlack">Beta Engineering &amp; Technology Association</h1>
+          <p class="subtitle is-3 fontBlack">"insert inspirational quote"</p>
         </div>
       </div>
     </section>
-    <section class="about hero is-fullheight is-primary is-bold">
+    <section class="about hero is-fullheight is-warning">
       <div class="hero-body">
         <div class="container is-widescreen">
           <h1 class="title is-2" v-smooth-scroll>About Beta</h1>
@@ -22,18 +22,19 @@
         </div>
       </div>
     </section>
-    <section class="help hero is-fullheight is-danger retro-img">
+    <section class="help hero is-fullheight retro-img">
       <div class="hero-body">
         <div class="container is-widescreeen">
-          <h1 class="title is-2" v-smooth-scroll>Har du lyst til å være med å hjelpe til?</h1>
-          <p class="subtitle">lyst til bli med i styret for BETA ?</p>
+          <h1 class="title is-2 fontBlack"
+          v-smooth-scroll>Har du lyst til å være med å hjelpe til?</h1>
+          <p class="subtitle fontBlack">lyst til bli med i styret for BETA ?</p>
         </div>
       </div>
     </section>
-    <section class="board-members hero is-fullheight is-success is-bold">
+    <section class="board-members hero is-fullheight is-bold">
       <div class="hero-body">
         <div class="container is-widescreeen">
-          <h1 class="title has-text-centered is-1" v-smooth-scroll>Styret</h1>
+          <h1 class="title has-text-centered is-1 fontBlack" v-smooth-scroll>Styret</h1>
           <p class="subtitle">
             <BoardMemebers></BoardMemebers>
           </p>
