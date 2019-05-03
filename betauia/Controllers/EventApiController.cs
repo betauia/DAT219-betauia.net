@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace betauia.Controllers
 {
-    [Route("api/EventApi")]
+    [Route("api/Event")]
     [ApiController]
     public class EventApiController : ControllerBase
     {

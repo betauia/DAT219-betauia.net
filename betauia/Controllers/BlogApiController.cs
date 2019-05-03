@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace betauia.Controllers
 {
-    [Route("api/BlogApi")]
+    [Route("api/Blog")]
     [ApiController]
     public class BlogApiController : ControllerBase
     {

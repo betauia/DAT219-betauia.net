@@ -36,15 +36,14 @@ namespace betauia.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostSeatMap(SeatMapModel seatMapModel)
+        public IActionResult PostSeatMap(SeatMapModel seatMap)
         {
             const int numSeats = 20;
             
-            if (seatMapModel.Id != 0)
+            seatMap = new SeatMapModel(numSeats, 100);
+            
+            if (seatMap.Id != 0)
                 return BadRequest();
-            
-            
-            var seatMap = new SeatMapModel(numSeats, 100);
             
             for (var i = 1; i <= numSeats; i++)
             {
@@ -55,7 +54,7 @@ namespace betauia.Controllers
             _context.Add(seatMap);
 
             _context.SaveChanges();
-            return Created("Ok", seatMapModel);
+            return Created("Ok", seatMap);
         }
     }
 }
