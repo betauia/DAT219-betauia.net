@@ -38,10 +38,22 @@ namespace betauia.Controllers
         [HttpPost]
         public IActionResult PostSeatMap(SeatMapModel seatMapModel)
         {
+            const int numSeats = 20;
+            
             if (seatMapModel.Id != 0)
                 return BadRequest();
+            
+            
+            var seatMap = new SeatMapModel(numSeats, 100);
+            
+            for (var i = 1; i <= numSeats; i++)
+            {
+                var seat = new SeatModel(i) {Owner = seatMap};
+                _context.Add(seat);
+            }
+            
+            _context.Add(seatMap);
 
-            _context.Add(seatMapModel);
             _context.SaveChanges();
             return Created("Ok", seatMapModel);
         }
