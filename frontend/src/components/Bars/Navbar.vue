@@ -8,7 +8,7 @@
       </a>
 
       <a class="navbar-item">
-      <router-link to="/blog">  Blog</router-link>
+      <router-link to="/blog">Blog</router-link>
       </a>
       <a class="navbar-item">
         <router-link to="/events">Events</router-link>
@@ -16,21 +16,14 @@
     </div>
 
     <div class="navbar-menu">
-      <div class="navbar-end">
-        <div class="navbar-item">
-          <div class="field is-grouped">
-            <p class="control">
-              <a class="button is-medium">
-                <router-link to="/account/register">Register</router-link>
-              </a>
-            </p>
-            <p class="control">
-              <a class="button is-small is-medium">
-                <router-link to="/account/login">Login</router-link>
-              </a>
-            </p>
-          </div>
-        </div>
+    <div class="navbar-end">
+      <a class="navbar-item">
+        <router-link to="/account/register">Register</router-link>
+      </a>
+
+      <a class="navbar-item">
+        <router-link to="/account/login">Login</router-link>
+      </a>
       </div>
     </div>
   </nav>

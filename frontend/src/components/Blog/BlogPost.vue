@@ -1,6 +1,6 @@
 <template>
   <div class='Posts'>
-      <div class='column padding'>
+      <div class='columns padding'>
         <div class='card'>
           <header class='card-header'>
             <p class='card-header-title'>{{post.title}}</p>
