@@ -42,4 +42,5 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './components/NotFound.vue'),
     },
   ],
+  mode: 'history',
 });
