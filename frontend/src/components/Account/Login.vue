@@ -15,9 +15,10 @@
       <b-input :value="password" type="password" placeholder="hunter2k" maxlength="120"></b-input>
     </b-field>
 
-    <p class="control">
-      <button class="button is-primary">Login</button>
-    </p>
+    <div class="field" grouped>
+      <button class="button is-primary"> Login</button>
+      <b-checkbox> Remember Me! </b-checkbox>
+      </div>
   </section>
 </template>
 

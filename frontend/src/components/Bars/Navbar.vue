@@ -1,29 +1,34 @@
 <template>
-  <nav class="navbar is-primary">
+  <nav class="navbar has-navbar-fixed-top" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <a class="navbar-item">
-        <router-link to="/">
-          <img src="@/assets/img/logo.png">
-        </router-link>
-      </a>
-
-      <a class="navbar-item">
-      <router-link to="/blog">Blog</router-link>
-      </a>
-      <a class="navbar-item">
-        <router-link to="/events">Events</router-link>
-      </a>
+      <router-link class="navbar-item" to="/">
+        <img src="@/assets/img/logo.png">
+      </router-link>
+      <div class="navbar-burger burger" @click="isActive = !isActive">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
+    <div class="navbar-menu" :class="{'is-active': isActive}">
+      <div class="navbar-start">
+        <router-link @click.native="isActive = false"
+        class="navbar-item"
+        to="/blog">Blog</router-link>
 
-    <div class="navbar-menu">
-    <div class="navbar-end">
-      <a class="navbar-item">
-        <router-link to="/account/register">Register</router-link>
-      </a>
+        <router-link @click.native="isActive = false"
+        class="navbar-item"
+        to="/events">Events</router-link>
+      </div>
 
-      <a class="navbar-item">
-        <router-link to="/account/login">Login</router-link>
-      </a>
+      <div class="navbar-end">
+        <router-link @click.native="isActive = false"
+        class="navbar-item"
+        to="/account/register">Register</router-link>
+
+        <router-link @click.native="isActive = false"
+        class="navbar-item"
+        to="/account/login">Login</router-link>
       </div>
     </div>
   </nav>
@@ -32,10 +37,15 @@
 
 <script>
 export default {
-
+  data: () => ({
+    isActive: false,
+  }),
 };
 </script>
 
 <style lang="scss">
-
+.navbar {
+  width: auto;
+  border-bottom: 1px solid black;
+}
 </style>

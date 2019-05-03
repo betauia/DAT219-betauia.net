@@ -34,13 +34,26 @@ export default {
 
 a {
     color: #0085ff;
-  }
+}
 
+// Imports
 @import '~bulma/sass/utilities/_all';
+
+// Variables
 $primary: #0085ff;
+$primary-accent: #0077e5;
 $primary-invert: findColorInvert($primary);
 $twitter: #4099ff;
 $twitter-invert: findColorInvert($twitter);
+$link: $primary-invert;
+$link-invert: $primary-invert;
+$link-focus-border: $primary;
+
+// Navbar
+$navbar-item-hover-background-color: $primary-accent;
+$navbar-background-color: $primary;
+$navbar-item-color: $white;
+
 
 $colors: (
   'white': (
@@ -84,10 +97,6 @@ $colors: (
     $twitter-invert
   )
 );
-
-$link: #ffffff;
-$link-invert: $primary-invert;
-$link-focus-border: $primary;
 
 @import '~bulma';
 @import '~buefy/src/scss/buefy';
