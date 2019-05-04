@@ -29,7 +29,7 @@ export default {
 
   created() {
     axios
-      .get('/api/BlogApi')
+      .get('/api/blog')
       .then((response) => {
         this.posts = (response).data;
       })

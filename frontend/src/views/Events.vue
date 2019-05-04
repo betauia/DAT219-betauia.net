@@ -33,7 +33,7 @@ export default {
 
   created() {
     axios
-      .get('/api/EventApi')
+      .get('/api/event')
       .then((response) => {
         this.events = response.data;
       })

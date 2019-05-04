@@ -27,11 +27,11 @@ export default new Router({
     },
     {
       path: '/account/login',
-      component: () => import(/* webpackChunkName: "events" */ './components/Account/Login.vue'),
+      component: () => import(/* webpackChunkName: "login" */ './components/Account/Login.vue'),
     },
     {
       path: '/account/register',
-      component: () => import(/* webpackChunkName: "events" */ './components/Account/Register.vue'),
+      component: () => import(/* webpackChunkName: "register" */ './components/Account/Register.vue'),
     },
     {
       path: '/test',
