@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using IdentityServer4;
 using betauia.Data;
 using betauia.Models;
+using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Stores;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -88,7 +89,7 @@ namespace betauia
             app.UseAuthentication();
 
             app.UseIdentityServer();
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -106,7 +107,6 @@ namespace betauia
                 {
                     var newRole = new IdentityRole(role);
                     await roleManager.CreateAsync(newRole);
-                    // In the real world, there might be claims associated with roles
                     // _roleManager.AddClaimAsync(newRole, new )
                 }
             }
