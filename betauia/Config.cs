@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer4.Models;
 using IdentityServer4.Stores;
+using IdentityServer4.Services;
 
 namespace betauia
 {
@@ -13,7 +14,8 @@ namespace betauia
         {
             return new List<ApiResource>
             {
-                new ApiResource("myAPI", "my api")
+                new ApiResource("myAPI", "my api"),
+                new ApiResource("tswTools","Tools api")
             };
         }
 
@@ -25,13 +27,17 @@ namespace betauia
                 {
                     ClientId = "myClient",
                     ClientName = "My Custom Client",
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
                     AccessTokenLifetime = 60 * 60 * 24,
                     AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                     AllowAccessTokensViaBrowser = true,
                     RequireClientSecret = false,
                     AllowedScopes =
                     {
-                        "myAPI"
+                        "myAPI","tswTools"
                     }
                 }
             };
