@@ -24,5 +24,9 @@
 
 <script>
 export default {
+  name: 'Login',
+  props: {
+    event: Object,
+  },
 };
 </script>
