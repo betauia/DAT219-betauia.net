@@ -8,16 +8,20 @@ namespace betauia.Data
 {
     public class DbInitializer
     {
-        public static void Initialize(ApplicationDbContext db, UserManager<ApplicationUser> um)
+        public static void Initialize(ApplicationDbContext db, UserManager<ApplicationUser> um,RoleManager<IdentityRole> rm)
         {
             db.Database.EnsureDeleted();
             db.Database.EnsureCreated();
 
             var user = new ApplicationUser { Email = "user@gmail.com", UserName = "user@gmail.com", FullName = "User name", NickName = "Nickname" , claimTest = "test"};
             um.CreateAsync(user, "Password1.").Wait();
-            um.AddToRoleAsync(user, "Admin");
+            
+            var newRole = new IdentityRole("Admin");
+            rm.CreateAsync(newRole).Wait();
+            
+            um.AddToRoleAsync(user, "Admin").Wait();
             var testClaim = new Claim("test", user.claimTest, ClaimValueTypes.String);
-            um.AddClaimAsync(user, testClaim);
+            um.AddClaimAsync(user, testClaim).Wait();
             
             db.Pages.AddRange(new List<PageModel>
             {
