@@ -15,7 +15,7 @@
         <router-link @click.native="isActive = false"
         class="navbar-item"
         to="/blog">Blog</router-link>
-
+      <hr class="navbar-divider">
         <router-link @click.native="isActive = false"
         class="navbar-item"
         to="/events">Events</router-link>

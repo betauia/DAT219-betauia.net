@@ -22,6 +22,10 @@ export default new Router({
       component: () => import(/* webpackChunkName: "disclaimer" */ './views/Blog.vue'),
     },
     {
+      path: '/blog/add',
+      component: () => import(/* webpackChunkName: "disclaimer" */ './components/Blog/AddBlogPost.vue'),
+    },
+    {
       path: '/events',
       component: () => import(/* webpackChunkName: "events" */ './views/Events.vue'),
     },
