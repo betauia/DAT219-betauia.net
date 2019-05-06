@@ -16,7 +16,9 @@ using IdentityServer4;
 using betauia.Data;
 using betauia.Models;
 using IdentityServer4.AccessTokenValidation;
+using IdentityServer4.Services;
 using IdentityServer4.Stores;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -49,21 +51,36 @@ namespace betauia
                 .AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            
+            services.AddSingleton<IClientStore, CustomClientStore>();
 
+            services.AddIdentityServer()
+                .AddSigningCredential(new X509Certificate2("cert.pfx", "Erikdakool"))
+                .AddInMemoryPersistedGrants()
+                .AddInMemoryApiResources(Config.GetApiResources())
+                .AddInMemoryClients(Config.GetClients())
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
+                .AddAspNetIdentity<ApplicationUser>();
+            
+            services.AddTransient<IProfileService, IdentityClaimsProfileService>();
+           
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options =>
                 {
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
 
-            services.AddSingleton<IClientStore, CustomClientStore>();
-
-            services.AddIdentityServer()
-                .AddSigningCredential(new X509Certificate2("cert.pfx", "Erikdakool"))
-                .AddInMemoryApiResources(Config.GetApiResources())
-                .AddInMemoryClients(Config.GetClients())
-                .AddInMemoryIdentityResources(Config.GetIdentityResources())
-                .AddAspNetIdentity<ApplicationUser>();
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "https://localhost:5001/";
+                    options.Audience = "api1";
+                    options.RequireHttpsMetadata = false;
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -85,13 +102,15 @@ namespace betauia
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
-            app.UseAuthentication();
-
-            app.UseIdentityServer();
             
+            app.UseIdentityServer();
+            app.UseAuthentication();
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

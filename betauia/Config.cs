@@ -14,8 +14,7 @@ namespace betauia
         {
             return new List<ApiResource>
             {
-                new ApiResource("myAPI", "my api"),
-                new ApiResource("tswTools","Tools api")
+                new ApiResource("api1", "my api"),
             };
         }
 
@@ -37,7 +36,7 @@ namespace betauia
                     RequireClientSecret = false,
                     AllowedScopes =
                     {
-                        "myAPI","tswTools"
+                        "api1"
                     }
                 }
             };

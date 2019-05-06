@@ -13,7 +13,7 @@ namespace betauia.Data
             db.Database.EnsureDeleted();
             db.Database.EnsureCreated();
 
-            var user = new ApplicationUser { Email = "user@gmail.com", UserName = "user@gmail.com", FullName = "User name", NickName = "Nickname" , claimTest = "test"};
+            var user = new ApplicationUser { Email = "user@gmail.com", UserName = "user@gmail.com", FirstName = "User",LastName = "test", NickName = "Nickname" , claimTest = "test"};
             um.CreateAsync(user, "Password1.").Wait();
             
             var newRole = new IdentityRole("Admin");
