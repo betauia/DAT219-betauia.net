@@ -18,7 +18,6 @@ namespace betauia.Controllers
             _context = context;
         }
 
-        [Authorize]
         [HttpGet]
         public IActionResult GetAll()
         {
