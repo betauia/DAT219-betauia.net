@@ -36,6 +36,10 @@ namespace betauia
                     RequireClientSecret = false,
                     AllowedScopes =
                     {
+                        IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServer4.IdentityServerConstants.StandardScopes.Email,
+                        IdentityServer4.IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServer4.IdentityServerConstants.StandardScopes.Address,
                         "api1"
                     }
                 }

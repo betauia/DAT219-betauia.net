@@ -21,6 +21,9 @@ using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
 namespace betauia
@@ -47,15 +50,16 @@ namespace betauia
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
                     Configuration.GetConnectionString("DefaultConnection")));
+            
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
+                .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             
-            services.AddSingleton<IClientStore, CustomClientStore>();
-
             services.AddIdentityServer()
-                .AddSigningCredential(new X509Certificate2("cert.pfx", "Erikdakool"))
+                //.AddDeveloperSigningCredential()
+                .AddSigningCredential(new X509Certificate2("example.pfx", "9zP6fLaPNDWefsYkB4AFNFWBtKusZF6QYXDGsqTm78DgBtktJqta5kVnNJ7T8McC"))
                 .AddInMemoryPersistedGrants()
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
@@ -70,6 +74,8 @@ namespace betauia
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
 
+            services.AddLocalApiAuthentication();
+            
             services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -77,9 +83,11 @@ namespace betauia
                 })
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = "https://localhost:5001";
+                    options.Authority = "https://localhost:5001/";
                     options.Audience = "api1";
                     options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.Configuration = new OpenIdConnectConfiguration();
                 });
         }
 
@@ -102,7 +110,8 @@ namespace betauia
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-            
+
+            IdentityModelEventSource.ShowPII = true;
             app.UseIdentityServer();
             app.UseAuthentication();
             app.UseMvc(routes =>
