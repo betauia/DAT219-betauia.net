@@ -2,15 +2,16 @@
 using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
-using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 /* Author: Chris */
 // All requests are tested and working //
 namespace betauia.Controllers
 {
-    [Route("api/user")]
     [ApiController]
+    [Route("api/user")]
     public class UserApiController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -23,6 +24,7 @@ namespace betauia.Controllers
 
         // GET: Get all users
         [HttpGet]
+        [Authorize]
         public IActionResult GetAll()
         {
             // Return with 200 OK status code
