@@ -12,12 +12,12 @@ namespace betauia.Areas.v1
     [Area("v1")]
     //[Route("api/v1/user")]
     [ApiController]
-    public class AccountController : Controller
+    public class AccountApiController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public AccountApiController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -25,7 +25,7 @@ namespace betauia.Areas.v1
 
         [HttpPost]
         [Route("api/v1/account/register")]
-        public IActionResult Post(RegisterModel registerModel)
+        public IActionResult Register(RegisterModel registerModel)
         {
             if (!ModelState.IsValid)
             {

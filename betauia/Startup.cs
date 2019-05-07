@@ -77,7 +77,7 @@ namespace betauia
                 })
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = "https://localhost:5001/";
+                    options.Authority = "https://localhost:5001";
                     options.Audience = "api1";
                     options.RequireHttpsMetadata = false;
                 });
