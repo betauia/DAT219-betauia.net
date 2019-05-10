@@ -4,46 +4,54 @@ import Router from 'vue-router';
 Vue.use(Router);
 
 export default new Router({
-  routes: [
-    {
+  routes: [{
       path: '/',
-      component: () => import(/* webpackChunkName: "start" */ './views/Intro.vue'),
+      component: () => import( /* webpackChunkName: "start" */ './views/Intro.vue'),
     },
     {
       path: '/privacy',
-      component: () => import(/* webpackChunkName: "privacy" */ './components/PrivacyPolicy.vue'),
+      component: () => import( /* webpackChunkName: "privacy" */
+        './components/PrivacyPolicy.vue'),
     },
     {
       path: '/disclaimer',
-      component: () => import(/* webpackChunkName: "disclaimer" */ './components/Disclaimer.vue'),
+      component: () => import( /* webpackChunkName: "disclaimer" */
+        './components/Disclaimer.vue'),
     },
     {
       path: '/blog',
-      component: () => import(/* webpackChunkName: "disclaimer" */ './views/Blog.vue'),
+      component: () => import( /* webpackChunkName: "disclaimer" */ './views/Blog.vue'),
     },
     {
       path: '/blog/add',
-      component: () => import(/* webpackChunkName: "disclaimer" */ './components/Blog/AddBlogPost.vue'),
+      component: () => import( /* webpackChunkName: "disclaimer" */
+        './components/Blog/AddBlogPost.vue'),
     },
     {
       path: '/events',
-      component: () => import(/* webpackChunkName: "events" */ './views/Events.vue'),
+      component: () => import( /* webpackChunkName: "events" */ './views/Events.vue'),
     },
     {
       path: '/account/login',
-      component: () => import(/* webpackChunkName: "login" */ './components/Account/Login.vue'),
+      component: () => import( /* webpackChunkName: "login" */
+        './components/Account/Login.vue'),
     },
     {
       path: '/account/register',
-      component: () => import(/* webpackChunkName: "register" */ './components/Account/Register.vue'),
+      component: () => import( /* webpackChunkName: "register" */
+        './components/Account/Register.vue'),
     },
     {
       path: '/test',
-      component: () => import(/* webpackChunkName: "test" */ './views/Test.vue'),
+      component: () => import( /* webpackChunkName: "test" */ './views/Test.vue'),
+    },
+    {
+      path: '/admin/seatmapeditor',
+      component: () => import('./views/SeatMapEditor.vue'),
     },
     {
       path: '*',
-      component: () => import(/* webpackChunkName: "about" */ './components/NotFound.vue'),
+      component: () => import( /* webpackChunkName: "about" */ './components/NotFound.vue'),
     },
   ],
   mode: 'history',
