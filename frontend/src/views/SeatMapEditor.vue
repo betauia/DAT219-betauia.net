@@ -15,7 +15,8 @@
       <b-field label="Seat Id">
         <input :value="SeatId" name placeholder="Seat id">
       </b-field>
-      <button v-on:click="createSeat()" id="createSeat">Create new seat {{count}}</button>
+      <button v-on:click="createSeat()" id="createSeat">Create seat {{count+1}}</button>
+      <button v-on:click="saveSeatMap()" id="saveSeatmap">Save seatmap</button>
     </div>
     <div id="grid">
       <div v-for="seat in seats" v-bind:key="seat">
@@ -29,16 +30,6 @@
 import axios from "axios";
 import Seat from "@/components/SeatMap/Seat.vue";
 import Vue from "vue";
-
-const seats = [
-  {
-    id: 1,
-    width: "5%",
-    height: "5%",
-    x: "0%",
-    y: "0%"
-  }
-];
 
 export default {
   components: {
@@ -64,7 +55,6 @@ export default {
       document.getElementById("grid").style.height = this.height + "px";
     },
     createSeat: function(event) {
-      this.name = "hello world";
       var newseat = {
         id: this.count + 1,
         width: "5%",
@@ -76,16 +66,15 @@ export default {
       this.$forceUpdate();
       this.count++;
     },
-    resize(newRect) {
-      this.width = newRect.width;
-      this.height = newRect.height;
-      this.top = newRect.top;
-      this.left = newRect.left;
+    saveSeatMap: function(event) {
+      var out = JSON.stringify(this.seats, null, 2);
+      for (var i in this.seats) {
+      }
+      alert(out);
     }
   }
 };
 </script>
-
 
 <style>
 div {
