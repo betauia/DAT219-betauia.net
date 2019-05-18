@@ -47,7 +47,7 @@ namespace betauia.Data
             
             for (var i = 1; i <= numSeats; i++)
             {
-                var seat = new SeatModel(i) {Owner = seatMap};
+                var seat = new SeatModel() {Owner = seatMap};
                 db.Add(seat);
             }
             
