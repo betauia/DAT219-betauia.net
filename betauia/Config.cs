@@ -12,9 +12,11 @@ namespace betauia
     {
         public static IEnumerable<ApiResource> GetApiResources()
         {
+            var api = new ApiResource("api1", "my api");
+            api.ApiSecrets.Add(new Secret("secret".Sha256()));
             return new List<ApiResource>
             {
-                new ApiResource("api1", "my api"),
+                api,
             };
         }
 

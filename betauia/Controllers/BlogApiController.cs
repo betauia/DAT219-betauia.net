@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 namespace betauia.Controllers
 {
     [Route("api/blog")]
-    [ApiController]
     public class BlogApiController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -36,8 +35,9 @@ namespace betauia.Controllers
             return Ok(blogPostModel);
         }
         
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult Post(BlogPost blogPost)
+        public IActionResult Post([FromBody]BlogPost blogPost)
         {
             if (blogPost.Id != 0) 
                 return BadRequest();
