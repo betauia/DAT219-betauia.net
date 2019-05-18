@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -57,37 +58,51 @@ namespace betauia
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             
-            services.AddIdentityServer()
+/*            services.AddIdentityServer()
                 //.AddDeveloperSigningCredential()
                 .AddSigningCredential(new X509Certificate2("example.pfx", "9zP6fLaPNDWefsYkB4AFNFWBtKusZF6QYXDGsqTm78DgBtktJqta5kVnNJ7T8McC"))
                 .AddInMemoryPersistedGrants()
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients())
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
-                .AddAspNetIdentity<ApplicationUser>();
+                .AddAspNetIdentity<ApplicationUser>();*/
             
-            services.AddTransient<IProfileService, IdentityClaimsProfileService>();
-           
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddJsonOptions(options =>
-                {
-                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                });
-
-            services.AddLocalApiAuthentication();
+            //services.AddTransient<IProfileService, IdentityClaimsProfileService>();
+            
+            //services.AddLocalApiAuthentication();
             
             services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
-                .AddJwtBearer(options =>
+                .AddJwtBearer("Bearer",options =>
                 {
-                    options.Authority = "https://localhost:5001/";
-                    options.Audience = "api1";
-                    options.RequireHttpsMetadata = false;
-                    options.SaveToken = true;
-                    options.Configuration = new OpenIdConnectConfiguration();
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg")),
+                        
+                        ValidateIssuer = true,
+                        ValidIssuer = "betauia",
+                        
+                        ValidateAudience = true,
+                        ValidAudience = "https://localhost:5001",
+                        
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.FromMinutes(5),
+                    };
+                    //options.Authority = "https://localhost:5001/";
+                    //options.Audience = "api1";
+                    //options.RequireHttpsMetadata = false;
+                    //options.SaveToken = true;
+                    //options.Configuration = new OpenIdConnectConfiguration();
+                });
+            
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
         }
 
@@ -112,7 +127,7 @@ namespace betauia
             app.UseCookiePolicy();
 
             IdentityModelEventSource.ShowPII = true;
-            app.UseIdentityServer();
+            //app.UseIdentityServer();
             app.UseAuthentication();
             app.UseMvc(routes =>
             {
