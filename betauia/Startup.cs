@@ -83,7 +83,7 @@ namespace betauia
                     //options.SaveToken = true;
                     //options.Configuration = new OpenIdConnectConfiguration();
                 });
-
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options =>
                 {
@@ -94,7 +94,6 @@ namespace betauia
             {
                 Config.Addpolicies(options);
             });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -118,7 +117,6 @@ namespace betauia
             app.UseCookiePolicy();
 
             IdentityModelEventSource.ShowPII = true;
-
             app.UseAuthentication();
             app.UseMvc(routes =>
             {
