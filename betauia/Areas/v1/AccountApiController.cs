@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using betauia.Data;
 using betauia.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 namespace betauia.Areas.v1
 {
@@ -80,6 +81,21 @@ namespace betauia.Areas.v1
             {
                 var token = _tf.GetToken(user);
                 return Ok(token);
+            }
+            return BadRequest();
+        }
+
+        [Route("/api/account/get")]
+        //[Authorize(Policy = "User")]
+        [HttpGet]
+        public IActionResult GetAccountInfo([FromBody] TokenModel tokenModel)
+        {
+            var username = _tf.AuthenticateUser(tokenModel.Token);
+            var user = _um.FindByNameAsync(username).Result;
+            if (user != null)
+            {
+                var profile = new ProfileViewModel(user);
+                return Ok(profile);
             }
             return BadRequest();
         }
