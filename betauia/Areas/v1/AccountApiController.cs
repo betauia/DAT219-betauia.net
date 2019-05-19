@@ -59,6 +59,21 @@ namespace betauia.Areas.v1
                 } 
                 _um.AddToRoleAsync(user, role).Wait();
                 /*
+                UserName = registerModel.UserName, FirstName = registerModel.FirstName,
+                LastName = registerModel.LastName, Email = registerModel.Email
+            };
+
+            var result = _userManager.CreateAsync(user, registerModel.Password).Result;
+            
+            string role = "User";
+            
+            if (result.Succeeded)
+            {
+                if (_roleManager.FindByNameAsync(role) == null)
+                {
+                    _roleManager.CreateAsync(new IdentityRole(role));
+                } 
+                _userManager.AddToRoleAsync(user, role).Wait();
                 _userManager.AddClaimAsync(user, new Claim("username", user.UserName));
                 _userManager.AddClaimAsync(user, new Claim("firstName", user.FirstName));
                 _userManager.AddClaimAsync(user, new Claim("lastName", user.LastName));
@@ -69,6 +84,7 @@ namespace betauia.Areas.v1
             }
             return BadRequest(result.Errors);
         }
+
         
         [Route("/api/account/login")]
         [HttpPost]

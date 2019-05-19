@@ -56,19 +56,6 @@ namespace betauia
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             
-/*            services.AddIdentityServer()
-                //.AddDeveloperSigningCredential()
-                .AddSigningCredential(new X509Certificate2("example.pfx", "9zP6fLaPNDWefsYkB4AFNFWBtKusZF6QYXDGsqTm78DgBtktJqta5kVnNJ7T8McC"))
-                .AddInMemoryPersistedGrants()
-                .AddInMemoryApiResources(Config.GetApiResources())
-                .AddInMemoryClients(Config.GetClients())
-                .AddInMemoryIdentityResources(Config.GetIdentityResources())
-                .AddAspNetIdentity<ApplicationUser>();*/
-            
-            //services.AddTransient<IProfileService, IdentityClaimsProfileService>();
-            
-            //services.AddLocalApiAuthentication();
-            
             services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -96,7 +83,7 @@ namespace betauia
                     //options.SaveToken = true;
                     //options.Configuration = new OpenIdConnectConfiguration();
                 });
-            
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options =>
                 {
@@ -107,6 +94,7 @@ namespace betauia
             {
                 Config.Addpolicies(options);
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -130,7 +118,7 @@ namespace betauia
             app.UseCookiePolicy();
 
             IdentityModelEventSource.ShowPII = true;
-            //app.UseIdentityServer();
+
             app.UseAuthentication();
             app.UseMvc(routes =>
             {
