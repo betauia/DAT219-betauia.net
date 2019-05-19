@@ -21,6 +21,7 @@ namespace betauia.Controllers
 
         //[Authorize(Roles = "Admin")]
         //[Authorize(Policy = "Blog.write")]
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -28,6 +29,7 @@ namespace betauia.Controllers
             return Ok(_context.Posts.ToList());
         }
         
+        [AllowAnonymous]
         [HttpGet("id")]
         public IActionResult GetBlogPost(int id)
         {
