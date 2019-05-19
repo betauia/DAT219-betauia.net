@@ -19,7 +19,7 @@ namespace betauia.Controllers
             _db = db;
             _um = um;
             _rm = rm;
-            _tf = new TokenFactory();
+            _tf = new TokenFactory(um,rm);
         }
         
         [Route("/token")]
@@ -29,7 +29,7 @@ namespace betauia.Controllers
             var user = _um.FindByNameAsync(loginmodel.Username).Result;
             if (_um.CheckPasswordAsync(user, loginmodel.Password).Result)
             {
-                   var token = _tf.GetToken(loginmodel.Username);
+                   var token = _tf.GetToken(user);
                    return Ok(token);
             }
             return BadRequest();

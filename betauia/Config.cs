@@ -1,65 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using IdentityServer4.Models;
-using IdentityServer4.Stores;
-using IdentityServer4.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace betauia
 {
-    public class Config : IClientStore
+    public class Config
     {
-        public static IEnumerable<ApiResource> GetApiResources()
+        public static void Addpolicies(AuthorizationOptions options)
         {
-            var api = new ApiResource("api1", "my api");
-            api.ApiSecrets.Add(new Secret("secret".Sha256()));
-            return new List<ApiResource>
-            {
-                api,
-            };
-        }
-
-        public static IEnumerable<Client> GetClients()
-        {
-            return new List<Client>
-            {
-                new Client()
-                {
-                    ClientId = "myClient",
-                    ClientName = "My Custom Client",
-                    ClientSecrets =
-                    {
-                        new Secret("secret".Sha256())
-                    },
-                    AccessTokenLifetime = 60 * 60 * 24,
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-                    AllowAccessTokensViaBrowser = true,
-                    RequireClientSecret = false,
-                    AllowedScopes =
-                    {
-                        IdentityServer4.IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServer4.IdentityServerConstants.StandardScopes.Email,
-                        IdentityServer4.IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServer4.IdentityServerConstants.StandardScopes.Address,
-                        "api1"
-                    }
-                }
-            };
-        }
-        
-        public Task<Client> FindClientByIdAsync(string clientId)
-        {
-            return Task.FromResult(GetClients().FirstOrDefault(c => c.ClientId == clientId));
-        }
-        
-        public static List<IdentityResource> GetIdentityResources()
-        {
-            return new List<IdentityResource>
-            {
-                new IdentityResources.OpenId(),
-                new IdentityResources.Profile()
-            };
+            //options.AddPolicy("SuperAdminRole",policy=>policy.RequireClaim(ClaimTypes.Role,"SuperAdmin"));
+            //options.AddPolicy("AdminRole", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
+            //options.AddPolicy("ModRole",policy=>policy.RequireClaim(ClaimTypes.Role,"Mod"));
+            //options.AddPolicy("UserRole",policy=>policy.RequireClaim(ClaimTypes.Role,"User"));
+            options.AddPolicy("SuperAdmin",policy=>policy.RequireClaim("Role","SuperAdmin"));
+            options.AddPolicy("Admin", policy=>policy.RequireClaim("Role","SuperAdmin","Admin"));
+            options.AddPolicy("Mod",policy=>policy.RequireClaim("Role","SuperAdmin","Admin","Mod"));
+            options.AddPolicy("User",policy=>policy.RequireClaim("Role","SuperAdmin","Admin","Mod","User"));
+            
+            options.AddPolicy("Blog.write", policy => policy.RequireClaim("Blog","write"));
+            
+            options.AddPolicy("Account.write",policy=>policy.RequireClaim("Account","write"));
+            options.AddPolicy("Account.read",policy=>policy.RequireClaim("Account","read"));
+            options.AddPolicy("Account.readself",policy=>policy.RequireClaim("User"));
         }
     }
 }

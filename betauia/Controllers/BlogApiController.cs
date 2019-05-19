@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Security.Claims;
 using betauia.Data;
 using betauia.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace betauia.Controllers
 {
+    [Authorize()]
     [Route("api/blog")]
     public class BlogApiController : ControllerBase
     {
@@ -17,6 +19,8 @@ namespace betauia.Controllers
             _context = context;
         }
 
+        //[Authorize(Roles = "Admin")]
+        //[Authorize(Policy = "Blog.write")]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -35,7 +39,8 @@ namespace betauia.Controllers
             return Ok(blogPostModel);
         }
         
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
+        [Authorize(Policy = "Blog.write")]
         [HttpPost]
         public IActionResult Post([FromBody]BlogPost blogPost)
         {
@@ -47,6 +52,7 @@ namespace betauia.Controllers
             return CreatedAtAction(nameof(GetBlogPost), new {id = blogPost.Id}, blogPost);
         }
 
+        [Authorize(Policy = "Blog.write")]
         [HttpPut("{id}")]
         public IActionResult Put(BlogPost blogPost)
         {
@@ -63,7 +69,8 @@ namespace betauia.Controllers
             _context.SaveChanges();
             return Ok(blogPost);
         }
-
+        
+        [Authorize(Policy = "Blog.write")]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
