@@ -1,43 +1,45 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using betauia.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace betauia.Tokens
 {
     public class TokenFactory
     {
-        public string GetToken(string user)
+        private readonly UserManager<ApplicationUser> _um;
+        private readonly RoleManager<IdentityRole> _rm;
+
+        public TokenFactory(UserManager<ApplicationUser> um, RoleManager<IdentityRole> rm)
         {
-            var claims = new Claim[]
+            _um = um;
+            _rm = rm;
+        }
+        public string GetToken(ApplicationUser user)
+        {
+            var claims = _um.GetClaimsAsync(user).Result;
+            claims.Add(new Claim(JwtRegisteredClaimNames.NameId, user.UserName));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
+            var roles = _um.GetRolesAsync(user).Result;
+            foreach (var role in roles)
             {
-                //new Claim(ClaimTypes.Name, user),
-                new Claim(JwtRegisteredClaimNames.NameId, user), 
-                new Claim(JwtRegisteredClaimNames.Email, "test@email.com"),
-                new Claim(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(DateTime.Now).ToUnixTimeSeconds().ToString()),
-                new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(DateTime.Now.AddDays(1)).ToUnixTimeSeconds().ToString()),
-            };
-            
-            var token = new JwtSecurityToken(
-                new JwtHeader(new SigningCredentials(
-                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg")),
-                    SecurityAlgorithms.HmacSha256)),
-                new JwtPayload(claims));
-
-
-            var claims2 = new Claim[]
-            {
-                new Claim(ClaimTypes.Role,"Admin"), 
-                new Claim(JwtRegisteredClaimNames.NameId, user),
-                new Claim(JwtRegisteredClaimNames.Email, "test@email.com")
-            };
+                claims.Add(new Claim(ClaimTypes.Role,role));
+                var roletype = _rm.FindByNameAsync(role).Result;
+                var claimsFromRole = _rm.GetClaimsAsync(roletype).Result;
+                foreach (var claim in claimsFromRole)
+                {
+                    claims.Add(claim);
+                }
+            }
             
             var token2 = new JwtSecurityToken(
                 issuer: "betauia",
                 audience: "https://localhost:5001",
-                claims: claims2,
+                claims: claims,
                 notBefore: DateTime.Now,
                 expires: DateTime.Now.AddDays(28),
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg")), SecurityAlgorithms.HmacSha256)

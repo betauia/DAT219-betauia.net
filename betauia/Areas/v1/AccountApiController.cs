@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
 using System.Security.Claims;
+using betauia.Data;
+using betauia.Tokens;
 
 namespace betauia.Areas.v1
 {
@@ -14,18 +16,22 @@ namespace betauia.Areas.v1
     [ApiController]
     public class AccountApiController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-
-        public AccountApiController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        private readonly ApplicationDbContext _db;
+        private readonly UserManager<ApplicationUser> _um;
+        private readonly RoleManager<IdentityRole> _rm;
+        private readonly TokenFactory _tf;
+        
+        public AccountApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
+            _um = userManager;
+            _rm = roleManager;
+            _db = db;
+            _tf = new TokenFactory(_um,_rm);
         }
 
         [HttpPost]
-        [Route("api/v1/account/register")]
-        public IActionResult Register(RegisterModel registerModel)
+        [Route("api/account/register")]
+        public IActionResult Register([FromBody]RegisterModel registerModel)
         {
             if (!ModelState.IsValid)
             {
@@ -34,29 +40,47 @@ namespace betauia.Areas.v1
 
             var user = new ApplicationUser
             {
-                UserName = registerModel.UserName, FirstName = registerModel.FirstName,
-                LastName = registerModel.LastName, Email = registerModel.Email
+                UserName = registerModel.UserName, 
+                FirstName = registerModel.FirstName,
+                LastName = registerModel.LastName, 
+                Email = registerModel.Email
             };
 
-            var result = _userManager.CreateAsync(user, registerModel.Password).Result;
+            var result = _um.CreateAsync(user, registerModel.Password).Result;
             
             string role = "User";
+            _um.AddClaimAsync(user, new Claim("Role", "User"));
             
             if (result.Succeeded)
             {
-                if (_roleManager.FindByNameAsync(role) == null)
+                if (_rm.FindByNameAsync(role) == null)
                 {
-                    _roleManager.CreateAsync(new IdentityRole(role));
+                    _rm.CreateAsync(new IdentityRole(role)).Wait();
                 } 
-                _userManager.AddToRoleAsync(user, role).Wait();
+                _um.AddToRoleAsync(user, role).Wait();
+                /*
                 _userManager.AddClaimAsync(user, new Claim("username", user.UserName));
                 _userManager.AddClaimAsync(user, new Claim("firstName", user.FirstName));
                 _userManager.AddClaimAsync(user, new Claim("lastName", user.LastName));
                 _userManager.AddClaimAsync(user, new Claim("email", user.Email));
                 _userManager.AddClaimAsync(user, new Claim("role", role));
+                */
                 return Ok(new ProfileViewModel(user));
             }
             return BadRequest(result.Errors);
+        }
+        
+        [Route("/api/account/login")]
+        [HttpPost]
+        public IActionResult Create([FromBody]Loginmodel loginmodel)
+        {
+            var user = _um.FindByNameAsync(loginmodel.Username).Result;
+            if (_um.CheckPasswordAsync(user, loginmodel.Password).Result)
+            {
+                var token = _tf.GetToken(user);
+                return Ok(token);
+            }
+            return BadRequest();
         }
     }
 }
