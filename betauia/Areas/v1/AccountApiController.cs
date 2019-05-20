@@ -77,6 +77,14 @@ namespace betauia.Areas.v1
         public IActionResult Create([FromBody]Loginmodel loginmodel)
         {
             var user = _um.FindByNameAsync(loginmodel.Username).Result;
+            if (user == null)
+            {
+                user = _um.FindByEmailAsync(loginmodel.Username).Result;
+                if (user == null)
+                {
+                    return BadRequest("50");
+                }
+            }
             if (_um.CheckPasswordAsync(user, loginmodel.Password).Result)
             {
                 var token = _tf.GetToken(user);
@@ -86,7 +94,7 @@ namespace betauia.Areas.v1
         }
 
         [Route("/api/account/get")]
-        //[Authorize(Policy = "User")]
+        [Authorize(Policy = "User")]
         [HttpPost]
         public IActionResult GetAccountInfo([FromBody] TokenModel tokenModel)
         {

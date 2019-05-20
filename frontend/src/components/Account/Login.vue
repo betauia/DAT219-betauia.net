@@ -57,7 +57,7 @@ export default {
           password: password
         })
         .then(function(response) {
-          //console.log(response["data"]);
+          console.log(response["data"]);
           //console.log(JSON.stringify(response));
           localStorage.setItem("token", response["data"]);
         })

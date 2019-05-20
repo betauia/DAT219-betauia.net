@@ -67,8 +67,8 @@ namespace betauia.Tokens
 
             validationParameters.IssuerSigningKey = key;
             validationParameters.ValidateIssuerSigningKey = true;
-
-            if (validator.CanReadToken(token))
+            
+            if (validator.CanReadToken(token)) 
             {
                 ClaimsPrincipal principal;
                 try
