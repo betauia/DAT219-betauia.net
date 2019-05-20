@@ -24,8 +24,8 @@ namespace betauia.Tokens
         {
             var claims = _um.GetClaimsAsync(user).Result;
             //claims.Add(new Claim(JwtRegisteredClaimNames.NameId, user.UserName));
-            claims.Add(new Claim("name",user.UserName));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
+            claims.Add(new Claim("id",user.Id));
+            //claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
             var roles = _um.GetRolesAsync(user).Result;
             foreach (var role in roles)
             {
@@ -74,9 +74,9 @@ namespace betauia.Tokens
                 try
                 {
                     principal = validator.ValidateToken(token, validationParameters, out validateToken);
-                    if (principal.HasClaim(c => c.Type == "name"))
+                    if (principal.HasClaim(c => c.Type == "id"))
                     {
-                        return principal.Claims.Where(c => c.Type == "name").First().Value;
+                        return principal.Claims.Where(c => c.Type == "id").First().Value;
                     }
                 }
                 catch (Exception e)

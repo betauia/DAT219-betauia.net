@@ -10,5 +10,7 @@ namespace betauia.Models
         public string NickName { get; set; }
         
         public  virtual string claimTest { get; set; }
+
+        public bool ForceLogOut { get; set; }
     }
 }

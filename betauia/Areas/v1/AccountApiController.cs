@@ -98,8 +98,8 @@ namespace betauia.Areas.v1
         [HttpPost]
         public IActionResult GetAccountInfo([FromBody] TokenModel tokenModel)
         {
-            var username = _tf.AuthenticateUser(tokenModel.Token);
-            var user = _um.FindByNameAsync(username).Result;
+            var id = _tf.AuthenticateUser(tokenModel.Token);
+            var user = _um.FindByIdAsync(id).Result;
             if (user != null)
             {
                 var profile = new ProfileViewModel(user);
