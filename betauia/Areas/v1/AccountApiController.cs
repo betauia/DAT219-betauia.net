@@ -87,7 +87,7 @@ namespace betauia.Areas.v1
 
         [Route("/api/account/get")]
         //[Authorize(Policy = "User")]
-        [HttpGet]
+        [HttpPost]
         public IActionResult GetAccountInfo([FromBody] TokenModel tokenModel)
         {
             var username = _tf.AuthenticateUser(tokenModel.Token);
