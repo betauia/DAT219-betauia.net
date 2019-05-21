@@ -1,30 +1,40 @@
-    using System.Linq;
+using System.Linq;
 using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using betauia.Tokens;
 
 /* Author: Chris */
 // All requests are tested and working //
 namespace betauia.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/user")]
     public class UserApiController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-
-        public UserApiController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _um;
+        private readonly RoleManager<IdentityRole> _rm;
+        private readonly TokenFactory _tf;
+        
+        public UserApiController(ApplicationDbContext context,UserManager<ApplicationUser> um, RoleManager<IdentityRole> rm)
         {
             // Set the databasecontext
             _context = context;
+            _um = um;
+            _rm = rm;
+            _tf = new TokenFactory(um,rm);
         }
 
         // GET: Get all users
+        [Authorize("Account.read")]
         [HttpGet]
-        [Authorize]
         public IActionResult GetAll()
         {
             // Return with 200 OK status code
@@ -32,6 +42,7 @@ namespace betauia.Controllers
         }
 
         // GET: Get user by id
+        [Authorize("Account.read")]
         [HttpGet("{id}")]
         public async Task<ActionResult<ApplicationUser>> GetApplicationUser(string id)
         {
@@ -47,6 +58,7 @@ namespace betauia.Controllers
         }
         
         // PUT: Update user by id
+        [Authorize("Account.write")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutApplicationUser(string id, ApplicationUser applicationUser)
         {
@@ -73,32 +85,88 @@ namespace betauia.Controllers
         }
         
         // POST: Add new user
+        [Authorize("Account.write")]
         [HttpPost]
-        public IActionResult Post(ApplicationUser applicationUser)
+        public IActionResult Post([FromBody]RegisterModel registerModel)
         {
-            // Return if id is set to avoid overwriting an existing user
-            if (applicationUser.Id != null) return BadRequest();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
 
-            // Add and save
-            _context.Add(applicationUser);
-            _context.SaveChanges();
+            //Check if username is taken
+            var tUser = _um.FindByNameAsync(registerModel.UserName).Result;
+            if (tUser != null)
+            {
+                return BadRequest("202");
+            }
+            
+            //Check if email is taken
+            tUser = null;
+            tUser = _um.FindByEmailAsync(registerModel.Email).Result;
+            if (tUser != null)
+            {
+                return BadRequest("201");
+            }
 
-            return CreatedAtAction(nameof(GetApplicationUser), new {id = applicationUser.Id}, applicationUser);
+            //create user
+            var user = new ApplicationUser
+            {
+                Email = registerModel.Email, 
+                UserName = registerModel.UserName,
+                FirstName = registerModel.FirstName, 
+                LastName = registerModel.LastName
+            };
+
+            var result = _um.CreateAsync(user, registerModel.Password).Result;
+            
+            const string role = "User";
+            _um.AddClaimAsync(user, new Claim("Role", "User"));
+            
+            if (result.Succeeded)
+            {
+                if (_rm.FindByNameAsync(role) == null)
+                {
+                    _rm.CreateAsync(new IdentityRole(role)).Wait();
+                } 
+                _um.AddToRoleAsync(user, role).Wait();
+                /*
+                _userManager.AddClaimAsync(user, new Claim("username", user.UserName));
+                _userManager.AddClaimAsync(user, new Claim("firstName", user.FirstName));
+                _userManager.AddClaimAsync(user, new Claim("lastName", user.LastName));
+                _userManager.AddClaimAsync(user, new Claim("email", user.Email));
+                _userManager.AddClaimAsync(user, new Claim("role", role));
+                */
+                return Ok(new ProfileViewModel(user));
+            }
+            return BadRequest(result.Errors);
         }
         
         // DELETE: Delete user by id
+        [Authorize("User")]
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ApplicationUser>> DeleteApplicationUser(string id)
+        public IActionResult DeleteApplicationUser([FromBody] TokenModel tokenModel)
         {
+            var id = _tf.AuthenticateUser(tokenModel.Token);
+
             // Receive and check if user is valid
-            var applicationUser = await _context.Users.FindAsync(id);
-            if (applicationUser == null) return NotFound();
+            var user = _context.Users.FindAsync(id).Result;
+            if (user == null) return NotFound();
 
-            // Remove and update
-            _context.Users.Remove(applicationUser);
-            await _context.SaveChangesAsync();
+            //deactivate account
+            user.Active = false;
+            user.ForceLogOut = true;
+            
+            //Delete information
+            user.FirstName = null;
+            user.LastName = null;
+            user.UserName = null;
+            
+            //deletes password
+            _um.RemovePasswordAsync(user).Wait();
+            _um.AddPasswordAsync(user, "Password1.").Wait();
 
-            return applicationUser;
+            return Ok();
         }
 
         // Function to check if a user by id exists

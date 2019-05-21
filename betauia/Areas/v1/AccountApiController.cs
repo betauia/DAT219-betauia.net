@@ -38,6 +38,21 @@ namespace betauia.Areas.v1
             {
                 return BadRequest();
             }
+            
+            //Check if username is taken
+            var tUser = _um.FindByNameAsync(registerModel.UserName).Result;
+            if (tUser != null)
+            {
+                return BadRequest("202");
+            }
+            
+            //Check if email is taken
+            tUser = null;
+            tUser = _um.FindByEmailAsync(registerModel.Email).Result;
+            if (tUser != null)
+            {
+                return BadRequest("201");
+            }
 
             var user = new ApplicationUser
             {
@@ -49,7 +64,7 @@ namespace betauia.Areas.v1
             
             var result = _um.CreateAsync(user, registerModel.Password).Result;
             
-            string role = "User";
+            const string role = "User";
             _um.AddClaimAsync(user, new Claim("Role", "User"));
             
             if (result.Succeeded)
@@ -81,9 +96,15 @@ namespace betauia.Areas.v1
                 user = _um.FindByEmailAsync(loginmodel.Username).Result;
                 if (user == null)
                 {
-                    return BadRequest("50");
+                    return BadRequest("101");
                 }
             }
+            
+            if (user.Active == false)
+            {
+                return BadRequest("102");
+            }
+            
             if (_um.CheckPasswordAsync(user, loginmodel.Password).Result)
             {
                 var token = _tf.GetToken(user);
@@ -99,12 +120,17 @@ namespace betauia.Areas.v1
         {
             var id = _tf.AuthenticateUser(tokenModel.Token);
             var user = _um.FindByIdAsync(id).Result;
-            if (user != null)
+            if (user == null)
             {
-                var profile = new ProfileViewModel(user);
-                return Ok(profile);
+                return BadRequest("301");
             }
-            return BadRequest();
+            if (user.Active == false)
+            {
+                return BadRequest("102");
+            }
+            
+            var profile = new ProfileViewModel(user);
+            return Ok(profile);        
         }
     }
 }

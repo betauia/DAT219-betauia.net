@@ -13,7 +13,7 @@ namespace betauia.Models
         public string LastName { get; set; }
         
         [Required]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "204")]
         public string Email { get; set; }
         
         [Required]
@@ -22,7 +22,7 @@ namespace betauia.Models
         
         [Required]
         [DataType(DataType.Password)]
-        [Compare("Password",ErrorMessage = "22")]
+        [Compare("Password",ErrorMessage = "203")]
         public string ConfirmPassword { get; set; }
     }
 }

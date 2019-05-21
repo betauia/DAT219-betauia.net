@@ -8,16 +8,17 @@ namespace betauia.Models
         {
             ForceLogOut = false;
             VerifiedEmail = false;
+            Active = true;
         }
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
         public string NickName { get; set; }
         
-        public  virtual string claimTest { get; set; }
-
         public bool ForceLogOut { get; set; }
         
         public bool VerifiedEmail { get; set; }
+        
+        public bool Active { get; set; }
     }
 }

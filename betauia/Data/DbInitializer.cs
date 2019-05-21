@@ -14,7 +14,7 @@ namespace betauia.Data
             db.Database.EnsureCreated();
             
             Config.AddRoles(um,rm);
-            var user = new ApplicationUser { Email = "user@gmail.com", UserName = "user@gmail.com", FirstName = "User",LastName = "test", NickName = "Nickname" , claimTest = "test"};
+            var user = new ApplicationUser { Email = "user@gmail.com", UserName = "user@gmail.com", FirstName = "User",LastName = "test", NickName = "Nickname"};
             um.CreateAsync(user, "Password1.").Wait();
             um.AddToRoleAsync(user, "Admin").Wait();
             
