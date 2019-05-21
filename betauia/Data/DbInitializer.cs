@@ -12,16 +12,11 @@ namespace betauia.Data
         {
             db.Database.EnsureDeleted();
             db.Database.EnsureCreated();
-
-            var user = new ApplicationUser { Email = "user@gmail.com", UserName = "user@gmail.com", FullName = "User name", NickName = "Nickname" , claimTest = "test"};
+            
+            Config.AddRoles(um,rm);
+            var user = new ApplicationUser { Email = "user@gmail.com", UserName = "user@gmail.com", FirstName = "User",LastName = "test", NickName = "Nickname"};
             um.CreateAsync(user, "Password1.").Wait();
-            
-            var newRole = new IdentityRole("Admin");
-            rm.CreateAsync(newRole).Wait();
-            
             um.AddToRoleAsync(user, "Admin").Wait();
-            var testClaim = new Claim("test", user.claimTest, ClaimValueTypes.String);
-            um.AddClaimAsync(user, testClaim).Wait();
             
             db.Pages.AddRange(new List<PageModel>
             {
@@ -51,7 +46,7 @@ namespace betauia.Data
             
             for (var i = 1; i <= numSeats; i++)
             {
-                var seat = new SeatModel(i) {Owner = seatMap};
+                var seat = new SeatModel() {Owner = seatMap};
                 db.Add(seat);
             }
             

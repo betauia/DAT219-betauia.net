@@ -2,16 +2,15 @@ namespace betauia.Models
 {
     public class SeatModel
     {
-        public SeatModel(int seatNum)
+        public SeatModel()
         {
-            SeatNum = seatNum;
+            IsAvailable = true;
         }
         
         public int Id { get; set; }
         public int OwnerId { get; set; }
         public SeatMapModel Owner { get; set; }
         
-        // Seat number
-        public int SeatNum { get; set; }
+        public bool IsAvailable { get; set; }
     }
 }

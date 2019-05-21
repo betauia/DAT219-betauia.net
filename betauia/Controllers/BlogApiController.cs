@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Security.Claims;
 using betauia.Data;
 using betauia.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -7,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace betauia.Controllers
 {
+    [Authorize()]
     [Route("api/blog")]
-    [ApiController]
     public class BlogApiController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -18,7 +19,9 @@ namespace betauia.Controllers
             _context = context;
         }
 
-        [Authorize]
+        //[Authorize(Roles = "Admin")]
+        //[Authorize(Policy = "Blog.write")]
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -26,7 +29,8 @@ namespace betauia.Controllers
             return Ok(_context.Posts.ToList());
         }
         
-        [HttpGet("id")]
+        [AllowAnonymous]
+        [HttpGet("{id}")]
         public IActionResult GetBlogPost(int id)
         {
             var blogPostModel = _context.Posts.Find(id);
@@ -37,8 +41,10 @@ namespace betauia.Controllers
             return Ok(blogPostModel);
         }
         
+        //[Authorize(Roles = "Admin")]
+        [Authorize(Policy = "Blog.write")]
         [HttpPost]
-        public IActionResult Post(BlogPost blogPost)
+        public IActionResult Post([FromBody]BlogPost blogPost)
         {
             if (blogPost.Id != 0) 
                 return BadRequest();
@@ -48,6 +54,7 @@ namespace betauia.Controllers
             return CreatedAtAction(nameof(GetBlogPost), new {id = blogPost.Id}, blogPost);
         }
 
+        [Authorize(Policy = "Blog.write")]
         [HttpPut("{id}")]
         public IActionResult Put(BlogPost blogPost)
         {
@@ -64,7 +71,8 @@ namespace betauia.Controllers
             _context.SaveChanges();
             return Ok(blogPost);
         }
-
+        
+        [Authorize(Policy = "Blog.write")]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
