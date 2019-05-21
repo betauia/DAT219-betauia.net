@@ -23,16 +23,22 @@ namespace betauia.Controllers
         }
 
         [HttpGet]
-        [Route("api/verifyemail/{id}")]
+        [Route("api/getemailverification/{id}")]
         public IActionResult SendEmailVerification(string id)
         {
             var user = _um.FindByIdAsync(id).Result;
             if (user == null)
             {
-                return BadRequest(101);
+                return BadRequest("101");
             }
-            
-            if(user.)
+
+            if (user.Active == false)
+            {
+                return BadRequest("102");
+            }
+
+            var token = _tf.GetEmailVerificationToken(user);
+            return Ok(token);
         }
 
         [HttpPost]
