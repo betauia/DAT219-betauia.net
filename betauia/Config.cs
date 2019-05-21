@@ -107,13 +107,18 @@ namespace betauia
             options.AddPolicy("Mod",policy=>policy.RequireClaim("Role","SuperAdmin","Admin","Mod"));
             options.AddPolicy("User",policy=>policy.RequireClaim("Role"));
             
-            options.AddPolicy("VerifiedEmail",policy=>policy.RequireClaim("VerifiedEmail","true"));
+
             
             options.AddPolicy("Blog.write", policy => policy.RequireClaim("Blog","write"));
             
             options.AddPolicy("Account.write",policy=>policy.RequireClaim("Account","write"));
             options.AddPolicy("Account.read",policy=>policy.RequireClaim("Account","read"));
             options.AddPolicy("Account.writeself",policy=>policy.RequireClaim("Role"));
+
+            
+            options.AddPolicy("EmailVerification", policy=>policy.RequireClaim("EmailVerification","true"));
+            options.AddPolicy("EmailVerified", policy=>policy.RequireClaim("EmailVerified","true"));
+
         }
     }
 }
