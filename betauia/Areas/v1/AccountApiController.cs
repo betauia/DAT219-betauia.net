@@ -66,11 +66,10 @@ namespace betauia.Areas.v1
                 _userManager.AddClaimAsync(user, new Claim("email", user.Email));
                 _userManager.AddClaimAsync(user, new Claim("role", role));
                 */
-                return Ok(new ProfileViewModel(user));
+                return Ok(_tf.GetToken(user));
             }
             return BadRequest(result.Errors);
         }
-
         
         [Route("/api/account/login")]
         [HttpPost]

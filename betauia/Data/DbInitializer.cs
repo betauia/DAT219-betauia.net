@@ -12,22 +12,11 @@ namespace betauia.Data
         {
             db.Database.EnsureDeleted();
             db.Database.EnsureCreated();
-
+            
+            Config.AddRoles(um,rm);
             var user = new ApplicationUser { Email = "user@gmail.com", UserName = "user@gmail.com", FirstName = "User",LastName = "test", NickName = "Nickname" , claimTest = "test"};
             um.CreateAsync(user, "Password1.").Wait();
-            
-            var newRole = new IdentityRole("Admin");
-            rm.CreateAsync(newRole).Wait();
-            
-            var claimRole = new Claim("Newseditor","true",ClaimValueTypes.String);
-            rm.AddClaimAsync(newRole, claimRole).Wait();
             um.AddToRoleAsync(user, "Admin").Wait();
-            
-            var testClaim = new Claim("test", user.claimTest, ClaimValueTypes.String);
-            um.AddClaimAsync(user, testClaim).Wait();
-
-            testClaim = new Claim("Role", "SuperAdmin", ClaimValueTypes.Boolean);
-            um.AddClaimAsync(user, testClaim).Wait();
             
             db.Pages.AddRange(new List<PageModel>
             {

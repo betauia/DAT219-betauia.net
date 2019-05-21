@@ -99,7 +99,6 @@ namespace betauia
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, RoleManager<IdentityRole> roleManager)
         {
-            InitializeRoles(roleManager).Wait();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -128,20 +127,6 @@ namespace betauia
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-        }
-        
-        private string[] roles = new[] { "User", "Manager", "Administrator" };
-        private async Task InitializeRoles(RoleManager<IdentityRole> roleManager)
-        {
-            foreach (var role in roles)
-            {
-                if (!await roleManager.RoleExistsAsync(role))
-                {
-                    var newRole = new IdentityRole(role);
-                    await roleManager.CreateAsync(newRole);
-                    // _roleManager.AddClaimAsync(newRole, new )
-                }
-            }
         }
     }
 }

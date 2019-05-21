@@ -30,7 +30,7 @@ namespace betauia.Controllers
         }
         
         [AllowAnonymous]
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public IActionResult GetBlogPost(int id)
         {
             var blogPostModel = _context.Posts.Find(id);

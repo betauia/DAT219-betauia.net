@@ -29,6 +29,8 @@ namespace betauia
                 var um = services.GetRequiredService<UserManager<ApplicationUser>>();
                 var rm = services.GetRequiredService<RoleManager<IdentityRole>>();
                 
+                //adds roles and claims
+                //Config.AddRoles(um,rm);
                 DbInitializer.Initialize(db, um,rm);
             }
 

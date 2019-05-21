@@ -13,8 +13,89 @@ namespace betauia
     {
         public static void AddRoles(UserManager<ApplicationUser> um, RoleManager<IdentityRole> rm)
         {
-            var newRole = new IdentityRole("User");
-            rm.CreateAsync(newRole).Wait();
+            //////////////////////////
+            //user role and claims////
+            //////////////////////////
+            var user = new IdentityRole("User");
+            rm.CreateAsync(user).Wait();
+
+            var userClaims = new List<Claim>
+            {
+                new Claim("Account","self",ClaimValueTypes.String),
+            };
+
+            foreach (var claim in userClaims)
+            {
+                rm.AddClaimAsync(user,claim).Wait();
+            }
+
+            //////////////////////////
+            //mod role and claims/////
+            //////////////////////////
+            var mod = new IdentityRole("Mod");
+            rm.CreateAsync(mod).Wait();
+
+            var modClaims = new List<Claim>
+            {
+                new Claim("Blog", "write", ClaimValueTypes.String),
+                new Claim("Account","read",ClaimValueTypes.String),
+                new Claim("Roles","read",ClaimValueTypes.String),
+            };
+
+            foreach (var claim in userClaims)
+            {
+                modClaims.Add(claim);
+            }
+
+            foreach (var claim in modClaims)
+            {
+                rm.AddClaimAsync(mod, claim).Wait();
+            }
+            
+            //////////////////////////
+            //admin role and claims///
+            //////////////////////////
+            var admin = new IdentityRole("Admin");
+            rm.CreateAsync(admin).Wait();
+
+            var adminClaims = new List<Claim>
+            {
+                new Claim("Account", "write", ClaimValueTypes.String),
+                new Claim("Seatmap", "write",ClaimValueTypes.String),
+                new Claim("Roles", "write",ClaimValueTypes.String)
+            };
+
+            foreach (var claim in modClaims)
+            {
+                adminClaims.Add(claim);
+            }
+
+            foreach (var claim in adminClaims)
+            {
+                rm.AddClaimAsync(admin, claim).Wait();
+            }
+            
+            //////////////////////////
+            //SuperAdmin role and claims
+            //////////////////////////
+            var superAdmin = new IdentityRole("SuperAdmin");
+            rm.CreateAsync(superAdmin).Wait();
+
+            var superAdminClaims = new List<Claim>
+            {
+
+            };
+
+            foreach (var claim in adminClaims)
+            {
+                superAdminClaims.Add(claim);
+            }
+
+            foreach (var claim in superAdminClaims)
+            {
+                rm.AddClaimAsync(superAdmin, claim).Wait();
+            }
+
         }
         public static void Addpolicies(AuthorizationOptions options)
         {
