@@ -1,32 +1,34 @@
-using System.Security.Claims;
-using betauia.Data;
 using betauia.Models;
 using betauia.Tokens;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace betauia.Controllers
 {
     [ApiController]
-    public class EmailVerificationApiController : ControllerBase
+    public class TokenApiController : Controller
     {
         private readonly UserManager<ApplicationUser> _um;
         private readonly RoleManager<IdentityRole> _rm;
         private readonly TokenFactory _tf;
         
-        public EmailVerificationApiController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public TokenApiController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _um = userManager;
             _rm = roleManager;
             _tf = new TokenFactory(_um,_rm);
         }
 
-        [HttpGet]
-        [Authorize("User")]
-        [Route("api/getemailverification/{id}")]
-        public IActionResult SendEmailVerification(string id)
+        [HttpPost]
+        [Route("api/token/valid/{token}")]
+        public IActionResult ValidateToken(string token)
         {
+            var id = _tf.AuthenticateUser(token);
+            if (id == null)
+            {
+                return BadRequest("301");
+            }
+
             var user = _um.FindByIdAsync(id).Result;
             if (user == null)
             {
@@ -38,14 +40,17 @@ namespace betauia.Controllers
                 return BadRequest("102");
             }
 
-            var token = _tf.GetEmailVerificationToken(user);
-            
-            return Ok(token);
-        }
+            if (user.ForceLogOut)
+            {
+                return BadRequest("103");
+            }
 
+            return Ok();
+        }
+        
         [HttpPost]
-        [Route("api/verifyemail/{token}")]
-        public IActionResult VerifyEmail(string token)
+        [Route("api/token/role/{token}")]
+        public IActionResult ValidateAdmin(string token)
         {
             var id = _tf.AuthenticateUser(token);
             if (id == null)
@@ -56,17 +61,21 @@ namespace betauia.Controllers
             var user = _um.FindByIdAsync(id).Result;
             if (user == null)
             {
-                return BadRequest("301");
+                return BadRequest("101");
             }
 
-            user.VerifiedEmail = true;
-            var claim = new Claim("EmailVerified", "true", ClaimValueTypes.String);
-            var result = _um.AddClaimAsync(user, claim).Result;
-            if (result.Succeeded)
+            if (user.Active == false)
             {
-                return Ok();
+                return BadRequest("102");
             }
-            return BadRequest(result.Errors);
-        }
+
+            if (user.ForceLogOut)
+            {
+                return BadRequest("103");
+            }
+
+            var roles = _um.GetRolesAsync(user).Result;
+            return Ok(roles);
+        }    
     }
 }

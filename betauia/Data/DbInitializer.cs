@@ -14,9 +14,17 @@ namespace betauia.Data
             db.Database.EnsureCreated();
             
             Config.AddRoles(um,rm);
-            var user = new ApplicationUser { Email = "user@gmail.com", UserName = "user@gmail.com", FirstName = "User",LastName = "test", NickName = "Nickname"};
+            var user = new ApplicationUser { Email = "user@gmail.com", UserName = "RickNmorty", FirstName = "Rick",LastName = "Morty", NickName = "Nickname"};
             um.CreateAsync(user, "Password1.").Wait();
             um.AddToRoleAsync(user, "Admin").Wait();
+            
+            user = new ApplicationUser { Email = "erikaa17@uia.no", UserName = "erikdakool", FirstName = "Erik",LastName = "Aspen", NickName = "Nickname"};
+            um.CreateAsync(user, "Password1.").Wait();
+            um.AddToRoleAsync(user, "SuperAdmin").Wait();
+            
+            user = new ApplicationUser { Email = "user2@gmail.com", UserName = "Tommyboy", FirstName = "Tom",LastName = "Tomsen", NickName = "Nickname"};
+            um.CreateAsync(user, "Password1.").Wait();
+            um.AddToRoleAsync(user, "User").Wait();
             
             db.Pages.AddRange(new List<PageModel>
             {

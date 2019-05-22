@@ -12,23 +12,21 @@
     </div>
     <div class="navbar-menu" :class="{'is-active': isActive}">
       <div class="navbar-start">
-        <router-link @click.native="isActive = false"
-        class="navbar-item"
-        to="/blog">Blog</router-link>
-      <hr class="navbar-divider">
-        <router-link @click.native="isActive = false"
-        class="navbar-item"
-        to="/events">Events</router-link>
+        <router-link @click.native="isActive = false" class="navbar-item" to="/blog">Blog</router-link>
+        <hr class="navbar-divider">
+        <router-link @click.native="isActive = false" class="navbar-item" to="/events">Events</router-link>
+        <hr class="navbar-divider">
+        <router-link @click.native="isActive = false" class="navbar-item" to="/admin/panel">Admin</router-link>
       </div>
 
       <div class="navbar-end">
-        <router-link @click.native="isActive = false"
-        class="navbar-item"
-        to="/account/register">Register</router-link>
+        <router-link
+          @click.native="isActive = false"
+          class="navbar-item"
+          to="/account/register"
+        >Register</router-link>
 
-        <router-link @click.native="isActive = false"
-        class="navbar-item"
-        to="/account/login">Login</router-link>
+        <router-link @click.native="isActive = false" class="navbar-item" to="/account/login">Login</router-link>
       </div>
     </div>
   </nav>
@@ -38,8 +36,8 @@
 <script>
 export default {
   data: () => ({
-    isActive: false,
-  }),
+    isActive: false
+  })
 };
 </script>
 

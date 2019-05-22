@@ -105,9 +105,7 @@ namespace betauia
             options.AddPolicy("SuperAdmin",policy=>policy.RequireClaim("Role","SuperAdmin"));
             options.AddPolicy("Admin", policy=>policy.RequireClaim("Role","SuperAdmin","Admin"));
             options.AddPolicy("Mod",policy=>policy.RequireClaim("Role","SuperAdmin","Admin","Mod"));
-            options.AddPolicy("User",policy=>policy.RequireClaim("Role"));
-            
-
+            options.AddPolicy("User",policy=>policy.RequireClaim("id"));
             
             options.AddPolicy("Blog.write", policy => policy.RequireClaim("Blog","write"));
             

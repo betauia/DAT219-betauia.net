@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using betauia.Data;
@@ -38,23 +39,47 @@ namespace betauia.Controllers
         public IActionResult GetAll()
         {
             // Return with 200 OK status code
-            return Ok(_context.Users.ToList());
+            var userlist = new List<AdminUserView>();
+            var users = _um.Users;
+            foreach (var user in users)
+            {
+                userlist.Add(new AdminUserView
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Active = user.Active,
+                    ForceLogout = user.ForceLogOut,
+                    VerifiedEmail = user.VerifiedEmail
+                });
+            }
+            return Ok(userlist);
         }
 
         // GET: Get user by id
         [Authorize("Account.read")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<ApplicationUser>> GetApplicationUser(string id)
+        public IActionResult GetApplicationUser(string id)
         {
-            // Get user by id
-            var applicationUser = await _context.Users.FindAsync(id);
-            
-            // Check if user is valid
-            if (applicationUser == null)
-                return NotFound();
+            var user = _um.FindByIdAsync(id).Result;
+            if (user == null)
+            {
+                return BadRequest("101");
+            }
 
-            // Return user
-            return applicationUser;
+            return Ok(new AdminUserView
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                UserName = user.UserName,
+                Email = user.Email,
+                Active = user.Active,
+                ForceLogout = user.ForceLogOut,
+                VerifiedEmail = user.VerifiedEmail
+            });
         }
         
         // PUT: Update user by id

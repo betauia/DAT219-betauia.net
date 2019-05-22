@@ -46,6 +46,18 @@ export default new Router({
       component: () => import('./components/Account/AccountInfo.vue'),
     },
     {
+      path: '/admin/panel',
+      component: () => import('./components/Admin/AdminPanel.vue'),
+    },
+    {
+      path: '/admin/users',
+      component: () => import('./components/Admin/UserPanel.vue'),
+    },
+    {
+      path: '/admin/userinfo',
+      component: () => import('./components/Admin/UserInfoPanel.vue'),
+    },
+    {
       path: '/test',
       component: () => import( /* webpackChunkName: "test" */ './views/Test.vue'),
     },
