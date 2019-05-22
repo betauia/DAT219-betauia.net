@@ -28,6 +28,11 @@ export default new Router({
         './components/Blog/AddBlogPost.vue'),
     },
     {
+      path: '/blog/detailed/:id',
+      component: () => import( /* webpackChunkName: "disclaimer" */
+        './components/Blog/BlogDetailed.vue'),
+    },
+    {
       path: '/events',
       component: () => import( /* webpackChunkName: "events" */ './views/Events.vue'),
     },
@@ -56,6 +61,10 @@ export default new Router({
     {
       path: '/admin/userinfo',
       component: () => import('./components/Admin/UserInfoPanel.vue'),
+    },
+    {
+      path: '/verifyemail/:id',
+      component: () => import('./components/Account/EmailVerify.vue')
     },
     {
       path: '/test',

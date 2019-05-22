@@ -3,10 +3,19 @@
     <div id="adminSidebar">
       <div class="panel">
         <hr class="navbar-divider">
-        <router-link @click.native="isActive = false" class="navbar-item" to="/admin/users">Users</router-link>
+        <router-link
+          @click.native="isActive = false"
+          class="navbar-item"
+          to="/admin/users"
+        >Administer users</router-link>
       </div>
       <div class="panel">
-        <p>Administer users</p>
+        <hr class="navbar-divider">
+        <router-link
+          @click.native="isActive = false"
+          class="navbar-item"
+          to="/blog/add"
+        >Add news post</router-link>
       </div>
     </div>
   </div>

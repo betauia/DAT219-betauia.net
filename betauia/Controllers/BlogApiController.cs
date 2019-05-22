@@ -51,7 +51,7 @@ namespace betauia.Controllers
             
             _context.Add(blogPost);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(GetBlogPost), new {id = blogPost.Id}, blogPost);
+            return Ok(blogPost.Id);
         }
 
         [Authorize(Policy = "Blog.write")]

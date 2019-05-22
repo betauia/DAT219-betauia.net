@@ -6,6 +6,7 @@
           <p class="card-header-title">{{post.title}}</p>
         </header>
         <div class="card-content">
+          <h1 class="summary">{{post.summary}}</h1>
           <div class="content">
             {{post.content}}
             <br>
@@ -31,5 +32,8 @@ export default {
   padding: 5px;
   font-style: italic;
   font-size: 12px;
+}
+.summary {
+  font-weight: bold;
 }
 </style>
