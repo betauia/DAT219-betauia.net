@@ -27,6 +27,10 @@ namespace betauia.Models
             FirstName = user.FirstName;
             LastName = user.LastName;
             Email = user.Email;
+            UserName = user.UserName;
+            Active = user.Active;
+            ForceLogout = user.ForceLogOut;
+            VerifiedEmail = user.VerifiedEmail;
         }
     }
 }

@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using betauia.Data;
@@ -107,6 +109,36 @@ namespace betauia.Controllers
             }
             
             return Ok(applicationUser);
+        }
+
+        [Authorize("Account.write")]
+        [HttpPut]
+        public IActionResult UpdateApplicationUser([FromBody]AdminUserView adminUserView)
+        {
+            var user = _um.FindByIdAsync(adminUserView.Id).Result;
+            if (user == null) return NotFound("101");
+
+            user.FirstName = adminUserView.FirstName;
+            user.LastName = adminUserView.LastName;
+            if (adminUserView.Email != "" && adminUserView.Email != user.Email)
+            {
+                if (_um.FindByEmailAsync(adminUserView.Email).Result != null) return BadRequest(201);
+                if (new EmailAddressAttribute().IsValid(adminUserView.Email) == false) return BadRequest("204");
+                user.Email = adminUserView.Email;
+            }
+
+            if (adminUserView.UserName != "" && adminUserView.UserName != user.UserName) 
+            {
+                if (_um.FindByNameAsync(adminUserView.UserName).Result != null) return BadRequest("202");
+                user.UserName = adminUserView.UserName;
+            }
+
+            user.Active = adminUserView.Active;
+            user.ForceLogOut = adminUserView.ForceLogout;
+            user.VerifiedEmail = adminUserView.VerifiedEmail;
+            
+            _um.UpdateAsync(user).Wait();
+            return Ok(new AdminUserView(user));
         }
         
         // POST: Add new user

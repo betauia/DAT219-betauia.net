@@ -37,7 +37,7 @@ export default {
         console.log(self.user);
       })
       .catch(function(error) {
-        console.log(error);
+        console.log(error.response.data);
       });
   }
 };

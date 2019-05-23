@@ -38,7 +38,7 @@ export default {
         console.log(response.data);
       })
       .catch(function(error) {
-        console.log(error);
+        console.log(error.response.data);
       });
 
     axios
@@ -48,7 +48,8 @@ export default {
         console.log(response.data);
       })
       .catch(function(error) {
-        console.log(error);
+        var code = error.response.data;
+        console.log(code);
       });
   }
 };

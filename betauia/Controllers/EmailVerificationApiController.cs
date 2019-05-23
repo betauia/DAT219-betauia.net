@@ -79,6 +79,7 @@ namespace betauia.Controllers
             }
 
             user.VerifiedEmail = true;
+            _um.UpdateAsync(user).Wait();
             var claim = new Claim("EmailVerified", "true", ClaimValueTypes.String);
             var result = _um.AddClaimAsync(user, claim).Result;
             if (result.Succeeded)
