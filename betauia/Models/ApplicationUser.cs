@@ -1,14 +1,9 @@
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
 namespace betauia.Models
 {
     public class ApplicationUser : IdentityUser
     {
-
-        public string FullName { get; set; }
-        
-
         public ApplicationUser()
         {
             ForceLogOut = false;
@@ -17,7 +12,6 @@ namespace betauia.Models
         }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-
 
         public string NickName { get; set; }
         
