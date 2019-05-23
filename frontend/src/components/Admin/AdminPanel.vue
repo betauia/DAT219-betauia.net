@@ -1,31 +1,37 @@
 <template>
-  <div id="adminPanel">
-    <div id="adminSidebar">
-      <div class="panel">
-        <hr class="navbar-divider">
-        <router-link
-          @click.native="isActive = false"
-          class="navbar-item"
-          to="/admin/users"
-        >Administer users</router-link>
-      </div>
-      <div class="panel">
-        <hr class="navbar-divider">
-        <router-link
-          @click.native="isActive = false"
-          class="navbar-item"
-          to="/blog/add"
-        >Add news post</router-link>
-      </div>
-    </div>
+
+<div class="AdminSide padding">
+  <div class="columns">
+  <div class="column is-narrow">
+<aside class="menu">
+  <p class="menu-label">
+    General
+  </p>
+  <ul class="menu-list">
+    <li><router-link to="/admin/dashboard">Dashboard</router-link></li>
+    <li><router-link to="/blog/add">Add Post</router-link></li>
+    <li><router-link to="/event/add">Add Event</router-link></li>
+    <li><router-link to="/admin/seatmapeditor">Edit Seatmap</router-link></li>
+  </ul>
+  <p class="menu-label">
+    Administration
+  </p>
+  <ul class="menu-list">
+    
+    <li><router-link to="/admin/users">User Management</router-link></li>
+    <li><router-link to="/admin/roles">Role Management</router-link></li>
+  </ul>
+</aside>
   </div>
+<div class="column">
+  <router-view/>
+</div>
+  </div>
+</div>
+
 </template>
 
 <style>
-#adminSidebar {
-  background-color: #737477;
-  width: 20%;
-}
 </style>
 
 
