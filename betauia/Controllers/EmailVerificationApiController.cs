@@ -5,6 +5,8 @@ using betauia.Tokens;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.Net.Mail;
 
 namespace betauia.Controllers
 {
@@ -23,6 +25,7 @@ namespace betauia.Controllers
         }
 
         [HttpGet]
+        [Authorize("User")]
         [Route("api/getemailverification/{id}")]
         public IActionResult SendEmailVerification(string id)
         {
@@ -36,12 +39,25 @@ namespace betauia.Controllers
             {
                 return BadRequest("102");
             }
+            
+            if (user.VerifiedEmail == true)
+            {
+                return BadRequest("205");
+            }
 
             var token = _tf.GetEmailVerificationToken(user);
+            var url = "http://localhost:8081/verifyemail/" + token;
+            
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com");
+            smtp.EnableSsl = true;
+            smtp.Port = 587;
+            smtp.Credentials = new NetworkCredential("erikaspen1@gmail.com","applicatoinkey");
+            smtp.Send("erikaspen1@gmail.com","erikaa17@uia.no","Verify you email at betauia.net",url);
+            
             return Ok(token);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("api/verifyemail/{token}")]
         public IActionResult VerifyEmail(string token)
         {
@@ -57,7 +73,13 @@ namespace betauia.Controllers
                 return BadRequest("301");
             }
 
+            if (user.VerifiedEmail == true)
+            {
+                return BadRequest("205");
+            }
+
             user.VerifiedEmail = true;
+            _um.UpdateAsync(user).Wait();
             var claim = new Claim("EmailVerified", "true", ClaimValueTypes.String);
             var result = _um.AddClaimAsync(user, claim).Result;
             if (result.Succeeded)

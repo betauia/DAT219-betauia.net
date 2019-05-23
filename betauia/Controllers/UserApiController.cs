@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using betauia.Data;
@@ -38,23 +41,47 @@ namespace betauia.Controllers
         public IActionResult GetAll()
         {
             // Return with 200 OK status code
-            return Ok(_context.Users.ToList());
+            var userlist = new List<AdminUserView>();
+            var users = _um.Users;
+            foreach (var user in users)
+            {
+                userlist.Add(new AdminUserView
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Active = user.Active,
+                    ForceLogout = user.ForceLogOut,
+                    VerifiedEmail = user.VerifiedEmail
+                });
+            }
+            return Ok(userlist);
         }
 
         // GET: Get user by id
         [Authorize("Account.read")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<ApplicationUser>> GetApplicationUser(string id)
+        public IActionResult GetApplicationUser(string id)
         {
-            // Get user by id
-            var applicationUser = await _context.Users.FindAsync(id);
-            
-            // Check if user is valid
-            if (applicationUser == null)
-                return NotFound();
+            var user = _um.FindByIdAsync(id).Result;
+            if (user == null)
+            {
+                return BadRequest("101");
+            }
 
-            // Return user
-            return applicationUser;
+            return Ok(new AdminUserView
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                UserName = user.UserName,
+                Email = user.Email,
+                Active = user.Active,
+                ForceLogout = user.ForceLogOut,
+                VerifiedEmail = user.VerifiedEmail
+            });
         }
         
         // PUT: Update user by id
@@ -82,6 +109,36 @@ namespace betauia.Controllers
             }
             
             return Ok(applicationUser);
+        }
+
+        [Authorize("Account.write")]
+        [HttpPut]
+        public IActionResult UpdateApplicationUser([FromBody]AdminUserView adminUserView)
+        {
+            var user = _um.FindByIdAsync(adminUserView.Id).Result;
+            if (user == null) return NotFound("101");
+
+            user.FirstName = adminUserView.FirstName;
+            user.LastName = adminUserView.LastName;
+            if (adminUserView.Email != "" && adminUserView.Email != user.Email)
+            {
+                if (_um.FindByEmailAsync(adminUserView.Email).Result != null) return BadRequest(201);
+                if (new EmailAddressAttribute().IsValid(adminUserView.Email) == false) return BadRequest("204");
+                user.Email = adminUserView.Email;
+            }
+
+            if (adminUserView.UserName != "" && adminUserView.UserName != user.UserName) 
+            {
+                if (_um.FindByNameAsync(adminUserView.UserName).Result != null) return BadRequest("202");
+                user.UserName = adminUserView.UserName;
+            }
+
+            user.Active = adminUserView.Active;
+            user.ForceLogOut = adminUserView.ForceLogout;
+            user.VerifiedEmail = adminUserView.VerifiedEmail;
+            
+            _um.UpdateAsync(user).Wait();
+            return Ok(new AdminUserView(user));
         }
         
         // POST: Add new user
