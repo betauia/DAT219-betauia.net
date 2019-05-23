@@ -27,8 +27,9 @@ namespace betauia.Controllers
             _tf = new TokenFactory(_um,_rm);
         }
 
+        //Configures all user claims, included from roles
         [HttpGet]
-        [Route("api/claim/user/get/{id}")]
+        [Route("api/claim/user/{id}")]
         public IActionResult GetAllRoles(string id)
         {
             var user = _um.FindByIdAsync(id).Result;
@@ -59,7 +60,7 @@ namespace betauia.Controllers
         }
 
         [HttpPost]
-        [Route("api/claim/user/set/{id}")]
+        [Route("api/claim/user/{id}")]
         public IActionResult SetRolesToUser(string id, ClaimList claimListModel)
         {
             var user = _um.FindByIdAsync(id).Result;
@@ -75,9 +76,10 @@ namespace betauia.Controllers
             }
             return Ok();
         }
-
+        
+        //Configures user claims, excludes role
         [HttpGet]
-        [Route("api/role/user/get/{id}")]
+        [Route("api/role/user/{id}")]
         public IActionResult GetUserRoles(string id)
         {
             var user = _um.FindByIdAsync(id).Result;
@@ -91,7 +93,7 @@ namespace betauia.Controllers
         }
 
         [HttpPost]
-        [Route("api/role/user/set/{id}")]
+        [Route("api/role/user/{id}")]
         public IActionResult SetUserRoles(string id, RoleList roleList)
         {
             var user = _um.FindByIdAsync(id).Result;
@@ -108,8 +110,74 @@ namespace betauia.Controllers
             return Ok();
         }
 
+        [HttpPut]
+        [Route("api/role/user/{id}")]
+        public IActionResult AddUserRole(string id, ClaimModel claimModel)
+        {
+            var user = _um.FindByIdAsync(id).Result;
+            if (user == null)
+            {
+                return BadRequest("101");
+            }
+
+            if (claimModel.ClaimName == "")
+            {
+                return BadRequest("403");
+            }
+
+            if (claimModel.ClaimValue == "")
+            {
+                return BadRequest("404");
+            }
+            
+            var claim = new Claim(claimModel.ClaimName, claimModel.ClaimValue, ClaimValueTypes.String);
+
+            var result = _um.AddClaimAsync(user, claim).Result;
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
+        }
+
+        [HttpDelete]
+        [Route("api/role/user/{id}")]
+        public IActionResult DeleteClaimFromUser(string id, ClaimModel claimModel)
+        {
+            var user = _um.FindByIdAsync(id).Result;
+            if (user == null)
+            {
+                return BadRequest("101");
+            }
+            
+            if (claimModel.ClaimName == "")
+            {
+                return BadRequest("403");
+            }
+
+            if (claimModel.ClaimValue == "")
+            {
+                return BadRequest("404");
+            }
+
+            var claim = new Claim(claimModel.ClaimName, claimModel.ClaimValue);
+            var result = _um.RemoveClaimAsync(user,claim).Result;
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
+        }
+        
+        //Configures role claims
         [HttpGet]
-        [Route("api/claim/role/get/{id}")]
+        [Route("api/claim/role/{id}")]
         public IActionResult GetRoleClaims(string id)
         {
             var role = _rm.FindByNameAsync(id).Result;
@@ -128,7 +196,7 @@ namespace betauia.Controllers
         }
 
         [HttpPost]
-        [Route("api/claim/role/set/{id}")]
+        [Route("api/claim/role/{id}")]
         public IActionResult SetRoleClaims(string id, ClaimList claimList)
         {
             var role = _rm.FindByNameAsync(id).Result;
@@ -144,8 +212,73 @@ namespace betauia.Controllers
             }
             return Ok();
         }
-    }
 
+        [HttpPut]
+        [Route("api/claim/role/{id}")]
+        public IActionResult PutRoleToClaim(string id, ClaimModel claimModel)
+        {
+            var role = _rm.FindByIdAsync(id).Result;
+            if (role == null)
+            {
+                return BadRequest("401");
+            }
+
+            if (claimModel.ClaimName == "")
+            {
+                return BadRequest("403");
+            }
+
+            if (claimModel.ClaimValue == "")
+            {
+                return BadRequest("404");
+            }
+            
+            var claim = new Claim(claimModel.ClaimName, claimModel.ClaimValue, ClaimValueTypes.String);
+
+            var result = _rm.AddClaimAsync(role, claim).Result;
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
+        }
+
+        [HttpDelete]
+        [Route("api/claim/role{id}")]
+        public IActionResult DeleteClaimFromRole(string id, ClaimModel claimModel)
+        {
+            var role = _rm.FindByIdAsync(id).Result;
+            if (role == null)
+            {
+                return BadRequest("401");
+            }
+            
+            if (claimModel.ClaimName == "")
+            {
+                return BadRequest("403");
+            }
+
+            if (claimModel.ClaimValue == "")
+            {
+                return BadRequest("404");
+            }
+
+            var claim = new Claim(claimModel.ClaimName, claimModel.ClaimValue);
+            var result = _rm.RemoveClaimAsync(role,claim).Result;
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
+        }
+    }
+    
     public class RoleList
     {
         public List<string> roles { get; set; }
