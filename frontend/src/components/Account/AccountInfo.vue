@@ -1,11 +1,23 @@
 <template>
   <div class="Userinfo">
-    <p>{{user.firstName}}</p>
-    <p>{{user.lastName}}</p>
-    <p>{{user.email}}</p>
-    <p>{{user.id}}</p>
+    <div class="Userinfo columns padding center">
+      <div class="content">
+        <ul>
+          <li>Firstname: {{user.firstName}}</li>
+          <li>Lastname: {{user.lastName}}</li>
+          <li>Email: {{user.email}}</li>
+          <li>ID: {{user.id}}</li>
+        </ul>
+        <br>
+      </div>
+    </div>
   </div>
 </template>
+
+<style lang="sass">
+
+</style>
+
 
 <script>
 import axios from "axios";
