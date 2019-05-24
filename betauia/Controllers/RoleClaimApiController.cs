@@ -18,13 +18,14 @@ namespace betauia.Controllers
         private readonly UserManager<ApplicationUser> _um;
         private readonly RoleManager<IdentityRole> _rm;
         private readonly TokenFactory _tf;
-        
-        public RoleClaimApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+
+        public RoleClaimApiController(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             _um = userManager;
             _rm = roleManager;
             _db = db;
-            _tf = new TokenFactory(_um,_rm);
+            _tf = new TokenFactory(_um, _rm);
         }
 
         //Configures all user claims, included from roles
@@ -56,6 +57,7 @@ namespace betauia.Controllers
 
                 return Ok(JsonClaims);
             }
+
             return NotFound();
         }
 
@@ -68,15 +70,16 @@ namespace betauia.Controllers
             {
                 return NotFound();
             }
-            
+
             foreach (var claim in claimListModel.claims)
             {
-                var tClaim = new Claim(claim.ClaimName,claim.ClaimValue,ClaimValueTypes.String);
+                var tClaim = new Claim(claim.ClaimName, claim.ClaimValue, ClaimValueTypes.String);
                 _um.AddClaimAsync(user, tClaim).Wait();
             }
+
             return Ok();
         }
-        
+
         //Configures user claims, excludes role
         [HttpGet]
         [Route("api/role/user/{id}")]
@@ -129,7 +132,7 @@ namespace betauia.Controllers
             {
                 return BadRequest("404");
             }
-            
+
             var claim = new Claim(claimModel.ClaimName, claimModel.ClaimValue, ClaimValueTypes.String);
 
             var result = _um.AddClaimAsync(user, claim).Result;
@@ -152,7 +155,7 @@ namespace betauia.Controllers
             {
                 return BadRequest("101");
             }
-            
+
             if (claimModel.ClaimName == "")
             {
                 return BadRequest("403");
@@ -164,7 +167,7 @@ namespace betauia.Controllers
             }
 
             var claim = new Claim(claimModel.ClaimName, claimModel.ClaimValue);
-            var result = _um.RemoveClaimAsync(user,claim).Result;
+            var result = _um.RemoveClaimAsync(user, claim).Result;
             if (result.Succeeded)
             {
                 return Ok();
@@ -174,7 +177,7 @@ namespace betauia.Controllers
                 return BadRequest(result.Errors);
             }
         }
-        
+
         //Configures role claims
         [HttpGet]
         [Route("api/claim/role/{id}")]
@@ -190,8 +193,9 @@ namespace betauia.Controllers
             var claimList = new List<ClaimModel>();
             foreach (var claim in claims)
             {
-                claimList.Add(new ClaimModel{ClaimName =  claim.Type, ClaimValue = claim.Value});
+                claimList.Add(new ClaimModel {ClaimName = claim.Type, ClaimValue = claim.Value});
             }
+
             return Ok(claimList);
         }
 
@@ -207,9 +211,10 @@ namespace betauia.Controllers
 
             foreach (var claim in claimList.claims)
             {
-                var tClaim = new Claim(claim.ClaimName,claim.ClaimValue,ClaimValueTypes.String);
+                var tClaim = new Claim(claim.ClaimName, claim.ClaimValue, ClaimValueTypes.String);
                 _rm.AddClaimAsync(role, tClaim).Wait();
             }
+
             return Ok();
         }
 
@@ -232,7 +237,7 @@ namespace betauia.Controllers
             {
                 return BadRequest("404");
             }
-            
+
             var claim = new Claim(claimModel.ClaimName, claimModel.ClaimValue, ClaimValueTypes.String);
 
             var result = _rm.AddClaimAsync(role, claim).Result;
@@ -255,7 +260,7 @@ namespace betauia.Controllers
             {
                 return BadRequest("401");
             }
-            
+
             if (claimModel.ClaimName == "")
             {
                 return BadRequest("403");
@@ -267,7 +272,7 @@ namespace betauia.Controllers
             }
 
             var claim = new Claim(claimModel.ClaimName, claimModel.ClaimValue);
-            var result = _rm.RemoveClaimAsync(role,claim).Result;
+            var result = _rm.RemoveClaimAsync(role, claim).Result;
             if (result.Succeeded)
             {
                 return Ok();
@@ -278,11 +283,12 @@ namespace betauia.Controllers
             }
         }
     }
-    
+
     public class RoleList
     {
         public List<string> roles { get; set; }
     }
+
     public class ClaimList
     {
         public List<ClaimModel> claims { get; set; }
