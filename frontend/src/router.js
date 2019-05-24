@@ -43,8 +43,7 @@ export default new Router({
     {
       path: '/admin/dashboard',
       component: () => import('./components/Admin/AdminPanel.vue'),
-      children: [
-        {
+      children: [{
           path: '/blog/add',
           component: () => import('./components/Blog/AddBlogPost.vue'),
         },
@@ -55,6 +54,10 @@ export default new Router({
         {
           path: '/admin/users',
           component: () => import('./components/Admin/UserPanel.vue'),
+        },
+        {
+          path: '/admin/seatmapeditor',
+          component: () => import('./components/Admin/SeatMapEditor.vue'),
         },
         {
           path: '/admin/userinfo',
@@ -74,4 +77,3 @@ export default new Router({
   ],
   mode: 'history',
 });
-
