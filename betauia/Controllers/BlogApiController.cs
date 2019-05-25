@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Security.Claims;
 using betauia.Data;
@@ -80,7 +81,12 @@ namespace betauia.Controllers
             if (post == null)
                 return NotFound();
 
-            _context.Remove(post);
+            post.Title = null;
+            post.Content = null;
+            post.Summary = null;
+            post.CreationDate = DateTime.MinValue;
+            post.LastEditDate = DateTime.MinValue;
+            _context.Update(post);
             _context.SaveChanges();
             return Ok(post);
         }
