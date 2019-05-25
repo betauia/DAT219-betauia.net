@@ -22,8 +22,7 @@ export default {
   methods: {
     getUser(user) {
       console.log(user.id);
-      localStorage.setItem("id", user.id);
-      this.$router.push("/admin/userinfo");
+      this.$router.push("/admin/userinfo/" + user.id);
     }
   },
   created() {

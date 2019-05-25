@@ -16,7 +16,17 @@
         <hr class="navbar-divider">
         <router-link @click.native="isActive = false" class="navbar-item" to="/events">Events</router-link>
         <hr class="navbar-divider">
-        <router-link @click.native="isActive = false" class="navbar-item is-danger" to="/admin/dashboard">Admin</router-link>
+        <router-link
+          @click.native="isActive = false"
+          class="navbar-item is-danger"
+          to="/admin/dashboard"
+        >Admin</router-link>
+        <hr class="navbar-divider">
+        <router-link
+          @click.native="isActive = false"
+          class="navbar-item is-danger"
+          to="/sponsors"
+        >Sponsors</router-link>
       </div>
 
       <div class="navbar-end">

@@ -22,7 +22,8 @@ export default {
     };
   },
   created() {
-    var id = localStorage.getItem("id");
+    var id = this.$route.params.id;
+
     if (id == null) {
       this.$router.push("/admin/users");
     }
@@ -32,7 +33,7 @@ export default {
     };
     var self = this;
     axios
-      .get("/api/claim/user/get/" + id, config)
+      .get("/api/claim/user/" + id, config)
       .then(function(response) {
         self.claims = response.data;
         console.log(response.data);

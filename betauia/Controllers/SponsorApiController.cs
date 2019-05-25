@@ -34,7 +34,9 @@ namespace betauia.Controllers
         [HttpPost]
         public IActionResult AddSponsor(SponsorModel sponsorModel)
         {
-            if (_db.Sponsors.Find(sponsorModel.Id) != null) return BadRequest("sponsor id taken");
+            sponsorModel.Id = sponsorModel.Title.ToLower();
+            if (_db.Sponsors.Find(sponsorModel.Id) != null) return BadRequest();
+            
             _db.Sponsors.Add(sponsorModel);
             _db.SaveChanges();
             return Ok(sponsorModel);
@@ -43,14 +45,12 @@ namespace betauia.Controllers
         [HttpPut("{id}")]
         public IActionResult EditSponsor(string id, SponsorModel sponsorModel)
         {
-            if (_db.Sponsors.Find(sponsorModel.Id) != null) return BadRequest("sponsor id taken");
+            if (id != sponsorModel.Id)
+            {
+                return BadRequest();
+            }
             
             var sponsor = _db.Sponsors.Find(id);
-
-            if (sponsorModel.Id != "" || sponsorModel.Id != null)
-            {
-                sponsor.Id = sponsorModel.Id;
-            }
             
             sponsor.Description = sponsorModel.Description;
             sponsor.Title = sponsorModel.Title;

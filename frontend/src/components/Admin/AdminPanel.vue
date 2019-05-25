@@ -17,6 +17,9 @@
             <li>
               <router-link to="/admin/seatmapeditor">Edit Seatmap</router-link>
             </li>
+            <li>
+              <router-link to="/admin/addsponsor">Add sponsor</router-link>
+            </li>
           </ul>
           <p class="menu-label">Administration</p>
           <ul class="menu-list">
@@ -57,7 +60,7 @@ export default {
       .post("/api/token/role/" + token, {})
       .then(function(response) {
         var roles = response["data"];
-        if (roles == null || roles == "User") {
+        if (roles == null || roles == "User" || roles == "") {
           //window.location.href = "/";
           console.log("No access");
           self.$router.push("/");

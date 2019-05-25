@@ -29,6 +29,14 @@ export default new Router({
       component: () => import('./views/Events.vue'),
     },
     {
+      path: '/sponsors',
+      component: () => import('./components/Sponsors/Sponsors.vue'),
+    },
+    {
+      path: '/sponsors/:id',
+      component: () => import('./components/Sponsors/SponsorDetailed.vue'),
+    },
+    {
       path: '/account/login',
       component: () => import('./components/Account/Login.vue'),
     },
@@ -60,8 +68,11 @@ export default new Router({
           component: () => import('./components/Admin/SeatMapEditor.vue'),
         },
         {
-          path: '/admin/userinfo',
+          path: '/admin/userinfo/:id',
           component: () => import('./components/Admin/UserInfoPanel.vue'),
+        }, {
+          path: '/admin/addsponsor',
+          component: () => import('./components/Admin/AddSponsors.vue'),
         }
       ]
 
