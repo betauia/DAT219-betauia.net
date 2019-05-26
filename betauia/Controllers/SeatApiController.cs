@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -66,19 +67,56 @@ namespace betauia.Controllers
             return Ok(seatModel);
         }
         
-        
+        // Receive a list of seats (JSON) and adding them all
         [HttpPost]
-        public IActionResult Post(SeatList seatListModel) {
+        public IActionResult Post(List<SeatModel> seats) {
 
-            foreach (var seat in seatListModel.seats)
+            foreach (var seat in seats)
             {
-                _context.Add(seat);
+                _context.Seats.Add(seat);
             }
-            // Add and save
-            _context.SaveChanges();
-            
-            return Created("Created", seatListModel);
 
+            try
+            {
+                // Add and save
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // Possible errors: Incorrect ownerId or ID already taken
+                return BadRequest("Failed to save changes. Check if ownerId is correct or if any ID is taken.");
+            }
+            
+            return Created("Created", seats);
+        }
+
+        // Delete by one single id
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<SeatModel>> Delete(int id)
+        {
+            var seat = await _context.Seats.FindAsync(id);
+            if (seat == null) return NotFound();
+
+            _context.Seats.Remove(seat);
+            await _context.SaveChangesAsync();
+
+            return seat;
+        }
+
+        // Receive a list of ids to delete
+        [HttpDelete]
+        public async Task<IActionResult> Delete(List<int> seats)
+        {
+            if (seats == null) return BadRequest("No id received.");
+            foreach (var id in seats)
+            {
+                var seat = await _context.Seats.FindAsync(id);
+                _context.Seats.Remove(seat);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok("Seats removed.");
         }
         
         // Function to check if a SeatMap by id exists
@@ -86,13 +124,5 @@ namespace betauia.Controllers
         {
             return _context.Seats.Any(e => e.Id == id);
         }
-        
     }
-
-    public class SeatList
-    {
-        public List<SeatModel> seats { get; set; }
-    }
-    
->>>>>>> Pushing work from friday
 }
