@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
@@ -10,12 +7,6 @@ using Microsoft.EntityFrameworkCore;
 
 // All requests tested and working // 
 
-/*
- * To use:
- * Use put to update amount of seats etc
- * Use put on SeatApi to change IsAvailable (bool) variable
- * Seats will be created/deleted automatically upon changing NumSeats
- */
 namespace betauia.Controllers
 {
     [Route("api/SeatMapApi")]
@@ -47,10 +38,10 @@ namespace betauia.Controllers
             
             // Check if SeatMap is valid
             if (seatMap == null)
-                return NotFound();
+                return NotFound("Failed to find seatMap.");
 
             seatMap.NumSeatsAvailable =
-                _context.Seats.Where(e => e.OwnerId == seatMap.Id).Where(e => e.IsAvailable == true).ToList().Count;
+                _context.Seats.Where(e => e.OwnerId == seatMap.Id).Where(e => e.IsAvailable).ToList().Count;
             
             // Stop the entity from being tracked by context
             _context.Entry(_context.SeatMaps.Find(id)).State = EntityState.Detached;
@@ -65,12 +56,11 @@ namespace betauia.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                // Check if the SeatMap was created
-                if (!ApplicationUserExists(id)) return NotFound();
+                if (!SeatMapExists(id)) return NotFound();
                 else throw;
             }
             
-            // Return user
+            // Return seatmap
             return seatMap;
         }
         
@@ -80,21 +70,7 @@ namespace betauia.Controllers
         {
             // Check if id matches SeatMap id
             if (id != seatMap.Id) return BadRequest();
-            if (seatMap.NumSeats <= 0) return BadRequest("Too few seats chosen.");
 
-            var oldNumSeats = _context.SeatMaps.Find(id).NumSeats;
-
-            if (oldNumSeats < seatMap.NumSeats)
-            {
-                for (var i = oldNumSeats + 1; i <= seatMap.NumSeats; i++)
-                    _context.Add(new SeatModel(){Owner = seatMap});
-            }
-            else if (oldNumSeats > seatMap.NumSeats)
-            {
-                if (!RemoveSeats(oldNumSeats - seatMap.NumSeats, seatMap))
-                    return BadRequest("Not enough available seats to remove.");
-            }
-            
             seatMap.NumSeatsAvailable = (seatMap.NumSeats - _context.Seats.Count(e => e.IsAvailable == false));
 
             // Stop the entity from being tracked by context
@@ -110,8 +86,7 @@ namespace betauia.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                // Check if the SeatMap was created
-                if (!ApplicationUserExists(id)) return NotFound();
+                if (!SeatMapExists(id)) return NotFound();
                 else throw;
             }
             
@@ -122,32 +97,14 @@ namespace betauia.Controllers
         [HttpPost]
         public IActionResult Post(SeatMapModel seatMap)
         {
-            /*
-            var seatMap = seatListModel.map;
-            if (seatMap.Id == null) return BadRequest("Seatmap needs id");
-
-            foreach (var seat in seatListModel.seats)
-            {
-                _context.Add(seat);
-            }
-
-            _context.Add(seatMap);
-            _context.SaveChanges();
-
-            return Created("Seatmap created", seatMap);
-            */
-
             // Return if id is set to avoid overwriting an existing SeatMap
-            if (seatMap.Id == null) return BadRequest("Seatmap needs an id.");
+            if (seatMap.Id == null) return BadRequest("No id in seatMap.");
 
-            /*for (var i = 1; i <= seatMap.NumSeats; i++)
-                _context.Add(new SeatModel(){Owner = seatMap});
-*/
             // Add and save
             _context.Add(seatMap);
             _context.SaveChanges();
 
-            return Created("ok", seatMap);
+            return Created("Created!", seatMap);
         }
         
         // DELETE: Delete SeatMap by id
@@ -156,7 +113,7 @@ namespace betauia.Controllers
         {
             // Receive and check if SeatMap is valid
             var seatMap = await _context.SeatMaps.FindAsync(id);
-            if (seatMap == null) return NotFound();
+            if (seatMap == null) return NotFound("Failed to find seatMap.");
             
             _context.Seats.RemoveRange(_context.Seats.Where(e => e.OwnerId == id));
 
@@ -168,22 +125,9 @@ namespace betauia.Controllers
         }
 
         // Function to check if a SeatMap by id exists
-        private bool ApplicationUserExists(string id)
+        private bool SeatMapExists(string id)
         {
             return _context.SeatMaps.Any(e => e.Id == id);
-        }
-
-        private bool RemoveSeats(int amount, SeatMapModel owner)
-        {
-            var seats = _context.Seats.Where(e => e.OwnerId == owner.Id).Where(e => e.IsAvailable == true).ToList();
-            if (seats.Count < amount) return false;
-            
-            for (var i = 0; i < amount; i++)
-            {
-                _context.Seats.Remove(seats[i]);
-            }
-
-            return true;
         }
     }
 }
