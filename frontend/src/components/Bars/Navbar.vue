@@ -29,7 +29,7 @@
         >Sponsors</router-link>
       </div>
 
-      <div class="navbar-end">
+      <div class="navbar-end" v-if="isLoggedIn == false">
         <router-link
           @click.native="isActive = false"
           class="navbar-item"
@@ -38,16 +38,55 @@
 
         <router-link @click.native="isActive = false" class="navbar-item" to="/account/login">Login</router-link>
       </div>
+      <div class="navbar-end" v-else>
+        <router-link
+          @click.native="isActive = false"
+          class="navbar-item"
+          to="/account/info"
+        >Your account</router-link>
+        <button v-on:click="logout" class="navbar-item">Logout</button>
+      </div>
     </div>
   </nav>
 </template>
 
 
 <script>
+import axios from "axios";
 export default {
   data: () => ({
-    isActive: false
-  })
+    isActive: false,
+    isLoggedIn: false
+  }),
+  created() {
+    console.log("creatededed");
+    var token = localStorage.getItem("token");
+    if (token == null) {
+      console.log("no token");
+      this.isLoggedIn = false;
+      return;
+    }
+    var self = this;
+    axios
+      .post("/api/token/valid/" + token, {})
+      .then(function(response) {
+        console.log("is logged in");
+        self.isLoggedIn = true;
+        self.$forceUpdate();
+      })
+      .catch(function(error) {
+        console.log(error);
+        self.isLoggedIn = false;
+      });
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem("token");
+      this.isLoggedIn = false;
+      this.$router.push("/");
+      this.$forceUpdate();
+    }
+  }
 };
 </script>
 

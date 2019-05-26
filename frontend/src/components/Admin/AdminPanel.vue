@@ -54,6 +54,11 @@ export default {
   },
   created() {
     var token = localStorage.getItem("token");
+    if (token == null) {
+      console.log("No access");
+      this.$router.push("/");
+      return;
+    }
     console.log(token);
     var self = this;
     axios

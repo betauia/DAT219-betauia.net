@@ -51,6 +51,7 @@ export default {
       jsond["password"] = password;
       var jsondata = JSON.stringify(jsond);
 
+      var self = this;
       axios
         .post("/api/account/login", {
           username: user,
@@ -60,6 +61,8 @@ export default {
           console.log(response["data"]);
           //console.log(JSON.stringify(response));
           localStorage.setItem("token", response["data"]);
+          self.$router.push("/");
+          self.$$forceUpdate();
         })
         .catch(function(error) {
           console.log(error.response.data);
