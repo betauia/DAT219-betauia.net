@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using betauia.Data;
@@ -33,7 +34,7 @@ namespace betauia.Controllers
 
         // GET: Returns a list with the given owner id
         [HttpGet("{id}")]
-        public IActionResult GetAllById(int id)
+        public IActionResult GetAllById(string id)
         {
             return Ok(_context.Seats.Where(e => e.OwnerId == id));
         }
@@ -66,6 +67,21 @@ namespace betauia.Controllers
             return Ok(seatModel);
         }
         
+        
+        [HttpPost]
+        public IActionResult Post(SeatList seatListModel) {
+
+            foreach (var seat in seatListModel.seats)
+            {
+                _context.Add(seat);
+            }
+            // Add and save
+            _context.SaveChanges();
+            
+            return Created("Created", seatListModel);
+
+        }
+        
         // Function to check if a SeatMap by id exists
         private bool SeatModelExists(int id)
         {
@@ -73,4 +89,10 @@ namespace betauia.Controllers
         }
         
     }
+
+    public class SeatList
+    {
+        public List<SeatModel> seats { get; set; }
+    }
+    
 }

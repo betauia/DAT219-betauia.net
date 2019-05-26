@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
@@ -38,7 +40,7 @@ namespace betauia.Controllers
 
         // GET: Get SeatMap by id
         [HttpGet("{id}")]
-        public async Task<ActionResult<SeatMapModel>> GetSeatMap(int id)
+        public async Task<ActionResult<SeatMapModel>> GetSeatMap(string id)
         {
             // Get SeatMap by id
             var seatMap = await _context.SeatMaps.FindAsync(id);
@@ -74,7 +76,7 @@ namespace betauia.Controllers
         
         // PUT: Update SeatMap by id
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSeatMap(int id, SeatMapModel seatMap)
+        public async Task<IActionResult> PutSeatMap(string id, SeatMapModel seatMap)
         {
             // Check if id matches SeatMap id
             if (id != seatMap.Id) return BadRequest();
@@ -120,22 +122,37 @@ namespace betauia.Controllers
         [HttpPost]
         public IActionResult Post(SeatMapModel seatMap)
         {
+            /*
+            var seatMap = seatListModel.map;
+            if (seatMap.Id == null) return BadRequest("Seatmap needs id");
+
+            foreach (var seat in seatListModel.seats)
+            {
+                _context.Add(seat);
+            }
+
+            _context.Add(seatMap);
+            _context.SaveChanges();
+
+            return Created("Seatmap created", seatMap);
+            */
+
             // Return if id is set to avoid overwriting an existing SeatMap
-            if (seatMap.Id != 0) return BadRequest();
+            if (seatMap.Id == null) return BadRequest("Seatmap needs an id.");
 
-            for (var i = 1; i <= seatMap.NumSeats; i++)
+            /*for (var i = 1; i <= seatMap.NumSeats; i++)
                 _context.Add(new SeatModel(){Owner = seatMap});
-
+*/
             // Add and save
             _context.Add(seatMap);
             _context.SaveChanges();
 
-            return CreatedAtAction(nameof(GetSeatMap), new {id = seatMap.Id}, seatMap);
+            return Created("ok", seatMap);
         }
         
         // DELETE: Delete SeatMap by id
         [HttpDelete("{id}")]
-        public async Task<ActionResult<SeatMapModel>> DeleteSeatMap(int id)
+        public async Task<ActionResult<SeatMapModel>> DeleteSeatMap(string id)
         {
             // Receive and check if SeatMap is valid
             var seatMap = await _context.SeatMaps.FindAsync(id);
@@ -151,7 +168,7 @@ namespace betauia.Controllers
         }
 
         // Function to check if a SeatMap by id exists
-        private bool ApplicationUserExists(int id)
+        private bool ApplicationUserExists(string id)
         {
             return _context.SeatMaps.Any(e => e.Id == id);
         }
