@@ -25,11 +25,11 @@ export default {
   margin: auto;
   margin-left: auto;
   margin-right: auto;
-  width: 40%;
+  width: 60%;
 }
 
 .padding {
-  padding: 20px;
+  padding: 10px;
 }
 
 a {
