@@ -25,6 +25,10 @@ export default new Router({
       component: () => import('./components/Blog/BlogDetailed.vue'),
     },
     {
+      path: '/events/:id',
+      component: () => import('./components/Events/EventDetailed.vue'),
+    },
+    {
       path: '/events',
       component: () => import('./views/Events.vue'),
     },

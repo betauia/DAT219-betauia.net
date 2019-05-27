@@ -18,6 +18,7 @@
       <button v-on:click="createSeat()" id="createSeat">Create seat {{count+1}}</button>
       <button v-on:click="saveSeatMap()" id="saveSeatmap">Save seatmap</button>
     </div>
+    <img src="https://i.imgur.com/DGn0iau.png" title="source: imgur.com" width="1200" height="1200">
     <div id="grid">
       <div v-for="seat in seats" v-bind:key="seat">
         <Seat v-bind:seat="seat"></Seat>
