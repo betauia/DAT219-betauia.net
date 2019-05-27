@@ -10,7 +10,7 @@
         <span></span>
       </div>
     </div>
-    <div class="navbar-menu" :class="{'is-active': isActive}">
+    <div class="navbar-menu whitebarbug" :class="{'is-active': isActive}">
       <div class="navbar-start">
         <router-link @click.native="isActive = false" class="navbar-item" to="/blog">Blog</router-link>
         <hr class="navbar-divider">
@@ -62,5 +62,10 @@ export default {
 .navbar {
   width: auto;
   border-bottom: 1px solid black;
+  color: #0085ff;
+}
+
+.whitebarbug {
+  background-color: #0085ff;
 }
 </style>

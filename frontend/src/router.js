@@ -10,11 +10,11 @@ export default new Router({
     },
     {
       path: '/privacy',
-      component: () => import('./components/PrivacyPolicy.vue'),
+      component: () => import('./components/Legal/PrivacyPolicy.vue'),
     },
     {
       path: '/disclaimer',
-      component: () => import('./components/Disclaimer.vue'),
+      component: () => import('./components/Legal/Disclaimer.vue'),
     },
     {
       path: '/blog',
@@ -83,7 +83,7 @@ export default new Router({
     },
     {
       path: '*',
-      component: () => import('./components/NotFound.vue'),
+      component: () => import('./components/Error/NotFound.vue'),
     }
   ],
   mode: 'history',
