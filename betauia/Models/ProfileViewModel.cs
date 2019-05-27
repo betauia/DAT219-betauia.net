@@ -6,6 +6,8 @@ namespace betauia.Models
     public class ProfileViewModel
     {
         public string Id { get; set; }
+        
+        public string UserName { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -18,9 +20,11 @@ namespace betauia.Models
         public ProfileViewModel(ApplicationUser user)
         {
             Id = user.Id;
+            
             FirstName = user.FirstName;
             LastName = user.LastName;
             Email = user.Email;
+            UserName = user.UserName;
         }
 
         public static IEnumerable<ProfileViewModel> GetUserProfiles(IEnumerable<ApplicationUser> users)

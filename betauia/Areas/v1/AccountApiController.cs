@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using betauia.Data;
 using betauia.Tokens;
@@ -131,6 +132,49 @@ namespace betauia.Areas.v1
             
             var profile = new ProfileViewModel(user);
             return Ok(profile);        
+        }
+
+        [Route("/api/account/edit")]
+        [HttpPut]
+        [Authorize(Policy = "User")]
+        public IActionResult EditAccount(EditModel editModel)
+        {
+            var token = editModel.Token;
+            var id = _tf.AuthenticateUser(token);
+            
+            if (id == string.Empty) return BadRequest();
+            if (id != editModel.Profile.Id) return BadRequest();
+            
+            var user = _um.FindByIdAsync(editModel.Profile.Id).Result;
+            if (user == null) return NotFound("101");
+
+            if (editModel.Profile.FirstName == "") return BadRequest("206");
+            user.FirstName = editModel.Profile.FirstName;
+
+            if (editModel.Profile.LastName == "") return BadRequest("207");
+            user.LastName = editModel.Profile.LastName;
+            
+            if (editModel.Profile.Email != "" && editModel.Profile.Email != user.Email)
+            {
+                if (_um.FindByEmailAsync(editModel.Profile.Email).Result != null) return BadRequest("201");
+                if (new EmailAddressAttribute().IsValid(editModel.Profile.Email) == false) return BadRequest("204");
+                user.Email = editModel.Profile.Email;
+            }
+
+            if (editModel.Profile.UserName != "" && editModel.Profile.UserName != user.UserName) 
+            {
+                if (_um.FindByNameAsync(editModel.Profile.UserName).Result != null) return BadRequest("202");
+                user.UserName = editModel.Profile.UserName;
+            }
+
+            _um.UpdateAsync(user).Wait();
+            return Ok(new AdminUserView(user));
+        }
+
+        public class EditModel
+        {
+            public string Token { get; set; }
+            public ProfileViewModel Profile { get; set; }
         }
     }
 }

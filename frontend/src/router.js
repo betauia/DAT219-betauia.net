@@ -49,8 +49,17 @@ export default new Router({
       component: () => import('./components/Account/Register.vue'),
     },
     {
-      path: '/account/info',
-      component: () => import('./components/Account/AccountInfo.vue'),
+      path: '/account',
+      component: () => import('./components/Account/Account.vue'),
+      children: [{
+          path: '/account/info',
+          component: () => import('./components/Account/AccountInfo.vue'),
+        },
+        {
+          path: '/account/edit/:id',
+          component: () => import('./components/Account/EditAccount.vue'),
+        }
+      ]
     },
     {
       path: '/admin/dashboard',
