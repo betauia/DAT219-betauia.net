@@ -5,6 +5,8 @@ using betauia.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+// All requests tested and working
+
 namespace betauia.Controllers
 {
     [Route("api/ticket")]
@@ -29,7 +31,7 @@ namespace betauia.Controllers
 
         // GET: Get TicketModel by id
         [HttpGet("{id}")]
-        public async Task<ActionResult<TicketModel>> GetSeatMap(int id)
+        public async Task<ActionResult<TicketModel>> GetTicket(int id)
         {
             // Get ticket by id
             var ticket = await _context.Tickets.FindAsync(id);
@@ -71,10 +73,10 @@ namespace betauia.Controllers
         
         // POST: Add new ticket
         [HttpPost]
-        public IActionResult Post(TicketModel ticketModel)
+        public IActionResult PostTicket(TicketModel ticketModel)
         {
             // Return if id is set to avoid overwriting an existing ticket
-            if (ticketModel.Id != 0) return BadRequest("No id in ticket.");
+            if (ticketModel.Id != 0) return BadRequest("Id is not 0.");
 
             // Add and save
             _context.Add(ticketModel);
