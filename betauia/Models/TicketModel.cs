@@ -12,7 +12,7 @@ namespace betauia.Models
         
         public int Id { get; set; }
         
-        public int OwnerId { get; set; }
+        public string OwnerId { get; set; }
         public ApplicationUser Owner { get; set; }
         
         public string TimePurchased { get; set; }
