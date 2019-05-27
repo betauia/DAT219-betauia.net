@@ -5,7 +5,7 @@
       <p>Role name: {{role.name}}</p>
     </div>
     <SimpleTable :rows="claims" :nowrap="true"></SimpleTable>
-    <SimpleTable :rows="users" :nowrap="true"></SimpleTable>
+    <SimpleTable :rows="users" :nowrap="true" @rowClick="goToUser"></SimpleTable>
     <b-modal :active.sync="addUserModalActive" :width="1000" scroll="keep">
       <SimpleTable :rows="addUsers" :norwap="true" :searchable="true" @rowClick="addUser"></SimpleTable>
     </b-modal>
@@ -74,6 +74,10 @@ export default {
         .catch(function(errors) {
           console.log(errors.data);
         });
+    },
+    goToUser(user) {
+      var userid = user.id;
+      this.$router.push("/admin/userinfo/" + user.id);
     }
   },
   created() {

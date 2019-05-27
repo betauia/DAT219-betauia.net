@@ -33,7 +33,7 @@ export default {
     };
     var self = this;
     axios
-      .get("/api/claim/user/" + id, config)
+      .get("/api/allclaims/user/" + id, config)
       .then(function(response) {
         self.claims = response.data;
         console.log(response.data);
