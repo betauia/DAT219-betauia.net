@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace betauia.Controllers
 {
-    [Route("api/SeatApi")]
+    [Route("api/seat")]
     [ApiController]
     public class SeatApiController : ControllerBase
     {
