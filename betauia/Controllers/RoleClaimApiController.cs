@@ -82,7 +82,7 @@ namespace betauia.Controllers
 
         //Configures user claims, excludes role
         [HttpGet]
-        [Route("api/role/user/{id}")]
+        [Route("api/claim/user/{id}")]
         public IActionResult GetUserRoles(string id)
         {
             var user = _um.FindByIdAsync(id).Result;
@@ -95,27 +95,9 @@ namespace betauia.Controllers
             return Ok(roles);
         }
 
-        [HttpPost]
-        [Route("api/role/user/{id}")]
-        public IActionResult SetUserRoles(string id, RoleList roleList)
-        {
-            var user = _um.FindByIdAsync(id).Result;
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            foreach (var role in roleList.roles)
-            {
-                _um.AddToRoleAsync(user, role).Wait();
-            }
-
-            return Ok();
-        }
-
         [HttpPut]
-        [Route("api/role/user/{id}")]
-        public IActionResult AddUserRole(string id, ClaimModel claimModel)
+        [Route("api/claim/user/{id}")]
+        public IActionResult AddClaimtoUser(string id, ClaimModel claimModel)
         {
             var user = _um.FindByIdAsync(id).Result;
             if (user == null)
@@ -147,7 +129,7 @@ namespace betauia.Controllers
         }
 
         [HttpDelete]
-        [Route("api/role/user/{id}")]
+        [Route("api/claim/user/{id}")]
         public IActionResult DeleteClaimFromUser(string id, ClaimModel claimModel)
         {
             var user = _um.FindByIdAsync(id).Result;
@@ -183,7 +165,7 @@ namespace betauia.Controllers
         [Route("api/claim/role/{id}")]
         public IActionResult GetRoleClaims(string id)
         {
-            var role = _rm.FindByNameAsync(id).Result;
+            var role = _rm.FindByIdAsync(id).Result;
             if (role == null)
             {
                 return NotFound();
@@ -281,6 +263,105 @@ namespace betauia.Controllers
             {
                 return BadRequest(result.Errors);
             }
+        }
+
+        //get roles
+        [HttpGet]
+        [Route("api/role")]
+        public IActionResult GetAllRoles()
+        {
+            var roles = _rm.Roles.ToList();
+            return Ok(roles);
+        }
+
+        [HttpGet]
+        [Route("api/role/{id}")]
+        public IActionResult GetRole(string id)
+        {
+            var role = _rm.FindByIdAsync(id).Result;
+            if (role == null)
+            {
+                return NotFound();
+            }
+            return Ok(role);
+        }
+        
+        //get users from role
+        [HttpGet]
+        [Route("api/user/role/{id}")]
+        public IActionResult GetUsersInRole(string id)
+        {
+            var role = _rm.FindByIdAsync(id).Result;
+            if (role == null)
+            {
+                return NotFound();
+            }
+
+            var users = _um.GetUsersInRoleAsync(role.Name).Result;
+
+            var usersafe = new List<AdminUserView>();
+            foreach (var user in users)
+            {
+                usersafe.Add(new AdminUserView
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Active = user.Active,
+                    ForceLogout = user.ForceLogOut,
+                    VerifiedEmail = user.VerifiedEmail
+                });
+            }
+            return Ok(usersafe);
+        }
+        
+        //get users not in role
+        [HttpGet]
+        [Route("api/user/nrole/{id}")]
+        public IActionResult GetUsersNotInRole(string id)
+        {
+            var role = _rm.FindByIdAsync(id).Result;
+            if (role == null) return NotFound();
+
+            var allusers = _um.Users.ToList();
+            var roleusers = _um.GetUsersInRoleAsync(role.Name).Result;
+
+            var nousers = allusers.Except(roleusers).ToList();
+            return Ok(nousers);
+        }
+        
+        [HttpPost]
+        [Route("api/user/role/{userid}/{roleid}")]
+        public IActionResult SetUserRoles(string userid, string roleid)
+        {
+            var user = _um.FindByIdAsync(userid).Result;
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var role = _rm.FindByIdAsync(roleid).Result;
+            if (role == null) return NotFound();
+
+            _um.AddToRoleAsync(user, role.Name).Wait();
+            
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("api/user/role/{id}")]
+        public IActionResult DeleteUserFromRole(string id, RoleList roleList)
+        {
+            var user = _um.FindByIdAsync(id).Result;
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            _um.RemoveFromRolesAsync(user, roleList.roles).Wait();
+            return Ok();
         }
     }
 
