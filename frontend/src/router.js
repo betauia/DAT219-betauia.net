@@ -70,9 +70,18 @@ export default new Router({
         {
           path: '/admin/userinfo/:id',
           component: () => import('./components/Admin/UserInfoPanel.vue'),
-        }, {
+        },
+        {
           path: '/admin/addsponsor',
           component: () => import('./components/Admin/AddSponsors.vue'),
+        },
+        {
+          path: '/admin/roles',
+          component: () => import('./components/Admin/RolePanel.vue')
+        },
+        {
+          path: '/admin/roleinfo/:id',
+          component: () => import('./components/Admin/RoleInfo.vue')
         }
       ]
 
