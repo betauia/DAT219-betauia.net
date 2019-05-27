@@ -12,15 +12,9 @@
     </div>
     <div class="navbar-menu whitebarbug" :class="{'is-active': isActive}">
       <div class="navbar-start">
-        <router-link @click.native="isActive = false" class="navbar-item" to="/blog">Blog</router-link>
+        <router-link @click.native="isActive = false" class="navbar-item" to="/blog">News</router-link>
         <hr class="navbar-divider">
         <router-link @click.native="isActive = false" class="navbar-item" to="/events">Events</router-link>
-        <hr class="navbar-divider">
-        <router-link
-          @click.native="isActive = false"
-          class="navbar-item is-danger"
-          to="/admin/dashboard"
-        >Admin</router-link>
         <hr class="navbar-divider">
         <router-link
           @click.native="isActive = false"
@@ -28,11 +22,6 @@
           to="/sponsors"
         >Sponsors</router-link>
         <hr class="navbar-divider">
-        <router-link
-          @click.native="isActive = false"
-          class="navbar-item is-danger"
-          to="/privacy"
-        >Privacy</router-link>
       </div>
       
 
