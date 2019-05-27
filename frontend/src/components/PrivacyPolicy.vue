@@ -74,7 +74,7 @@
             </div>
         <div class="is-2 padding"><b>What are your data protection rights?</b></div>
             <div>
-                <ul style="list-style-type:disc">Betauia would like to make sure you are fully aware of all of your data protection
+                <ul style="list-style-type:none">Betauia would like to make sure you are fully aware of all of your data protection
                     rights. Every user is entitled to the following:
                     <li><b>The right to access</b> – You have the right to request Betauia for copies of your
                         personal data. We may charge you a small fee for this service.</li>
@@ -106,8 +106,8 @@
             <div>
                 <ul style="list-style-type:disc">Betauia uses cookies in a range of ways to improve your experience on our website,
                 including:
-                <li> Keeping you signed in</li>
-                <li> Understanding how you use our website</li>
+                <li>Keeping you signed in</li>
+                <li>Understanding how you use our website</li>
                 </ul>
             </div>
 
