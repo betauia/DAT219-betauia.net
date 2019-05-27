@@ -27,7 +27,14 @@
           class="navbar-item is-danger"
           to="/sponsors"
         >Sponsors</router-link>
+        <hr class="navbar-divider">
+        <router-link
+          @click.native="isActive = false"
+          class="navbar-item is-danger"
+          to="/privacy"
+        >Privacy</router-link>
       </div>
+      
 
       <div class="navbar-end">
         <router-link
