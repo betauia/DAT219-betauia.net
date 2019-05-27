@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace betauia.Controllers
 {
-    [Route("api/SeatMapApi")]
+    [Route("api/seatmap")]
     [ApiController]
     public class SeatMapApiController : ControllerBase
     {

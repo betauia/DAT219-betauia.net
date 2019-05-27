@@ -7,7 +7,7 @@ namespace betauia.Models
             TimePurchased = timePurchased;
             Price = price;
             IsVerified = isVerified;
-            PaymentMethhod = paymentMethod;
+            PaymentMethod = paymentMethod;
         }
         
         public int Id { get; set; }
@@ -19,6 +19,6 @@ namespace betauia.Models
         public float Price { get; set; }
         
         public bool IsVerified { get; set; }
-        public string PaymentMethhod { get; set; }
+        public string PaymentMethod { get; set; }
     }
 }
