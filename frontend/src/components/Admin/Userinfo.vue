@@ -1,52 +1,96 @@
 <template>
-  <div class="User">
-    <div class="Input">
-      <label>Username:</label>
-      <br>
-      <input type="text" name="username" v-model="user.userName">
-    </div>
-    <div class="Input">
-      <label>Email:</label>
-      <br>
-      <input type="text" name="email" v-model="user.email">
-    </div>
-    <div class="Input">
-      <label>Firstname:</label>
-      <br>
-      <input type="text" name="firstname" v-model="user.firstName">
-    </div>
-    <div class="Input">
-      <label>Lastname:</label>
-      <br>
-      <input type="text" name="lastname" v-model="user.lastName">
-    </div>
-    <div class="Input">
-      <label>Id:</label>
-      <br>
-      <input type="text" name="id" v-model="user.id" disabled>
-    </div>
-    <div class="Input">
-      <label>Active account:</label>
-      <br>
-      <input type="text" name="active" v-model="user.active">
-    </div>
-    <div class="Input">
-      <label>VerifiedEmail:</label>
-      <br>
-      <input type="text" name="verifiedemail" v-model="user.verifiedEmail">
-    </div>
-    <div class="Input">
-      <label>Force logout:</label>
-      <br>
-      <input type="text" name="forcelogout" v-model="user.forceLogout">
-    </div>
+  <div class="User padding center">
+
+<div class="field">
+  <label class="label" for="username">Username</label>
+  <div class="control">
+    <input id="username" name="username" type="text" class="input "  v-model="user.userName">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="field">
+  <label class="label" for="email">Email</label>
+  <div class="control">
+    <input id="email" name="email" type="text" class="input "  v-model="user.email">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="field">
+  <label class="label" for="firstname">Firstname</label>
+  <div class="control">
+    <input id="firstname" name="firstname" type="text" class="input " v-model="user.firstName">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="field">
+  <label class="label" for="lastname">Lastname</label>
+  <div class="control">
+    <input id="lastname" name="lastname" type="text" class="input " v-model="user.lastName">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="field">
+  <label class="label" for="id">ID</label>
+  <div class="control">
+    <input id="id" name="id" type="text" class="input " v-model="user.id" disabled>
+    
+  </div>
+</div>
+
+<!-- Select Basic -->
+<div class="field">
+  <label class="label" for="active">Active Account</label>
+  <div class="control">
+  	<div class="select">
+	    <select id="active" name="active" class="" v-model="user.active">
+	      <option>true</option>
+	      <option>false</option>
+	    </select>
+	</div>
+  </div>
+</div>
+
+<!-- Select Basic -->
+<div class="field">
+  <label class="label" for="verifiedemail">Verified Email</label>
+  <div class="control">
+  	<div class="select">
+	    <select id="verifiedemail" name="verifiedemail" class="" v-model="user.verifiedEmail">
+	      <option>true</option>
+	      <option>false</option>
+	    </select>
+	</div>
+  </div>
+</div>
+
+<!-- Select Basic -->
+<div class="field">
+  <label class="label" for="forcelogout">Force Logout</label>
+  <div class="control">
+  	<div class="select">
+	    <select id="forcelogout" name="forcelogout" class="" v-model="user.forceLogout">
+	      <option>true</option>
+	      <option>false</option>
+	    </select>
+	</div>
+  </div>
+</div>
+
     <button
       v-on:click="updateUser"
       id="savebutton"
       name="savebutton"
-      class="button is-success"
-    >Save changes</button>
-  </div>
+      class="button is-info"
+    >Save Changes</button>
+</div>
 </template>
 
 <script>
@@ -76,11 +120,10 @@ export default {
       var firstname = document.querySelector("input[name=firstname]").value;
       var lastname = document.querySelector("input[name=lastname]").value;
       var id = document.querySelector("input[name=id]").value;
-      var active = document.querySelector("input[name=active]").value;
-      var verifiedemail = document.querySelector("input[name=verifiedemail]")
+      var active = document.querySelector("select[name=active]").value;
+      var verifiedemail = document.querySelector("select[name=verifiedemail]")
         .value;
-      var forcelogout = document.querySelector("input[name=forcelogout]").value;
-
+      var forcelogout = document.querySelector("select[name=forcelogout]").value
       var bodyParamters = {
         username: username,
         email: email,
@@ -119,29 +162,5 @@ export default {
 </script>
 
 <style>
-.User {
-  background-color: rgb(167, 167, 192);
-  margin: 12px;
-  border-block-color: black;
-  border-width: thin;
-  border-style: solid;
-  color: black;
-}
-input {
-  font-size: 16px;
-  width: 100%;
-}
-.Input {
-  margin-left: 10px;
-  margin-bottom: 4px;
-  border-block-color: black;
-  border-width: thin;
-  border-style: solid;
-  color: black;
-  width: 50%;
-}
-#savebutton {
-  margin-left: 10px;
-  margin-bottom: 4px;
-}
+
 </style>

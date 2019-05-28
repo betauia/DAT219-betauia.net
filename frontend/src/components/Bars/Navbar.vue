@@ -24,6 +24,9 @@
         <hr class="navbar-divider">
       </div>
       
+      <div class="nav-center">
+        ehej
+      </div>
 
       <div class="navbar-end">
         <router-link

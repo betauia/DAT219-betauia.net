@@ -45,11 +45,7 @@ export default {
   }
 };
 </script>
-y
 <style>
-#userPanel {
-  background-color: grey;
-}
 .simple-table-vue table {
   width: 100%;
 }
