@@ -45,13 +45,13 @@ namespace betauia.Data
                 new PageModel("My Page3", "Page title", "Page subtitle", "text"),
             });
             
-            var post = new BlogPost ("Betalan 15#","new lan", "Lorem ipsum dolor sit amet, cu has quas civibus, legendos praesent ea nam, an per case persequeris liberavisse. Vix ad dolor referrentur, no est officiis molestiae gloriatur. Fuisset voluptua accommodare nec ne. Elit integre no sea, sit tollit essent at. Lorem docendi voluptaria duo te, deserunt pertinax appellantur cu cum. Te vel saepe quando. No has quem soleat, erant denique dissentias per at. At justo porro etiam vim, tation accusata constituto ad quo. Idque dicat graecis vis ei. Equidem assentior cu sed, ei ius sumo eius omittantur.");
+            var post = new BlogPost ("Betalan 15#","new lan", "Lorem ipsum dolor sit amet, cu has quas civibus, legendos praesent ea nam, an per case persequeris liberavisse. Vix ad dolor referrentur, no est officiis molestiae gloriatur. Fuisset voluptua accommodare nec ne. Elit integre no sea, sit tollit essent at. Lorem docendi voluptaria duo te, deserunt pertinax appellantur cu cum. Te vel saepe quando. No has quem soleat, erant denique dissentias per at. At justo porro etiam vim, tation accusata constituto ad quo. Idque dicat graecis vis ei. Equidem assentior cu sed, ei ius sumo eius omittantur.", "");
             db.Posts.Add(post);
     
-            post = new BlogPost ("Betalan 29#", "new lan","Lorem ipsum dolor sit amet, cu has quas civibus, legendos praesent ea nam, an per case persequeris liberavisse. Vix ad dolor referrentur, no est officiis molestiae gloriatur. Fuisset voluptua accommodare nec ne. Elit integre no sea, sit tollit essent at. Lorem docendi voluptaria duo te, deserunt pertinax appellantur cu cum. Te vel saepe quando. No has quem soleat, erant denique dissentias per at. At justo porro etiam vim, tation accusata constituto ad quo. Idque dicat graecis vis ei. Equidem assentior cu sed, ei ius sumo eius omittantur.");
+            post = new BlogPost ("Betalan 29#", "new lan","Lorem ipsum dolor sit amet, cu has quas civibus, legendos praesent ea nam, an per case persequeris liberavisse. Vix ad dolor referrentur, no est officiis molestiae gloriatur. Fuisset voluptua accommodare nec ne. Elit integre no sea, sit tollit essent at. Lorem docendi voluptaria duo te, deserunt pertinax appellantur cu cum. Te vel saepe quando. No has quem soleat, erant denique dissentias per at. At justo porro etiam vim, tation accusata constituto ad quo. Idque dicat graecis vis ei. Equidem assentior cu sed, ei ius sumo eius omittantur.", "");
             db.Posts.Add(post);
             
-            post = new BlogPost ("Betalan 9999#", "new lan","Lorem ipsum dolor sit amet, cu has quas civibus, legendos praesent ea nam, an per case persequeris liberavisse. Vix ad dolor referrentur, no est officiis molestiae gloriatur. Fuisset voluptua accommodare nec ne. Elit integre no sea, sit tollit essent at. Lorem docendi voluptaria duo te, deserunt pertinax appellantur cu cum. Te vel saepe quando. No has quem soleat, erant denique dissentias per at. At justo porro etiam vim, tation accusata constituto ad quo. Idque dicat graecis vis ei. Equidem assentior cu sed, ei ius sumo eius omittantur.");
+            post = new BlogPost ("Betalan 9999#", "new lan","Lorem ipsum dolor sit amet, cu has quas civibus, legendos praesent ea nam, an per case persequeris liberavisse. Vix ad dolor referrentur, no est officiis molestiae gloriatur. Fuisset voluptua accommodare nec ne. Elit integre no sea, sit tollit essent at. Lorem docendi voluptaria duo te, deserunt pertinax appellantur cu cum. Te vel saepe quando. No has quem soleat, erant denique dissentias per at. At justo porro etiam vim, tation accusata constituto ad quo. Idque dicat graecis vis ei. Equidem assentior cu sed, ei ius sumo eius omittantur.", "");
             db.Posts.Add(post);
 
             var sponsor = new SponsorModel
@@ -79,6 +79,11 @@ namespace betauia.Data
             }
             
             db.SeatMaps.Add(seatMap);
+            
+            var ticket = new TicketModel("20.02.92", 199, true, "Vipps");
+            var ticket2 = new TicketModel("20.02.9222", 2099, false, "PayPal");
+            db.Tickets.Add(ticket);
+            db.Tickets.Add(ticket2);
             
             db.SaveChanges();
         }

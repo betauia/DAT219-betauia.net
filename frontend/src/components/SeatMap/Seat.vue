@@ -3,10 +3,10 @@
     class="seat"
     :isActive="true"
     :snapToGrid="true"
-    :gridX="20"
-    :gridY="20"
-    :w="80"
-    :h="80"
+    :gridX="10"
+    :gridY="10"
+    :w="40"
+    :h="40"
     :x="400"
     :y="200"
     style="background-color: yellow;"
@@ -34,8 +34,8 @@ export default {
 .seat {
   position: absolute;
   background-color: yellow;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   text-align: center;
 }
 </style>

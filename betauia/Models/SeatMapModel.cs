@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace betauia.Models
 {
     public class SeatMapModel
@@ -11,7 +9,7 @@ namespace betauia.Models
             NumSeatsAvailable = NumSeats;
         }
         
-        public int Id { get; set; }
+        public string Id { get; set; }
         
         // The amount of seats on the current event
         public int NumSeats { get; set; }
@@ -19,5 +17,10 @@ namespace betauia.Models
         
         // Seat price for the current event
         public float SeatPrice { get; set; }
+        
+        public float Height { get; set; }
+        public float Width { get; set; }
+        
+        public string BackgroundImage { get; set; }
     }
 }

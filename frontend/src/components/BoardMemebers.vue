@@ -5,46 +5,70 @@
 <template>
  <div class="BoardMembers">
   <div class="columns">
-   <div class="column">
+   <div class="column is-3 center">
     <figure class="image is-256x256">
-        <img class="is-rounded" src="https://betauia.net/images/styret/2015/Anders.jpg">
+        <img class="is-rounded" src="../assets/img/dummyimg.png">
         <figcaption>
             <ul>
-                <li class="MemeberName">Anders Refsdal Olsen</li>
+                <li class="MemeberName">Kristoffer Solli</li>
                 <li class="MemeberPosition">Leder</li>
             </ul>
         </figcaption>
     </figure>
     </div>
-    <div class="column">
+    <div class="column is-3 center">
     <figure class="image is-256x256">
-        <img class="is-rounded" src="https://betauia.net/images/styret/2015/Knut.jpg">
+        <img class="is-rounded" src="../assets/img/even.png">
         <figcaption>
             <ul>
-                <li class="MemeberName">Knut Eivind Sandsmark</li>
+                <li class="MemeberName">Even Eilertsen</li>
                 <li class="MemeberPosition">Nestleder</li>
             </ul>
         </figcaption>
     </figure>
     </div>
-   <div class="column">
+  </div>
+   <div class="columns">
+   <div class="column is-3">
     <figure class="image is-256x256">
-        <img class="is-rounded" src="https://betauia.net/images/styret/2015/John.jpg">
+        <img class="is-rounded" src="../assets/img/dummyimg.png">
         <figcaption>
             <ul>
-                <li class="MemeberName">John Arne Føreland</li>
-                <li class="MemeberPosition">PR Ansvarlig</li>
+                <li class="MemeberName">Christer Mathisen</li>
+                <li class="MemeberPosition">Økonomi</li>
             </ul>
         </figcaption>
     </figure>
     </div>
-    <div class="column">
+    <div class="column is-3">
     <figure class="image is-256x256">
-        <img class="is-rounded" src="https://betauia.net/images/styret/2015/Martin.jpg">
+        <img class="is-rounded" src="../assets/img/dummyimg.png">
         <figcaption>
             <ul>
-                <li class="MemeberName">Martin Abrahamsen</li>
-                <li class="MemeberPosition">BetaLAN Ansvarlig</li>
+                <li class="MemeberName">Aslak Skailand</li>
+                <li class="MemeberPosition">BedKom</li>
+            </ul>
+        </figcaption>
+    </figure>
+    </div>
+   <div class="column is-3">
+    <figure class="image is-256x256">
+        <img class="is-rounded" src="../assets/img/dummyimg.png">
+        <figcaption>
+            <ul>
+                <li class="MemeberName">Martin Bråten</li>
+                <li class="MemeberPosition">EventKom</li>
+            </ul>
+        </figcaption>
+    </figure>
+    </div>
+    <div class="column is-3">
+    <figure class="image is-256x256">
+        <img class="is-rounded" src="../assets/img/dummyimg.png">
+        <figcaption>
+            <ul>
+                <li class="MemeberName">Mattias  Coelho</li>
+                <li class="MemeberPosition">Betalan Ansvarlig</li>
             </ul>
         </figcaption>
     </figure>
@@ -56,17 +80,17 @@
 <style lang="scss" scoped>
 
 .MemeberName{
-    color: #ffffff;
-    font-size: 29px;
+    color: black;
+    font-size: 24px;
     font-weight: 200;
     text-justify: auto;
     text-align: center;
 }
 .MemeberPosition {
-    color: #dddddd;
+    color: #73bcff;
     text-align: center;
     text-justify: auto;
-    font-size: 26px;
+    font-size: 22px;
 }
 </style>
 

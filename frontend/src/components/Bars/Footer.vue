@@ -38,7 +38,7 @@
         <div class="column is-3 right">
           <ul>
             <li>
-              <router-link to="/privacy-policy">Privacy policy</router-link>
+              <router-link to="/privacy">Privacy policy</router-link>
             </li>
             <li>
               <router-link to="/disclaimer">Disclaimer</router-link>
@@ -56,6 +56,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.footer {
+  background-color: #b9ddff;
+}
+
 a {
   color: #0085ff;
 }

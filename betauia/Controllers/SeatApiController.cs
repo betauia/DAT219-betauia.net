@@ -1,4 +1,5 @@
-using System.Collections;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using betauia.Data;
@@ -10,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace betauia.Controllers
 {
-    [Route("api/SeatApi")]
+    [Route("api/seat")]
     [ApiController]
     public class SeatApiController : ControllerBase
     {
@@ -33,7 +34,7 @@ namespace betauia.Controllers
 
         // GET: Returns a list with the given owner id
         [HttpGet("{id}")]
-        public IActionResult GetAllById(int id)
+        public IActionResult GetAllById(string id)
         {
             return Ok(_context.Seats.Where(e => e.OwnerId == id));
         }
@@ -66,11 +67,62 @@ namespace betauia.Controllers
             return Ok(seatModel);
         }
         
+        // Receive a list of seats (JSON) and adding them all
+        [HttpPost]
+        public IActionResult Post(List<SeatModel> seats) {
+
+            foreach (var seat in seats)
+            {
+                _context.Seats.Add(seat);
+            }
+
+            try
+            {
+                // Add and save
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                // Possible errors: Incorrect ownerId or ID already taken
+                return BadRequest("Failed to save changes. Check if ownerId is correct or if any ID is taken.");
+            }
+            
+            return Created("Created", seats);
+        }
+
+        // Delete by one single id
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<SeatModel>> Delete(int id)
+        {
+            var seat = await _context.Seats.FindAsync(id);
+            if (seat == null) return NotFound();
+
+            _context.Seats.Remove(seat);
+            await _context.SaveChangesAsync();
+
+            return seat;
+        }
+
+        // Receive a list of ids to delete
+        [HttpDelete]
+        public async Task<IActionResult> Delete(List<int> seats)
+        {
+            if (seats == null) return BadRequest("No id received.");
+            foreach (var id in seats)
+            {
+                var seat = await _context.Seats.FindAsync(id);
+                _context.Seats.Remove(seat);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok("Seats removed.");
+        }
+        
         // Function to check if a SeatMap by id exists
         private bool SeatModelExists(int id)
         {
             return _context.Seats.Any(e => e.Id == id);
         }
-        
     }
 }

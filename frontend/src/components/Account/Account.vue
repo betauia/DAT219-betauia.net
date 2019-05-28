@@ -1,19 +1,29 @@
 <template>
-  <div class="user">
-    <div class="Userinfo columns padding center">
-      <div class="content">
-        <ul>
-          <li>Username: {{user.userName}}</li>
-          <li>Firstname: {{user.firstName}}</li>
-          <li>Lastname: {{user.lastName}}</li>
-          <li>Email: {{user.email}}</li>
-          <li>ID: {{user.id}}</li>
-        </ul>
-        <br>
+  <div class="Userinfo">
+    <div class="columns">
+      <div class="column is-narrow">
+        <aside class="meun">
+          <p class="menu-label">User</p>
+          <ul class="menu-list">
+            <li>
+              <router-link to="/account/info">Account info</router-link>
+            </li>
+            <li>
+              <router-link to="/account/edit/${user.id}">Edit</router-link>
+            </li>
+          </ul>
+        </aside>
+      </div>
+      <div class="column">
+        <router-view/>
       </div>
     </div>
   </div>
 </template>
+
+<style lang="sass">
+
+</style>
 
 <script>
 import axios from "axios";
@@ -49,6 +59,3 @@ export default {
   }
 };
 </script>
-
-<style>
-</style>

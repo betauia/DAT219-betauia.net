@@ -8,8 +8,14 @@ namespace betauia.Models
         }
         
         public int Id { get; set; }
-        public int OwnerId { get; set; }
+        public string OwnerId { get; set; }
         public SeatMapModel Owner { get; set; }
+        
+        public float height { get; set; }
+        public float width { get; set; }
+        
+        public float x { get; set; }
+        public float y { get; set; }
         
         public bool IsAvailable { get; set; }
     }

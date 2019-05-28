@@ -10,11 +10,11 @@ export default new Router({
     },
     {
       path: '/privacy',
-      component: () => import('./components/PrivacyPolicy.vue'),
+      component: () => import('./components/Legal/PrivacyPolicy.vue'),
     },
     {
       path: '/disclaimer',
-      component: () => import('./components/Disclaimer.vue'),
+      component: () => import('./components/Legal/Disclaimer.vue'),
     },
     {
       path: '/blog',
@@ -23,6 +23,10 @@ export default new Router({
     {
       path: '/blog/detailed/:id',
       component: () => import('./components/Blog/BlogDetailed.vue'),
+    },
+    {
+      path: '/events/:id',
+      component: () => import('./components/Events/EventDetailed.vue'),
     },
     {
       path: '/events',
@@ -45,8 +49,17 @@ export default new Router({
       component: () => import('./components/Account/Register.vue'),
     },
     {
-      path: '/account/info',
-      component: () => import('./components/Account/AccountInfo.vue'),
+      path: '/account',
+      component: () => import('./components/Account/Account.vue'),
+      children: [{
+          path: '/account/info',
+          component: () => import('./components/Account/AccountInfo.vue'),
+        },
+        {
+          path: '/account/edit/:id',
+          component: () => import('./components/Account/EditAccount.vue'),
+        }
+      ]
     },
     {
       path: '/admin/dashboard',
@@ -70,9 +83,18 @@ export default new Router({
         {
           path: '/admin/userinfo/:id',
           component: () => import('./components/Admin/UserInfoPanel.vue'),
-        }, {
+        },
+        {
           path: '/admin/addsponsor',
           component: () => import('./components/Admin/AddSponsors.vue'),
+        },
+        {
+          path: '/admin/roles',
+          component: () => import('./components/Admin/RolePanel.vue')
+        },
+        {
+          path: '/admin/roleinfo/:id',
+          component: () => import('./components/Admin/RoleInfo.vue')
         }
       ]
 
@@ -83,7 +105,7 @@ export default new Router({
     },
     {
       path: '*',
-      component: () => import('./components/NotFound.vue'),
+      component: () => import('./components/Error/NotFound.vue'),
     }
   ],
   mode: 'history',
