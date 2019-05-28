@@ -1,27 +1,34 @@
 <template>
-  <div>
+  <div class="seatmapeditor">
     <div id="editor">
-      <b-field label="Seatmap name">
-        <b-input :value="Seatmap" name placeholder="seatmap name"></b-input>
-      </b-field>
-      <b-field label="Mapwidth">
-        <input :value="MapWidth" name placeholder="600" id="mapwidth">
-      </b-field>
-      <b-field label="Mapheight">
-        <input :value="MapHeight" name placeholder="600" id="mapHeight">
-      </b-field>
-      <button v-on:click="changeMapSize()" id="updateSeatMap">Update seat map size</button>
+      <div class="editblock">
+        <b-field label="Seatmap name">
+          <input :value="Seatmap" id="seatmapname" name="seatmapname" placeholder="Map name">
+        </b-field>
+      </div>
+      <div class="editblock" id="groupedit">
+        <b-field label="Add group"></b-field>
 
-      <b-field label="Seat Id">
-        <input :value="SeatId" name placeholder="Seat id">
-      </b-field>
-      <button v-on:click="createSeat()" id="createSeat">Create seat {{count+1}}</button>
-      <button v-on:click="saveSeatMap()" id="saveSeatmap">Save seatmap</button>
+        <div class="inputblock">
+          <div class="row">
+            <input :value="row" name placeholder="rows" id="row">
+            <input :value="row" name placeholder="columns" id="column">
+            <button v-on:click="createGroup">Create seat group</button>
+          </div>
+        </div>
+      </div>
+      <div class="editblock">
+        <b-field label="Number of seats">
+          <p>{{count}}</p>
+        </b-field>
+      </div>
+      <div class="editblock">
+        <button v-on:click="saveSeatMap" id="saveSeatmap">Save seatmap</button>
+      </div>
     </div>
-    <img src="https://i.imgur.com/DGn0iau.png" title="source: imgur.com" width="1200" height="1200">
     <div id="grid">
-      <div v-for="seat in seats" v-bind:key="seat">
-        <Seat v-bind:seat="seat"></Seat>
+      <div v-for="group in groups" v-bind:key="group">
+        <SeatGroup v-bind:group="group"></SeatGroup>
       </div>
     </div>
   </div>
@@ -29,23 +36,17 @@
 
 <script>
 import axios from "axios";
-import Seat from "@/components/SeatMap/Seat.vue";
 import Vue from "vue";
-
+import SeatGroup from "@/components/SeatMap/SeatGroup.vue";
 export default {
   components: {
-    Seat: Seat
+    SeatGroup: SeatGroup
   },
   data: function() {
     return {
-      widthG: 10,
-      heightG: 10,
-      width: 600,
-      height: 600,
-      top: 0,
-      left: 0,
       count: 0,
-      seats: []
+      seats: [],
+      groups: []
     };
   },
   methods: {
@@ -67,35 +68,107 @@ export default {
       this.$forceUpdate();
       this.count++;
     },
-    saveSeatMap: function(event) {
-      var out = JSON.stringify(this.seats, null, 2);
-      for (var i in this.seats) {
+    createGroup: function(event) {
+      var rows = document.getElementById("row").value;
+      var columns = document.getElementById("column").value;
+
+      if (rows == "" || columns == "") {
+        alert("bad request");
+        return;
       }
-      alert(out);
+
+      var group = {};
+      group.rows = rows;
+      group.columns = columns;
+
+      var seats = [];
+      for (var x = 0; x < rows; x++) {
+        for (var y = 0; y < columns; y++) {
+          this.count++;
+          var seat = {};
+          seat.x = x * 20;
+          seat.y = y * 20;
+          seat.id = this.count;
+          seats.push(seat);
+        }
+      }
+      group.seats = seats;
+      this.groups.push(group);
+      //alert(JSON.stringify(group, null, 2));
+    },
+    saveSeatMap: function(event) {
+      var name = document.querySelector("input[name=seatmapname]").value;
+      var output = {};
+      output.name = name;
+      var out = JSON.stringify(this.seats, null, 2);
+      var groups = this.$el.querySelectorAll(".seatgroup");
+
+      //alert(seats[0].offsetLeft);
+      var jseats = [];
+      groups.forEach(function(group) {
+        var x = group.offsetLeft;
+        var y = group.offsetTop;
+        var seats = group.getElementsByClassName("seat");
+        for (var i = 0; i < seats.length; i++) {
+          var jseat = {};
+          jseat.id = seats[i].textContent;
+          jseat.x = seats[i].offsetLeft + x;
+          jseat.y = seats[i].offsetTop + y;
+          jseats.push(jseat);
+        }
+      });
+      output.seats = jseats;
+      console.log(output);
+      //alert(JSON.parse(jseats, null, 2));
+
+      //seats = group.getElementsByClassName("seat");
+      //alert(seats[1].offsetLeft);
     }
   }
 };
 </script>
 
 <style>
+.seatmapeditor {
+  border-style: solid;
+  border-width: medium;
+  background-color: grey;
+}
+.editblock {
+  margin: 10px;
+  padding: 5px;
+  background: rgb(151, 151, 151);
+}
+#seatmapname {
+  width: 100%;
+}
+#groupedit input {
+  width: 50%;
+}
+#groupedit button {
+  width: 100%;
+}
 div {
   padding: 0;
   margin: 0;
 }
 #editor {
+  vertical-align: top;
+  display: inline-block;
   background-color: darkgrey;
   width: 20%;
-  height: 600px;
-  float: left;
-}
-#grid {
-  background-color: cadetblue;
-  width: 600px;
-  height: 600px;
-  display: inline-block;
+  height: 100%;
 }
 button {
   width: 100%;
-  height: 5%;
+}
+#grid {
+  display: inline-block;
+  position: relative;
+  background-image: url("https://i.imgur.com/6BryTTm.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 900px;
+  height: 900px;
 }
 </style>

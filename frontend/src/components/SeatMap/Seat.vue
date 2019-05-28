@@ -1,41 +1,24 @@
 <template>
-  <VueDragResize
-    class="seat"
-    :isActive="true"
-    :snapToGrid="true"
-    :gridX="10"
-    :gridY="10"
-    :w="40"
-    :h="40"
-    :x="400"
-    :y="200"
-    style="background-color: yellow;"
-  >{{seat.id}}</VueDragResize>
+  <div class="seat">{{seat.id}}</div>
 </template>
 
 <script>
-import VueDragResize from "@/components/SeatMap/vue-drag-resize.vue";
-
 export default {
-  components: {
-    VueDragResize
-  },
   props: {
     seat: Object
   },
-  created() {
-    document.getElementById(this.seat.id).style.top = "50px";
-    document.getElementById(this.seat.id).style.left = "50px";
-  }
+  created() {}
 };
 </script>
 
 <style>
 .seat {
-  position: absolute;
-  background-color: yellow;
-  width: 40px;
-  height: 40px;
+  background-color: rgb(175, 175, 175);
+  float: left;
+  width: 30px;
+  height: 30px;
   text-align: center;
+  border-style: dashed;
+  border-width: 1px;
 }
 </style>

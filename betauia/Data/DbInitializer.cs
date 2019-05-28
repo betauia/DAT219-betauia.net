@@ -14,7 +14,7 @@ namespace betauia.Data
             db.Database.EnsureCreated();
             
             Config.AddRoles(um,rm);
-            var user = new ApplicationUser { Email = "user@gmail.com", UserName = "RickNmorty", FirstName = "Rick",LastName = "Morty", NickName = "Nickname"};
+            var user = new ApplicationUser { Email = "user@gmail.com", UserName = "ksolli", FirstName = "Kristoffer",LastName = "Solli", NickName = "Nickname"};
             um.CreateAsync(user, "Password1.").Wait();
             um.AddToRoleAsync(user, "Admin").Wait();
             
@@ -22,19 +22,19 @@ namespace betauia.Data
             um.CreateAsync(user, "Password1.").Wait();
             um.AddToRoleAsync(user, "SuperAdmin").Wait();
             
-            user = new ApplicationUser { Email = "user2@gmail.com", UserName = "Tommyboy", FirstName = "Tom",LastName = "Tomsen", NickName = "Nickname"};
+            user = new ApplicationUser { Email = "user2@gmail.com", UserName = "cmathisen", FirstName = "Christer",LastName = "Mathisen", NickName = "Nickname"};
             um.CreateAsync(user, "Password1.").Wait();
             um.AddToRoleAsync(user, "User").Wait();
             
-            user = new ApplicationUser { Email = "user3@gmail.com", UserName = "SprackExtractor", FirstName = "Sprack",LastName = "Extractor", NickName = "Nickname"};
+            user = new ApplicationUser { Email = "user3@gmail.com", UserName = "eeilertsen", FirstName = "Even",LastName = "Eilertsen", NickName = "Nickname"};
             um.CreateAsync(user, "Password1.").Wait();
             um.AddToRoleAsync(user, "User").Wait();
             
-            user = new ApplicationUser { Email = "user4@gmail.com", UserName = "CrapWanker", FirstName = "Crap",LastName = "Wanker", NickName = "Nickname"};
+            user = new ApplicationUser { Email = "user4@gmail.com", UserName = "askailand", FirstName = "Aslak",LastName = "Skailand", NickName = "Nickname"};
             um.CreateAsync(user, "Password1.").Wait();
             um.AddToRoleAsync(user, "User").Wait();
             
-            user = new ApplicationUser { Email = "user5@gmail.com", UserName = "DickwhistleWagon", FirstName = "Dickwhistle",LastName = "Wagon", NickName = "Nickname"};
+            user = new ApplicationUser { Email = "user5@gmail.com", UserName = "mbraaten", FirstName = "Martin",LastName = "Baraaten", NickName = "Nickname"};
             um.CreateAsync(user, "Password1.").Wait();
             um.AddToRoleAsync(user, "User").Wait();
             
