@@ -14,6 +14,7 @@
     "buefy": "^0.7.3",
     "bulma": "^0.7.4",
     "node-sass": "^4.12.0",
+    "sim": "^1.0.18",
     "simple-table-vue": "^0.8.0",
     "vue": "^2.6.6",
     "vue-awesome": "^3.5.1",

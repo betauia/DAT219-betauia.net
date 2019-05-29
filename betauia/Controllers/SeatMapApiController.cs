@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using betauia.Data;
@@ -95,13 +96,22 @@ namespace betauia.Controllers
         
         // POST: Add new SeatMap
         [HttpPost]
-        public IActionResult Post(SeatMapModel seatMap)
+        public IActionResult Post(SeatMap seatMap)
         {
+            var seatMapModel = seatMap.seatMapModel;
             // Return if id is set to avoid overwriting an existing SeatMap
-            if (seatMap.Id == null) return BadRequest("No id in seatMap.");
-
+            if (seatMapModel.Id == null) return BadRequest("No id in seatMap.");
+            seatMapModel.NumSeats = seatMap.Seats.Count;
+            seatMapModel.NumSeatsAvailable = seatMap.Seats.Count;
+            
+            foreach (var seat in seatMap.Seats)
+            {
+                seat.Owner = seatMapModel;
+                _context.Add(seat);
+            }
+            
             // Add and save
-            _context.Add(seatMap);
+            _context.Add(seatMapModel);
             _context.SaveChanges();
 
             return Created("Created!", seatMap);
@@ -128,6 +138,12 @@ namespace betauia.Controllers
         private bool SeatMapExists(string id)
         {
             return _context.SeatMaps.Any(e => e.Id == id);
+        }
+
+        public class SeatMap
+        {
+            public SeatMapModel seatMapModel { get; set; }
+            public List<SeatModel> Seats { get; set; }
         }
     }
 }
