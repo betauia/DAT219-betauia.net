@@ -18,7 +18,7 @@
       v-on:dragging="resize"
     >
       <div v-for="seat in group.seats" v-bind:key="seat">
-        <Seat v-bind:seat="seat"></Seat>
+        <SeatEdit v-bind:seat="seat"></SeatEdit>
       </div>
     </VueDragResize>
   </div>
@@ -26,10 +26,10 @@
 
 <script>
 import VueDragResize from "@/components/SeatMap/vue-drag-resize.vue";
-import Seat from "@/components/SeatMap/Seat.vue";
+import SeatEdit from "@/components/SeatMap/SeatEdit.vue";
 export default {
   components: {
-    Seat: Seat,
+    SeatEdit: SeatEdit,
     VueDragResize
   },
   props: {

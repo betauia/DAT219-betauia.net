@@ -189,6 +189,9 @@ button {
   width: 100%;
 }
 #grid {
+  vertical-align: top;
+  display: inline-block;
+  position: relative;
   background-image: url("https://i.imgur.com/6BryTTm.jpg");
   background-repeat: no-repeat;
   background-size: cover;
