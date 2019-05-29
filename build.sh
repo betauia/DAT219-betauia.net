@@ -1,1 +1,1 @@
-sudo docker-compose down && sudo docker-compose up -d --build --no-cache
+sudo docker-compose down && sudo docker-compose up -d --build
