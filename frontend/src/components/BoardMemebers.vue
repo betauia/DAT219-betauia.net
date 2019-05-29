@@ -7,7 +7,7 @@
   <div class="columns">
    <div class="column is-3 center">
     <figure class="image is-256x256">
-        <img class="is-rounded" src="../assets/img/dummyimg.png">
+        <img class="is-rounded" src="../assets/img/board/kristoffer.jpg">
         <figcaption>
             <ul>
                 <li class="MemeberName">Kristoffer Solli</li>
@@ -18,7 +18,7 @@
     </div>
     <div class="column is-3 center">
     <figure class="image is-256x256">
-        <img class="is-rounded" src="../assets/img/even.png">
+        <img class="is-rounded" src="../assets/img/board/even.jpg">
         <figcaption>
             <ul>
                 <li class="MemeberName">Even Eilertsen</li>
@@ -31,7 +31,7 @@
    <div class="columns">
    <div class="column is-3">
     <figure class="image is-256x256">
-        <img class="is-rounded" src="../assets/img/dummyimg.png">
+        <img class="is-rounded" src="../assets/img/board/christer.jpg">
         <figcaption>
             <ul>
                 <li class="MemeberName">Christer Mathisen</li>
@@ -42,7 +42,7 @@
     </div>
     <div class="column is-3">
     <figure class="image is-256x256">
-        <img class="is-rounded" src="../assets/img/dummyimg.png">
+        <img class="is-rounded" src="../assets/img/board/placeholder.png">
         <figcaption>
             <ul>
                 <li class="MemeberName">Aslak Skailand</li>
@@ -53,7 +53,7 @@
     </div>
    <div class="column is-3">
     <figure class="image is-256x256">
-        <img class="is-rounded" src="../assets/img/dummyimg.png">
+        <img class="is-rounded" src="../assets/img/board/martin.jpg">
         <figcaption>
             <ul>
                 <li class="MemeberName">Martin Bråten</li>
@@ -64,7 +64,7 @@
     </div>
     <div class="column is-3">
     <figure class="image is-256x256">
-        <img class="is-rounded" src="../assets/img/dummyimg.png">
+        <img class="is-rounded" src="../assets/img/board/placeholder.png">
         <figcaption>
             <ul>
                 <li class="MemeberName">Mattias  Coelho</li>
