@@ -36,12 +36,14 @@ namespace betauia.Controllers
         [HttpGet("{id}")]
         public IActionResult GetAllById(string id)
         {
-            return Ok(_context.Seats.Where(e => e.OwnerId == id));
+            var seat = _context.Seats.Find(id);
+            seat.Owner = _context.SeatMaps.Find(seat.OwnerId);
+            return Ok(seat);
         }
         
         // PUT: Update SeatModel by id
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSeatMap(int id, SeatModel seatModel)
+        public async Task<IActionResult> PutSeatMap(string id, SeatModel seatModel)
         {
             // Check if id matches SeatModel id
             if (id != seatModel.Id) return BadRequest();
@@ -120,7 +122,7 @@ namespace betauia.Controllers
         }
         
         // Function to check if a SeatMap by id exists
-        private bool SeatModelExists(int id)
+        private bool SeatModelExists(string id)
         {
             return _context.Seats.Any(e => e.Id == id);
         }

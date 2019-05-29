@@ -47,8 +47,11 @@ namespace betauia
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.EnableSensitiveDataLogging();
                 options.UseSqlite(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("DefaultConnection"));
+            });
             
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddRoles<IdentityRole>()

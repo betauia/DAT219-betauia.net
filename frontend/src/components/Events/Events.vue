@@ -12,8 +12,11 @@
               <li>Description: {{event.description}}</li>
               <li>Content: {{event.content}}</li>
               <li>EventTime: {{event.eventTime}}</li>
+              <li v-if="event.sponsorId">Event sponsor: {{event.sponsorId}}</li>
             </ul>
             <br>
+            <p>{{event.seatMapId}}</p>
+            <button v-if="event.seatMapId" v-on:click="buyticket">Buy ticket</button>
           </div>
         </div>
       </div>
@@ -26,6 +29,16 @@ export default {
   name: "Events",
   props: {
     event: Object
+  },
+  created() {
+    console.log(this.event);
+  },
+  methods: {
+    buyticket() {
+      this.$router.push(
+        "/events/seatmap/" + this.event.id + "/" + this.event.seatMapId
+      );
+    }
   }
 };
 </script>

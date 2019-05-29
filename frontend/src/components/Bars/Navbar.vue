@@ -23,9 +23,8 @@
         >Sponsors</router-link>
         <hr class="navbar-divider">
       </div>
-      
 
-      <div class="navbar-end" v-if="isLoggedIn == false">
+      <template class="navbar-end" v-if="isLoggedIn == false">
         <router-link
           @click.native="isActive = false"
           class="navbar-item"
@@ -33,15 +32,15 @@
         >Register</router-link>
 
         <router-link @click.native="isActive = false" class="navbar-item" to="/account/login">Login</router-link>
-      </div>
-      <div class="navbar-end" v-else>
+      </template>
+      <template class="navbar-end" v-else>
         <router-link
           @click.native="isActive = false"
           class="navbar-item"
           to="/account/info"
         >Your account</router-link>
         <button v-on:click="logout" class="navbar-item">Logout</button>
-      </div>
+      </template>
     </div>
   </nav>
 </template>

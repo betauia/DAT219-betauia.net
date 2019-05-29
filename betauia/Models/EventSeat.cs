@@ -3,27 +3,28 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace betauia.Models
 {
-    public class SeatModel
+    public class EventSeat
     {
-        public SeatModel()
+        public EventSeat()
         {
- 
+            IsAvailable = true;
+            IsReserved = false;
         }
         //[Key, Column(Order = 0)]
-       public string Id { get; set; }
+        public string Id { get; set; }
         
         public int Number { get; set; }
         
         //[Key, Column(Order =  1)]
         public string OwnerId { get; set; }
         
-        //[ForeignKey("OwnerId")]
-        public SeatMapModel Owner { get; set; }
-        
         //public float height { get; set; }
         //public float width { get; set; }
         
         public int x { get; set; }
         public int y { get; set; }
+        
+        public bool IsAvailable { get; set; }
+        public bool IsReserved { get; set; }
     }
 }

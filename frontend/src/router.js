@@ -33,6 +33,14 @@ export default new Router({
             component: () => import('./views/Events.vue'),
         },
         {
+            path: '/events/seatmap/:eventid/:seatmapid/',
+            component: () => import('./components/Events/SeatMapView.vue'),
+        },
+        {
+            path: '/events/seat/:eventid/:seatmapid/:seatid',
+            component: () => import('./components/Events/SeatInfo.vue'),
+        },
+        {
             path: '/sponsors',
             component: () => import('./components/Sponsors/Sponsors.vue'),
         },
@@ -41,8 +49,12 @@ export default new Router({
             component: () => import('./components/Sponsors/SponsorDetailed.vue'),
         },
         {
-            path: '/seatmap/:id',
+            path: '/seatmap/:eventid/:seatmapid',
             component: () => import('./components/SeatMap/SeatMapView.vue'),
+        },
+        {
+            path: '/seatmap/:eventid/:seatmapid/:seatid',
+            component: () => import('./components/SeatMap/SeatInfo.vue'),
         },
         {
             path: '/account/login',

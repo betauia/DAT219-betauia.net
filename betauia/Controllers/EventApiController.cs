@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using betauia.Data;
@@ -73,13 +74,32 @@ namespace betauia.Controllers
         // Tested and working
         // POST: Add new event
         [HttpPost]
-        public IActionResult Post(EventModel eventModel)
+        public IActionResult Post([FromBody] EventModel eventModel)
         {
             // Return if id is set to avoid overwriting an existing event
             if (eventModel.Id != 0) return BadRequest();
+
+            var tseatmapid = eventModel.SeatMapId;
+            eventModel.SeatMapId = null;
+            
+            _context.Add(eventModel);
+            _context.SaveChanges();
+
+            if (tseatmapid != null)
+            {
+                var tSeatmap = _context.SeatMaps.Find(tseatmapid);
+                var seatmap = CreateSeatMap(eventModel, tSeatmap);
+
+                var tseats = _context.Seats.Where(r => r.OwnerId == tSeatmap.Id).ToList();
+                var seats = CreateSeats(seatmap, tseats);
+                _context.EventSeatMaps.Add(seatmap);
+                _context.EventSeats.AddRange(seats);
+                eventModel.SeatMapId = seatmap.Id;
+                eventModel.SeatMap = seatmap;
+            }
             
             // Add and save
-            _context.Add(eventModel);
+            _context.Update(eventModel);
             _context.SaveChanges();
 
             return CreatedAtAction(nameof(GetEventModel), new {id = eventModel.Id}, eventModel);
@@ -105,6 +125,36 @@ namespace betauia.Controllers
         private bool EventModelExists(int id)
         {
             return _context.Events.Any(e => e.Id == id);
+        }
+
+        private EventSeatMap CreateSeatMap(EventModel eventModel, SeatMapModel seatMapModel)
+        {
+            var seatmap = new EventSeatMap
+            {
+                NumSeats = seatMapModel.NumSeats,
+                NumSeatsAvailable = seatMapModel.NumSeats,
+                EventId = eventModel.Id,
+                Id = eventModel.Id + seatMapModel.Id,
+            };
+            return seatmap;
+        }
+
+        private List<EventSeat> CreateSeats(EventSeatMap seatMap, List<SeatModel> tseats)
+        {
+            List<EventSeat> seats = new List<EventSeat>();
+            foreach (var tseat in tseats)
+            {
+                var seat = new EventSeat
+                {
+                    Number = tseat.Number,
+                    x = tseat.x,
+                    y = tseat.y,
+                    OwnerId = seatMap.Id,
+                    Id = seatMap.Id + tseat.Number,
+                };
+                seats.Add(seat);
+            }
+            return seats;
         }
     }
 }
