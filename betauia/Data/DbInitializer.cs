@@ -64,11 +64,11 @@ namespace betauia.Data
             db.Sponsors.Add(sponsor);
             
             var Event = new EventModel("Betalan", "På tide med et nytt lan", "Lanet skal skje whenever",
-                "Det skal skje mange events osv.", DateTime.Now, "Author", "imagepath", 0, true);
+                "Det skal skje mange events osv.", DateTime.Now, "Author", "imagepath", 0, true, 0);
             db.Add(Event);
 
             
-            const int numSeats = 20;
+/*            const int numSeats = 20;
 
             var seatMap = new SeatMapModel(numSeats, 100);
             
@@ -78,7 +78,7 @@ namespace betauia.Data
                 db.Seats.Add(seat);
             }
             
-            db.SeatMaps.Add(seatMap);
+            db.SeatMaps.Add(seatMap);*/
             
             var ticket = new TicketModel("20.02.92", 199, true, "Vipps");
             var ticket2 = new TicketModel("20.02.9222", 2099, false, "PayPal");

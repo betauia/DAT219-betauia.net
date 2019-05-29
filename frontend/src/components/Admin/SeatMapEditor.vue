@@ -98,8 +98,9 @@ export default {
     },
     saveSeatMap: function(event) {
       var name = document.querySelector("input[name=seatmapname]").value;
-      var output = {};
-      output.name = name;
+      var seatmap = {};
+      seatmap.id = name;
+      seatmap.numseats = this.count;
       var out = JSON.stringify(this.seats, null, 2);
       var groups = this.$el.querySelectorAll(".seatgroup");
 
@@ -114,15 +115,42 @@ export default {
           jseat.id = seats[i].textContent;
           jseat.x = seats[i].offsetLeft + x;
           jseat.y = seats[i].offsetTop + y;
+          jseat.ownerid = name;
           jseats.push(jseat);
         }
       });
+      var output = {};
+      output.seatmapmodel = seatmap;
       output.seats = jseats;
-      console.log(output);
+
       //alert(JSON.parse(jseats, null, 2));
 
       //seats = group.getElementsByClassName("seat");
       //alert(seats[1].offsetLeft);
+
+      var token = localStorage.getItem("token");
+
+      var config = {
+        headers: { Authorization: "bearer " + token }
+      };
+
+      var body = {
+        seatmapmodel: seatmap,
+        seats: jseats
+      };
+      console.log(body);
+
+      var self = this;
+      axios
+        .post("/api/seatmap", body, config)
+        .then(function(response) {
+          self.user = response.data;
+          self.$router.push("/account/info");
+          console.log(response.data);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 };
