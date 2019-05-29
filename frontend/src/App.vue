@@ -3,19 +3,25 @@
     <title>Betauia.net</title>
         <Navbar></Navbar>
         <router-view/>
+    <cookie-law>
+  <div slot="message">
+    This website uses cookies to ensure you get the best experience on our website. for more info <router-link to="/privacy" class="black">Click here</router-link>
+  </div>
+</cookie-law>
     <Footer></Footer>
   </div>
 </template>
 
-
 <script>
 import Navbar from '@/components/Bars/Navbar.vue';
 import Footer from '@/components/Bars/Footer.vue';
+import CookieLaw from 'vue-cookie-law';
 
 export default {
   components: {
     Navbar,
     Footer,
+    CookieLaw,
   },
 };
 </script>
@@ -30,6 +36,10 @@ export default {
 
 .padding {
   padding: 10px;
+}
+
+.black{
+  color: #0085ff;
 }
 
 a {
