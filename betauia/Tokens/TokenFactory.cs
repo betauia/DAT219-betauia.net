@@ -38,7 +38,7 @@ namespace betauia.Tokens
                 }
             }
             
-            var token2 = new JwtSecurityToken(
+            var token = new JwtSecurityToken(
                 issuer: "betauia",
                 audience: "https://localhost:5001",
                 claims: claims,
@@ -47,7 +47,7 @@ namespace betauia.Tokens
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg")), SecurityAlgorithms.HmacSha256)
                 );
             
-            return new JwtSecurityTokenHandler().WriteToken(token2);
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
         
         public string AuthenticateUser(string token)

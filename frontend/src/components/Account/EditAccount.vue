@@ -60,6 +60,7 @@ export default {
         .put("/api/account/edit", bodyParamters, config)
         .then(function(response) {
           self.user = response.data;
+          self.$router.push("/account/info");
           console.log(response.data);
         })
         .catch(function(error) {
