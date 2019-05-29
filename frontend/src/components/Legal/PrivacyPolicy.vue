@@ -1,28 +1,29 @@
 <template>
     <div class="privacyPolicy padding center">
-        <div class="is-1 padding"><b>Betauia Privacy Policy</b></div>
-                <italic>Betauia is part of the student organization BETA ENGINEERING &amp; TECHNOLOGY
+        <div class="is-1 padding center"><b>Betauia Privacy Policy</b></div>
+            <div>
+                Betauia is part of the student organization BETA ENGINEERING &amp; TECHNOLOGY
                 ASSOCIATION at the University of Agder (UiA). This privacy policy will explain how
                 our organization uses the personal data we collect from you when you use our
-                website.</italic>
+                website.
             
-            <ul style="list-style-type:disc">Topics:
-                <li>What data do we collect?</li>    
-                <li>How do we collect your data?</li>
-                <li>How will we use your data?</li>
-                <li>How do we store your data?</li>
-                <li>Marketing</li>
-                <li>What are your data protection rights?</li>
-                <li>What are cookies?</li>
-                <li>How do we use cookies?</li>
-                <li>What types of cookies do we use?</li>
-                <li>How to manage your cookies</li>
-                <li>Privacy policies of other websites</li>
-                <li>Changes to our privacy policy</li>
-                <li>How to contact us</li>
-                <li>How to contact the appropriate authorities</li>
-            </ul>
-            
+                <ul style="list-style-type:disc">Topics:
+                    <li>What data do we collect?</li>    
+                    <li>How do we collect your data?</li>
+                    <li>How will we use your data?</li>
+                    <li>How do we store your data?</li>
+                    <li>Marketing</li>
+                    <li>What are your data protection rights?</li>
+                    <li>What are cookies?</li>
+                    <li>How do we use cookies?</li>
+                    <li>What types of cookies do we use?</li>
+                    <li>How to manage your cookies</li>
+                    <li>Privacy policies of other websites</li>
+                    <li>Changes to our privacy policy</li>
+                    <li>How to contact us</li>
+                    <li>How to contact the appropriate authorities</li>
+                </ul>
+            </div>
         <div class="is-2 padding"><b>What data do we collect?</b></div>
             <ul style="list-style-type:disc">Betauia collects the following data:
                 <li>Personal identification information (Name, email address, phone number, etc.)</li>
@@ -74,7 +75,7 @@
             </div>
         <div class="is-2 padding"><b>What are your data protection rights?</b></div>
             <div>
-                <ul style="list-style-type:disc">Betauia would like to make sure you are fully aware of all of your data protection
+                <ul style="list-style-type:none">Betauia would like to make sure you are fully aware of all of your data protection
                     rights. Every user is entitled to the following:
                     <li><b>The right to access</b> – You have the right to request Betauia for copies of your
                         personal data. We may charge you a small fee for this service.</li>
@@ -106,8 +107,8 @@
             <div>
                 <ul style="list-style-type:disc">Betauia uses cookies in a range of ways to improve your experience on our website,
                 including:
-                <li> Keeping you signed in</li>
-                <li> Understanding how you use our website</li>
+                <li>Keeping you signed in</li>
+                <li>Understanding how you use our website</li>
                 </ul>
             </div>
 
