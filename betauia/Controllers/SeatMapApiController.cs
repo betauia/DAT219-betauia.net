@@ -32,10 +32,15 @@ namespace betauia.Controllers
 
         // GET: Get SeatMap by id
         [HttpGet("{id}")]
-        public async Task<ActionResult<SeatMapModel>> GetSeatMap(string id)
+        public async Task<ActionResult<SeatMap>> GetSeatMap(string id)
         {
             // Get SeatMap by id
             var seatMap = await _context.SeatMaps.FindAsync(id);
+            SeatMap ret = new SeatMap();
+            ret.seatMapModel = seatMap;
+
+            List<SeatModel> seats = _context.Seats.ToList();
+            ret.Seats = seats;
             
             // Check if SeatMap is valid
             if (seatMap == null)
@@ -62,7 +67,7 @@ namespace betauia.Controllers
             }
             
             // Return seatmap
-            return seatMap;
+            return ret;
         }
         
         // PUT: Update SeatMap by id

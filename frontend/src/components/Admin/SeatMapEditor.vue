@@ -144,8 +144,6 @@ export default {
       axios
         .post("/api/seatmap", body, config)
         .then(function(response) {
-          self.user = response.data;
-          self.$router.push("/account/info");
           console.log(response.data);
         })
         .catch(function(error) {
@@ -191,8 +189,6 @@ button {
   width: 100%;
 }
 #grid {
-  display: inline-block;
-  position: relative;
   background-image: url("https://i.imgur.com/6BryTTm.jpg");
   background-repeat: no-repeat;
   background-size: cover;
