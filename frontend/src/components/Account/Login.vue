@@ -60,7 +60,9 @@ export default {
           console.log(response["data"]);
           //console.log(JSON.stringify(response));
           localStorage.setItem("token", response["data"]);
-          self.$router.push("/");
+          self.$router.push({ path: "/" }, () => {
+            location.reload();
+          });
           self.$$forceUpdate();
         })
         .catch(function(error) {
