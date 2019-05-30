@@ -1,58 +1,46 @@
 <template>
   <section class="padding center">
     <b-field label="Firstname">
-      <b-input :value="firstname" name="firstname" placeholder="kevin"></b-input>
+      <b-input :value="firstname" name="firstname"></b-input>
     </b-field>
 
     <b-field label="Lastname">
-      <b-input :value="lastname" name="lastname" placeholder="bacon"></b-input>
+      <b-input :value="lastname" name="lastname"></b-input>
     </b-field>
 
-    <b-field label="Email" type="is-danger" message="This email is invalid">
+    <b-field label="Email">
       <b-input
         type="email"
         :value="username"
         name="email"
-        placeholder="kevin@bacon.com"
-        maxlength="30"
       ></b-input>
     </b-field>
 
-    <b-field label="Username" type="is-danger" message="This Username is invalid">
+    <b-field label="Username">
       <b-input
         type="username"
         :value="username"
         name="username"
-        placeholder="mrbacon"
-        maxlength="30"
       ></b-input>
     </b-field>
 
     <b-field
       label="Password"
-      type="is-danger"
-      :message="['Password is too short', 'Password must have at least 8 characters']"
     >
       <b-input
         :value="password"
         type="password"
         name="password"
-        placeholder="bacon15mylyf3"
-        maxlength="120"
       ></b-input>
     </b-field>
 
     <b-field
       label="Password Again"
-      type="is-danger"
-      :message="['Password is too short', 'Password must have at least 8 characters']"
     >
       <b-input
         :value="again_password"
         type="password"
         name="again_password"
-        placeholder="bacon15mylyf3"
-        maxlength="120"
       ></b-input>
     </b-field>
 
