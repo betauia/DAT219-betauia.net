@@ -26,7 +26,6 @@
 
     <div class="field" grouped>
       <button v-on:click="login" class="button is-primary">Login</button>
-      <b-checkbox>Remember Me!</b-checkbox>
     </div>
   </section>
 </template>

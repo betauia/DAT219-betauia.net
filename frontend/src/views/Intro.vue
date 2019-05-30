@@ -1,21 +1,21 @@
 <template>
   <div class="Intro">
-    <section class="intro hero is-fullheight tower-img">
+    <section class="intro hero is-fullheight header-img">
       <div class="hero-body">
         <div class="header container is-widescreeen has-text-centered">
           <h1 class="title is-1 fontBlack">Beta Engineering &amp; Technology Association</h1>
-          <p class="subtitle is-3 fontBlack">"insert inspirational quote"</p>
+          <p class="subtitle is-4 fontBlack">Linjeforrening for Dataingeniør studenter ved Universitetet i Agder</p>
         </div>
       </div>
     </section>
     <section class="about hero is-fullheight is-warning">
       <div class="hero-body">
         <div class="container is-widescreen">
-          <h1 class="title is-2" v-smooth-scroll>About Beta</h1>
-          <p class="subtitle">
+          <h1 class="title is-2 " >About Beta</h1>
+          <p class="subtitle is-3">
             Beta er linjeforeningen for Data Ingeniør Studenter ved Universitetet i Agder.
             Beta er en non-profit organisasjon. Det betyr at Beta driver ikke for å tjene penger,
-            men heller bruker fortjenesten :sin på dems medlemmer.
+            men heller bruker fortjenesten sin på dems medlemmer.
             Alle data ingeniør studenter ved UiA er automatisk medlem
             av Beta dersom en ikke aktivt melder seg ut.
           </p>
@@ -25,8 +25,7 @@
     <section class="help hero is-fullheight retro-img">
       <div class="hero-body">
         <div class="container is-widescreeen">
-          <h1 class="title is-2 fontBlack"
-          v-smooth-scroll>Har du lyst til å være med å hjelpe til?</h1>
+          <h1 class="title is-2 fontBlack">Har du lyst til å være med å hjelpe til?</h1>
           <p class="subtitle fontBlack">lyst til bli med i styret for BETA ?</p>
         </div>
       </div>
@@ -34,7 +33,7 @@
     <section class="board-members hero is-fullheight is-bold">
       <div class="hero-body">
         <div class="container is-widescreeen">
-          <h1 class="title has-text-centered is-1 fontBlack" v-smooth-scroll>Styret</h1>
+          <h1 class="title has-text-centered is-1 fontStyret" >Styret</h1>
           <p class="subtitle">
             <BoardMemebers></BoardMemebers>
           </p>
@@ -64,7 +63,12 @@
 
 .fontBlack {
   color: #ffffff;
-  text-shadow: #0f0f0f 2px 2px 0;
+  text-shadow: #0f0f0f 2px 2px 3px;
+}
+
+.fontStyret {
+  color: black;
+  text-shadow:#0085ff 1px 1px 1px;
 }
 
 #nav {

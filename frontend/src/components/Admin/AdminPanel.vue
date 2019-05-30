@@ -55,7 +55,7 @@ export default {
   created() {
     var token = localStorage.getItem("token");
     if (token == null) {
-      console.log("No access");
+      alert("No access");
       this.$router.push("/");
       return;
     }
@@ -67,7 +67,7 @@ export default {
         var roles = response["data"];
         if (roles == null || roles == "User" || roles == "") {
           //window.location.href = "/";
-          console.log("No access");
+          alert("No access");
           self.$router.push("/");
         }
       })
