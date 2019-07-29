@@ -3,7 +3,10 @@
     <div class="form-horizontal padding center">
       <div class="is-1 title">Kjøp Billetter</div>
         <div>
-            <p class="is-italic">Billettene til BetaLAN er forhåndskjøpte og du som kunden vil ikke motta tjenesten før BetaLAN er gjennomført i sin helhet. Ved å klikke kjøp nederst på siden vil du automatisk godta disse vilkårene og 
+            <p class="is-italic">Billettene til BetaLAN er forhåndskjøpte 
+              og du som kunden vil ikke motta tjenesten før BetaLAN er 
+              gjennomført i sin helhet. Ved å klikke kjøp nederst på siden 
+              vil du automatisk godta disse vilkårene og 
                 <router-link to="/salgsbetingelser" class="has-text-info">
                 kjøpsavtalen
                 </router-link>                                                           
@@ -32,7 +35,6 @@
             <button id="buy" name="buy" class="button is-primary">Kjøp</button>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -46,38 +48,7 @@ export default {
     return {};
   },
   methods: {
-    show () {
-    this.$modal.show('hello-world');
-    },
-    hide () {
-      this.$modal.hide('hello-world');
-    },
-    addPost() {
-      var token = localStorage.getItem("token");
-      var title = document.querySelector("input[name=blogTitle]").value;
-      var summary = document.querySelector("input[name=blogDescription]").value;
-      var content = document.querySelector("textarea[name=blogContent]").value;
-
-      var config = {
-        headers: { Authorization: "bearer " + token }
-      };
-
-      var bodyParamters = {
-        title: title,
-        summary: summary,
-        content: content
-      };
-      var self = this;
-      axios
-        .post("/api/event/add", bodyParamters, config)
-        .then(function(response) {
-          console.log(response.data);
-          self.$router.push("/blog/detailed/" + response.data);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    }
+  
   }
 };
 </script>

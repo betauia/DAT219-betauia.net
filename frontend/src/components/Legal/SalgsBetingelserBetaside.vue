@@ -1,6 +1,8 @@
 <template>
     <span class="modal-active">
-        <div class="modal-background" v-on:click="modal-close"></div>
+        <router-link to="/purchase" class="has-text-info">
+            <div class="modal-background"></div>
+        </router-link>
         <div class="modal-content">
             <figure class="image is-3by4">            
                 <img src="@/assets/img/salgsbetingelser/SalgsbetingleserBetaSide-1.png"/>
@@ -15,7 +17,7 @@
                 <img src="@/assets/img/salgsbetingelser/SalgsbetingleserBetaSide-4.png"/>
             </figure>
         </div>
-        <button class="modal-close is-large" v-on:click="modal-close" aria-label="close"></button>
+        <button class="modal-close is-large" aria-label="close"></button>
         </span>
 </template>
 

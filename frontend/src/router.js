@@ -21,6 +21,10 @@ export default new Router({
     component: () => import('./components/Legal/SalgsBetingelserBetaside.vue'),
   },
   {
+    path: '/purchase',
+    component: () => import('./components/Payment/Purchase.vue'),
+  },
+  {
     path: '/blog',
     component: () => import('./views/Blog.vue'),
   },
@@ -70,10 +74,6 @@ export default new Router({
     {
       path: '/account/edit/:id',
       component: () => import('./components/Account/EditAccount.vue'),
-    },
-    {
-        path: '/purchase',
-        component: () => import('./views/Purchase.vue'),
     },
     ],
   },
