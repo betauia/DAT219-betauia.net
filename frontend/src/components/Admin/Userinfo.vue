@@ -45,7 +45,13 @@
       id="savebutton"
       name="savebutton"
       class="button is-success"
-    >Save changes</button>
+    >Save Changes</button>
+    <button
+      v-on:click="deleteUser"
+      id="savebutton"
+      name="savebutton"
+      class="button is-danger"
+    >Delete User</button>
   </div>
 </template>
 
@@ -114,6 +120,11 @@ export default {
 
       self.$forceUpdate();
     }
+  },
+  deleteUser() {
+    axios
+      .delete("/api/user/delete")
+    self.$forceUpdate();
   }
 };
 </script>

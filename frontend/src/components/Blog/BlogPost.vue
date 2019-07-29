@@ -1,16 +1,20 @@
 <template>
   <div class="Posts">
-    <div class="columns padding">
-      <div class="card">
-        <header class="card-header">
-          <p class="card-header-title">{{post.title}}</p>
-        </header>
-        <div class="card-content">
-          <h1 class="summary">{{post.summary}}</h1>
-          <div class="content">
-            {{post.content}}
-            <br>
-            <div class="italic">Last edited at: {{post.lastEditDate}}</div>
+    <div class="columns is-mobile is-multiline is-centered">
+      <div class="column is-three-quarters is-offset-is-narrow">
+        <div>
+          <div class="card padding">
+            <header>
+              <p class="card-header-title">{{post.title}}</p>
+            </header>
+            <div>
+              <h1 class="summary">{{post.summary}}</h1>
+              <div class="content">
+                {{post.content}}
+                <br>
+                <div class="italic">Last edited at: {{post.lastEditDate}}</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
