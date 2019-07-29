@@ -4,31 +4,9 @@
       <div class="is-1 title">Kjøp Billetter</div>
         <div>
             <p class="is-italic">Billettene til BetaLAN er forhåndskjøpte og du som kunden vil ikke motta tjenesten før BetaLAN er gjennomført i sin helhet. Ved å klikke kjøp nederst på siden vil du automatisk godta disse vilkårene og 
-                <!--
                 <router-link to="/salgsbetingelser" class="has-text-info">
                 kjøpsavtalen
-                </router-link> 
-                -->
-                <a v:on-click="modal-active">kjøpsavtalen
-                  <span class="moda-active">
-                    <div class="modal-background" v-on:click="modal-close"></div>
-                    <div class="modal-content">
-                      <figure class="image is-3by4">            
-                          <img src="@/assets/img/salgsbetingelser/SalgsbetingleserBetaSide-1.png"/>
-                      </figure>
-                      <figure class="image is-3by4">
-                          <img src="@/assets/img/salgsbetingelser/SalgsbetingleserBetaSide-2.png"/>
-                      </figure>
-                      <figure class="image is-3by4">
-                          <img src="@/assets/img/salgsbetingelser/SalgsbetingleserBetaSide-3.png"/>
-                      </figure>
-                      <figure class="image is-3by4">
-                          <img src="@/assets/img/salgsbetingelser/SalgsbetingleserBetaSide-4.png"/>
-                      </figure>
-                    </div>
-                    <button class="modal-close is-large" v-on:click="modal-close" aria-label="close"></button>
-                  </span>
-                </a>
+                </router-link>                                                           
                 vår. </p>
         </div>
 
@@ -68,6 +46,12 @@ export default {
     return {};
   },
   methods: {
+    show () {
+    this.$modal.show('hello-world');
+    },
+    hide () {
+      this.$modal.hide('hello-world');
+    },
     addPost() {
       var token = localStorage.getItem("token");
       var title = document.querySelector("input[name=blogTitle]").value;
