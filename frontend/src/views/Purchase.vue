@@ -3,7 +3,9 @@
     <div class="is-1 title">Kjøp Billetter</div>
       <div>
           <p class="is-italic">Billettene til BetaLAN er forhåndskjøpte og du som kunden vil ikke motta tjenesten før BetaLAN er gjennomført i sin helhet. Ved å klikke kjøp nederst på siden vil du automatisk godta disse vilkårene og 
-              <router-link to="/salgsbetingelser">kjøpsavtalen</router-link> 
+              <router-link to="/salgsbetingelser" class="has-text-info">
+              kjøpsavtalen
+              </router-link> 
               vår. </p>
       </div>
 
