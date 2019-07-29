@@ -2,7 +2,7 @@
   <div class="Events">
     <div class="column padding">
       <div class="columns is-mobile is-multiline is-centered">
-        <div class="column is-half is-offset-is-narrow">
+        <div class="column is-four-fifths is-offset-is-narrow">
           <div class="card">
             <header class="card-header">
               <p class="card-header-title">{{event.title}}</p>
