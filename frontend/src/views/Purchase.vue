@@ -20,7 +20,8 @@
               <option value="3">3</option>
               <option value="4">4</option>
             </select>
-        </div>
+          </div>
+          <sum id="price">Pris: <span></span></sum>
         </div>
       </div>
 
@@ -45,31 +46,9 @@ export default {
     return {};
   },
   methods: {
-    addPost() {
-      var token = localStorage.getItem("token");
-      var title = document.querySelector("input[name=blogTitle]").value;
-      var summary = document.querySelector("input[name=blogDescription]").value;
-      var content = document.querySelector("textarea[name=blogContent]").value;
-
-      var config = {
-        headers: { Authorization: "bearer " + token }
-      };
-
-      var bodyParamters = {
-        title: title,
-        summary: summary,
-        content: content
-      };
-      var self = this;
-      axios
-        .post("/api/event/add", bodyParamters, config)
-        .then(function(response) {
-          console.log(response.data);
-          self.$router.push("/blog/detailed/" + response.data);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+    numSeats(){
+      var price = document.getItem("numSeats").value * 100;
+      return(price);
     }
   }
 };
