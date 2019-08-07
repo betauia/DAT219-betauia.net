@@ -37,7 +37,7 @@ export default {
 </script>
 
 <style>
-/* Media query for mobile viewport */
+        /* Media query for mobile viewport */
         @media screen and (max-width: 400px) {
             #paypal-button-container {
                 width: 100%;
