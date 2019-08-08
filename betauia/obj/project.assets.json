@@ -3056,6 +3056,15 @@
           "lib/netstandard1.0/Remotion.Linq.dll": {}
         }
       },
+      "RestSharp/106.6.10": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/RestSharp.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/RestSharp.dll": {}
+        }
+      },
       "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {
         "type": "package",
         "runtimeTargets": {
@@ -8527,6 +8536,21 @@
         "remotion.linq.nuspec"
       ]
     },
+    "RestSharp/106.6.10": {
+      "sha512": "x1FM32hjnVOIn+DKtCs2Y4Q2DCUE5KW08NUXUd4GjgKjE+5PE0F6e9XfUg7nILo05M0TA/HRkRD/SeQ8+duOUA==",
+      "type": "package",
+      "path": "restsharp/106.6.10",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net452/RestSharp.dll",
+        "lib/net452/RestSharp.xml",
+        "lib/netstandard2.0/RestSharp.dll",
+        "lib/netstandard2.0/RestSharp.xml",
+        "restsharp.106.6.10.nupkg.sha512",
+        "restsharp.nuspec"
+      ]
+    },
     "runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2": {
       "sha512": "7VSGO0URRKoMEAq0Sc9cRz8mb6zbyx/BZDEWhgPdzzpmFhkam3fJ1DAGWFXBI4nGlma+uPKpfuMQP5LXRnOH5g==",
       "type": "package",
@@ -13461,6 +13485,7 @@
       "Microsoft.EntityFrameworkCore.Sqlite >= 2.2.3",
       "Microsoft.NETCore.App >= 2.2.0",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.2.3",
+      "RestSharp >= 106.6.10",
       "System.IdentityModel.Tokens.Jwt >= 5.4.0",
       "System.Net.Http >= 4.3.4"
     ]
@@ -13472,11 +13497,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\betauia.csproj",
+      "projectUniqueName": "C:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\betauia.csproj",
       "projectName": "betauia",
-      "projectPath": "c:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\betauia.csproj",
+      "projectPath": "C:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\betauia.csproj",
       "packagesPath": "C:\\Users\\Asus Laptop\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\obj\\",
+      "outputPath": "C:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -13544,6 +13569,10 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",
             "version": "[2.2.3, )"
+          },
+          "RestSharp": {
+            "target": "Package",
+            "version": "[106.6.10, )"
           },
           "System.IdentityModel.Tokens.Jwt": {
             "target": "Package",
