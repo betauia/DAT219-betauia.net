@@ -73,6 +73,9 @@ export default {
       })
       .catch(function(error) {
         console.log(error);
+        alert("No Access")
+        self.$router.push("/account/login");
+        return;
       });
   }
 };
