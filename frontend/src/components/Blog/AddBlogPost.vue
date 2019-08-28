@@ -41,8 +41,8 @@
     </div>
 
     <!-- File Button -->
-
-    <label class="label" for="blog-upload">Upload a picture</label>
+    <!-- Upload -->
+    <!--label class="label" for="blog-upload">Upload a picture</label>
     <div class="file">
       <label class="file-label">
         <input
@@ -59,7 +59,7 @@
           <span class="file-label is-primary" id="filename-blog-upload">Choose a file…</span>
         </span>
       </label>
-    </div>
+    </div-->
     <!-- Button -->
     <div class="field">
       <label class="label" for="blog-publish"></label>

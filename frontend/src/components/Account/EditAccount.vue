@@ -1,5 +1,5 @@
 <template>
-  <div class="UserEdit">
+  <div class="UserEdit center">
     <div class="Input">
       <label>Username:</label>
       <br>
@@ -20,7 +20,23 @@
       <br>
       <input type="text" name="lastname" v-model="user.lastName">
     </div>
-    <button v-on:click="updateUser">Update account</button>
+    <div class="center">
+      <span>
+        <button
+        v-on:click="updateUser"
+        id="savebutton"
+        name="savebutton"
+        class="button is-info"
+      >Save changes</button>
+        </span>
+      <span>
+        <button
+        v-on:click="deleteUser"
+        id="savebutton"
+        name="savebutton"
+        class="button is-danger"
+      >Delete Account</button></span>
+    </div>
   </div>
 </template>
 
@@ -78,6 +94,10 @@ export default {
         });
 
       self.$forceUpdate();
+    },
+    deleteUser() {
+      axios
+        .delete("/api/account/delete")
     }
   },
   created() {

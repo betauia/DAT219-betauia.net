@@ -1,7 +1,17 @@
-FROM node:10-alpine
+FROM node:11
+WORKDIR /app
 
-RUN mkdir /usr/front
-WORKDIR /usr/front
-COPY package.json yarn.lock ./
-RUN yarn
-ENTRYPOINT yarn run serve
+COPY package*.json ./
+
+RUN yarn install
+
+COPY ./ ./
+
+RUN yarn build
+
+FROM nginx
+RUN mkdir /app
+COPY --from=0 /app/dist /app
+COPY nginx.conf /etc/nginx/nginx.conf
+
+EXPOSE 80

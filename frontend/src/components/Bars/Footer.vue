@@ -6,7 +6,7 @@
           <ul>
             <li>
               Discord:
-              <a href="https://discord.gg/betauia">https://discord.gg/betauia</a>
+              <a href="https://discord.gg/UQCPkZD">https://discord.gg/UQCPkZD</a>
             </li>
             <li>
               Email:

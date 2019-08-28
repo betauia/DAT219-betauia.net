@@ -1,32 +1,24 @@
 <template>
   <section class="padding center">
-    <b-field label="Email" type="is-danger" message="This email is invalid">
+    <b-field label="Email">
       <b-input
         type="email"
         :value="username"
         name="username"
-        placeholder="user@gmail.com"
-        maxlength="30"
       ></b-input>
     </b-field>
 
     <b-field
-      label="Password"
-      type="is-danger"
-      :message="['Password is too short', 'Password must have at least 8 characters']"
-    >
+      label="Password">
       <b-input
         :value="password"
         name="password"
         type="password"
-        placeholder="Password1."
-        maxlength="120"
       ></b-input>
     </b-field>
 
     <div class="field" grouped>
       <button v-on:click="login" class="button is-primary">Login</button>
-      <b-checkbox>Remember Me!</b-checkbox>
     </div>
   </section>
 </template>
