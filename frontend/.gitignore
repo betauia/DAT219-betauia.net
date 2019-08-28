@@ -36,8 +36,9 @@
 -
 -app.db
 .DS_Store
-node_modules
-/dist
+node_modules/
+dist/
+
 
 /tests/e2e/reports/
 selenium-debug.log

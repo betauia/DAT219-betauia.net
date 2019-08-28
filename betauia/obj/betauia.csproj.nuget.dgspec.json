@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\betauia.csproj": {}
+    "c:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\betauia.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\betauia.csproj": {
+    "c:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\betauia.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\betauia.csproj",
+        "projectUniqueName": "c:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\betauia.csproj",
         "projectName": "betauia",
-        "projectPath": "C:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\betauia.csproj",
+        "projectPath": "c:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\betauia.csproj",
         "packagesPath": "C:\\Users\\Asus Laptop\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\obj\\",
+        "outputPath": "c:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
