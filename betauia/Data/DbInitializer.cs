@@ -63,8 +63,15 @@ namespace betauia.Data
             };
             db.Sponsors.Add(sponsor);
             
-            var Event = new EventModel("Betalan", "På tide med et nytt lan", "Lanet skal skje whenever",
-                "Det skal skje mange events osv.", DateTime.Now, "Author", "imagepath", 0, true, 0);
+            var Event = new EventModel
+            {
+                Title = "Betalan",
+                SubTitle = "På tide med et nytt lan",
+                Description = "Lanet skal skje whenever",
+                Content = "Det skal skje mange events osv.",
+                IsPublic = true,
+                SponsorId = "atea"
+            };
             db.Add(Event);
 
             

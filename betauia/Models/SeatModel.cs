@@ -7,15 +7,17 @@ namespace betauia.Models
     {
         public SeatModel()
         {
-            IsAvailable = true;
+ 
         }
         //[Key, Column(Order = 0)]
-        public int Id { get; set; }
+       public string Id { get; set; }
+        
+        public int Number { get; set; }
         
         //[Key, Column(Order =  1)]
         public string OwnerId { get; set; }
         
-        [ForeignKey("OwnerId")]
+        //[ForeignKey("OwnerId")]
         public SeatMapModel Owner { get; set; }
         
         //public float height { get; set; }
@@ -23,7 +25,5 @@ namespace betauia.Models
         
         public int x { get; set; }
         public int y { get; set; }
-        
-        public bool IsAvailable { get; set; }
     }
 }

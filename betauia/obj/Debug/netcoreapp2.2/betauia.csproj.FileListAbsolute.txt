@@ -1,0 +1,108 @@
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/bin/Debug/netcoreapp2.2/betauia.deps.json
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/bin/Debug/netcoreapp2.2/betauia.runtimeconfig.json
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/bin/Debug/netcoreapp2.2/betauia.runtimeconfig.dev.json
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/bin/Debug/netcoreapp2.2/betauia.dll
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/bin/Debug/netcoreapp2.2/betauia.pdb
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/bin/Debug/netcoreapp2.2/betauia.Views.dll
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/bin/Debug/netcoreapp2.2/betauia.Views.pdb
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/betauia.csprojAssemblyReference.cache
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/betauia.csproj.CoreCompileInputs.cache
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/betauia.RazorAssemblyInfo.cache
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/betauia.RazorAssemblyInfo.cs
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/betauia.AssemblyInfoInputs.cache
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/betauia.AssemblyInfo.cs
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/betauia.TagHelpers.input.cache
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/betauia.TagHelpers.output.cache
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/betauia.RazorCoreGenerate.cache
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/Razor/Areas/Identity/Pages/_ViewStart.g.cshtml.cs
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/About/Index.g.cshtml.cs
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/BetaLan/Index.g.cshtml.cs
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/Home/Index.g.cshtml.cs
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/Home/Privacy.g.cshtml.cs
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/Home/Terms.g.cshtml.cs
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/Shared/Error.g.cshtml.cs
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/Shared/_CookieConsentPartial.g.cshtml.cs
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/Shared/_Layout.g.cshtml.cs
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/Shared/_LoginPartial.g.cshtml.cs
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/Shared/_ValidationScriptsPartial.g.cshtml.cs
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/_ViewImports.g.cshtml.cs
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/_ViewStart.g.cshtml.cs
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/betauia.RazorTargetAssemblyInfo.cache
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/betauia.RazorTargetAssemblyInfo.cs
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/betauia.Views.pdb
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/betauia.dll
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/betauia.pdb
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/obj/Debug/netcoreapp2.2/betauia.csproj.CopyComplete
+C:/Users/Asus Laptop/programmering/prosjekter/beta/betauia/betauia/bin/Debug/netcoreapp2.2/app.db
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/betauia.csprojAssemblyReference.cache
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/betauia.csproj.CoreCompileInputs.cache
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/betauia.RazorAssemblyInfo.cache
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/betauia.RazorAssemblyInfo.cs
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/betauia.AssemblyInfoInputs.cache
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/betauia.AssemblyInfo.cs
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/betauia.dll
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/betauia.pdb
+/home/erik/kbetauia/betauia/bin/Debug/netcoreapp2.2/app.db
+/home/erik/kbetauia/betauia/bin/Debug/netcoreapp2.2/betauia.deps.json
+/home/erik/kbetauia/betauia/bin/Debug/netcoreapp2.2/betauia.runtimeconfig.json
+/home/erik/kbetauia/betauia/bin/Debug/netcoreapp2.2/betauia.runtimeconfig.dev.json
+/home/erik/kbetauia/betauia/bin/Debug/netcoreapp2.2/betauia.dll
+/home/erik/kbetauia/betauia/bin/Debug/netcoreapp2.2/betauia.pdb
+/home/erik/kbetauia/betauia/bin/Debug/netcoreapp2.2/betauia.Views.dll
+/home/erik/kbetauia/betauia/bin/Debug/netcoreapp2.2/betauia.Views.pdb
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/betauia.TagHelpers.input.cache
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/betauia.TagHelpers.output.cache
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/betauia.RazorCoreGenerate.cache
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/Razor/Areas/Identity/Pages/_ViewStart.g.cshtml.cs
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/About/Index.g.cshtml.cs
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/BetaLan/Index.g.cshtml.cs
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/Home/Index.g.cshtml.cs
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/Home/Privacy.g.cshtml.cs
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/Home/Terms.g.cshtml.cs
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/Shared/Error.g.cshtml.cs
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/Shared/_CookieConsentPartial.g.cshtml.cs
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/Shared/_Layout.g.cshtml.cs
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/Shared/_LoginPartial.g.cshtml.cs
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/Shared/_ValidationScriptsPartial.g.cshtml.cs
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/_ViewImports.g.cshtml.cs
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/Razor/Views/_ViewStart.g.cshtml.cs
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/betauia.RazorTargetAssemblyInfo.cache
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/betauia.RazorTargetAssemblyInfo.cs
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/betauia.Views.pdb
+/home/erik/kbetauia/betauia/obj/Debug/netcoreapp2.2/betauia.csproj.CopyComplete
+C:\Users\erik\kbetauia\betauia\bin\Debug\netcoreapp2.2\app.db
+C:\Users\erik\kbetauia\betauia\bin\Debug\netcoreapp2.2\betauia.deps.json
+C:\Users\erik\kbetauia\betauia\bin\Debug\netcoreapp2.2\betauia.runtimeconfig.json
+C:\Users\erik\kbetauia\betauia\bin\Debug\netcoreapp2.2\betauia.runtimeconfig.dev.json
+C:\Users\erik\kbetauia\betauia\bin\Debug\netcoreapp2.2\betauia.dll
+C:\Users\erik\kbetauia\betauia\bin\Debug\netcoreapp2.2\betauia.pdb
+C:\Users\erik\kbetauia\betauia\bin\Debug\netcoreapp2.2\betauia.Views.dll
+C:\Users\erik\kbetauia\betauia\bin\Debug\netcoreapp2.2\betauia.Views.pdb
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\betauia.csprojAssemblyReference.cache
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\betauia.csproj.CoreCompileInputs.cache
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\betauia.RazorAssemblyInfo.cache
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\betauia.RazorAssemblyInfo.cs
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\betauia.AssemblyInfoInputs.cache
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\betauia.AssemblyInfo.cs
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\betauia.TagHelpers.input.cache
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\betauia.TagHelpers.output.cache
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\betauia.RazorCoreGenerate.cache
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\Razor\Areas\Identity\Pages\_ViewStart.g.cshtml.cs
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\Razor\Views\About\Index.g.cshtml.cs
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\Razor\Views\BetaLan\Index.g.cshtml.cs
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\Razor\Views\Home\Index.g.cshtml.cs
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\Razor\Views\Home\Privacy.g.cshtml.cs
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\Razor\Views\Home\Terms.g.cshtml.cs
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\Razor\Views\Shared\Error.g.cshtml.cs
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_CookieConsentPartial.g.cshtml.cs
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_Layout.g.cshtml.cs
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_LoginPartial.g.cshtml.cs
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\Razor\Views\Shared\_ValidationScriptsPartial.g.cshtml.cs
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\Razor\Views\_ViewImports.g.cshtml.cs
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\Razor\Views\_ViewStart.g.cshtml.cs
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\betauia.RazorTargetAssemblyInfo.cache
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\betauia.RazorTargetAssemblyInfo.cs
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\betauia.Views.pdb
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\betauia.dll
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\betauia.pdb
+C:\Users\erik\kbetauia\betauia\obj\Debug\netcoreapp2.2\betauia.csproj.CopyComplete

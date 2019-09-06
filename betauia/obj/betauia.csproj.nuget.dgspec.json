@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "C:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\betauia.csproj": {}
   },
   "projects": {
@@ -12,12 +13,25 @@
         "projectPath": "C:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\betauia.csproj",
         "packagesPath": "C:\\Users\\Asus Laptop\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\obj\\",
+=======
+    "/home/erik/kbetauia/betauia/betauia.csproj": {}
+  },
+  "projects": {
+    "/home/erik/kbetauia/betauia/betauia.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/erik/kbetauia/betauia/betauia.csproj",
+        "projectName": "betauia",
+        "projectPath": "/home/erik/kbetauia/betauia/betauia.csproj",
+        "packagesPath": "/home/erik/.nuget/packages/",
+        "outputPath": "/home/erik/kbetauia/betauia/obj/",
+>>>>>>> b850559988e8bb3b621e812d06eb5dc1e5e46eee
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "/usr/share/dotnet/sdk/NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Asus Laptop\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/erik/.config/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp2.2"

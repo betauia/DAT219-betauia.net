@@ -46,8 +46,7 @@ namespace betauia.Controllers
             if (seatMap == null)
                 return NotFound("Failed to find seatMap.");
 
-            seatMap.NumSeatsAvailable =
-                _context.Seats.Where(e => e.OwnerId == seatMap.Id).Where(e => e.IsAvailable).ToList().Count;
+            //seatMap.NumSeatsAvailable = _context.Seats.Where(e => e.OwnerId == seatMap.Id).Where(e => e.IsAvailable).ToList().Count;
             
             // Stop the entity from being tracked by context
             _context.Entry(_context.SeatMaps.Find(id)).State = EntityState.Detached;
@@ -77,7 +76,7 @@ namespace betauia.Controllers
             // Check if id matches SeatMap id
             if (id != seatMap.Id) return BadRequest();
 
-            seatMap.NumSeatsAvailable = (seatMap.NumSeats - _context.Seats.Count(e => e.IsAvailable == false));
+            //seatMap.NumSeatsAvailable = (seatMap.NumSeats - _context.Seats.Count(e => e.IsAvailable == false));
 
             // Stop the entity from being tracked by context
             _context.Entry(_context.SeatMaps.Find(id)).State = EntityState.Detached;
@@ -107,11 +106,12 @@ namespace betauia.Controllers
             // Return if id is set to avoid overwriting an existing SeatMap
             if (seatMapModel.Id == null) return BadRequest("No id in seatMap.");
             seatMapModel.NumSeats = seatMap.Seats.Count;
-            seatMapModel.NumSeatsAvailable = seatMap.Seats.Count;
             
             foreach (var seat in seatMap.Seats)
             {
                 seat.Owner = seatMapModel;
+                seat.OwnerId = seatMap.seatMapModel.Id;    
+                seat.Id = seat.OwnerId + seat.Number;
                 _context.Add(seat);
             }
             
