@@ -13469,11 +13469,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\erik\\kbetauia\\betauia\\betauia.csproj",
+      "projectUniqueName": "C:\\Users\\erik\\betauia\\betauia\\betauia.csproj",
       "projectName": "betauia",
-      "projectPath": "C:\\Users\\erik\\kbetauia\\betauia\\betauia.csproj",
+      "projectPath": "C:\\Users\\erik\\betauia\\betauia\\betauia.csproj",
       "packagesPath": "C:\\Users\\erik\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\erik\\kbetauia\\betauia\\obj\\",
+      "outputPath": "C:\\Users\\erik\\betauia\\betauia\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
