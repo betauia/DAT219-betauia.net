@@ -1,5 +1,5 @@
 <template>
-  <div class="seat" :style="style">{{seat.number}}</div>
+  <div class="seat" :style="style" @click="clickSeat"> {{seat.number}}</div>
 </template>
 
 <script>
@@ -9,7 +9,9 @@ export default {
   },
   data: function() {
     return {
-      rect: {}
+      rect: {},
+      backColor: String,
+      reserved: Boolean = false,
     };
   },
   methods: {
@@ -28,7 +30,23 @@ export default {
         oElement = oElement.offsetParent;
       }
       return iReturnValue;
-    }
+    },
+    clickSeat: function(event){
+      if(this.seat.isAvailable){
+        this.reserved = !this.reserved;
+        this.setColor();
+        this.$emit('clicked',this.seat.id,this.reserved);
+      }
+    },
+    setColor: function(){
+      if(this.reserved){
+        this.backColor = "blue";
+      }else if(this.seat.isAvailable) {
+        this.backColor = "green";
+      }else {
+        this.backColor = "grey";
+      }
+    },
   },
   created() {
     var grid = document.getElementById("grid");
@@ -38,12 +56,13 @@ export default {
 
     this.rect.x = left + this.seat.x;
     this.rect.y = top + this.seat.y;
+    this.setColor()
   },
   computed: {
     style() {
-      return "left: " + this.rect.x + "px;" + " top: " + this.rect.y + "px;";
+      return "left: " + this.rect.x + "px;" + " top: " + this.rect.y + "px;" + "backgroundColor:"+this.backColor + ";" + "cursor:pointer;";
     }
-  }
+  },
 };
 </script>
 

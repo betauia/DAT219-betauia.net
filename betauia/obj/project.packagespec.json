@@ -1,18 +1,19 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "/home/erik/kbetauia/betauia/betauia.csproj",
+    "projectUniqueName": "C:\\Users\\erik\\kbetauia\\betauia\\betauia.csproj",
     "projectName": "betauia",
-    "projectPath": "/home/erik/kbetauia/betauia/betauia.csproj",
-    "outputPath": "/home/erik/kbetauia/betauia/obj/",
+    "projectPath": "C:\\Users\\erik\\kbetauia\\betauia\\betauia.csproj",
+    "outputPath": "C:\\Users\\erik\\kbetauia\\betauia\\obj\\",
     "projectStyle": "PackageReference",
     "fallbackFolders": [
-      "/usr/share/dotnet/sdk/NuGetFallbackFolder"
+      "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
     ],
     "originalTargetFrameworks": [
       "netcoreapp2.2"
     ],
     "sources": {
+      "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
       "https://api.nuget.org/v3/index.json": {}
     },
     "frameworks": {

@@ -13,20 +13,26 @@ namespace betauia.Controllers
     public class EventApiController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        
+
         public EventApiController(ApplicationDbContext context)
                  {
             // Set the dbcontext
             _context = context;
         }
-        
+
         // Tested and working
         // GET: Get all events
         [HttpGet]
         public IActionResult GetAll()
         {
             // Return with 200 OK status code
-            return Ok(_context.Events.ToList());
+            var events = _context.Events.ToList();
+            foreach (var eventModel in events)
+            {
+              var seatmap = _context.EventSeatMaps.Find(eventModel.SeatMapId);
+              if (seatmap != null) eventModel.SeatMap = seatmap;
+            }
+            return Ok(events);
         }
 
         // Tested and working
@@ -36,7 +42,7 @@ namespace betauia.Controllers
         {
             // Get user by id
             var eventModel = _context.Events.Find(id);
-            
+
             // Check if user is valid
             if (eventModel == null)
                 return NotFound();
@@ -44,7 +50,7 @@ namespace betauia.Controllers
             // Return user
             return Ok(eventModel);
         }
-        
+
         // Tested and working
         // PUT: Update event by id
         [HttpPut("{id}")]
@@ -53,10 +59,10 @@ namespace betauia.Controllers
             // Check if id matches user id
             if (id != eventModel.Id) return BadRequest();
 
-           
+
             // Set the current state to say that some or all of its properties has been modified
             _context.Entry(eventModel).State = EntityState.Modified;
-            
+
             try
             {
                 // Save changes
@@ -81,7 +87,7 @@ namespace betauia.Controllers
 
             var tseatmapid = eventModel.SeatMapId;
             eventModel.SeatMapId = null;
-            
+
             _context.Add(eventModel);
             _context.SaveChanges();
 
@@ -97,14 +103,14 @@ namespace betauia.Controllers
                 eventModel.SeatMapId = seatmap.Id;
                 eventModel.SeatMap = seatmap;
             }
-            
+
             // Add and save
             _context.Update(eventModel);
             _context.SaveChanges();
 
             return CreatedAtAction(nameof(GetEventModel), new {id = eventModel.Id}, eventModel);
         }
-        
+
         // Tested and working
         // DELETE: Delete event by id
         [HttpDelete("{id}")]

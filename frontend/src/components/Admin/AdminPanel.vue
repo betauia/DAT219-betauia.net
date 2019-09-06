@@ -40,8 +40,8 @@
 </template>
 
 <style>
-</style>
 
+</style>
 
 <script>
 import axios from "axios";

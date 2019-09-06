@@ -1,4 +1,4 @@
-<!-- 
+<!--
 Title = title;
 SubTitle = subTitle;
 Description = description;
@@ -65,7 +65,23 @@ IsPublic = isPublic;
       </div>
     </div>
 
-    <div class="field sidebyside">
+    <div class="eventOptions">
+        <label class="Event options">Choose event options</label>
+        <div>
+            <label class="sidebyside30">Has Sponsor
+                <button :style="sponsorStyle" type="button" @click="hasSponsorClick">Click me</button>
+            </label>
+            <label class="sidebyside30">Is bookable
+                <button :style="bookableStyle"type="button" @click="isBookableClick">Click me</button>
+            </label>
+            <label class="sidebyside30">Has seatmap
+                <button :style="seatmapStyle" type="button" @click="hasSeatMapClick">Click me</button>
+            </label>
+        </div>
+
+    </div>
+
+    <div class="field sidebyside50" v-if="hasSponsor.state==true">
       <label class="label" for="sponsor">Select sponsors</label>
       <div class="control chooser">
         <select v-model="selectedSponsor" name="sponsor" class="chooser">
@@ -75,8 +91,15 @@ IsPublic = isPublic;
       </div>
     </div>
 
-    <div class="field sidebyside">
-      <label class="label" for="seatmap">Select seatmap</label>
+    <div class="field sidebyside50" v-if="isBookable.state==true">
+        <label class="label" for="atendees">Choose how many atendees</label>
+        <div class="control chooser">
+            <input id="numberAtendees" type="number" value="1" min="1">
+        </div>
+    </div>
+
+    <div class="field sidebyside50" v-if="hasSeatMap.state==true">
+      <label class="label" for="seatmap" >Select seatmap</label>
       <div class="control chooser">
         <select v-model="selectedSeatmap" name="seatmap" class="chooser">
           <option disabled value>Select a seatmap</option>
@@ -88,7 +111,6 @@ IsPublic = isPublic;
         </select>
       </div>
     </div>
-
     <!-- Button -->
     <button id="publish" name="publish" class="button is-primary" v-on:click="addEvent">Publish</button>
   </div>
@@ -104,7 +126,19 @@ export default {
       sponsors: [],
       selectedSeatmap: null,
       selectedSponsor: null,
-      ispublic: null
+      ispublic: null,
+      isBookable:{
+        state:false,
+        color:"red",
+      },
+      hasSeatMap:{
+        state:false,
+        color:"red",
+      },
+      hasSponsor:{
+        state:false,
+        color:"red",
+      }
     };
   },
   methods: {
@@ -125,11 +159,19 @@ export default {
         isPublic: this.ispublic
       };
 
-      if (this.selectedSeatmap != null) {
-        bodyParamters.seatmapid = this.selectedSeatmap.id;
+      if(this.hasSponsor.state == true){
+        if (this.selectedSponsor != null) {
+          bodyParamters.sponsorid = this.selectedSponsor.id;
+        }
       }
-      if (this.selectedSponsor != null) {
-        bodyParamters.sponsorid = this.selectedSponsor.id;
+      if(this.hasSeatMap.state==true){
+        if (this.selectedSeatmap != null) {
+          bodyParamters.seatmapid = this.selectedSeatmap.id;
+        }
+      }
+      if(this.isBookable.state==true){
+        const atendees = document.getElementById("numberAtendees").value;
+        bodyParamters.MaxAtendees = atendees;
       }
 
       console.log(bodyParamters);
@@ -142,6 +184,39 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+    },
+    isBookableClick(){
+        this.isBookable.state = !this.isBookable.state;
+        if(this.isBookable.state == true){
+          this.isBookable.color = "green";
+        }else{
+          this.isBookable.color = "red";
+        }
+
+        if(this.hasSeatMap.state == true){
+          this.hasSeatMap.state = false;
+          this.hasSeatMap.color = "red"
+        }
+    },
+    hasSponsorClick(){
+      this.hasSponsor.state = !this.hasSponsor.state;
+      if(this.hasSponsor.state == true){
+        this.hasSponsor.color = "green";
+      }else{
+        this.hasSponsor.color = "red";
+      }
+    },
+    hasSeatMapClick(){
+      this.hasSeatMap.state = !this.hasSeatMap.state;
+      if(this.hasSeatMap.state == true){
+        this.hasSeatMap.color = "green";
+      }else{
+        this.hasSeatMap.color = "red";
+      }
+      if(this.isBookable.state == true){
+        this.isBookable.state = false;
+        this.isBookable.color = "red"
+      }
     }
   },
   created() {
@@ -170,15 +245,41 @@ export default {
       .catch(function(error) {
         console.log(error);
       });
+  },
+  computed:{
+    sponsorStyle(){
+      return "backgroundColor:"+this.hasSponsor.color;
+    },
+    bookableStyle(){
+      return "backgroundColor:"+this.isBookable.color;
+    },
+    seatmapStyle(){
+      return "backgroundColor:"+this.hasSeatMap.color;
+    }
   }
 };
 </script>
 
 <style>
-.sidebyside {
+.sidebyside50 {
   width: 50%;
   vertical-align: top;
   display: inline-block;
+}
+.sidebyside30 {
+    width: 30%;
+    vertical-align: top;
+    display: inline-block;
+    background-color: #6c6c6c;
+    margin: 1.5%;
+    color: white;
+    text-align: center;
+}
+.eventOptions {
+    background-color: #bbbbbb;
+}
+.sidebyside30 button {
+    width: 50%;
 }
 .field {
   background-color: rgb(185, 185, 185);
@@ -189,5 +290,9 @@ export default {
 }
 #publish {
   width: 100%;
+}
+.eventOptions input{
+    margin-left: 1%;
+    margin-right: 1%;
 }
 </style>

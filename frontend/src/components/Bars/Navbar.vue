@@ -25,8 +25,6 @@
         <router-link @click.native="isActive = false" class="navbar-item" to="/admin/dashboard">Admin</router-link>
         <hr class="navbar-divider">
       </div>
-<<<<<<< HEAD
-
       <template class="navbar-end" v-if="isLoggedIn == false">
         <router-link
           @click.native="isActive = false"
@@ -43,21 +41,7 @@
           to="/account/info"
         >Your account</router-link>
         <button v-on:click="logout" class="navbar-item">Logout</button>
-=======
-      
-       <template class="navbar-end"  v-if="isLoggedIn == false">
-      <!--div class="navbar-end" v-if="isLoggedIn == false"-->
-        <router-link @click.native="isActive = false" class="navbar-item" to="/account/register">Register</router-link>
-        <router-link @click.native="isActive = false" class="navbar-item" to="/account/login">Login</router-link>
-        <!--/div-->
-      </template>
-      
-      <template v-else>
-      <!--div class="navbar-end" v-else-->
-        <router-link @click.native="isActive = false" class="navbar-item" to="/account/info">Your account</router-link>
         <router-link @click.native="logout" class="navbar-item" to="/">Logout</router-link>
-      <!--/div-->
->>>>>>> origin/master
       </template>
     </div>
   </nav>

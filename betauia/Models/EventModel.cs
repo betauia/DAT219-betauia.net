@@ -9,8 +9,9 @@ namespace betauia.Models
         public EventModel()
         {
             Image = null;
-            Atendees = 0;
             Author = null;
+            MaxAtendees = -1;
+            Atendees = -1;
             EventTime = DateTime.MinValue;
         }
         public int Id { get; set; }
@@ -20,14 +21,15 @@ namespace betauia.Models
         public string Content { get; set; }
         public string Image { get; set; }
         public int Atendees { get; set; }
+        public int MaxAtendees { get; set; }
         public bool IsPublic { get; set; }
         public string Author { get; set; }
         public DateTime EventTime { get; set; }
         public int EventPrice { get; set; }
-        
+
         public string SeatMapId { get; set; }
         public EventSeatMap SeatMap { get; set; }
-        
+
         public string SponsorId { get; set; }
         public SponsorModel Sponsor { get; set; }
     }
