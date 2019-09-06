@@ -17,29 +17,30 @@
 
 
 <script>
-import axios from 'axios';
-import Events from '@/components/Events/Events.vue';
+import axios from "axios";
+import Events from "@/components/Events/Events.vue";
 
 export default {
   components: {
-    event: Events,
+    event: Events
   },
   data() {
     return {
       events: [],
-      errors: [],
+      errors: []
     };
   },
 
   created() {
     axios
-      .get('/api/event')
-      .then((response) => {
+      .get("/api/event")
+      .then(response => {
         this.events = response.data;
+        console.log(response.data);
       })
-      .catch((e) => {
+      .catch(e => {
         this.errors.push(e);
       });
-  },
+  }
 };
 </script>

@@ -1,7 +1,7 @@
 -# RIDER
 -.idea
--bin
--obj
+-bin/*
+-obj/*
 -*.min.css
 -*.min.js
 -*.user

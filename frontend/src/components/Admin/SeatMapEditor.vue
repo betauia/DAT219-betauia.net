@@ -112,10 +112,10 @@ export default {
         var seats = group.getElementsByClassName("seat");
         for (var i = 0; i < seats.length; i++) {
           var jseat = {};
-          jseat.id = seats[i].textContent;
+          jseat.number = seats[i].textContent;
           jseat.x = seats[i].offsetLeft + x;
           jseat.y = seats[i].offsetTop + y;
-          jseat.ownerid = name;
+          //jseat.ownerid = name;
           jseats.push(jseat);
         }
       });

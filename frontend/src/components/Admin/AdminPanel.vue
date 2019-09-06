@@ -40,8 +40,8 @@
 </template>
 
 <style>
-</style>
 
+</style>
 
 <script>
 import axios from "axios";
@@ -73,10 +73,8 @@ export default {
       })
       .catch(function(error) {
         console.log(error);
-        alert("No Access")
-        self.$router.push("/account/login");
-        return;
       });
   }
 };
 </script>
+
