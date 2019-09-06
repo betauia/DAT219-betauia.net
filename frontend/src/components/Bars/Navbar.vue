@@ -74,6 +74,8 @@ export default {
       .catch(function(error) {
         console.log(error);
         self.isLoggedIn = false;
+        self.$router.push("/account/login");
+        return;
       });
   },
   methods: {

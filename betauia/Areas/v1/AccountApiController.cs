@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using betauia.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

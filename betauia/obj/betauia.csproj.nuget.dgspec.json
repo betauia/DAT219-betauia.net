@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "/home/erik/kbetauia/betauia/betauia.csproj": {}
   },
   "projects": {
@@ -12,6 +13,19 @@
         "projectPath": "/home/erik/kbetauia/betauia/betauia.csproj",
         "packagesPath": "/home/erik/.nuget/packages/",
         "outputPath": "/home/erik/kbetauia/betauia/obj/",
+=======
+    "C:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\betauia.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\betauia.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\betauia.csproj",
+        "projectName": "betauia",
+        "projectPath": "C:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\betauia.csproj",
+        "packagesPath": "C:\\Users\\Asus Laptop\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Asus Laptop\\programmering\\prosjekter\\beta\\betauia\\betauia\\obj\\",
+>>>>>>> origin/master
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "/usr/share/dotnet/sdk/NuGetFallbackFolder"
@@ -79,6 +93,10 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[2.2.3, )"
+            },
+            "RestSharp": {
+              "target": "Package",
+              "version": "[106.6.10, )"
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",

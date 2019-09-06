@@ -59,22 +59,3 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
-*.db
-
-# Build results
-Debug/
-DebugPublic/
-Release/
-Releases/
-x64/
-x86/
-build/
-bld/
-bin/
-bin/Debug/
-obj/
-obj/Debug/
-out/
-msbuild.log
-msbuild.err
-msbuild.wrn
