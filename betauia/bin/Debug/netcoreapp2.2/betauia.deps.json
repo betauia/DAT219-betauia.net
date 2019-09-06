@@ -1,11 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-<<<<<<< HEAD
-    "signature": "0f48331dc55f4aa58808ff9c7ecd8442d4431fb2"
-=======
-    "signature": "0ca736fc7b7a98194393f68d4a63c6d23b4a07fc"
->>>>>>> origin/master
+    "signature": "34ea86bcf1fddf8fc23b87bb01414584a9951a1e"
   },
   "compilationOptions": {
     "defines": [

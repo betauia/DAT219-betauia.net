@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "C:\\Users\\erik\\kbetauia\\betauia\\betauia.csproj",
+    "projectUniqueName": "C:\\Users\\erik\\betauia\\betauia\\betauia.csproj",
     "projectName": "betauia",
-    "projectPath": "C:\\Users\\erik\\kbetauia\\betauia\\betauia.csproj",
-    "outputPath": "C:\\Users\\erik\\kbetauia\\betauia\\obj\\",
+    "projectPath": "C:\\Users\\erik\\betauia\\betauia\\betauia.csproj",
+    "outputPath": "C:\\Users\\erik\\betauia\\betauia\\obj\\",
     "projectStyle": "PackageReference",
     "fallbackFolders": [
       "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -70,6 +70,10 @@
         "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
           "target": "Package",
           "version": "[2.2.3, )"
+        },
+        "RestSharp": {
+          "target": "Package",
+          "version": "[106.6.10, )"
         },
         "System.IdentityModel.Tokens.Jwt": {
           "target": "Package",
