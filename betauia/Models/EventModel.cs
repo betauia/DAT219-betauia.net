@@ -11,7 +11,7 @@ namespace betauia.Models
             Image = null;
             Author = null;
             MaxAtendees = -1;
-            Atendees = -1;
+            Atendees = 0;
             EventTime = DateTime.MinValue;
         }
         public int Id { get; set; }
