@@ -52,13 +52,13 @@ namespace betauia
                 options.UseSqlite(
                     Configuration.GetConnectionString("DefaultConnection"));
             });
-            
+
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            
+
             services.AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -70,13 +70,13 @@ namespace betauia
                     {
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg")),
-                        
+
                         ValidateIssuer = true,
                         ValidIssuer = "betauia",
-                        
+
                         ValidateAudience = true,
                         ValidAudience = "https://localhost:5001",
-                        
+
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.FromMinutes(5),
                     };
@@ -86,7 +86,7 @@ namespace betauia
                     //options.SaveToken = true;
                     //options.Configuration = new OpenIdConnectConfiguration();
                 });
-            
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options =>
                 {

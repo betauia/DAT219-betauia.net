@@ -1,7 +1,7 @@
 -# RIDER
 -.idea
--betauia/bin
--betauia/obj
+-bin
+-obj
 -*.min.css
 -*.min.js
 -*.user
@@ -70,10 +70,10 @@ x64/
 x86/
 build/
 bld/
-bin/
-bin/Debug/
-obj/
-obj/Debug/
+**/bin/
+**/bin/Debug/
+**/obj/
+**/obj/Debug/
 out/
 msbuild.log
 msbuild.err
