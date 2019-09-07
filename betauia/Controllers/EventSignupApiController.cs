@@ -26,8 +26,8 @@ namespace betauia.Models
       _tf = new TokenFactory(_um,_rm);
     }
 
-    [HttpPost("{id}")]
-    public IActionResult SignUpEvent(int id, [FromHeader] string Authorization)
+    [HttpPost("user/{id}")]
+    public IActionResult SignUpEventUser(int id, [FromHeader] string Authorization)
     {
       var token = Authorization.Split(' ')[1];
 
@@ -63,9 +63,27 @@ namespace betauia.Models
       {
         EventId = id,
         Userid = userid,
-        Email = user.Email
+        Email = user.Email,
+        Firstname =  user.FirstName,
+        Lastname = user.LastName,
       };
       _db.EventAtendees.Add(eventAtendee);
+      _db.Events.Find(id).Atendees++;
+      _db.SaveChanges();
+      return Ok();
+    }
+
+    [HttpPost("email/{id}")]
+    public IActionResult SignUpEventEmail(int id,[FromBody]EventAtendee atendee)
+    {
+      var eventAtendeeTest = _db.EventAtendees.Where(a => a.EventId == id && a.Email == atendee.Email).ToList();
+      if (eventAtendeeTest.Count != 0)
+      {
+        return BadRequest();
+      }
+
+      atendee.EventId = id;
+      _db.EventAtendees.Add(atendee);
       _db.Events.Find(id).Atendees++;
       _db.SaveChanges();
       return Ok();
