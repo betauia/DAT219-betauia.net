@@ -2,12 +2,13 @@
     <div class="seatmap">
         <div id="info">
           <div id="eventInfo">
-              <p>Total seats for event {{seatmapmodel.numSeats}}</p>
-              <p>Available seats {{seatmapmodel.numSeatsAvailable}}</p>
+              <p>Total seats for event: {{seatmapmodel.numSeats}}</p>
+              <p>Available seats: {{seatmapmodel.numSeatsAvailable}}</p>
           </div>
 
           <div id="buyInfo">
-              <button @click="buyTickets">Buy me</button>
+              <p>Subtotal (inkludert skatt): {{price}} ;-</p>
+              <button class="" @click="buyTickets">Buy me</button>
           </div>
         </div>
 
@@ -25,7 +26,7 @@ import Vue from "vue";
 import Seat from "@/components/Events/Seat.vue";
 export default {
   components: {
-    Seat: Seat
+    Seat: Seat,
   },
   data: function() {
     return {
@@ -46,6 +47,7 @@ export default {
           seatsToBuy.push(seat.id);
         }
       })
+      
       console.log(seatsToBuy);
     },
   },

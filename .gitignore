@@ -59,7 +59,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
-*.db
+**.db
 
 # Build results
 Debug/
