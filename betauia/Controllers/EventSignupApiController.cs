@@ -7,7 +7,7 @@ using betauia.Models;
 using betauia.Tokens;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-namespace betauia.Models
+namespace betauia.Controllers
 {
   [Route("api/eventsignup")]
   [ApiController]
@@ -56,7 +56,12 @@ namespace betauia.Models
       var eventAtendeeTest = _db.EventAtendees.Where(a => a.EventId == id && a.Userid == userid).ToList();
       if (eventAtendeeTest.Count!=0)
       {
-        return BadRequest();
+        return BadRequest("user already registered");
+      }
+
+      if (_db.EventAtendees.Where(a => a.EventId == id && a.Email == user.Email).ToList().Count != 0)
+      {
+        return BadRequest("Email already signed up");
       }
 
       var eventAtendee = new EventAtendee
@@ -79,7 +84,7 @@ namespace betauia.Models
       var eventAtendeeTest = _db.EventAtendees.Where(a => a.EventId == id && a.Email == atendee.Email).ToList();
       if (eventAtendeeTest.Count != 0)
       {
-        return BadRequest();
+        return BadRequest("Email already registered");
       }
 
       atendee.EventId = id;

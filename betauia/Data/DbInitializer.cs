@@ -70,7 +70,6 @@ namespace betauia.Data
                 Description = "Lanet skal skje whenever",
                 Content = "Det skal skje mange events osv.",
                 IsPublic = true,
-                SponsorId = "atea"
             };
             db.Add(Event);
 

@@ -3,20 +3,26 @@
     <div class="column padding">
       <div class="card">
         <header class="card-header">
-          <p class="card-header-title">{{event.title}}</p>
+          <p class="card-header-title">{{event.eventModel.title}}</p>
         </header>
         <div class="card-content">
           <div class="content">
             <ul>
-              <li>Description: {{event.description}}</li>
-              <li>Content: {{event.content}}</li>
-              <li>EventTime: {{event.eventTime}}</li>
-              <li v-if="event.sponsorId">Event sponsor: {{event.sponsorId}}</li>
+              <li>Description: {{event.eventModel.description}}</li>
+              <li>Content: {{event.eventModel.content}}</li>
+              <li>EventTime: {{event.eventModel.eventTime}}</li>
             </ul>
+              <div v-if="event.sponsors.length>0">
+                  <div v-for="sponsor of event.sponsors">
+                      <p>{{sponsor.title}}</p>
+                      <p>{{sponsor.description}}</p>
+                      <p>{{sponsor.url}}</p>
+                  </div>
+              </div>
             <br>
-            <div v-if="event.maxAtendees>=0">
+            <div v-if="event.eventModel.maxAtendees>=0">
                 <h1>Join our event</h1>
-                <p>People joining: {{event.atendees}}</p>
+                <p>People joining: {{event.eventModel.atendees}}</p>
                 <button v-on:click="joinEventByUser">Reserve by account</button>
                 <button v-on:click="emailClick">Reserve by email</button>
                 <div id="emailSignup" v-if="showEmail==true">
@@ -26,10 +32,10 @@
                     <button v-on:click="joinEventByEmail">Sign me up!!</button>
                 </div>
             </div>
-            <div v-if="event.seatMap!=null">
-                <p>Number of seats: {{event.seatMap.numSeats}}</p>
-                <p>Atendees: {{event.seatMap.numSeats - event.seatMap.numSeatsAvailable}}</p>
-                <p>Seats left: {{event.seatMap.numSeatsAvailable}}</p>
+            <div v-if="event.eventModel.seatMap!=null">
+                <p>Number of seats: {{event.eventModel.seatMap.numSeats}}</p>
+                <p>Atendees: {{event.eventModel.seatMap.numSeats - event.eventModel.seatMap.numSeatsAvailable}}</p>
+                <p>Seats left: {{event.eventModel.seatMap.numSeatsAvailable}}</p>
                 <button v-on:click="buyticket">Buy ticket</button>
             </div>
           </div>

@@ -29,8 +29,5 @@ namespace betauia.Models
 
         public string SeatMapId { get; set; }
         public EventSeatMap SeatMap { get; set; }
-
-        public string SponsorId { get; set; }
-        public SponsorModel Sponsor { get; set; }
     }
 }

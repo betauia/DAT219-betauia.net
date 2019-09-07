@@ -1,4 +1,4 @@
-namespace betauia.Controllers
+namespace betauia.Models
 {
   public class EventAtendee
   {
