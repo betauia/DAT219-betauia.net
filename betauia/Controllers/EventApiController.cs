@@ -27,12 +27,25 @@ namespace betauia.Controllers
         {
             // Return with 200 OK status code
             var events = _context.Events.ToList();
+            var eventViews = new List<EventCreater>();
             foreach (var eventModel in events)
             {
               var seatmap = _context.EventSeatMaps.Find(eventModel.SeatMapId);
               if (seatmap != null) eventModel.SeatMap = seatmap;
+
+              var eventSponsors = _context.EventSponsors.Where(a => a.EventId == eventModel.Id).ToList();
+              var sponsors = new List<SponsorModel>();
+              foreach (var eventSponsor in eventSponsors)
+              {
+                sponsors.Add(_context.Sponsors.Find(eventSponsor.SponsorId));
+              }
+
+              var eventView = new EventCreater();
+              eventView.eventModel = eventModel;
+              eventView.sponsors = sponsors;
+              eventViews.Add(eventView);
             }
-            return Ok(events);
+            return Ok(eventViews);
         }
 
         // Tested and working
@@ -80,35 +93,45 @@ namespace betauia.Controllers
         // Tested and working
         // POST: Add new event
         [HttpPost]
-        public IActionResult Post([FromBody] EventModel eventModel)
+        public IActionResult Post(EventCreater eventCreater)
         {
             // Return if id is set to avoid overwriting an existing event
-            if (eventModel.Id != 0) return BadRequest();
+            if (eventCreater.eventModel.Id != 0) return BadRequest();
 
-            var tseatmapid = eventModel.SeatMapId;
-            eventModel.SeatMapId = null;
+            var tseatmapid = eventCreater.eventModel.SeatMapId;
+            eventCreater.eventModel.SeatMapId = null;
 
-            _context.Add(eventModel);
+            _context.Add(eventCreater.eventModel);
             _context.SaveChanges();
 
             if (tseatmapid != null)
             {
                 var tSeatmap = _context.SeatMaps.Find(tseatmapid);
-                var seatmap = CreateSeatMap(eventModel, tSeatmap);
+                var seatmap = CreateSeatMap(eventCreater.eventModel, tSeatmap);
 
                 var tseats = _context.Seats.Where(r => r.OwnerId == tSeatmap.Id).ToList();
                 var seats = CreateSeats(seatmap, tseats);
                 _context.EventSeatMaps.Add(seatmap);
                 _context.EventSeats.AddRange(seats);
-                eventModel.SeatMapId = seatmap.Id;
-                eventModel.SeatMap = seatmap;
+                eventCreater.eventModel.SeatMapId = seatmap.Id;
+                eventCreater.eventModel.SeatMap = seatmap;
+            }
+
+            foreach (var sponsorModel in eventCreater.sponsors)
+            {
+              var eventsponsor = new EventSponsor
+              {
+                EventId = eventCreater.eventModel.Id,
+                SponsorId = sponsorModel.Id,
+              };
+              _context.EventSponsors.Add(eventsponsor);
             }
 
             // Add and save
-            _context.Update(eventModel);
+            _context.Update(eventCreater.eventModel);
             _context.SaveChanges();
 
-            return CreatedAtAction(nameof(GetEventModel), new {id = eventModel.Id}, eventModel);
+            return CreatedAtAction(nameof(GetEventModel), new {id = eventCreater.eventModel.Id}, eventCreater.eventModel);
         }
 
         // Tested and working
@@ -162,5 +185,12 @@ namespace betauia.Controllers
             }
             return seats;
         }
+
+        public class EventCreater
+        {
+          public EventModel eventModel { get; set; }
+          public List<SponsorModel> sponsors { get; set; }
+        }
     }
+
 }
