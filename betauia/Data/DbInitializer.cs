@@ -87,10 +87,10 @@ namespace betauia.Data
             
             db.SeatMaps.Add(seatMap);*/
             
-            var ticket = new TicketModel("20.02.92", 199, true, "Vipps");
-            var ticket2 = new TicketModel("20.02.9222", 2099, false, "PayPal");
-            db.Tickets.Add(ticket);
-            db.Tickets.Add(ticket2);
+            //var ticket = new TicketModel("20.02.92", 199, true, "Vipps");
+            //var ticket2 = new TicketModel("20.02.9222", 2099, false, "PayPal");
+            //db.Tickets.Add(ticket);
+            //db.Tickets.Add(ticket2);
             
             db.SaveChanges();
         }
