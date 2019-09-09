@@ -119,13 +119,26 @@ export default {
         });
 
       self.$forceUpdate();
-    }
+    },
+    deleteUser() {
+      var self = this;
+      var token = localStorage.getItem("token");
+
+      var config = {
+        headers: { Authorization: "bearer " + token }
+      };
+      var bodyParameters = {}
+      axios
+        .delete("/api/user/delete/"+user.id,bodyParameters,config)
+        .then(function(response){
+          console.log(response);
+        })
+        .catch(function(response){
+          console.log(response);
+        })
+      self.$forceUpdate();
+    },
   },
-  deleteUser() {
-    axios
-      .delete("/api/user/delete")
-    self.$forceUpdate();
-  }
 };
 </script>
 
