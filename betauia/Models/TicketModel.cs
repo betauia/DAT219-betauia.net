@@ -2,13 +2,13 @@ namespace betauia.Models
 {
     public class TicketModel
     {
-        public TicketModel(string timePurchased, float price, bool isVerified, string paymentMethod, SeatModel seat)
+        public TicketModel(string timePurchased, float price, bool isVerified, string paymentMethod)
         {
             TimePurchased = timePurchased;
             Price = price;
             IsVerified = isVerified;
             PaymentMethod = paymentMethod;
-            Seat = seat;
+            //Seat = seat;
         }
         
         public int Id { get; set; }
@@ -22,6 +22,6 @@ namespace betauia.Models
         public bool IsVerified { get; set; }
         public string PaymentMethod { get; set; }
 
-        public SeatModel Seat { get; set; }
+        //public SeatModel Seat { get; set; }
     }
 }

@@ -7,7 +7,6 @@
           </div>
 
           <div id="buyInfo">
-              <p>Subtotal (inkludert skatt): {{price}} ;-</p>
               <button class="" @click="buyTickets">Buy me</button>
           </div>
         </div>

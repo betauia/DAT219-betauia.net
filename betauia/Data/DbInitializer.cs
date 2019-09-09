@@ -70,9 +70,19 @@ namespace betauia.Data
                 Description = "Lanet skal skje whenever",
                 Content = "Det skal skje mange events osv.",
                 IsPublic = true,
-                SponsorId = "atea"
             };
             db.Add(Event);
+
+            Event = new EventModel
+            {
+              Title = "Event with booking",
+              SubTitle = "Testing booking",
+              Description = "Just testing th ebooking",
+              IsPublic = true,
+              MaxAtendees = 100,
+              Atendees = 0,
+            };
+            db.Events.Add(Event);
 
             
 /*            const int numSeats = 20;
