@@ -185,6 +185,7 @@ export default {
       axios
         .post("/api/event", bodyParameters, config)
         .then(function(response) {
+          self.$router.push("/events/");
           console.log(response.data);
         })
         .catch(function(error) {

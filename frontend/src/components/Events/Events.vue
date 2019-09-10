@@ -57,7 +57,7 @@ import axios from "axios";
   },
     data(){
         return{
-            showEmail:true,
+            showEmail:false,
         }
     },
   methods: {
@@ -78,7 +78,7 @@ import axios from "axios";
         });
 
       this.$router.push(
-        "/events/seatmap/" + this.event.id + "/" + this.event.seatMapId
+        "/events/seatmap/" + this.event.eventModel.seatMapId
       );
     },
     joinEventByUser(){
@@ -90,10 +90,10 @@ import axios from "axios";
           };
           var self = this;
           axios
-            .post("api/eventsignup/user/"+this.event.id,bodyParameter,config)
+            .post("api/eventsignup/user/"+this.event.eventModel.id,bodyParameter,config)
             .then(function(response){
               console.log(response.data);
-              self.event.atendees++;
+              self.event.eventModel.atendees++;
             })
             .catch(function(error){
               console.log(error);
@@ -111,15 +111,15 @@ import axios from "axios";
 
       const self = this;
       axios
-        .post("/api/eventsignup/email/"+this.event.id,{
+        .post("/api/eventsignup/email/"+this.event.eventModel.id,{
           firstname:firstname,
           lastname:lastname,
           email:email,
-          eventid:this.event.id
+          eventid:this.event.eventModel.id
         })
         .then(function(response){
           console.log(response);
-          self.event.atendees++;
+          self.event.eventModel.atendees++;
         })
         .catch(function(error){
           console.log(error);

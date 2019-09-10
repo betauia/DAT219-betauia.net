@@ -145,6 +145,7 @@ export default {
         .post("/api/seatmap", body, config)
         .then(function(response) {
           console.log(response.data);
+          self.$router.push("/admin/seatmapdetail/"+response.data.seatMapModel.id)
         })
         .catch(function(error) {
           console.log(error);
@@ -174,7 +175,7 @@ export default {
 #groupedit button {
   width: 100%;
 }
-div {
+.seatmapeditor div {
   padding: 0;
   margin: 0;
 }
@@ -185,7 +186,7 @@ div {
   width: 20%;
   height: 100%;
 }
-button {
+#editor button {
   width: 100%;
 }
 #grid {

@@ -26,6 +26,7 @@ export default {
   created() {
     var id = this.$route.params.id;
     var self = this;
+    console.log(id);
     axios
       .get("/api/sponsor/" + id)
       .then(function(response) {
