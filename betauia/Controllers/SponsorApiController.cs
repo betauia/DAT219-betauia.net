@@ -22,7 +22,7 @@ namespace betauia.Controllers
         {
             return Ok(_db.Sponsors.ToList());
         }
-        
+
         [HttpGet("{id}")]
         public IActionResult GetSponser(string id)
         {
@@ -34,12 +34,12 @@ namespace betauia.Controllers
         [HttpPost]
         public IActionResult AddSponsor(SponsorModel sponsorModel)
         {
-            sponsorModel.Id = sponsorModel.Title.ToLower();
+          sponsorModel.Id = sponsorModel.Title.ToLower().Replace(" ","");
             if (_db.Sponsors.Find(sponsorModel.Id) != null) return BadRequest();
-            
-            _db.Sponsors.Add(sponsorModel);
-            _db.SaveChanges();
-            return Ok(sponsorModel);
+
+          _db.Sponsors.Add(sponsorModel);
+          _db.SaveChanges();
+          return Ok(sponsorModel);
         }
 
         [HttpPut("{id}")]
@@ -49,9 +49,9 @@ namespace betauia.Controllers
             {
                 return BadRequest();
             }
-            
+
             var sponsor = _db.Sponsors.Find(id);
-            
+
             sponsor.Description = sponsorModel.Description;
             sponsor.Title = sponsorModel.Title;
             sponsor.Url = sponsorModel.Url;
@@ -74,7 +74,7 @@ namespace betauia.Controllers
             sponsor.Description = null;
             sponsor.Title = null;
             sponsor.Url = null;
-            
+
             _db.Update(sponsor);
             _db.SaveChanges();
             return Ok();
