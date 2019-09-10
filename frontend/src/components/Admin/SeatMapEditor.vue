@@ -145,6 +145,7 @@ export default {
         .post("/api/seatmap", body, config)
         .then(function(response) {
           console.log(response.data);
+          self.$router.push("/admin/seatmapdetail/"+response.data.seatMapModel.id)
         })
         .catch(function(error) {
           console.log(error);

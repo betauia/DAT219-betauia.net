@@ -78,7 +78,7 @@ import axios from "axios";
         });
 
       this.$router.push(
-        "/events/seatmap/" + this.event.id + "/" + this.event.eventModel.seatMapId
+        "/events/seatmap/" + this.event.eventModel.seatMapId
       );
     },
     joinEventByUser(){

@@ -6,7 +6,7 @@ using betauia.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-// All requests tested and working // 
+// All requests tested and working //
 
 namespace betauia.Controllers
 {
@@ -39,21 +39,21 @@ namespace betauia.Controllers
             SeatMap ret = new SeatMap();
             ret.seatMapModel = seatMap;
 
-            List<SeatModel> seats = _context.Seats.ToList();
+            List<SeatModel> seats = _context.Seats.Where(a=>a.OwnerId==seatMap.Id).ToList();
             ret.Seats = seats;
-            
+
             // Check if SeatMap is valid
             if (seatMap == null)
                 return NotFound("Failed to find seatMap.");
 
             //seatMap.NumSeatsAvailable = _context.Seats.Where(e => e.OwnerId == seatMap.Id).Where(e => e.IsAvailable).ToList().Count;
-            
+
             // Stop the entity from being tracked by context
             _context.Entry(_context.SeatMaps.Find(id)).State = EntityState.Detached;
-            
+
             // Set the current state to say that some or all of its properties has been modified
             _context.Entry(seatMap).State = EntityState.Modified;
-            
+
             try
             {
                 // Save changes
@@ -64,11 +64,11 @@ namespace betauia.Controllers
                 if (!SeatMapExists(id)) return NotFound();
                 else throw;
             }
-            
+
             // Return seatmap
             return ret;
         }
-        
+
         // PUT: Update SeatMap by id
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSeatMap(string id, SeatMapModel seatMap)
@@ -80,10 +80,10 @@ namespace betauia.Controllers
 
             // Stop the entity from being tracked by context
             _context.Entry(_context.SeatMaps.Find(id)).State = EntityState.Detached;
-            
+
             // Set the current state to say that some or all of its properties has been modified
             _context.Entry(seatMap).State = EntityState.Modified;
-            
+
             try
             {
                 // Save changes
@@ -94,10 +94,10 @@ namespace betauia.Controllers
                 if (!SeatMapExists(id)) return NotFound();
                 else throw;
             }
-            
+
             return Ok(seatMap);
         }
-        
+
         // POST: Add new SeatMap
         [HttpPost]
         public IActionResult Post(SeatMap seatMap)
@@ -106,22 +106,22 @@ namespace betauia.Controllers
             // Return if id is set to avoid overwriting an existing SeatMap
             if (seatMapModel.Id == null) return BadRequest("No id in seatMap.");
             seatMapModel.NumSeats = seatMap.Seats.Count;
-            
+
             foreach (var seat in seatMap.Seats)
             {
                 seat.Owner = seatMapModel;
-                seat.OwnerId = seatMap.seatMapModel.Id;    
+                seat.OwnerId = seatMap.seatMapModel.Id;
                 seat.Id = seat.OwnerId + seat.Number;
                 _context.Add(seat);
             }
-            
+
             // Add and save
             _context.Add(seatMapModel);
             _context.SaveChanges();
 
             return Created("Created!", seatMap);
         }
-        
+
         // DELETE: Delete SeatMap by id
         [HttpDelete("{id}")]
         public async Task<ActionResult<SeatMapModel>> DeleteSeatMap(string id)
@@ -129,7 +129,7 @@ namespace betauia.Controllers
             // Receive and check if SeatMap is valid
             var seatMap = await _context.SeatMaps.FindAsync(id);
             if (seatMap == null) return NotFound("Failed to find seatMap.");
-            
+
             _context.Seats.RemoveRange(_context.Seats.Where(e => e.OwnerId == id));
 
             // Remove and update
