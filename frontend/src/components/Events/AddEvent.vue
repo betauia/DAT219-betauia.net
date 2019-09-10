@@ -82,13 +82,14 @@ IsPublic = isPublic;
     </div>
 
     <div class="field sidebyside50" v-if="hasSponsor.state==true">
-      <label class="label" for="sponsor">Select sponsors</label>
-      <div class="control chooser">
-        <select v-model="selectedSponsor" name="sponsor" class="chooser">
-          <option disabled value>Select a sponsor</option>
-          <option v-for="item in sponsors" :value="item" v-bind:key="item">{{item.id}}</option>
-        </select>
-      </div>
+      <label class="label" for="sponsor">Added sponsors</label>
+        <div v-for="sponsor of selectedSponsors">
+            <button class="addSponsorB" v-on:click="removeSponsor(sponsor.id)">{{sponsor.id}}</button>
+        </div>
+      <label class="lable">Sponsors to choose from</label>
+        <div v-for="sponsor of sponsors">
+            <button class="addSponsorB" v-on:click="addSponsor(sponsor.id)">{{sponsor.id}}</button>
+        </div>
     </div>
 
     <div class="field sidebyside50" v-if="isBookable.state==true">
@@ -138,7 +139,8 @@ export default {
       hasSponsor:{
         state:false,
         color:"red",
-      }
+      },
+      selectedSponsors:[],
     };
   },
   methods: {
@@ -152,33 +154,38 @@ export default {
         headers: { Authorization: "bearer " + token }
       };
 
-      var bodyParamters = {
+      var eventModel = {
         title: title,
         description: description,
         content: content,
         isPublic: this.ispublic
       };
 
+      var bodyParameters = {
+        eventModel:eventModel,
+        sponsors:[],
+      };
+
       if(this.hasSponsor.state == true){
-        if (this.selectedSponsor != null) {
-          bodyParamters.sponsorid = this.selectedSponsor.id;
+        if (this.selectedSponsors.length >0) {
+          bodyParameters.sponsors = this.selectedSponsors;
         }
       }
       if(this.hasSeatMap.state==true){
         if (this.selectedSeatmap != null) {
-          bodyParamters.seatmapid = this.selectedSeatmap.id;
+          bodyParameters.eventModel.seatmapid = this.selectedSeatmap.id;
         }
       }
       if(this.isBookable.state==true){
         const atendees = document.getElementById("numberAtendees").value;
-        bodyParamters.MaxAtendees = atendees;
+        bodyParameters.eventModel.MaxAtendees = atendees;
       }
 
-      console.log(bodyParamters);
       var self = this;
       axios
-        .post("/api/event", bodyParamters, config)
+        .post("/api/event", bodyParameters, config)
         .then(function(response) {
+          self.$router.push("/events/");
           console.log(response.data);
         })
         .catch(function(error) {
@@ -217,6 +224,15 @@ export default {
         this.isBookable.state = false;
         this.isBookable.color = "red"
       }
+    },
+    addSponsor(id){
+      this.selectedSponsors.push(this.sponsors.filter(function(x){return x.id ==id})[0]);
+      this.sponsors = this.sponsors.filter(function(x){return x.id !=id});
+      console.log(this.selectedSponsors)
+    },
+    removeSponsor(id){
+      this.sponsors.push(this.selectedSponsors.filter(function(x){return x.id ==id})[0]);
+      this.selectedSponsors = this.selectedSponsors.filter(function(x){return x.id !=id});
     }
   },
   created() {
@@ -240,7 +256,6 @@ export default {
       .get("/api/seatmap", config)
       .then(function(response) {
         self.seatmaps = response.data;
-        console.log(response.data);
       })
       .catch(function(error) {
         console.log(error);
@@ -294,5 +309,8 @@ export default {
 .eventOptions input{
     margin-left: 1%;
     margin-right: 1%;
+}
+.addSponsorB{
+    width: 100%;
 }
 </style>

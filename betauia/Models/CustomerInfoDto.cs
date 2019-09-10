@@ -4,4 +4,5 @@ namespace betauia.Models{
   {
     public string mobileNumber { get; set; }
   }
+
 }

@@ -74,7 +74,7 @@ bld/
 **/bin/Debug/
 **/obj/
 **/obj/Debug/
-out/
+**/out/
 msbuild.log
 msbuild.err
 msbuild.wrn

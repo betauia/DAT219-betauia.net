@@ -33,7 +33,7 @@ export default new Router({
             component: () => import('./views/Events.vue'),
         },
         {
-            path: '/events/seatmap/:eventid/:seatmapid/',
+            path: '/events/seatmap/:seatmapid/',
             component: () => import('./components/Events/SeatMapView.vue'),
         },
         {
@@ -95,6 +95,10 @@ export default new Router({
                 {
                     path: '/admin/seatmapeditor',
                     component: () => import('./components/Admin/SeatMapEditor.vue'),
+                },
+                {
+                    path: '/admin/seatmapdetail/:id',
+                    component:()=> import('./components/SeatMap/ViewSeatMap.vue')
                 },
                 {
                     path: '/admin/userinfo/:id',
