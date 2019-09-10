@@ -40,7 +40,6 @@
           class="navbar-item"
           to="/account/info"
         >Your account</router-link>
-        <button v-on:click="logout" class="navbar-item">Logout</button>
         <router-link @click.native="logout" class="navbar-item" to="/">Logout</router-link>
       </template>
     </div>

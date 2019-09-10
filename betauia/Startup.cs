@@ -87,6 +87,8 @@ namespace betauia
                     //options.Configuration = new OpenIdConnectConfiguration();
                 });
 
+            services.AddHttpClient();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options =>
                 {
