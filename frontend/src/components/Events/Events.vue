@@ -23,20 +23,26 @@
             <div v-if="event.eventModel.maxAtendees>=0">
                 <h1>Join our event</h1>
                 <p>People joining: {{event.eventModel.atendees}}</p>
-                <button v-on:click="joinEventByUser">Reserve by account</button>
-                <button v-on:click="emailClick">Reserve by email</button>
+                <span>
+                    <button class="button is-link" v-on:click="joinEventByUser">Reserve by account</button>
+                    <button class="button is-valid" v-on:click="emailClick">Reserve by email</button>
+                </span>
+
                 <div id="emailSignup" v-if="showEmail==true">
-                    Firstname: <input type="text" name="firstname"><br>
-                    Lastname: <input type="text" name="lastname"><br>
-                    Email: <input type="text" name="email"><br>
-                    <button v-on:click="joinEventByEmail">Sign me up!!</button>
+                    <form>
+                        <item><input type="text" name="firstname" placeholder="Fornavn"></item>
+                        <item><input type="text" name="lastname" placeholder="Etternavn"></item>
+                        <item><input type="text" name="email" placeholder="email@address.com"></item>
+                    </form>
+
+                    <button class="button is-link" v-on:click="joinEventByEmail">Sign me up!!</button>
                 </div>
             </div>
             <div v-if="event.eventModel.seatMap!=null">
                 <p>Number of seats: {{event.eventModel.seatMap.numSeats}}</p>
                 <p>Atendees: {{event.eventModel.seatMap.numSeats - event.eventModel.seatMap.numSeatsAvailable}}</p>
                 <p>Seats left: {{event.eventModel.seatMap.numSeatsAvailable}}</p>
-                <button v-on:click="buyticket">Buy ticket</button>
+                <button class="button is-link" v-on:click="buyticket">Buy ticket</button>
             </div>
           </div>
         </div>
@@ -47,9 +53,11 @@
 
 <script>
 import axios from "axios";
+import Sponsors from "../Sponsors/Sponsors";
   export default {
   name: "Events",
-  props: {
+      components: {Sponsors},
+      props: {
     event: Object
   },
   created() {

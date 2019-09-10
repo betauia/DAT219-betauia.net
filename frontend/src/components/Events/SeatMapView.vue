@@ -2,12 +2,12 @@
     <div class="seatmap">
         <div id="info">
           <div id="eventInfo">
-              <p>Total seats for event: {{seatmapmodel.numSeats}}</p>
-              <p>Available seats: {{seatmapmodel.numSeatsAvailable}}</p>
+              <p>Plasser for dette arrangementet: {{seatmapmodel.numSeats}}</p>
+              <p>Ledige plasser: {{seatmapmodel.numSeatsAvailable}}</p>
           </div>
 
           <div id="buyInfo">
-              <button class="" @click="buyTickets">Buy me</button>
+              <button class="button is-link" @click="buyTickets">Kjøp</button>
           </div>
         </div>
 
@@ -20,63 +20,64 @@
 </template>
 
 <script>
-import axios from "axios";
-import Vue from "vue";
-import Seat from "@/components/Events/Seat.vue";
+import axios from 'axios';
+import Vue from 'vue';
+import Seat from '@/components/Events/Seat.vue';
+
 export default {
   components: {
-    Seat: Seat,
+    Seat,
   },
-  data: function() {
+  data() {
     return {
       seats: [],
       seatmapmodel: {},
-      reservedSeats:{},
+      reservedSeats: {},
     };
   },
-  methods:{
-    onSeatClick(seat,status){
+  methods: {
+    onSeatClick(seat, status) {
       this.reservedSeats[seat] = status;
     },
-    buyTickets: function (event) {
-      var seatsToBuy = [];
+    buyTickets(event) {
+      const seatsToBuy = [];
       const self = this;
-      this.seats.forEach(function (seat) {
-        if(self.reservedSeats[seat.id]==true){
+      this.seats.forEach((seat) => {
+        if (self.reservedSeats[seat.id] == true) {
           seatsToBuy.push(seat.id);
         }
-      })
-      
+      });
+
       console.log(seatsToBuy);
     },
   },
   created() {
-    var eventid = this.$route.params.eventid;
-    var mapid = this.$route.params.seatmapid;
+    const { eventid } = this.$route.params;
+    const mapid = this.$route.params.seatmapid;
 
-    var token = localStorage.getItem("token");
-    var config = {
-      headers: { Authorization: "bearer " + token }
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: { Authorization: `bearer ${token}` },
     };
-    var self = this;
+    const self = this;
     axios
-      .get("/api/eventseatmap/" + mapid +"/" + token, config)
-      .then(function(response) {
+      .get(`/api/eventseatmap/${mapid}/${token}`, config)
+      .then((response) => {
         self.seats = response.data.seats;
         self.seatmapmodel = response.data.seatMapModel;
         console.log(response.data);
         console.log(self.seatmapmodel);
 
-        self.seats.forEach(function(item){
+        self.seats.forEach((item) => {
           self.reservedSeats[item.id] = item.isReserved;
-        })
-        console.log("seats")
-        console.log(self.reservedSeats)
+        });
+        console.log('seats');
+        console.log(self.reservedSeats);
       })
-      .catch(function(error) {
+      .catch((error) => {
         console.log(error);
       });
-  }
+  },
 };
 </script>
 
