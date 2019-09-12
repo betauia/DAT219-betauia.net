@@ -40,7 +40,6 @@
           class="navbar-item"
           to="/account/info"
         >Your account</router-link>
-        <button v-on:click="logout" class="navbar-item">Logout</button>
         <router-link @click.native="logout" class="navbar-item" to="/">Logout</router-link>
       </template>
     </div>
@@ -49,44 +48,44 @@
 
 
 <script>
-import axios from "axios";
+import axios from 'axios';
+
 export default {
   data: () => ({
     isActive: false,
-    isLoggedIn: false
+    isLoggedIn: false,
   }),
   created() {
-    console.log("creatededed");
-    var token = localStorage.getItem("token");
+    console.log('creatededed');
+    const token = localStorage.getItem('token');
     if (token == null) {
-      console.log("no token");
+      console.log('no token');
       this.isLoggedIn = false;
       return;
     }
-    var self = this;
+    const self = this;
     axios
-      .post("/api/token/valid/" + token, {})
-      .then(function(response) {
-        console.log("is logged in");
+      .post(`/api/token/valid/${token}`, {})
+      .then((response) => {
+        console.log('is logged in');
         self.isLoggedIn = true;
         self.$forceUpdate();
       })
-      .catch(function(error) {
+      .catch((error) => {
         console.log(error);
         self.isLoggedIn = false;
-        self.$router.push("/account/login");
-        return;
+        self.$router.push('/account/login');
       });
   },
   methods: {
     logout() {
-      localStorage.removeItem("token");
+      localStorage.removeItem('token');
       this.isLoggedIn = false;
-      this.$router.push("/");
+      this.$router.push('/');
       this.$forceUpdate();
       this.$session.destroy();
-    }
-  }
+    },
+  },
 };
 </script>
 
