@@ -30,5 +30,7 @@ namespace betauia.Data
         public DbSet<TicketModel> Tickets { get; set; }
 
         public DbSet<ImageModel> Images { get; set; }
+
+        public DbSet<JobApplication> JobApplications { get; set; }
     }
 }

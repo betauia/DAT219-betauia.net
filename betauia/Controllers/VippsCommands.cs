@@ -1,3 +1,7 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using betauia.Models;
 using RestSharp;
@@ -8,11 +12,13 @@ namespace betauia.Controllers {
     public class VippsApiController : ControllerBase {
         private AuthorizationTokenResponse _atr;
         private readonly InitiatePaymentCommand _ipc;
-        
-        public VippsApiController(AuthorizationTokenResponse atr, InitiatePaymentCommand ipc) {
-            
-        }/* 
-        public async IActionResult GetVippsToken() {
+
+        public VippsApiController(AuthorizationTokenResponse atr, InitiatePaymentCommand ipc)
+        {
+          _atr = atr;
+          _ipc = ipc;
+        }
+        public async Task GetVippsToken() {
             var client = new RestClient("https://api.vipps.no/accessToken/get");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");
@@ -23,14 +29,19 @@ namespace betauia.Controllers {
             request.AddHeader("Host", "api.vipps.no");
             request.AddHeader("Cache-Control", "no-cache");
             request.AddHeader("Accept", "/*");
-            request.AddHeader("Ocp-Apim-Subscription-Key", vipps.env.CLIENT_ID);
-            request.AddHeader("client_secret", CLIENT_SECRET);
-            request.AddHeader("client_id", OCP_APIM_SUBSCRIPTION_KEY);
+            /*
+            request.AddHeader("Ocp-Apim-Subscription-Key", SUB_KEY);
+            request.AddHeader("client_secret", CLI_SECRET);
+            request.AddHeader("client_id", CLI_ID);
+            */
             IRestResponse response = client.Execute(request);
 
-            await(response);
-        }
+            if (response.IsSuccessful)
+            {
 
+            }
+        }
+/*
         public IActionResult InitiatePayment() {
             var client = new RestClient("http://{{base_url}}/ecomm/v2/payments/");
             var request = new RestRequest(Method.POST);

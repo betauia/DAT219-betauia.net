@@ -16,6 +16,8 @@
         <hr class="navbar-divider">
         <router-link @click.native="isActive = false" class="navbar-item" to="/events">Events</router-link>
         <hr class="navbar-divider">
+          <router-link @click.native="isActive = false" class="navbar-item" to="/jobs">Jobs</router-link>
+          <hr class="navbar-divider">
         <router-link
           @click.native="isActive = false"
           class="navbar-item"
@@ -86,6 +88,7 @@ export default {
       this.$session.destroy();
     },
   },
+
 };
 </script>
 

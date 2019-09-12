@@ -49,6 +49,10 @@ export default new Router({
             component: () => import('./components/Sponsors/SponsorDetailed.vue'),
         },
         {
+          path: '/jobs',
+          component:()=> import('./components/Jobs/JobView.vue'),
+        },
+        {
             path: '/seatmap/:eventid/:seatmapid',
             component: () => import('./components/SeatMap/SeatMapView.vue'),
         },

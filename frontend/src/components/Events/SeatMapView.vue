@@ -7,7 +7,7 @@
           </div>
 
           <div id="buyInfo">
-              <button class="button is-link" @click="buyTickets">Kjøp</button>
+              <button class="button is-link" @click="buyTickets">Til betaling</button>
           </div>
         </div>
 
