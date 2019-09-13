@@ -70,7 +70,6 @@ export default {
       var confirmpassword = document.querySelector("input[name=again_password]")
         .value;
 
-      alert(username);
       axios
         .post("/api/account/register", {
           username: username,
@@ -85,7 +84,8 @@ export default {
           console.log(response);
         })
         .catch(function(error) {
-          console.log(error);
+          console.log(error.response);
+          console.log(error.response.data)
         });
     }
   }

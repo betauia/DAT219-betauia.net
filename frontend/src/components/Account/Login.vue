@@ -56,9 +56,10 @@ export default {
           self.$router.push({ path: "/" }, () => {
             location.reload();
           });
-          self.$$forceUpdate();
+          self.$forceUpdate();
         })
         .catch(function(error) {
+          console.log(error.response);
           console.log(error.response.data);
         });
     }
