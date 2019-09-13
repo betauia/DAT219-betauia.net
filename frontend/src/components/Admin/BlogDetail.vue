@@ -86,10 +86,48 @@ import axios from "axios";
     },
     methods:{
       updateBlog(){
+        var token = localStorage.getItem("token");
+        var title = document.querySelector("input[name=blogTitle]").value;
+        var summary = document.querySelector("input[name=blogDescription]").value;
+        var content = document.querySelector("textarea[name=blogContent]").value;
 
+
+        var config = {
+          headers: {Authorization: "bearer " + token}
+        };
+
+        var bodyParam = this.post;
+        bodyParam.content = content;
+        bodyParam.summary = summary;
+        bodyParam.title = title;
+
+        console.log(bodyParam)
+        var self = this;
+        axios
+          .put("/api/blog/"+this.post.id,bodyParam,config)
+          .then(function(response){
+            console.log(response.data);
+            self.post = response.data;
+          })
+          .catch(function (error) {
+            console.log(error.response);
+          });
       },
-      deleteBlog(){
 
+      deleteBlog(){
+        var token = localStorage.getItem("token");
+        var config = {
+          headers: {Authorization: "bearer " + token}
+        };
+        axios
+          .delete("/api/blog/"+this.post.id,config)
+          .then(function (response) {
+            console.log(response.data);
+            location.reload();
+          })
+          .catch(function(error){
+            console.log(error.response);
+          })
       }
     }
   };

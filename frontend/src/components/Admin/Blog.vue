@@ -14,8 +14,7 @@
                 <td>{{blog.lastEditDate}}</td>
                 <td>{{blog.creationDate}}</td>
                 <td>
-                    <a @click="detailClick(blog.id)">Edit me</a>|
-                    <a @click="deleteClick(blog.id)">Details me</a>|
+                    <a @click="detailClick(blog.id)">Details/Edit</a>|
                     <a @click="deleteClick(blog.id)">Delete me</a>
                 </td>
             </tr>
@@ -47,10 +46,23 @@
     },
     methods:{
       detailClick(id){
-        console.log(id);
+        this.$router.push("/admin/blog/"+id);
       },
       deleteClick(id){
-
+        var token = localStorage.getItem("token");
+        var config = {
+          headers: {Authorization: "bearer " + token}
+        };
+        const self = this;
+        axios
+          .delete("/api/blog/"+id,config)
+          .then(function (response) {
+            console.log(response.data);
+            location.reload();
+          })
+          .catch(function(error){
+            console.log(error.response);
+          });
       },
     }
   };
