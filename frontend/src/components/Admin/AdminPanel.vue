@@ -9,8 +9,11 @@
               <router-link to="/admin/dashboard">Dashboard</router-link>
             </li>
             <li>
-              <router-link to="/blog/add">Add Post</router-link>
+              <router-link to="/admin/blog/add">Add Post</router-link>
             </li>
+          <li>
+              <router-link to="/admin/blog">Edit blog posts</router-link>
+          </li>
             <li>
               <router-link to="/event/add">Add Event</router-link>
             </li>
@@ -21,7 +24,7 @@
               <router-link to="/admin/addsponsor">Add sponsor</router-link>
             </li>
           </ul>
-          <p class="menu-label">Administration</p>
+          <p class="menu-label">User Administration</p>
           <ul class="menu-list">
             <li>
               <router-link to="/admin/users">User Management</router-link>

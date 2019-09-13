@@ -33,7 +33,7 @@
         <button
         v-on:click="deleteUser"
         id="savebutton"
-        name="savebutton"
+        name="deletebutton"
         class="button is-danger"
       >Delete Account</button></span>
     </div>

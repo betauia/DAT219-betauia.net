@@ -84,9 +84,18 @@ export default new Router({
         {
             path: '/admin/dashboard',
             component: () => import('./components/Admin/AdminPanel.vue'),
-            children: [{
-                    path: '/blog/add',
+            children: [
+                {
+                  path: '/admin/blog',
+                    component: () => import('./components/Admin/Blog.vue'),
+                },
+                {
+                    path: '/admin/blog/add',
                     component: () => import('./components/Blog/AddBlogPost.vue'),
+                },
+                {
+                    path: '/admin/blog/:id',
+                    component: () => import('./components/Admin/BlogDetail.vue')
                 },
                 {
                     path: '/event/add',
