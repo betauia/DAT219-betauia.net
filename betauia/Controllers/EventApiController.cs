@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -60,34 +61,61 @@ namespace betauia.Controllers
             if (eventModel == null)
                 return NotFound();
 
+            var eventSponsors = _context.EventSponsors.Where(a => a.EventId == eventModel.Id).ToList();
+            var sponsors = new List<SponsorModel>();
+            foreach (var eventSponsor in eventSponsors)
+            {
+              sponsors.Add(_context.Sponsors.Find(eventSponsor.SponsorId));
+            }
+
+            var eventView = new EventCreater();
+            eventView.eventModel = eventModel;
+            eventView.sponsors = sponsors;
             // Return user
-            return Ok(eventModel);
+            return Ok(eventView);
         }
 
         // Tested and working
         // PUT: Update event by id
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEventModel(int id, EventModel eventModel)
+        public async Task<IActionResult> PutEventModel(int id, EventEditor eventEditor)
         {
-            // Check if id matches user id
-            if (id != eventModel.Id) return BadRequest();
+          var eventModel = eventEditor.eventModel;
+          if (id != eventModel.Id) return BadRequest("id not same");
+          var Event = _context.Events.Find(eventModel.Id);
+          if (Event == null) return NotFound();
 
+          //Set valuse
+          Event.Title = eventModel.Title;
+          Event.Description = eventModel.Description;
+          Event.Content = eventModel.Content;
+          Event.IsPublic = eventModel.IsPublic;
 
-            // Set the current state to say that some or all of its properties has been modified
-            _context.Entry(eventModel).State = EntityState.Modified;
-
-            try
+          //Set sponsors
+          if (eventEditor.sponsors.Count > 0)
+          {
+            var t = _context.EventSponsors.Where(a => a.EventId == Event.Id).ToList();
+            foreach (var eventSponsor in t)
             {
-                // Save changes
-                await _context.SaveChangesAsync();
+              _context.EventSponsors.Remove(eventSponsor);
             }
-            catch (DbUpdateConcurrencyException)
+
+            foreach (var sponsor in eventEditor.sponsors)
             {
-                // Check if the event was created
-                if (!EventModelExists(id)) return NotFound();
-                else throw;
+              if (!_context.EventSponsors.Any(p => p.SponsorId == sponsor && p.EventId == Event.Id))
+              {
+                var eventSponsor = new EventSponsor
+                {
+                  EventId = Event.Id,
+                  SponsorId = sponsor
+                };
+                _context.EventSponsors.Add(eventSponsor);
+              }
             }
-            return Ok(eventModel);
+          }
+          _context.Update(Event);
+          _context.SaveChanges();
+          return Ok(Event);
         }
 
         // Tested and working
@@ -143,10 +171,19 @@ namespace betauia.Controllers
             var eventModel = _context.Events.Find(id);
             if (eventModel == null) return NotFound();
 
-            // Remove and update
-            _context.Events.Remove(eventModel);
-            _context.SaveChanges();
+            eventModel.Atendees = 0;
+            eventModel.Author = null;
+            eventModel.Content = null;
+            eventModel.Description = null;
+            eventModel.Image = null;
+            eventModel.EventPrice = 0;
+            eventModel.EventTime = DateTime.MinValue;
+            eventModel.IsPublic = false;
+            eventModel.MaxAtendees = 0;
+            eventModel.SubTitle = null;
 
+            _context.Update(eventModel);
+            _context.SaveChanges();
             return Ok(eventModel);
         }
 
@@ -190,6 +227,12 @@ namespace betauia.Controllers
         {
           public EventModel eventModel { get; set; }
           public List<SponsorModel> sponsors { get; set; }
+        }
+
+        public class EventEditor
+        {
+          public EventModel eventModel { get; set; }
+          public List<string> sponsors { get; set; }
         }
     }
 

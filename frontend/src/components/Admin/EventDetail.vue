@@ -1,0 +1,321 @@
+<template>
+    <div class="form-horizontal padding center addevent" enctype="multipart/form-data">
+        <p>Hello world</p>
+
+        <!-- Text input-->
+        <div class="field">
+            <label class="label" for="title">Title</label>
+            <div class="control">
+                <input
+                    id="title"
+                    name="title"
+                    type="text"
+                    placeholder="Betalan #420"
+                    class="input"
+                    v-model="event.eventModel.title"
+                    required
+                >
+            </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="field">
+            <label class="label" for="description">Description</label>
+            <div class="control">
+                <input
+                    id="description"
+                    name="description"
+                    type="text"
+                    placeholder="Semesterets feeteste LAN"
+                    class="input"
+                    v-model="event.eventModel.description"
+                    required
+                >
+            </div>
+        </div>
+
+        <!-- Textarea -->
+        <div class="field">
+            <label class="label" for="content">Content</label>
+            <div class="control">
+                <textarea class="textarea" id="content" name="content">{{event.eventModel.content}}</textarea>
+            </div>
+        </div>
+
+        <!-- Select Basic -->
+        <div class="field">
+            <label class="label" for="eventIs">Is Event Public</label>
+            <div class="control">
+                <div class="select">
+                    <select id="eventIs" name="eventIs" v-model="event.eventModel.isPublic">
+                        <option>true</option>
+                        <option>false</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="eventOptions">
+            <label class="Event options">Choose event options</label>
+            <div>
+                <label>Has Sponsor
+                    <button :style="sponsorStyle" type="button" @click="hasSponsorClick">Click me</button>
+                </label>
+            </div>
+        </div>
+
+        <div class="field" v-if="hasSponsor.state==true">
+            <label class="label" for="sponsor">Added sponsors</label>
+            <div v-for="sponsor of selectedSponsors">
+                <button class="addSponsorB" v-on:click="removeSponsor(sponsor)">{{sponsor}}</button>
+            </div>
+            <label class="lable">Sponsors to choose from</label>
+            <div v-for="sponsor of sponsors">
+                <button class="addSponsorB" v-on:click="addSponsor(sponsor)">{{sponsor}}</button>
+            </div>
+        </div>
+
+        <span>
+        <button
+            v-on:click="updateEvent"
+            id="savebutton"
+            name="savebutton"
+            class="button is-info"
+        >Save changes</button>
+        </span>
+        <span>
+        <button
+            v-on:click="deleteEvent"
+            id="savebutton"
+            name="savebutton"
+            class="button is-danger"
+        >Delete blog post</button>
+        </span>
+    </div>
+</template>
+
+<script>
+import axios from 'axios';
+  export default {
+    name: 'EventDetail',
+    data(){
+      return{
+        sponsors: [],
+        seatmaps: [],
+        event:{},
+        selectedSeatmap: null,
+        selectedSponsors:[],
+        isBookable:{
+          state:false,
+          color:"red",
+        },
+        hasSeatMap:{
+          state:false,
+          color:"red",
+        },
+        hasSponsor:{
+          state:false,
+          color:"red",
+        },
+      }
+    },
+    created() {
+      const id = this.$route.params.id;
+      const self = this;
+      var token = localStorage.getItem("token");
+      var config = {
+        headers: { Authorization: "bearer " + token }
+      };
+
+      axios
+        .get("/api/event/"+id)
+        .then(function (response) {
+          console.log(response.data);
+          self.event = response.data;
+          if(response.data.sponsors.length >0){
+            response.data.sponsors.forEach(function (a) {
+              self.selectedSponsors.push(a.id);
+            });
+            self.hasSponsor.state = true;
+            self.hasSponsor.color = "green";
+          }
+        })
+        .catch(function (error) {
+          console.log(error.response);
+        });
+
+      axios
+        .get("/api/sponsor", config)
+        .then(function(response) {
+          console.log(self.selectedSponsors);
+          response.data.forEach(function (a) {
+            if(!self.selectedSponsors.includes(a.id)) self.sponsors.push(a.id);
+          });
+          console.log(self.sponsors)
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+
+      axios
+        .get("/api/seatmap", config)
+        .then(function(response) {
+          self.seatmaps = response.data;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    methods:{
+        updateEvent(){
+          var token = localStorage.getItem("token");
+          var title = document.querySelector("input[name=title]").value;
+          var description = document.querySelector("input[name=description]").value;
+          var content = document.querySelector("textarea[name=content]").value;
+
+          var config = {
+            headers: { Authorization: "bearer " + token }
+          };
+
+          var eventModel = {
+            id: this.event.eventModel.id,
+            title: title,
+            description: description,
+            content: content,
+            isPublic: this.ispublic
+          };
+
+          var bodyParameters = {
+            eventModel:eventModel,
+            sponsors:[],
+          };
+
+
+          if(this.hasSponsor.state == true){
+            if (this.selectedSponsors.length >0) {
+              bodyParameters.sponsors = this.selectedSponsors;
+            }
+          }
+
+          console.log(bodyParameters);
+          axios
+            .put("/api/event/"+this.event.eventModel.id,bodyParameters, config)
+            .then(function(response) {
+              console.log(response.data);
+            })
+            .catch(function(error) {
+              console.log(error.response);
+            });
+        },
+      deleteEvent(){
+        var token = localStorage.getItem("token");
+        var config = {
+          headers: {Authorization: "bearer " + token}
+        };
+        axios
+          .delete("/api/event/"+this.post.id,config)
+          .then(function (response) {
+            console.log(response.data);
+            location.reload();
+          })
+          .catch(function(error){
+            console.log(error.response);
+          })
+      },
+      isBookableClick(){
+        this.isBookable.state = !this.isBookable.state;
+        if(this.isBookable.state == true){
+          this.isBookable.color = "green";
+        }else{
+          this.isBookable.color = "red";
+        }
+
+        if(this.hasSeatMap.state == true){
+          this.hasSeatMap.state = false;
+          this.hasSeatMap.color = "red"
+        }
+      },
+      hasSponsorClick(){
+        this.hasSponsor.state = !this.hasSponsor.state;
+        if(this.hasSponsor.state == true){
+          this.hasSponsor.color = "green";
+        }else{
+          this.hasSponsor.color = "red";
+        }
+      },
+      hasSeatMapClick(){
+        this.hasSeatMap.state = !this.hasSeatMap.state;
+        if(this.hasSeatMap.state == true){
+          this.hasSeatMap.color = "green";
+        }else{
+          this.hasSeatMap.color = "red";
+        }
+        if(this.isBookable.state == true){
+          this.isBookable.state = false;
+          this.isBookable.color = "red"
+        }
+      },
+      addSponsor(id){
+        this.selectedSponsors.push(this.sponsors.filter(function(x){return x ==id})[0]);
+        this.sponsors = this.sponsors.filter(function(x){return x !=id});
+        console.log(this.selectedSponsors)
+      },
+      removeSponsor(id){
+        this.sponsors.push(this.selectedSponsors.filter(function(x){return x ==id})[0]);
+        this.selectedSponsors = this.selectedSponsors.filter(function(x){return x !=id});
+      }
+    },
+    computed:{
+      sponsorStyle(){
+        return "backgroundColor:"+this.hasSponsor.color;
+      },
+      bookableStyle(){
+        return "backgroundColor:"+this.isBookable.color;
+      },
+      seatmapStyle(){
+        return "backgroundColor:"+this.hasSeatMap.color;
+      }
+    }
+  };
+</script>
+
+<style scoped>
+
+    .sidebyside50 {
+        width: 50%;
+        vertical-align: top;
+        display: inline-block;
+    }
+    .sidebyside30 {
+        width: 30%;
+        vertical-align: top;
+        display: inline-block;
+        background-color: #6c6c6c;
+        margin: 1.5%;
+        color: white;
+        text-align: center;
+    }
+    .eventOptions {
+        background-color: #bbbbbb;
+    }
+    .sidebyside30 button {
+        width: 50%;
+    }
+    .field {
+        background-color: rgb(185, 185, 185);
+        padding: 2px;
+    }
+    .chooser {
+        width: 100%;
+    }
+    #publish {
+        width: 100%;
+    }
+    .eventOptions input{
+        margin-left: 1%;
+        margin-right: 1%;
+    }
+    .addSponsorB{
+        width: 100%;
+    }
+</style>

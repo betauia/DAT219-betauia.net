@@ -9,15 +9,6 @@
               <router-link to="/admin/dashboard">Dashboard</router-link>
             </li>
             <li>
-              <router-link to="/admin/blog/add">Add Post</router-link>
-            </li>
-          <li>
-              <router-link to="/admin/blog">Edit blog posts</router-link>
-          </li>
-            <li>
-              <router-link to="/event/add">Add Event</router-link>
-            </li>
-            <li>
               <router-link to="/admin/seatmapeditor">Edit Seatmap</router-link>
             </li>
             <li>
@@ -33,6 +24,24 @@
               <router-link to="/admin/roles">Role Management</router-link>
             </li>
           </ul>
+            <p class="menu-label">Blog</p>
+            <ul class="menu-list">
+                <li>
+                    <router-link to="/admin/blog/add">Add Post</router-link>
+                </li>
+                <li>
+                    <router-link to="/admin/blog">Edit blog posts</router-link>
+                </li>
+            </ul>
+            <p class="menu-label">Event</p>
+            <ul class="menu-list">
+                <li>
+                    <router-link to="/admin/event/add">Add Event</router-link>
+                </li>
+                <li>
+                    <router-link to="/admin/event">Edit events</router-link>
+                </li>
+            </ul>
         </aside>
       </div>
       <div class="column">

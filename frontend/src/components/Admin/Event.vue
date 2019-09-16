@@ -1,21 +1,19 @@
 <template>
-    <div id="blogs">
+    <div id="events">
         <table>
             <tr>
                 <th>Id</th>
                 <th>Title</th>
-                <th>Last edit date</th>
-                <th>Creation date</th>
+                <th>Description</th>
                 <th>Edit/Del</th>
             </tr>
-            <tr v-for="blog of blogs" v-bind:key="blog">
-                <td>{{blog.id}}</td>
-                <td>{{blog.title}}</td>
-                <td>{{blog.lastEditDate}}</td>
-                <td>{{blog.creationDate}}</td>
+            <tr v-for="event of events" v-bind:key="event">
+                <td>{{event.id}}</td>
+                <td>{{event.title}}</td>
+                <td>{{event.description}}</td>
                 <td>
-                    <a @click="detailClick(blog.id)">Details/Edit</a>|
-                    <a @click="deleteClick(blog.id)">Delete me</a>
+                    <a @click="detailClick(event.id)">Details/Edit</a>|
+                    <a @click="deleteClick(event.id)">Delete me</a>
                 </td>
             </tr>
         </table>
@@ -26,27 +24,33 @@
   import axios from "axios";
 
   export default {
-    name: 'Blog',
+    name: 'Event',
     data(){
       return{
-        blogs:[],
+        events:[],
       }
     },
     created() {
       const self = this;
       axios
-        .get("/api/blog")
-        .then(function(response){
-          console.log(response.data);
-          self.blogs = response.data;
+        .get("/api/event")
+        .then(function (response) {
+          var data = [];
+          response.data.forEach(function (val) {
+            var t = val.eventModel;
+            t.sponsors = val.sponsors;
+            data.push(t);
+          });
+          console.log(data);
+          self.events = data;
         })
         .catch(function (error) {
-          console.log(error.response);
+          console.log(error.response)
         })
     },
     methods:{
       detailClick(id){
-        this.$router.push("/admin/blog/"+id);
+        this.$router.push('/admin/event/'+id);
       },
       deleteClick(id){
         var token = localStorage.getItem("token");
@@ -55,7 +59,7 @@
         };
         const self = this;
         axios
-          .delete("/api/blog/"+id,config)
+          .delete("/api/event/"+id,config)
           .then(function (response) {
             console.log(response.data);
             location.reload();
@@ -90,7 +94,7 @@
     }
 
     a:link{
-       color:blue;
+        color:blue;
     }
     a:visited{
         color: blue;

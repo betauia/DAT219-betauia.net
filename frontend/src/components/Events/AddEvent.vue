@@ -78,7 +78,6 @@ IsPublic = isPublic;
                 <button :style="seatmapStyle" type="button" @click="hasSeatMapClick">Click me</button>
             </label>
         </div>
-
     </div>
 
     <div class="field sidebyside50" v-if="hasSponsor.state==true">
@@ -126,7 +125,6 @@ export default {
       seatmaps: [],
       sponsors: [],
       selectedSeatmap: null,
-      selectedSponsor: null,
       ispublic: null,
       isBookable:{
         state:false,
