@@ -130,10 +130,10 @@ namespace betauia.Controllers
             var seatMap = await _context.SeatMaps.FindAsync(id);
             if (seatMap == null) return NotFound("Failed to find seatMap.");
 
-            _context.Seats.RemoveRange(_context.Seats.Where(e => e.OwnerId == id));
-
             // Remove and update
+            _context.Seats.RemoveRange(_context.Seats.Where(e => e.OwnerId == id));
             _context.SeatMaps.Remove(seatMap);
+
             await _context.SaveChangesAsync();
 
             return seatMap;

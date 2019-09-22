@@ -9,9 +9,6 @@
               <router-link to="/admin/dashboard">Dashboard</router-link>
             </li>
             <li>
-              <router-link to="/admin/seatmapeditor">Edit Seatmap</router-link>
-            </li>
-            <li>
               <router-link to="/admin/addsponsor">Add sponsor</router-link>
             </li>
           </ul>
@@ -24,6 +21,15 @@
               <router-link to="/admin/roles">Role Management</router-link>
             </li>
           </ul>
+            <p class="menu-label">Seatmap</p>
+            <ul class="menu-list">
+                <li>
+                    <router-link to="/admin/seatmapeditor">Add Seatmap</router-link>
+                </li>
+                <li>
+                    <router-link to="/admin/seatmaps">Edit seatmaps</router-link>
+                </li>
+            </ul>
             <p class="menu-label">Blog</p>
             <ul class="menu-list">
                 <li>

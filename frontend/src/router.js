@@ -119,6 +119,10 @@ export default new Router({
                     component: () => import('./components/Admin/SeatMapEditor.vue'),
                 },
                 {
+                    path: '/admin/seatmaps',
+                    component: () => import('./components/Admin/SeatMaps.vue'),
+                },
+                {
                     path: '/admin/seatmapdetail/:id',
                     component:()=> import('./components/SeatMap/ViewSeatMap.vue')
                 },
