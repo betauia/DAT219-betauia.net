@@ -21,7 +21,7 @@ namespace betauia.Areas.v1
         private readonly UserManager<ApplicationUser> _um;
         private readonly RoleManager<IdentityRole> _rm;
         private readonly TokenFactory _tf;
-        
+
         public AccountApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _um = userManager;
@@ -38,14 +38,14 @@ namespace betauia.Areas.v1
             {
                 return BadRequest();
             }
-            
+
             //Check if username is taken
             var tUser = _um.FindByNameAsync(registerModel.UserName).Result;
             if (tUser != null)
             {
                 return BadRequest("202");
             }
-            
+
             //Check if email is taken
             tUser = null;
             tUser = _um.FindByEmailAsync(registerModel.Email).Result;
@@ -56,23 +56,23 @@ namespace betauia.Areas.v1
 
             var user = new ApplicationUser
             {
-                UserName = registerModel.UserName, 
+                UserName = registerModel.UserName,
                 FirstName = registerModel.FirstName,
-                LastName = registerModel.LastName, 
+                LastName = registerModel.LastName,
                 Email = registerModel.Email
             };
-            
+
             var result = _um.CreateAsync(user, registerModel.Password).Result;
-            
+
             const string role = "User";
             _um.AddClaimAsync(user, new Claim("Role", "User"));
-            
+
             if (result.Succeeded)
             {
                 if (_rm.FindByNameAsync(role) == null)
                 {
                     _rm.CreateAsync(new IdentityRole(role)).Wait();
-                } 
+                }
                 _um.AddToRoleAsync(user, role).Wait();
                 /*
                 _userManager.AddClaimAsync(user, new Claim("username", user.UserName));
@@ -85,7 +85,7 @@ namespace betauia.Areas.v1
             }
             return BadRequest(result.Errors);
         }
-        
+
         [Route("/api/account/login")]
         [HttpPost]
         public IActionResult Create([FromBody]Loginmodel loginmodel)
@@ -99,12 +99,12 @@ namespace betauia.Areas.v1
                     return BadRequest("101");
                 }
             }
-            
+
             if (user.Active == false)
             {
                 return BadRequest("102");
             }
-            
+
             if (_um.CheckPasswordAsync(user, loginmodel.Password).Result)
             {
                 var token = _tf.GetToken(user);
@@ -116,9 +116,10 @@ namespace betauia.Areas.v1
         [Route("/api/account/get")]
         [Authorize(Policy = "User")]
         [HttpPost]
-        public IActionResult GetAccountInfo([FromBody] TokenModel tokenModel)
+        public IActionResult GetAccountInfo([FromHeader] string Authorization)
         {
-            var id = _tf.AuthenticateUser(tokenModel.Token);
+           var token = Authorization.Split(' ')[1];
+            var id = _tf.AuthenticateUser(token);
             var user = _um.FindByIdAsync(id).Result;
             if (user == null)
             {
@@ -128,52 +129,46 @@ namespace betauia.Areas.v1
             {
                 return BadRequest("102");
             }
-            
+
             var profile = new ProfileViewModel(user);
-            return Ok(profile);        
+            return Ok(profile);
         }
 
         [Route("/api/account/edit")]
         [HttpPut]
         [Authorize(Policy = "User")]
-        public IActionResult EditAccount(EditModel editModel)
+        public IActionResult EditAccount([FromHeader] string Authorization, ProfileViewModel Profile)
         {
-            var token = editModel.Token;
-            var id = _tf.AuthenticateUser(token);
-            
-            if (id == string.Empty) return BadRequest();
-            if (id != editModel.Profile.Id) return BadRequest();
-            
-            var user = _um.FindByIdAsync(editModel.Profile.Id).Result;
-            if (user == null) return NotFound("101");
+          var token = Authorization.Split(' ')[1];
+          var id = _tf.AuthenticateUser(token);
 
-            if (editModel.Profile.FirstName == "") return BadRequest("206");
-            user.FirstName = editModel.Profile.FirstName;
+          if (id == string.Empty) return BadRequest();
+          if (id != Profile.Id) return BadRequest();
 
-            if (editModel.Profile.LastName == "") return BadRequest("207");
-            user.LastName = editModel.Profile.LastName;
-            
-            if (editModel.Profile.Email != "" && editModel.Profile.Email != user.Email)
-            {
-                if (_um.FindByEmailAsync(editModel.Profile.Email).Result != null) return BadRequest("201");
-                if (new EmailAddressAttribute().IsValid(editModel.Profile.Email) == false) return BadRequest("204");
-                user.Email = editModel.Profile.Email;
-            }
+          var user = _um.FindByIdAsync(Profile.Id).Result;
+          if (user == null) return NotFound("101");
 
-            if (editModel.Profile.UserName != "" && editModel.Profile.UserName != user.UserName) 
-            {
-                if (_um.FindByNameAsync(editModel.Profile.UserName).Result != null) return BadRequest("202");
-                user.UserName = editModel.Profile.UserName;
-            }
+          if (Profile.FirstName == "") return BadRequest("206");
+          user.FirstName = Profile.FirstName;
 
-            _um.UpdateAsync(user).Wait();
-            return Ok(new AdminUserView(user));
-        }
+          if (Profile.LastName == "") return BadRequest("207");
+          user.LastName = Profile.LastName;
 
-        public class EditModel
-        {
-            public string Token { get; set; }
-            public ProfileViewModel Profile { get; set; }
+          if (Profile.Email != "" && Profile.Email != user.Email)
+          {
+            if (_um.FindByEmailAsync(Profile.Email).Result != null) return BadRequest("201");
+            if (new EmailAddressAttribute().IsValid(Profile.Email) == false) return BadRequest("204");
+            user.Email = Profile.Email;
+          }
+
+          if (Profile.UserName != "" && Profile.UserName != user.UserName)
+          {
+            if (_um.FindByNameAsync(Profile.UserName).Result != null) return BadRequest("202");
+            user.UserName = Profile.UserName;
+          }
+
+          _um.UpdateAsync(user).Wait();
+          return Ok(new AdminUserView(user));
         }
     }
 }

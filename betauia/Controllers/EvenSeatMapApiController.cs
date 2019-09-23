@@ -25,9 +25,11 @@ namespace betauia.Controllers
           _tf = new TokenFactory(_um,_rm);
         }
 
-        [HttpGet("{id}/{token}")]
-        public IActionResult GetSeatmap(string id, string token)
+        [HttpGet("{id}")]
+        public IActionResult GetSeatmap([FromHeader] string Authorization, string id)
         {
+          var token = Authorization.Split(' ')[1];
+
           var userid = _tf.AuthenticateUser(token);
           if (userid == null)
           {

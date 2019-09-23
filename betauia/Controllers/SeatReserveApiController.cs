@@ -25,9 +25,11 @@ namespace betauia.Controllers
       _tf = new TokenFactory(_um,_rm);
     }
 
-    [HttpPost("/{token}")]
-    public IActionResult ReserveSeat(string token, IEnumerable<EventSeat> eventSeats)
+    [HttpPost]
+    public IActionResult ReserveSeat([FromHeader] string Authorization, IEnumerable<EventSeat> eventSeats)
     {
+      var token = Authorization.Split(' ')[1];
+
       var userid = _tf.AuthenticateUser(token);
       if (userid == null)
       {

@@ -52,16 +52,16 @@ export default {
     },
   },
   created() {
-    const { eventid } = this.$route.params;
+    const eventid = this.$route.params;
     const mapid = this.$route.params.seatmapid;
 
     const token = localStorage.getItem('token');
     const config = {
-      headers: { Authorization: `bearer ${token}` },
+      headers: { Authorization: "bearer " + token },
     };
     const self = this;
     axios
-      .get(`/api/eventseatmap/${mapid}/${token}`, config)
+      .get(`/api/eventseatmap/${mapid}`, config)
       .then((response) => {
         self.seats = response.data.seats;
         self.seatmapmodel = response.data.seatMapModel;

@@ -67,8 +67,11 @@ export default {
         headers: { Authorization: "bearer " + token }
       };
       var bodyParamters = {
-        profile: profile,
-        token: token
+        id:this.user.id,
+        username:username,
+        email:email,
+        firstname:firstname,
+        lastname:lastname
       };
       console.log(bodyParamters);
       var self = this;
@@ -106,9 +109,7 @@ export default {
     var config = {
       headers: { Authorization: "bearer " + token }
     };
-    var bodyParamters = {
-      token: token
-    };
+    var bodyParamters = {};
     var self = this;
     axios
       .post("/api/account/get", bodyParamters, config)

@@ -31,8 +31,12 @@ export default {
   created() {
     var id = this.$route.params.id;
     var self = this;
+    var token = localStorage.getItem("token");
+    var config = {
+      headers: { Authorization: "bearer " + token }
+    };
     axios
-      .get("/api/seatmap/" + id)
+      .get("/api/seatmap/" + id,config)
       .then(function(response) {
         self.seats = response.data.seats;
         self.seatmapmodel = response.data.seatMapModel;

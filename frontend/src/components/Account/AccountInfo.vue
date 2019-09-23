@@ -31,13 +31,10 @@ export default {
     var config = {
       headers: { Authorization: "bearer " + token }
     };
-    var bodyParamters = {
-      token: token
-    };
+    const body ={}
     var self = this;
-    console.log(localStorage.getItem("token"));
     axios
-      .post("/api/account/get", bodyParamters, config)
+      .post("/api/account/get",body,config)
       .then(function(response) {
         //console.log(response["data"]);
         self.user = response["data"];
