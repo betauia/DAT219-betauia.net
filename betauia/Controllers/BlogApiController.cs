@@ -54,7 +54,7 @@ namespace betauia.Controllers
             return Ok(blogPost.Id);
         }
 
-        //[Authorize(Policy = "Blog.write")]
+        [Authorize(Policy = "Blog.write")]
         [HttpPut("{id}")]
         public IActionResult Put([FromBody]BlogPost blogPost)
         {

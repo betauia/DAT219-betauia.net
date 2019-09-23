@@ -3,11 +3,13 @@ using System.Linq;
 using betauia.Data;
 using betauia.Models;
 using betauia.Tokens;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace betauia.Controllers
 {
+    [Authorize]
     [ApiController]
     public class UserRoleApiController : ControllerBase
     {
@@ -24,9 +26,11 @@ namespace betauia.Controllers
             _db = db;
             _tf = new TokenFactory(_um, _rm);
         }
-        
-        
+
+
         //get users from role
+        [Authorize("Account.read")]
+        [Authorize("Roles.read")]
         [HttpGet]
         [Route("api/user/role/{id}")]
         public IActionResult GetUsersInRole(string id)
@@ -56,8 +60,10 @@ namespace betauia.Controllers
             }
             return Ok(usersafe);
         }
-        
+
         //get users not in role
+        [Authorize("Account.read")]
+        [Authorize("Roles.read")]
         [HttpGet]
         [Route("api/user/nrole/{id}")]
         public IActionResult GetUsersNotInRole(string id)
@@ -69,7 +75,7 @@ namespace betauia.Controllers
             var roleusers = _um.GetUsersInRoleAsync(role.Name).Result;
 
             var nousers = allusers.Except(roleusers).ToList();
-            
+
             var usersafe = new List<AdminUserView>();
             foreach (var user in nousers)
             {
@@ -87,7 +93,9 @@ namespace betauia.Controllers
             }
             return Ok(usersafe);
         }
-        
+
+        [Authorize("Account.write")]
+        [Authorize("Roles.read")]
         [HttpPost]
         [Route("api/user/role/{userid}/{roleid}")]
         public IActionResult SetUserRoles(string userid, string roleid)
@@ -102,10 +110,12 @@ namespace betauia.Controllers
             if (role == null) return NotFound();
 
             _um.AddToRoleAsync(user, role.Name).Wait();
-            
+
             return Ok();
         }
 
+        [Authorize("Account.write")]
+        [Authorize("Roles.read")]
         [HttpDelete]
         [Route("api/user/role/{id}")]
         public IActionResult DeleteUserFromRole(string id, RoleList roleList)
@@ -120,9 +130,9 @@ namespace betauia.Controllers
             return Ok();
         }
 
-        public class RoleList                             
-        {                                                 
-            public List<string> roles { get; set; }       
-        }                                                 
+        public class RoleList
+        {
+            public List<string> roles { get; set; }
+        }
     }
 }

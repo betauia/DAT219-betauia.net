@@ -16,7 +16,7 @@ namespace betauia.Controllers
         private readonly UserManager<ApplicationUser> _um;
         private readonly RoleManager<IdentityRole> _rm;
         private readonly TokenFactory _tf;
-        
+
         public EmailVerificationApiController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _um = userManager;
@@ -39,7 +39,7 @@ namespace betauia.Controllers
             {
                 return BadRequest("102");
             }
-            
+
             if (user.VerifiedEmail == true)
             {
                 return BadRequest("205");
@@ -47,13 +47,13 @@ namespace betauia.Controllers
 
             var token = _tf.GetEmailVerificationToken(user);
             var url = "http://localhost:8081/verifyemail/" + token;
-            
+
             SmtpClient smtp = new SmtpClient("smtp.gmail.com");
             smtp.EnableSsl = true;
             smtp.Port = 587;
             smtp.Credentials = new NetworkCredential("erikaspen1@gmail.com","applicatoinkey");
             smtp.Send("erikaspen1@gmail.com","erikaa17@uia.no","Verify you email at betauia.net",url);
-            
+
             return Ok(token);
         }
 
@@ -82,6 +82,9 @@ namespace betauia.Controllers
             _um.UpdateAsync(user).Wait();
             var claim = new Claim("EmailVerified", "true", ClaimValueTypes.String);
             var result = _um.AddClaimAsync(user, claim).Result;
+
+            claim = new Claim("AccountVerified","true",ClaimValueTypes.String);
+            result = _um.AddClaimAsync(user, claim).Result;
             if (result.Succeeded)
             {
                 return Ok();

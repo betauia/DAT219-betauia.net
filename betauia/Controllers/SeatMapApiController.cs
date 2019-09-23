@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,7 @@ namespace betauia.Controllers
         }
 
         // GET: Get all SeatMaps
+        [Authorize("Seatmap.write")]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -31,6 +33,7 @@ namespace betauia.Controllers
         }
 
         // GET: Get SeatMap by id
+        [Authorize("Seatmap.read")]
         [HttpGet("{id}")]
         public async Task<ActionResult<SeatMap>> GetSeatMap(string id)
         {
@@ -70,6 +73,7 @@ namespace betauia.Controllers
         }
 
         // PUT: Update SeatMap by id
+        [Authorize("Seatmap.read")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSeatMap(string id, SeatMapModel seatMap)
         {
@@ -99,6 +103,7 @@ namespace betauia.Controllers
         }
 
         // POST: Add new SeatMap
+        [Authorize("Seatmap.write")]
         [HttpPost]
         public IActionResult Post(SeatMap seatMap)
         {
@@ -123,6 +128,7 @@ namespace betauia.Controllers
         }
 
         // DELETE: Delete SeatMap by id
+        [Authorize("Seatmap.write")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<SeatMapModel>> DeleteSeatMap(string id)
         {

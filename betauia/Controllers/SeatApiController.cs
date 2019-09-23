@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +24,7 @@ namespace betauia.Controllers
             _context = context;
         }
 
-        
+
         // GET: Get all Seats
         [HttpGet]
         public IActionResult GetAll()
@@ -40,8 +41,9 @@ namespace betauia.Controllers
             seat.Owner = _context.SeatMaps.Find(seat.OwnerId);
             return Ok(seat);
         }
-        
+
         // PUT: Update SeatModel by id
+        [Authorize("Seatmap.write")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSeatMap(string id, SeatModel seatModel)
         {
@@ -50,10 +52,10 @@ namespace betauia.Controllers
 
             // Stop the entity from being tracked by context
             _context.Entry(_context.Seats.Find(id)).State = EntityState.Detached;
-            
+
             // Set the current state to say that some or all of its properties has been modified
             _context.Entry(seatModel).State = EntityState.Modified;
-            
+
             try
             {
                 // Save changes
@@ -68,8 +70,9 @@ namespace betauia.Controllers
 
             return Ok(seatModel);
         }
-        
+
         // Receive a list of seats (JSON) and adding them all
+        [Authorize("Seatmap.write")]
         [HttpPost]
         public IActionResult Post(List<SeatModel> seats) {
 
@@ -88,7 +91,7 @@ namespace betauia.Controllers
                 // Possible errors: Incorrect ownerId or ID already taken
                 return BadRequest("Failed to save changes. Check if ownerId is correct or if any ID is taken.");
             }
-            
+
             return Created("Created", seats);
         }
 
@@ -106,6 +109,7 @@ namespace betauia.Controllers
         }
 
         // Receive a list of ids to delete
+        [Authorize("Seatmap.write")]
         [HttpDelete]
         public async Task<IActionResult> Delete(List<int> seats)
         {
@@ -120,7 +124,7 @@ namespace betauia.Controllers
 
             return Ok("Seats removed.");
         }
-        
+
         // Function to check if a SeatMap by id exists
         private bool SeatModelExists(string id)
         {

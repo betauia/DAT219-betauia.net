@@ -1,6 +1,7 @@
 using System.Linq;
 using betauia.Data;
 using betauia.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +32,7 @@ namespace betauia.Controllers
             return Ok(sponsor);
         }
 
+        [Authorize("Sponsor.write")]
         [HttpPost]
         public IActionResult AddSponsor(SponsorModel sponsorModel)
         {
@@ -42,6 +44,7 @@ namespace betauia.Controllers
           return Ok(sponsorModel);
         }
 
+        [Authorize("Sponsor.write")]
         [HttpPut("{id}")]
         public IActionResult EditSponsor(string id, SponsorModel sponsorModel)
         {
@@ -61,6 +64,7 @@ namespace betauia.Controllers
             return Ok(sponsorModel);
         }
 
+        [Authorize("Sponsor.write")]
         [HttpDelete("{id}")]
         public IActionResult DeleteSponsor(string id)
         {

@@ -3,12 +3,15 @@ using System.Security.Claims;
 using betauia.Data;
 using betauia.Models;
 using betauia.Tokens;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using RestSharp;
 
 namespace betauia.Controllers
 {
     [ApiController]
+    [Authorize]
     public class UserClaimApiController : ControllerBase
     {
         private readonly ApplicationDbContext _db;
@@ -24,7 +27,9 @@ namespace betauia.Controllers
             _db = db;
             _tf = new TokenFactory(_um, _rm);
         }
-        
+
+        [Authorize("Claims.read")]
+        [Authorize("Account.read")]
         [HttpGet]
         [Route("api/allclaims/user/{id}")]
         public IActionResult GetAllClaims(string id)
@@ -57,6 +62,8 @@ namespace betauia.Controllers
             return NotFound();
         }
 
+        [Authorize("Claims.read")]
+        [Authorize("Account.read")]
         [HttpGet]
         [Route("api/claim/user/{id}")]
         public IActionResult GetUserClaims(string id)
@@ -67,7 +74,10 @@ namespace betauia.Controllers
             var claims = _um.GetClaimsAsync(user).Result;
             return Ok(claims);
         }
-        
+
+
+        [Authorize("Claims.write")]
+        [Authorize("Account.write")]
         [HttpPut]
         [Route("api/claim/user/{id}")]
         public IActionResult AddClaimToUser(string id, ClaimModel claimModel)
@@ -101,6 +111,8 @@ namespace betauia.Controllers
             }
         }
 
+        [Authorize("Claims.write")]
+        [Authorize("Account.write")]
         [HttpDelete]
         [Route("api/claim/user/{id}")]
         public IActionResult DeleteClaimFromUser(string id, ClaimModel claimModel)

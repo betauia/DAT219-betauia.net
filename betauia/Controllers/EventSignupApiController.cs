@@ -5,6 +5,7 @@ using betauia.Controllers;
 using betauia.Data;
 using betauia.Models;
 using betauia.Tokens;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 namespace betauia.Controllers
@@ -26,6 +27,7 @@ namespace betauia.Controllers
       _tf = new TokenFactory(_um,_rm);
     }
 
+    [Authorize("AccountVerified")]
     [HttpPost("user/{id}")]
     public IActionResult SignUpEventUser(int id, [FromHeader] string Authorization)
     {

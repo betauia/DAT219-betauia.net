@@ -3,12 +3,14 @@ using System.Security.Claims;
 using betauia.Data;
 using betauia.Models;
 using betauia.Tokens;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace betauia.Controllers
 {
     [ApiController]
+    [Authorize]
     public class RoleClaimApiController : ControllerBase
     {
         private readonly ApplicationDbContext _db;
@@ -26,6 +28,7 @@ namespace betauia.Controllers
         }
 
         //Configures role claims
+        [Authorize("Claims.read")]
         [HttpGet]
         [Route("api/claim/role/{id}")]
         public IActionResult GetRoleClaims(string id)
@@ -46,6 +49,7 @@ namespace betauia.Controllers
             return Ok(claimList);
         }
 
+        [Authorize("Claims.write")]
         [HttpPost]
         [Route("api/claim/role/{id}")]
         public IActionResult SetRoleClaims(string id, ClaimList claimList)
@@ -65,6 +69,7 @@ namespace betauia.Controllers
             return Ok();
         }
 
+        [Authorize("Claims.write")]
         [HttpPut]
         [Route("api/claim/role/{id}")]
         public IActionResult PutRoleToClaim(string id, ClaimModel claimModel)
@@ -98,6 +103,7 @@ namespace betauia.Controllers
             }
         }
 
+        [Authorize("Claims.write")]
         [HttpDelete]
         [Route("api/claim/role{id}")]
         public IActionResult DeleteClaimFromRole(string id, ClaimModel claimModel)

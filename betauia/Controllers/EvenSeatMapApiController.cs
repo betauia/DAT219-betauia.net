@@ -25,7 +25,6 @@ namespace betauia.Controllers
           _tf = new TokenFactory(_um,_rm);
         }
 
-
         [HttpGet("{id}/{token}")]
         public IActionResult GetSeatmap(string id, string token)
         {

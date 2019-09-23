@@ -155,7 +155,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .seatmapeditor {
   border-style: solid;
   border-width: medium;

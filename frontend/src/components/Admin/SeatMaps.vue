@@ -30,8 +30,13 @@
     },
     created() {
       const self = this;
+
+      var token = localStorage.getItem("token");
+      var config = {
+        headers: { Authorization: "bearer " + token }
+      };
       axios
-        .get("/api/seatmap")
+        .get("/api/seatmap",config)
         .then(function (response) {
           self.seatMaps = response.data;
           console.log(response.data);

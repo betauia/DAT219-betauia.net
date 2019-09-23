@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace betauia.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/role")]
     public class RoleApiController : ControllerBase
@@ -28,8 +29,9 @@ namespace betauia.Controllers
             _db = db;
             _tf = new TokenFactory(_um, _rm);
         }
-        
+
         //get all roles
+        [Authorize("Roles.read")]
         [HttpGet]
         public IActionResult GetAllRoles()
         {
@@ -38,6 +40,7 @@ namespace betauia.Controllers
         }
 
         //get role
+        [Authorize("Roles.read")]
         [HttpGet]
         [Route("{id}")]
         public IActionResult GetRole(string id)
@@ -50,6 +53,7 @@ namespace betauia.Controllers
             return Ok(role);
         }
 
+        [Authorize("Roles.write")]
         [HttpPost]
         [Route("{name}")]
         public IActionResult AddRole(string name)
@@ -59,7 +63,7 @@ namespace betauia.Controllers
             return Ok();
         }
 
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize("Roles.write")]
         [HttpDelete]
         [Route("{id}")]
         public IActionResult DeleteRole(string id)
@@ -71,7 +75,7 @@ namespace betauia.Controllers
             if (result.Succeeded) return Ok();
             return BadRequest(result.Errors);
         }
-        
-        
+
+
     }
 }

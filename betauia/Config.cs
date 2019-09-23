@@ -40,6 +40,11 @@ namespace betauia
                 new Claim("Blog", "write", ClaimValueTypes.String),
                 new Claim("Account","read",ClaimValueTypes.String),
                 new Claim("Roles","read",ClaimValueTypes.String),
+                new Claim("Event","write",ClaimValueTypes.String),
+                new Claim("Seatmap","write",ClaimValueTypes.String),
+                new Claim("Seatmap","read",ClaimValueTypes.String),
+                new Claim("Sponsor","write",ClaimValueTypes.String),
+                new Claim("Job","write",ClaimValueTypes.String)
             };
 
             foreach (var claim in userClaims)
@@ -51,7 +56,7 @@ namespace betauia
             {
                 rm.AddClaimAsync(mod, claim).Wait();
             }
-            
+
             //////////////////////////
             //admin role and claims///
             //////////////////////////
@@ -62,7 +67,8 @@ namespace betauia
             {
                 new Claim("Account", "write", ClaimValueTypes.String),
                 new Claim("Seatmap", "write",ClaimValueTypes.String),
-                new Claim("Roles", "write",ClaimValueTypes.String)
+                new Claim("Roles", "read",ClaimValueTypes.String),
+                new Claim("Claims","read",ClaimValueTypes.String)
             };
 
             foreach (var claim in modClaims)
@@ -74,7 +80,7 @@ namespace betauia
             {
                 rm.AddClaimAsync(admin, claim).Wait();
             }
-            
+
             //////////////////////////
             //SuperAdmin role and claims
             //////////////////////////
@@ -83,7 +89,8 @@ namespace betauia
 
             var superAdminClaims = new List<Claim>
             {
-
+              new Claim("Roles","write",ClaimValueTypes.String),
+              new Claim("Claims","write",ClaimValueTypes.String)
             };
 
             foreach (var claim in adminClaims)
@@ -106,17 +113,29 @@ namespace betauia
             options.AddPolicy("Admin", policy=>policy.RequireClaim("Role","SuperAdmin","Admin"));
             options.AddPolicy("Mod",policy=>policy.RequireClaim("Role","SuperAdmin","Admin","Mod"));
             options.AddPolicy("User",policy=>policy.RequireClaim("id"));
-            
+
+            options.AddPolicy("Roles.write",policy=>policy.RequireClaim("Roles","write"));
+            options.AddPolicy("Roles.read",policy=>policy.RequireClaim("Roles","read","write"));
+
+            options.AddPolicy("Claims.read",policy=>policy.RequireClaim("Claims","read","write"));
+            options.AddPolicy("Claims.write",policy=>policy.RequireClaim("Claims","write"));
+
             options.AddPolicy("Blog.write", policy => policy.RequireClaim("Blog","write"));
-            
+            options.AddPolicy("Event.write",policy=>policy.RequireClaim("Event","write"));
+            options.AddPolicy("Sponsor.write",policy=>policy.RequireClaim("Sponsor","write"));
+            options.AddPolicy("Job.write",policy=>policy.RequireClaim("Job","write"));
+
+            options.AddPolicy("Seatmap.write",policy=>policy.RequireClaim("Seatmap","write"));
+            options.AddPolicy("Seatmap.read",policy=>policy.RequireClaim("Seatmap","read","write"));
+
             options.AddPolicy("Account.write",policy=>policy.RequireClaim("Account","write"));
-            options.AddPolicy("Account.read",policy=>policy.RequireClaim("Account","read"));
+            options.AddPolicy("Account.read",policy=>policy.RequireClaim("Account","read","wrtie"));
             options.AddPolicy("Account.writeself",policy=>policy.RequireClaim("Role"));
 
-            
             options.AddPolicy("EmailVerification", policy=>policy.RequireClaim("EmailVerification","true"));
             options.AddPolicy("EmailVerified", policy=>policy.RequireClaim("EmailVerified","true"));
-
+            options.AddPolicy("PhoneVerified",policy=>policy.RequireClaim("PhoneVerified","true"));
+            options.AddPolicy("AccountVerified",policy=>policy.RequireClaim("AccountVerified","true"));
         }
     }
 }

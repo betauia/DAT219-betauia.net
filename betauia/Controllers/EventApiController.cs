@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -77,6 +78,7 @@ namespace betauia.Controllers
 
         // Tested and working
         // PUT: Update event by id
+        [Authorize("Event.write")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEventModel(int id, EventEditor eventEditor)
         {
@@ -120,6 +122,7 @@ namespace betauia.Controllers
 
         // Tested and working
         // POST: Add new event
+        [Authorize("Event.write")]
         [HttpPost]
         public IActionResult Post(EventCreater eventCreater)
         {
@@ -164,6 +167,7 @@ namespace betauia.Controllers
 
         // Tested and working
         // DELETE: Delete event by id
+        [Authorize("Event.write")]
         [HttpDelete("{id}")]
         public IActionResult DeleteEventModel(int id)
         {
