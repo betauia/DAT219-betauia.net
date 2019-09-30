@@ -5,7 +5,9 @@
 -*.min.css
 -*.min.js
 -*.user
--
+-GoogleKeys.cs
+-credentials.json
+-./token.json*
 -# VSCODE
 -.vscode/*
 -!.vscode/settings.json
