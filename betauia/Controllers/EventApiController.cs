@@ -92,6 +92,8 @@ namespace betauia.Controllers
           Event.Description = eventModel.Description;
           Event.Content = eventModel.Content;
           Event.IsPublic = eventModel.IsPublic;
+          Event.Enddate = eventModel.Enddate;
+          Event.Startdate = eventModel.Startdate;
 
           //Set sponsors
           if (eventEditor.sponsors.Count > 0)
@@ -181,7 +183,8 @@ namespace betauia.Controllers
             eventModel.Description = null;
             eventModel.Image = null;
             eventModel.EventPrice = 0;
-            eventModel.EventTime = DateTime.MinValue;
+            eventModel.Startdate = null;
+            eventModel.Enddate = null;
             eventModel.IsPublic = false;
             eventModel.MaxAtendees = 0;
             eventModel.SubTitle = null;

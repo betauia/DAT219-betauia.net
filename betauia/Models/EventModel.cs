@@ -12,7 +12,8 @@ namespace betauia.Models
             Author = null;
             MaxAtendees = -1;
             Atendees = 0;
-            EventTime = DateTime.MinValue;
+            Startdate = null;
+            Enddate = null;
         }
         public int Id { get; set; }
         public string Title { get; set; }
@@ -24,9 +25,9 @@ namespace betauia.Models
         public int MaxAtendees { get; set; }
         public bool IsPublic { get; set; }
         public string Author { get; set; }
-        public DateTime EventTime { get; set; }
         public int EventPrice { get; set; }
-
+        public string Startdate { get; set; }
+        public string Enddate { get; set; }
         public string SeatMapId { get; set; }
         public EventSeatMap SeatMap { get; set; }
     }

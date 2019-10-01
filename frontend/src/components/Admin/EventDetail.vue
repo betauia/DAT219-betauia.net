@@ -64,6 +64,46 @@
             </div>
         </div>
 
+        <div class="field" id="startdate">
+            <label class="label" for="eventIs">Startdate</label>
+            <div class="control">
+                <datetime
+                    type="datetime"
+                    v-model="startdate"
+                    input-class="my-class"
+                    value-zone="Europe/Oslo"
+                    format="dd-MM-yyyy HH:mm"
+                    zone="Europe/Oslo"
+                    :phrases="{ok: 'Continue', cancel: 'Exit'}"
+                    :hour-step="1"
+                    :minute-step="5"
+                    :week-start="1"
+                    use24-hour
+                    auto
+                ></datetime>
+            </div>
+        </div>
+        <div class="field" id="enddate">
+            <label class="label" for="eventIs">Enddate</label>
+            <div class="control">
+                <datetime
+                    type="datetime"
+                    v-model="enddate"
+                    input-class="my-class"
+                    value-zone="Europe/Oslo"
+                    format="dd-MM-yyyy HH:mm"
+                    zone="Europe/Oslo"
+                    :phrases="{ok: 'Continue', cancel: 'Exit'}"
+                    :hour-step="1"
+                    :minute-step="5"
+                    :min-datetime="startdate"
+                    :week-start="1"
+                    use24-hour
+                    auto
+                ></datetime>
+            </div>
+        </div>
+
         <div class="field" v-if="hasSponsor.state==true">
             <label class="label" for="sponsor">Added sponsors</label>
             <div v-for="sponsor of selectedSponsors">
@@ -117,6 +157,8 @@ import axios from 'axios';
           state:false,
           color:"red",
         },
+        startdate:"0000-00-00T00:00:00.000Z",
+        enddate:"0000-00-00T00:00:00.000Z",
       }
     },
     created() {
@@ -132,6 +174,8 @@ import axios from 'axios';
         .then(function (response) {
           console.log(response.data);
           self.event = response.data;
+          self.startdate = getParsedTime(response.data.eventModel.startdate);
+          self.enddate = getParsedTime(response.data.eventModel.enddate);
           if(response.data.sponsors.length >0){
             response.data.sponsors.forEach(function (a) {
               self.selectedSponsors.push(a.id);
@@ -165,6 +209,25 @@ import axios from 'axios';
         .catch(function(error) {
           console.log(error);
         });
+
+
+      function getParsedTime(input) {
+        const date = input.split(" ")[0];
+        const time = input.split(" ")[1];
+        const ndate = date.split("-")[2] + "-" + date.split("-")[1] + "-" +date.split("-")[0];
+        var ntime = "";
+        switch (time.split(":")[1]) {
+          case "00":
+            ntime = "T22:" +  time.split(":")[1] + ":00.000Z";
+            break;
+            case "01":
+            ntime = "T23" + time.split(":")[1] + ":00.000Z";
+            break;
+          default:
+            ntime = "T" + (parseInt(time.split(":")[0])-2).toString() + ":" + time.split(":")[1] + ":00.000Z";
+        }
+        return ndate + ntime;
+      }
     },
     methods:{
         updateEvent(){
@@ -172,7 +235,10 @@ import axios from 'axios';
           var title = document.querySelector("input[name=title]").value;
           var description = document.querySelector("input[name=description]").value;
           var content = document.querySelector("textarea[name=content]").value;
-
+          const startdatedoc = document.querySelector('#startdate');
+          const enddatedoc = document.querySelector('#enddate');
+          const enddate = enddatedoc.querySelector('.vdatetime-input').value;
+          const startdate = startdatedoc.querySelector('.vdatetime-input').value;
           var config = {
             headers: { Authorization: "bearer " + token }
           };
@@ -182,7 +248,9 @@ import axios from 'axios';
             title: title,
             description: description,
             content: content,
-            isPublic: this.ispublic
+            isPublic: this.ispublic,
+            enddate:enddate,
+            startdate:startdate
           };
 
           var bodyParameters = {
@@ -263,7 +331,7 @@ import axios from 'axios';
       removeSponsor(id){
         this.sponsors.push(this.selectedSponsors.filter(function(x){return x ==id})[0]);
         this.selectedSponsors = this.selectedSponsors.filter(function(x){return x !=id});
-      }
+      },
     },
     computed:{
       sponsorStyle(){
@@ -280,7 +348,6 @@ import axios from 'axios';
 </script>
 
 <style scoped>
-
     .sidebyside50 {
         width: 50%;
         vertical-align: top;

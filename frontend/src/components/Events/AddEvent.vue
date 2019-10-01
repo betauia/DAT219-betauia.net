@@ -185,8 +185,8 @@ export default {
         color:"red",
       },
       selectedSponsors:[],
-      startdate:"choose date",
-      enddate:"choose date",
+      startdate:"0000-00-00T00:00:00.000Z",
+      enddate:"2019-10-01T16:50:00.000Z",
     };
   },
   methods: {
@@ -195,8 +195,10 @@ export default {
       var title = document.querySelector("input[name=title]").value;
       var description = document.querySelector("input[name=description]").value;
       var content = document.querySelector("#textcontent").value;
-      console.log(content)
-
+      const startdatedoc = document.querySelector('#startdate');
+      const enddatedoc = document.querySelector('#enddate');
+      const enddate = enddatedoc.querySelector('.vdatetime-input').value;
+      const startdate = startdatedoc.querySelector('.vdatetime-input').value;
       var config = {
         headers: { Authorization: "bearer " + token }
       };
@@ -206,19 +208,15 @@ export default {
         description: description,
         content: content,
         isPublic: this.ispublic,
+        enddate:enddate,
+        startdate:startdate
       };
 
-      const startdatedoc = document.querySelector('#startdate');
-      const enddatedoc = document.querySelector('#enddate');
-      console.log(startdatedoc)
-      const enddate = enddatedoc.querySelector('.vdatetime-input').value;
-      const startdate = startdatedoc.querySelector('.vdatetime-input').value;
+
 
       var bodyParameters = {
         eventModel:eventModel,
         sponsors:[],
-        startDate: startdate,
-        endDate: enddate,
       };
 
       if(this.hasSponsor.state == true){
