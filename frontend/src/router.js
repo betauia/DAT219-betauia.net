@@ -5,9 +5,9 @@ Vue.use(Router);
 
 export default new Router({
     routes: [{
-            path: '/',
-            component: () => import('./views/Intro.vue'),
-        },
+        path: '/',
+        component: () => import('./views/Intro.vue'),
+    },
         {
             path: '/privacy',
             component: () => import('./components/Legal/PrivacyPolicy.vue'),
@@ -49,8 +49,8 @@ export default new Router({
             component: () => import('./components/Sponsors/SponsorDetailed.vue'),
         },
         {
-          path: '/jobs',
-          component:()=> import('./components/Jobs/JobView.vue'),
+            path: '/jobs',
+            component: () => import('./components/Jobs/JobView.vue'),
         },
         {
             path: '/seatmap/:eventid/:seatmapid',
@@ -72,9 +72,9 @@ export default new Router({
             path: '/account',
             component: () => import('./components/Account/Account.vue'),
             children: [{
-                    path: '/account/info',
-                    component: () => import('./components/Account/AccountInfo.vue'),
-                },
+                path: '/account/info',
+                component: () => import('./components/Account/AccountInfo.vue'),
+            },
                 {
                     path: '/account/edit/:id',
                     component: () => import('./components/Account/EditAccount.vue'),
@@ -86,7 +86,7 @@ export default new Router({
             component: () => import('./components/Admin/AdminPanel.vue'),
             children: [
                 {
-                  path: '/admin/blog',
+                    path: '/admin/blog',
                     component: () => import('./components/Admin/Blog.vue'),
                 },
                 {
@@ -99,7 +99,7 @@ export default new Router({
                 },
                 {
                     path: '/admin/event',
-                    component: ()=>import('./components/Admin/Event.vue'),
+                    component: () => import('./components/Admin/Event.vue'),
                 },
                 {
                     path: '/admin/event/add',
@@ -107,7 +107,7 @@ export default new Router({
                 },
                 {
                     path: '/admin/event/:id',
-                    component:()=>import('./components/Admin/EventDetail.vue')
+                    component: () => import('./components/Admin/EventDetail.vue')
                 },
 
                 {
@@ -124,7 +124,7 @@ export default new Router({
                 },
                 {
                     path: '/admin/seatmapdetail/:id',
-                    component:()=> import('./components/SeatMap/ViewSeatMap.vue')
+                    component: () => import('./components/SeatMap/ViewSeatMap.vue')
                 },
                 {
                     path: '/admin/userinfo/:id',

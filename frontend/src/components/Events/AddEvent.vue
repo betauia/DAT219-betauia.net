@@ -11,7 +11,8 @@ IsPublic = isPublic;
 -->
 
 <template>
-  <div class="form-horizontal padding center addevent" enctype="multipart/form-data">
+<div id="addEvent">
+    <div class="form-horizontal padding center addevent" enctype="multipart/form-data">
     <div class="is-1 title">Add Event</div>
 
     <!-- Text input-->
@@ -48,13 +49,13 @@ IsPublic = isPublic;
     <div class="field">
       <label class="label" for="content">Content</label>
       <div class="control">
-        <textarea class="textarea" id="content" name="content"></textarea>
+        <textarea class="textarea" id="textcontent" name="content"></textarea>
       </div>
     </div>
 
     <!-- Select Basic -->
     <div class="field">
-      <label class="label" for="eventIs">Is Event Public</label>
+      <label class="label" for="eventIs">Is Public Event</label>
       <div class="control">
         <div class="select">
           <select id="eventIs" name="eventIs" v-model="ispublic">
@@ -63,6 +64,46 @@ IsPublic = isPublic;
           </select>
         </div>
       </div>
+    </div>
+
+    <div class="field" id="startdate">
+        <label class="label" for="eventIs">Startdate</label>
+        <div class="control">
+            <datetime
+                type="datetime"
+                v-model="startdate"
+                input-class="my-class"
+                value-zone="Europe/Oslo"
+                format="dd-MM-yyyy HH:mm"
+                zone="Europe/Oslo"
+                :phrases="{ok: 'Continue', cancel: 'Exit'}"
+                :hour-step="1"
+                :minute-step="5"
+                :week-start="1"
+                use24-hour
+                auto
+            ></datetime>
+        </div>
+    </div>
+    <div class="field" id="enddate">
+        <label class="label" for="eventIs">Enddate</label>
+        <div class="control">
+            <datetime
+                type="datetime"
+                v-model="enddate"
+                input-class="my-class"
+                value-zone="Europe/Oslo"
+                format="dd-MM-yyyy HH:mm"
+                zone="Europe/Oslo"
+                :phrases="{ok: 'Continue', cancel: 'Exit'}"
+                :hour-step="1"
+                :minute-step="5"
+                :min-datetime="startdate"
+                :week-start="1"
+                use24-hour
+                auto
+            ></datetime>
+        </div>
     </div>
 
     <div class="eventOptions">
@@ -114,12 +155,17 @@ IsPublic = isPublic;
     <!-- Button -->
     <button id="publish" name="publish" class="button is-primary" v-on:click="addEvent">Publish</button>
   </div>
+</div>
 </template>
 
 <script>
 import axios from "axios";
+import { Datetime } from 'vue-datetime';
 
 export default {
+  comments:{
+    datetime: Datetime,
+  },
   data() {
     return {
       seatmaps: [],
@@ -139,6 +185,8 @@ export default {
         color:"red",
       },
       selectedSponsors:[],
+      startdate:"choose date",
+      enddate:"choose date",
     };
   },
   methods: {
@@ -146,7 +194,8 @@ export default {
       var token = localStorage.getItem("token");
       var title = document.querySelector("input[name=title]").value;
       var description = document.querySelector("input[name=description]").value;
-      var content = document.querySelector("textarea[name=content]").value;
+      var content = document.querySelector("#textcontent").value;
+      console.log(content)
 
       var config = {
         headers: { Authorization: "bearer " + token }
@@ -156,12 +205,20 @@ export default {
         title: title,
         description: description,
         content: content,
-        isPublic: this.ispublic
+        isPublic: this.ispublic,
       };
+
+      const startdatedoc = document.querySelector('#startdate');
+      const enddatedoc = document.querySelector('#enddate');
+      console.log(startdatedoc)
+      const enddate = enddatedoc.querySelector('.vdatetime-input').value;
+      const startdate = startdatedoc.querySelector('.vdatetime-input').value;
 
       var bodyParameters = {
         eventModel:eventModel,
         sponsors:[],
+        startDate: startdate,
+        endDate: enddate,
       };
 
       if(this.hasSponsor.state == true){
@@ -210,6 +267,7 @@ export default {
       }else{
         this.hasSponsor.color = "red";
       }
+      console.log(this.startdate);
     },
     hasSeatMapClick(){
       this.hasSeatMap.state = !this.hasSeatMap.state;
@@ -226,7 +284,6 @@ export default {
     addSponsor(id){
       this.selectedSponsors.push(this.sponsors.filter(function(x){return x.id ==id})[0]);
       this.sponsors = this.sponsors.filter(function(x){return x.id !=id});
-      console.log(this.selectedSponsors)
     },
     removeSponsor(id){
       this.sponsors.push(this.selectedSponsors.filter(function(x){return x.id ==id})[0]);

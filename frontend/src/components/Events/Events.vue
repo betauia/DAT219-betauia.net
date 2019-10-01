@@ -10,7 +10,8 @@
             <ul>
               <li>Description: {{event.eventModel.description}}</li>
               <li>Content: {{event.eventModel.content}}</li>
-              <li>EventTime: {{event.eventModel.eventTime}}</li>
+              <li>Starting at: {{event.eventModel.startDate}}</li>
+                <li>ending at: {{event.eventModel.endDate}}</li>
             </ul>
               <div v-if="event.sponsors.length>0">
                   <div v-for="sponsor of event.sponsors">
