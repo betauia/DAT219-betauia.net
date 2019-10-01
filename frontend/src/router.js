@@ -41,6 +41,10 @@ export default new Router({
             component: () => import('./components/Events/SeatInfo.vue'),
         },
         {
+            path: '/ticket/:id',
+            component:()=>import('./components/Ticket/TicketInit.vue'),
+        },
+        {
             path: '/sponsors',
             component: () => import('./components/Sponsors/Sponsors.vue'),
         },

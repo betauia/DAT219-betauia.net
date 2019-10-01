@@ -37,7 +37,7 @@ namespace betauia.Tokens
                     claims.Add(claim);
                 }
             }
-            
+
             var token = new JwtSecurityToken(
                 issuer: "betauia",
                 audience: "https://localhost:5001",
@@ -46,10 +46,10 @@ namespace betauia.Tokens
                 expires: DateTime.Now.AddDays(28),
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg")), SecurityAlgorithms.HmacSha256)
                 );
-            
+
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-        
+
         public string AuthenticateUser(string token)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg"));
@@ -57,7 +57,7 @@ namespace betauia.Tokens
             List<Exception> validationFailures = null;
             SecurityToken validateToken;
             var validator = new JwtSecurityTokenHandler();
-            
+
             TokenValidationParameters validationParameters = new TokenValidationParameters();
             validationParameters.ValidateIssuer = true;
             validationParameters.ValidIssuer = "betauia";
@@ -67,8 +67,8 @@ namespace betauia.Tokens
 
             validationParameters.IssuerSigningKey = key;
             validationParameters.ValidateIssuerSigningKey = true;
-            
-            if (validator.CanReadToken(token)) 
+
+            if (validator.CanReadToken(token))
             {
                 ClaimsPrincipal principal;
                 try
@@ -86,7 +86,7 @@ namespace betauia.Tokens
             }
             return string.Empty;
         }
-        
+
         public string GetEmailVerificationToken(ApplicationUser user)
         {
             var claims = new Claim[]
@@ -102,10 +102,9 @@ namespace betauia.Tokens
                 expires: DateTime.Now.AddHours(2),
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg")), SecurityAlgorithms.HmacSha256)
             );
-
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-        
+
         public string VerifyEmail(string token)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg"));
@@ -113,7 +112,7 @@ namespace betauia.Tokens
             List<Exception> validationFailures = null;
             SecurityToken validateToken;
             var validator = new JwtSecurityTokenHandler();
-            
+
             TokenValidationParameters validationParameters = new TokenValidationParameters();
             validationParameters.ValidateIssuer = true;
             validationParameters.ValidIssuer = "betauia";
@@ -123,8 +122,8 @@ namespace betauia.Tokens
 
             validationParameters.IssuerSigningKey = key;
             validationParameters.ValidateIssuerSigningKey = true;
-            
-            if (validator.CanReadToken(token)) 
+
+            if (validator.CanReadToken(token))
             {
                 ClaimsPrincipal principal;
                 try

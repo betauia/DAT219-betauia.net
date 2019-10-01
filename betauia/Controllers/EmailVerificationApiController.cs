@@ -26,10 +26,13 @@ namespace betauia.Controllers
 
         [HttpGet]
         [Authorize("User")]
-        [Route("api/getemailverification/{id}")]
-        public IActionResult SendEmailVerification(string id)
+        [Route("api/getemailverification")]
+        public IActionResult SendEmailVerification([FromHeader] string Authorization)
         {
-            var user = _um.FindByIdAsync(id).Result;
+          var usertoken = Authorization.Split(' ')[1];
+          var userid = _tf.AuthenticateUser(usertoken);
+
+            var user = _um.FindByIdAsync(userid).Result;
             if (user == null)
             {
                 return BadRequest("101");
@@ -40,7 +43,7 @@ namespace betauia.Controllers
                 return BadRequest("102");
             }
 
-            if (user.VerifiedEmail == true)
+            if (user.VerifiedEmail)
             {
                 return BadRequest("205");
             }
@@ -48,11 +51,11 @@ namespace betauia.Controllers
             var token = _tf.GetEmailVerificationToken(user);
             var url = "http://localhost:8081/verifyemail/" + token;
 
-            SmtpClient smtp = new SmtpClient("smtp.gmail.com");
+            SmtpClient smtp = new SmtpClient("smtp.gtm.no");
             smtp.EnableSsl = true;
-            smtp.Port = 587;
-            smtp.Credentials = new NetworkCredential("erikaspen1@gmail.com","applicatoinkey");
-            smtp.Send("erikaspen1@gmail.com","erikaa17@uia.no","Verify you email at betauia.net",url);
+            smtp.Port = 465;
+            smtp.Credentials = new NetworkCredential("betalan@betauia.net","8iFK0N2tdz");
+            smtp.Send("betalan@betauia.net","erikaspen1@gmail.com","Verify you email at betauia.net",url);
 
             return Ok(token);
         }

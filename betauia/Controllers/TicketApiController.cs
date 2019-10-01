@@ -1,109 +1,117 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using betauia.Tokens;
+using betauia.Vipps;
 // All requests tested and working
 
 namespace betauia.Controllers
 {
-    [Route("api/ticket")]
-    [ApiController]
-    public class TicketApiController : ControllerBase
+  [Route("api/ticket")]
+  [ApiController]
+  public class TicketApiController : ControllerBase
+  {
+    private readonly ApplicationDbContext _db;
+    private readonly UserManager<ApplicationUser> _um;
+    private readonly RoleManager<IdentityRole> _rm;
+    private readonly TokenFactory _tf;
+    private readonly VippsApiController vipps;
+    public TicketApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, VippsApiController vipps)
     {
-        private readonly ApplicationDbContext _context;
-
-        public TicketApiController(ApplicationDbContext context)
-        {
-            // Set the databasecontext
-            _context = context;
-        }
-
-        // GET: Get all tickets
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            // Return with 200 OK status code
-            return Ok(_context.Tickets.ToList());
-        }
-
-        // GET: Get TicketModel by id
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TicketModel>> GetTicket(int id)
-        {
-            // Get ticket by id
-            var ticket = await _context.Tickets.FindAsync(id);
-            
-            // Check if ticket is valid
-            if (ticket == null)
-                return NotFound("Failed to find ticket.");
-            
-            // Return ticket
-            return ticket;
-        }
-        
-        // PUT: Update ticket by id
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTicket(int id, TicketModel ticketModel)
-        {
-            // Check if id matches ticket id
-            if (id != ticketModel.Id) return BadRequest();
-
-            // Stop the entity from being tracked by context
-            _context.Entry(_context.Tickets.Find(id)).State = EntityState.Detached;
-            
-            // Set the current state to say that some or all of its properties has been modified
-            _context.Entry(ticketModel).State = EntityState.Modified;
-            
-            try
-            {
-                // Save changes
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TicketExists(id)) return NotFound();
-                else throw;
-            }
-            
-            return Ok(ticketModel);
-        }
-        
-        // POST: Add new ticket
-        [HttpPost]
-        public IActionResult PostTicket(TicketModel ticketModel)
-        {
-            // Return if id is set to avoid overwriting an existing ticket
-            if (ticketModel.Id != 0) return BadRequest("Id is not 0.");
-
-            // Add and save
-            _context.Add(ticketModel);
-            _context.SaveChanges();
-
-            return Created("Created!", ticketModel);
-        }
-        
-        // DELETE: Delete ticket by id
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<TicketModel>> DeleteTicket(int id)
-        {
-            // Receive and check if SeatMap is valid
-            var ticket = await _context.Tickets.FindAsync(id);
-            if (ticket == null) return NotFound("Failed to find ticket.");
-            
-            // Remove and update
-            _context.Tickets.Remove(ticket);
-            await _context.SaveChangesAsync();
-
-            return ticket;
-        }
-
-        // Function to check if a ticket by id exists
-        private bool TicketExists(int id)
-        {
-            return _context.Tickets.Any(e => e.Id == id);
-        }
+      // Set the databasecontext
+      _db = db;
+      _um = userManager;
+      _rm = roleManager;
+      _tf = new TokenFactory(_um,_rm);
+      vipps = this.vipps;
     }
+
+    [HttpGet("{id}")]
+    public IActionResult GetTicket([FromHeader] string Authorization, string id)
+    {
+      var token = Authorization.Split(' ')[1];
+      var userid = _tf.AuthenticateUser(token);
+      if (userid == null)
+      {
+        return BadRequest("301");
+      }
+
+      var user = _um.FindByIdAsync(userid).Result;
+      if (user == null)
+      {
+        return BadRequest("101");
+      }
+
+      var ticket = _db.Tickets.Find(id);
+      if (ticket == null) return NotFound();
+      if (userid != ticket.UserId) return BadRequest();
+      if (user.Active == false)
+      {
+        return BadRequest("102");
+      }
+
+      if (user.ForceLogOut)
+      {
+        return BadRequest("103");
+      }
+
+      var ticketview = new TicketViewModel(ticket);
+      ticketview.EventSeats = _db.EventSeats.Where(a => a.TicketId == ticket.Id).ToList();
+      return Ok(ticket);
+    }
+
+    [HttpGet]
+    [Route("/api/newticket")]
+    public IActionResult StartTransaction([FromHeader] string Authorization)
+    {
+      var token = Authorization.Split(' ')[1];
+      var userid = _tf.AuthenticateUser(token);
+      if (userid == null)
+      {
+        return BadRequest("301");
+      }
+
+      var user = _um.FindByIdAsync(userid).Result;
+      if (user == null)
+      {
+        return BadRequest("101");
+      }
+
+      if (user.Active == false)
+      {
+        return BadRequest("102");
+      }
+
+      if (user.ForceLogOut)
+      {
+        return BadRequest("103");
+      }
+
+
+      var t = new TicketModel
+      {
+        UserId = userid,
+        TimePurchased = DateTime.UtcNow.ToString(),
+        Amount = 100,
+        Status = "Started"
+      };
+
+      _db.Tickets.Add(t);
+      var initpayment = vipps.InitiatePayment("90666350",t.Id.ToString(), 100, "test hello world");
+      if (initpayment == null)
+      {
+        return BadRequest();
+      }
+
+      t.Status = "INITIATE";
+      _db.SaveChanges();
+
+      return Ok(initpayment.url);
+    }
+  }
 }

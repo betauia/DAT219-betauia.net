@@ -41,7 +41,6 @@ namespace betauia
                 new Claim("Account","read",ClaimValueTypes.String),
                 new Claim("Roles","read",ClaimValueTypes.String),
                 new Claim("Event","write",ClaimValueTypes.String),
-                new Claim("Seatmap","write",ClaimValueTypes.String),
                 new Claim("Seatmap","read",ClaimValueTypes.String),
                 new Claim("Sponsor","write",ClaimValueTypes.String),
                 new Claim("Job","write",ClaimValueTypes.String)

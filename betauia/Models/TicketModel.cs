@@ -2,26 +2,17 @@ namespace betauia.Models
 {
     public class TicketModel
     {
-        public TicketModel(string timePurchased, float price, bool isVerified, string paymentMethod)
+        public TicketModel()
         {
-            TimePurchased = timePurchased;
-            Price = price;
-            IsVerified = isVerified;
-            PaymentMethod = paymentMethod;
-            //Seat = seat;
-        }
-        
-        public int Id { get; set; }
-        
-        public string OwnerId { get; set; }
-        public ApplicationUser Owner { get; set; }
-        
-        public string TimePurchased { get; set; }
-        public float Price { get; set; }
-        
-        public bool IsVerified { get; set; }
-        public string PaymentMethod { get; set; }
 
-        //public SeatModel Seat { get; set; }
+        }
+
+        public int Id { get; set; }
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
+        public string TimePurchased { get; set; }
+        public int Amount { get; set; }
+        public string Status { get; set; }
+        public string VippsOrderId { get; set; }
     }
 }
