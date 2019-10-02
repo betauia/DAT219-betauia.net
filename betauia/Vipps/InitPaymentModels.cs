@@ -2,7 +2,7 @@ namespace betauia.Vipps
 {
   public class InitPaymentResponseModel
   {
-    public string orderid { get; set; }
+    public string orderId { get; set; }
     public string url { get; set; }
   }
   public class MerchantInfoModel

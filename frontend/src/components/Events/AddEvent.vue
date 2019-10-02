@@ -234,6 +234,7 @@ export default {
         bodyParameters.eventModel.MaxAtendees = atendees;
       }
 
+      console.log(bodyParameters);
       var self = this;
       axios
         .post("/api/event", bodyParameters, config)

@@ -13,6 +13,7 @@ namespace betauia.Models
         public string TimePurchased { get; set; }
         public int Amount { get; set; }
         public string Status { get; set; }
+        public string MobileNumber { get; set; }
         public string VippsOrderId { get; set; }
     }
 }

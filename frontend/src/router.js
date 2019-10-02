@@ -42,7 +42,11 @@ export default new Router({
         },
         {
             path: '/ticket/:id',
-            component:()=>import('./components/Ticket/TicketInit.vue'),
+            component:()=>import('./components/Ticket/BuyTicket.vue'),
+        },
+        {
+            path: '/ticketdetails/:id',
+            component:()=>import('./components/Ticket/TicketDetails.vue'),
         },
         {
             path: '/sponsors',

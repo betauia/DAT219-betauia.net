@@ -48,7 +48,26 @@ export default {
         }
       });
 
-      console.log(seatsToBuy);
+
+      const token = localStorage.getItem('token');
+      const config = {
+        headers: { Authorization: "bearer " + token },
+      };
+
+      const bodyParam = {
+        seats: seatsToBuy
+      };
+
+      console.log(bodyParam)
+      axios
+        .post('/api/ticket/newticket',bodyParam,config)
+        .then(function (response) {
+          console.log(response);
+          self.$router.push("/ticket/" + response.data.id);
+        })
+        .catch(function (error) {
+          console.log(error.response);
+        });
     },
   },
   created() {

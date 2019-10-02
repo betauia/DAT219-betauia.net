@@ -49,10 +49,9 @@ namespace betauia.Vipps {
         {
           var client = new RestClient("https://api.vipps.no/ecomm/v2/payments/");
           var request = new RestRequest(Method.POST);
-          request.AddHeader("Postman-Token", "e6a69cb6-e91a-4448-8a05-03bb1a541688");
           request.AddHeader("cache-control", "no-cache");
           request.AddHeader("Authorization", "Bearer " + GetVippsToken());
-          request.AddHeader("Ocp-Apim-Subscription-Key", "9e641e435a7549e29bcf6f067c390ab1");
+          request.AddHeader("Ocp-Apim-Subscription-Key", OcpApimSubscriptionKey);
           request.AddHeader("Content-Type", "application/json");
 
           Guid g;
@@ -62,7 +61,7 @@ namespace betauia.Vipps {
           {
             merchantSerialNumber = merchantSeiralNumber,
             callbackPrefix = "https://example.com/vipps/callbacks-for-payment-update",
-            fallBack = "https://example.com/vipps/fallback-result-page/order123abc",
+            fallBack = "localhost:8080/ticketdetails/"+orderid,
             authToken = g.ToString(),
             isApp = false
           };
@@ -96,6 +95,132 @@ namespace betauia.Vipps {
           }
 
           InitPaymentResponseModel t = JsonConvert.DeserializeObject<InitPaymentResponseModel>(response.Content);
+          return t;
+        }
+
+        public PaymentDetailsModels.PaymentDetailResponseModel GetPaymentDetails(string orderid)
+        {
+          var client = new RestClient("https://api.vipps.no/ecomm/v2/payments/"+orderid+"/details");
+          var request = new RestRequest(Method.GET);
+          request.AddHeader("cache-control", "no-cache");
+          request.AddHeader("Authorization", "Bearer " + GetVippsToken());
+          request.AddHeader("Ocp-Apim-Subscription-Key", OcpApimSubscriptionKey);
+          request.AddHeader("Content-Type", "application/json");
+
+          IRestResponse response = client.Execute(request);
+          if (response.Content == null) return null;
+
+          var t = JsonConvert.DeserializeObject<PaymentDetailsModels.PaymentDetailResponseModel>(response.Content);
+
+          return t;
+        }
+
+        public CapturePaymentModels.CapturePaymentResponseModel CapturePayment(string orderid)
+        {
+          var client = new RestClient("https://api.vipps.no/ecomm/v2/payments/"+orderid+"/capture");
+          var request = new RestRequest(Method.GET);
+          request.AddHeader("cache-control", "no-cache");
+          request.AddHeader("Authorization", "Bearer " + GetVippsToken());
+          request.AddHeader("Ocp-Apim-Subscription-Key", OcpApimSubscriptionKey);
+          request.AddHeader("Content-Type", "application/json");
+
+          var minfo = new MerchantInfoModel
+          {
+            merchantSerialNumber = merchantSeiralNumber,
+          };
+
+          var transaction = new TransactionModel
+          {
+            amount = 0,
+            transactionText = "Capture test"
+          };
+
+          var capturemodel = new CapturePaymentModels.CapturePaymentRequestModel
+          {
+            merchantInfo = minfo,
+            transaction = transaction
+          };
+
+          var json = JsonConvert.SerializeObject(capturemodel);
+          request.AddParameter("undefined",json.ToString(), ParameterType.RequestBody);
+
+          IRestResponse response = client.Execute(request);
+          if (response.Content == null) return null;
+
+          var t = JsonConvert.DeserializeObject<CapturePaymentModels.CapturePaymentResponseModel>(response.Content);
+
+          return t;
+        }
+
+        public CapturePaymentModels.CapturePaymentResponseModel CancelPayment(string orderid)
+        {
+          var client = new RestClient("https://api.vipps.no/ecomm/v2/payments/"+orderid+"/cancel");
+          var request = new RestRequest(Method.PUT);
+          request.AddHeader("cache-control", "no-cache");
+          request.AddHeader("Authorization", "Bearer " + GetVippsToken());
+          request.AddHeader("Ocp-Apim-Subscription-Key", OcpApimSubscriptionKey);
+          request.AddHeader("Content-Type", "application/json");
+
+          var minfo = new MerchantInfoModel
+          {
+            merchantSerialNumber = merchantSeiralNumber,
+          };
+
+          var transaction = new TransactionModel
+          {
+            transactionText = "Delete test"
+          };
+
+          var capturemodel = new CapturePaymentModels.CapturePaymentRequestModel
+          {
+            merchantInfo = minfo,
+            transaction = transaction
+          };
+
+          var json = JsonConvert.SerializeObject(capturemodel);
+          request.AddParameter("undefined",json.ToString(), ParameterType.RequestBody);
+
+          IRestResponse response = client.Execute(request);
+          if (response.Content == null) return null;
+
+          var t = JsonConvert.DeserializeObject<CapturePaymentModels.CapturePaymentResponseModel>(response.Content);
+
+          return t;
+        }
+
+        public CapturePaymentModels.CapturePaymentResponseModel RefundPayment(string orderid)
+        {
+          var client = new RestClient("https://api.vipps.no/ecomm/v2/payments/"+orderid+"/refund");
+          var request = new RestRequest(Method.PUT);
+          request.AddHeader("cache-control", "no-cache");
+          request.AddHeader("Authorization", "Bearer " + GetVippsToken());
+          request.AddHeader("Ocp-Apim-Subscription-Key", OcpApimSubscriptionKey);
+          request.AddHeader("Content-Type", "application/json");
+
+          var minfo = new MerchantInfoModel
+          {
+            merchantSerialNumber = merchantSeiralNumber,
+          };
+
+          var transaction = new TransactionModel
+          {
+            transactionText = "Refund test"
+          };
+
+          var capturemodel = new CapturePaymentModels.CapturePaymentRequestModel
+          {
+            merchantInfo = minfo,
+            transaction = transaction
+          };
+
+          var json = JsonConvert.SerializeObject(capturemodel);
+          request.AddParameter("undefined",json.ToString(), ParameterType.RequestBody);
+
+          IRestResponse response = client.Execute(request);
+          if (response.Content == null) return null;
+
+          var t = JsonConvert.DeserializeObject<CapturePaymentModels.CapturePaymentResponseModel>(response.Content);
+
           return t;
         }
     }

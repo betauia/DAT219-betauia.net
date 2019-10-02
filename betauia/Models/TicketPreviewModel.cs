@@ -2,19 +2,17 @@ using System.Collections.Generic;
 
 namespace betauia.Models
 {
-  public class TicketViewModel
+  public class TicketPreviewModel
   {
-    public TicketViewModel(TicketModel t)
+    public TicketPreviewModel(TicketModel t)
     {
       TimePurchased = t.TimePurchased;
       Amount = t.Amount;
-      Status = t.Status;
       MobileNumber = t.MobileNumber;
     }
 
     public string TimePurchased { get; set; }
     public int Amount { get; set; }
-    public string Status { get; set; }
     public string MobileNumber { get; set; }
     public List<EventSeat> EventSeats { get; set; }
   }

@@ -4,20 +4,20 @@ namespace betauia.Vipps
   {
     public class CapturePaymentRequestModel
     {
-      public MerchantInfoModel merchantInfoModel { get; set; }
-      public TransactionModel transactionModel { get; set; }
+      public MerchantInfoModel merchantInfo { get; set; }
+      public TransactionModel transaction { get; set; }
     }
 
     public class CapturePaymentResponseModel
     {
       public string orderId { get; set; }
-      public TransactionInfoModel transactioninfo { get; set; }
+      public TransactionInfoModel transactionInfo { get; set; }
       public TransactionSummary transactionSummary { get; set; }
     }
 
     public class TransactionInfoModel
     {
-      public string amount { get; set; }
+      public int amount { get; set; }
       public string timeStamp { get; set; }
       public string transactionText { get; set; }
       public string status { get; set; }
@@ -26,10 +26,10 @@ namespace betauia.Vipps
 
     public class TransactionSummary
     {
-      public string capturedAmount { get; set; }
-      public string remainingAmountToCapture { get; set; }
-      public string refundedAmount { get; set; }
-      public string remainingAmountToRefund { get; set; }
+      public int capturedAmount { get; set; }
+      public int remainingAmountToCapture { get; set; }
+      public int refundedAmount { get; set; }
+      public int remainingAmountToRefund { get; set; }
     }
   }
 }
