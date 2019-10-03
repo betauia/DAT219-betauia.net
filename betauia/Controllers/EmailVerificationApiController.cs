@@ -52,10 +52,10 @@ namespace betauia.Controllers
             var url = "http://localhost:8081/verifyemail/" + token;
 
             SmtpClient smtp = new SmtpClient("smtp.gtm.no");
-            smtp.EnableSsl = true;
-            smtp.Port = 465;
+            smtp.EnableSsl = false;
+            smtp.Port = 587;
             smtp.Credentials = new NetworkCredential("betalan@betauia.net","8iFK0N2tdz");
-            smtp.Send("betalan@betauia.net","erikaspen1@gmail.com","Verify you email at betauia.net",url);
+            smtp.Send("noreply@betauia.net","erikaspen1@gmail.com","Verify you email at betauia.net",url);
 
             return Ok(token);
         }
@@ -64,7 +64,7 @@ namespace betauia.Controllers
         [Route("api/verifyemail/{token}")]
         public IActionResult VerifyEmail(string token)
         {
-            var id = _tf.AuthenticateUser(token);
+            var id = _tf.VerifyEmail(token);
             if (id == null)
             {
                 return BadRequest("301");
@@ -90,6 +90,7 @@ namespace betauia.Controllers
             result = _um.AddClaimAsync(user, claim).Result;
             if (result.Succeeded)
             {
+                user.ForceLogOut = true;
                 return Ok();
             }
             return BadRequest(result.Errors);
