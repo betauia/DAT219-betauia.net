@@ -17,6 +17,7 @@ import Navbar from '@/components/Bars/Navbar.vue';
 import Footer from '@/components/Bars/Footer.vue';
 import CookieLaw from 'vue-cookie-law';
 
+
 export default {
   components: {
     Navbar,
