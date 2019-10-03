@@ -25,11 +25,27 @@ namespace betauia.Vipps {
         private static string client_secret = "WFZxZGxhRDhPR2FIZkxzaEtua0k=";
         private static string merchantSeiralNumber = "571822";
         private static string OcpApimSubscriptionKey = "9e641e435a7549e29bcf6f067c390ab1";
-        private static string tokenpath = "/vipps/token.json";
+        private static string tokenpath = "Vipps/token.json";
 
         public VippsApiController()
         {
 
+        }
+
+        private T TryJsonConvert<T>(string json)
+        {
+          T ret = default(T);
+          try
+          {
+            var t = JsonConvert.DeserializeObject<T>(json);
+            ret = t;
+          }
+          catch (Exception e)
+          {
+            Console.WriteLine(e);
+            throw;
+          }
+          return ret;
         }
 
         public void GetVippsToken()
@@ -76,7 +92,7 @@ namespace betauia.Vipps {
           {
             merchantSerialNumber = merchantSeiralNumber,
             callbackPrefix = "https://example.com/vipps/callbacks-for-payment-update",
-            fallBack = "test.betauia.net/ticketdetails/"+orderid,
+            fallBack = "http://128.39.149.31:8080/ticketdetails/"+orderid,
             authToken = g.ToString(),
             isApp = false
           };
@@ -109,28 +125,18 @@ namespace betauia.Vipps {
             return null;
           }
 
-          try
+
+          InitPaymentResponseModel t = TryJsonConvert<InitPaymentResponseModel>(response.Content);
+          if (t != null)
           {
-            InitPaymentResponseModel t = JsonConvert.DeserializeObject<InitPaymentResponseModel>(response.Content);
             return t;
           }
-          catch (Exception e)
+
+          var error = TryJsonConvert<ErrorModel>(response.Content);
+          if (error!=null && error.responseInfo.responseCode == 401)
           {
-            Console.WriteLine(e);
-            try
-            {
-              var error = JsonConvert.DeserializeObject<ErrorModel>(response.Content);
-              if (error.responseInfo.responseCode == 401)
-              {
-                GetVippsToken();
-                return InitiatePayment(mobilenumber,orderid, amount,ttext);
-              }
-            }
-            catch (Exception e2)
-            {
-              Console.WriteLine(e2);
-              return null;
-            }
+            GetVippsToken();
+            return InitiatePayment(mobilenumber,orderid, amount,ttext);
           }
           return null;
         }
@@ -147,28 +153,17 @@ namespace betauia.Vipps {
           IRestResponse response = client.Execute(request);
           if (response.Content == null) return null;
 
-          try
+          var t = TryJsonConvert<PaymentDetailsModels.PaymentDetailResponseModel>(response.Content);
+          if (t != null)
           {
-            var t = JsonConvert.DeserializeObject<PaymentDetailsModels.PaymentDetailResponseModel>(response.Content);
             return t;
           }
-          catch (Exception e)
+
+          var error = TryJsonConvert<ErrorModel>(response.Content);
+          if (error!=null && error.responseInfo.responseCode == 401)
           {
-            Console.WriteLine(e);
-            try
-            {
-              var error = JsonConvert.DeserializeObject<ErrorModel>(response.Content);
-              if (error.responseInfo.responseCode == 401)
-              {
-                GetVippsToken();
-                return GetPaymentDetails(orderid);
-              }
-            }
-            catch (Exception e2)
-            {
-              Console.WriteLine(e2);
-              return null;
-            }
+            GetVippsToken();
+            return GetPaymentDetails(orderid);
           }
           return null;
         }
@@ -176,18 +171,18 @@ namespace betauia.Vipps {
         public CapturePaymentModels.CapturePaymentResponseModel CapturePayment(string orderid)
         {
           var client = new RestClient("https://api.vipps.no/ecomm/v2/payments/"+orderid+"/capture");
-          var request = new RestRequest(Method.GET);
+          var request = new RestRequest(Method.POST);
           request.AddHeader("cache-control", "no-cache");
           request.AddHeader("Authorization", "Bearer " + GetToken());
           request.AddHeader("Ocp-Apim-Subscription-Key", OcpApimSubscriptionKey);
           request.AddHeader("Content-Type", "application/json");
 
-          var minfo = new MerchantInfoModel
+          var minfo = new CapturePaymentModels.capturemerchantinfo
           {
             merchantSerialNumber = merchantSeiralNumber,
           };
 
-          var transaction = new TransactionModel
+          var transaction = new CapturePaymentModels.transactioncapture
           {
             amount = 0,
             transactionText = "Capture test"
@@ -199,34 +194,25 @@ namespace betauia.Vipps {
             transaction = transaction
           };
 
+
+
           var json = JsonConvert.SerializeObject(capturemodel);
           request.AddParameter("undefined",json.ToString(), ParameterType.RequestBody);
 
           IRestResponse response = client.Execute(request);
           if (response.Content == null) return null;
 
-          try
+          var t = TryJsonConvert<CapturePaymentModels.CapturePaymentResponseModel>(response.Content);
+          if (t != null)
           {
-            var t = JsonConvert.DeserializeObject<CapturePaymentModels.CapturePaymentResponseModel>(response.Content);
             return t;
           }
-          catch (Exception e)
+
+          var error = TryJsonConvert<ErrorModel>(response.Content);
+          if (error!=null && error.responseInfo.responseCode == 401)
           {
-            Console.WriteLine(e);
-            try
-            {
-              var error = JsonConvert.DeserializeObject<ErrorModel>(response.Content);
-              if (error.responseInfo.responseCode == 401)
-              {
-                GetVippsToken();
-                return CapturePayment(orderid);
-              }
-            }
-            catch (Exception e2)
-            {
-              Console.WriteLine(e2);
-              return null;
-            }
+            GetVippsToken();
+            return CapturePayment(orderid);
           }
           return null;
         }
@@ -252,8 +238,8 @@ namespace betauia.Vipps {
 
           var capturemodel = new CapturePaymentModels.CapturePaymentRequestModel
           {
-            merchantInfo = minfo,
-            transaction = transaction
+            //merchantInfo = minfo,
+            //transaction = transaction
           };
 
           var json = JsonConvert.SerializeObject(capturemodel);
@@ -262,30 +248,17 @@ namespace betauia.Vipps {
           IRestResponse response = client.Execute(request);
           if (response.Content == null) return null;
 
-
-          try
+          var t = TryJsonConvert<CapturePaymentModels.CapturePaymentResponseModel>(response.Content);
+          if (t != null)
           {
-            var t = JsonConvert.DeserializeObject<CapturePaymentModels.CapturePaymentResponseModel>(response.Content);
             return t;
           }
-          catch (Exception e)
-          {
-            Console.WriteLine(e);
-            try
-            {
-              var error = JsonConvert.DeserializeObject<ErrorModel>(response.Content);
-              if (error.responseInfo.responseCode == 401)
-              {
-                GetVippsToken();
-                return CancelPayment(orderid);
-              }
 
-            }
-            catch (Exception e2)
-            {
-              Console.WriteLine(e2);
-              return null;
-            }
+          var error = TryJsonConvert<ErrorModel>(response.Content);
+          if (error!=null && error.responseInfo.responseCode == 401)
+          {
+            GetVippsToken();
+            return CancelPayment(orderid);
           }
           return null;
         }
@@ -311,8 +284,8 @@ namespace betauia.Vipps {
 
           var capturemodel = new CapturePaymentModels.CapturePaymentRequestModel
           {
-            merchantInfo = minfo,
-            transaction = transaction
+            //merchantInfo = minfo,
+            //transaction = transaction
           };
 
           var json = JsonConvert.SerializeObject(capturemodel);
@@ -321,28 +294,17 @@ namespace betauia.Vipps {
           IRestResponse response = client.Execute(request);
           if (response.Content == null) return null;
 
-          try
+          var t = TryJsonConvert<CapturePaymentModels.CapturePaymentResponseModel>(response.Content);
+          if (t != null)
           {
-            var t = JsonConvert.DeserializeObject<CapturePaymentModels.CapturePaymentResponseModel>(response.Content);
             return t;
           }
-          catch (Exception e)
+
+          var error = TryJsonConvert<ErrorModel>(response.Content);
+          if (error!=null && error.responseInfo.responseCode == 401)
           {
-            Console.WriteLine(e);
-            try
-            {
-              var error = JsonConvert.DeserializeObject<ErrorModel>(response.Content);
-              if (error.responseInfo.responseCode == 401)
-              {
-                GetVippsToken();
-                return RefundPayment(orderid);
-              }
-            }
-            catch (Exception e2)
-            {
-              Console.WriteLine(e2);
-              return null;
-            }
+            GetVippsToken();
+            return RefundPayment(orderid);
           }
           return null;
         }

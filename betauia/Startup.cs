@@ -101,6 +101,8 @@ namespace betauia
             {
                 Config.Addpolicies(options);
             });
+            var vipps = new VippsApiController();
+            vipps.GetVippsToken();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

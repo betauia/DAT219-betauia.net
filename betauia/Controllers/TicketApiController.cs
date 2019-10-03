@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -246,9 +247,10 @@ namespace betauia.Controllers
         return BadRequest();
       }
 
-      ticket.TimePurchased = DateTime.UtcNow.ToString("dd-MM-yyyyy hh:mm:ss t z");
+      ticket.TimePurchased = DateTime.UtcNow.ToString("MM/dd/yyyy HH:mm:ss.fff",CultureInfo.InvariantCulture);
       ticket.Status = "INITIATE";
       ticket.VippsOrderId = initpayment.orderId;
+      ticket.MobileNumber = paymentModel.MobileNumber;
       var seats = _db.EventSeats.Where(a => a.TicketId == ticket.Id.ToString());
       foreach (var seat in seats)
       {
@@ -294,13 +296,24 @@ namespace betauia.Controllers
       var lastlog = t.transactionLogHistory[0];
 
       var title = _db.Events.Find(ticket.EventId).Title;
+
+      ///////////////////
+      //Captured payment/
+      ///////////////////
+      if (ticket.Status == "CAPTURE")
+      {
+        var ticketview = new TicketViewModel(ticket,title);
+        ticketview.Seats = _db.EventSeats.Where(a => a.TicketId == ticket.Id.ToString()).ToList();
+        return Ok(ticketview);
+      }
+
       ////////////////////
       //Reserve complete//
       ////////////////////
       if (lastlog.operation == "RESERVE" && lastlog.operationSuccess == true && lastlog.amount == ticket.Amount)
       {
         var capture = vipps.CapturePayment(ticket.VippsOrderId);
-        if (capture != null)
+        if (capture.orderId != null)
         {
           if (capture.transactionSummary.capturedAmount == capture.transactionInfo.amount)
           {
@@ -310,7 +323,7 @@ namespace betauia.Controllers
             _db.SaveChanges();
 
             var ticketview = new TicketViewModel(ticket,title);
-            ticketview.EventSeats = _db.EventSeats.Where(a => a.TicketId == ticket.Id.ToString()).ToList();
+            ticketview.Seats = _db.EventSeats.Where(a => a.TicketId == ticket.Id.ToString()).ToList();
             return Ok(ticketview);
           }
         }
