@@ -128,7 +128,10 @@ export default new Router({
                     path: '/admin/event/:id',
                     component: () => import('./components/Admin/EventDetail.vue')
                 },
-
+                {
+                    path: '/admin/eventattendees/:id',
+                    component: () => import('./components/Admin/EventAttendees.vue')
+                },
                 {
                     path: '/admin/users',
                     component: () => import('./components/Admin/UserPanel.vue'),
