@@ -97,6 +97,10 @@ export default new Router({
             }]
         },
         {
+            path: '/resetpassword/:id',
+            component:()=> import('./components/Account/ResetPassword.vue')
+        },
+        {
             path: '/admin/dashboard',
             component: () => import('./components/Admin/AdminPanel.vue'),
             children: [
