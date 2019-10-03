@@ -39,6 +39,7 @@ export default {
       }
     },
     setColor: function(){
+      console.log(this.reserved);
       if(this.reserved){
         this.backColor = "blue";
       }else if(this.seat.isAvailable) {
@@ -56,6 +57,7 @@ export default {
 
     this.rect.x = left + this.seat.x;
     this.rect.y = top + this.seat.y;
+    this.reserved = this.seat.isReserved;
     this.setColor()
   },
   computed: {

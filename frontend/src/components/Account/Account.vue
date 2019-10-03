@@ -11,6 +11,9 @@
             <li>
               <router-link to="/account/edit/${user.id}">Edit</router-link>
             </li>
+              <li>
+                  <router-link to="/account/accountorders">Orders</router-link>
+              </li>
           </ul>
         </aside>
       </div>
