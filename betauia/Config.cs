@@ -41,10 +41,10 @@ namespace betauia
                 new Claim("Account","read",ClaimValueTypes.String),
                 new Claim("Roles","read",ClaimValueTypes.String),
                 new Claim("Event","write",ClaimValueTypes.String),
-                new Claim("Seatmap","write",ClaimValueTypes.String),
                 new Claim("Seatmap","read",ClaimValueTypes.String),
                 new Claim("Sponsor","write",ClaimValueTypes.String),
-                new Claim("Job","write",ClaimValueTypes.String)
+                new Claim("Job","write",ClaimValueTypes.String),
+                new Claim("Ticket","read",ClaimValueTypes.String)
             };
 
             foreach (var claim in userClaims)
@@ -68,7 +68,8 @@ namespace betauia
                 new Claim("Account", "write", ClaimValueTypes.String),
                 new Claim("Seatmap", "write",ClaimValueTypes.String),
                 new Claim("Roles", "read",ClaimValueTypes.String),
-                new Claim("Claims","read",ClaimValueTypes.String)
+                new Claim("Claims","read",ClaimValueTypes.String),
+                new Claim("Ticket","write",ClaimValueTypes.String)
             };
 
             foreach (var claim in modClaims)
@@ -136,6 +137,9 @@ namespace betauia
             options.AddPolicy("EmailVerified", policy=>policy.RequireClaim("EmailVerified","true"));
             options.AddPolicy("PhoneVerified",policy=>policy.RequireClaim("PhoneVerified","true"));
             options.AddPolicy("AccountVerified",policy=>policy.RequireClaim("AccountVerified","true"));
+
+            options.AddPolicy("Ticket.write",policy=>policy.RequireClaim("Ticket","write"));
+            options.AddPolicy("Ticket.read",policy=>policy.RequireClaim("Ticket","read","write"));
         }
     }
 }

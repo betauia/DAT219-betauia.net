@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace betauia.Controllers
 {
-  [Route("api/reserveseat")]
+  [Route("api/dontusethisroutefuckoff")]
   [ApiController]
   public class SeatReserveApiController : ControllerBase
   {

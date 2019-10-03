@@ -57,7 +57,26 @@ namespace betauia.Controllers
           ret.seatMapModel = seatmap;
 
           var tseats = _db.EventSeats.Where(r => r.OwnerId == seatmap.Id).ToList();
+          foreach (var seat in tseats)
+          {
+            if (userid == seat.ReserverId)
+            {
+              seat.IsAvailable = true;
+              seat.IsReserved = true;
+            }else if (seat.ReserverId != null)
+            {
+              seat.IsAvailable = false;
+              seat.IsReserved = false;
+            }
+            else
+            {
+              seat.IsAvailable = true;
+              seat.IsReserved = false;
+            }
+          }
+
           ret.Seats = tseats;
+
 
           if (seatmap == null)
               return NotFound("Failed to find seatMap.");

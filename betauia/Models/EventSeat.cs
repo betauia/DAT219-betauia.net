@@ -9,7 +9,8 @@ namespace betauia.Models
         {
             IsAvailable = true;
             IsReserved = false;
-            ReserverId = "";
+            ReserverId = null;
+            TicketId = null;
         }
         //[Key, Column(Order = 0)]
         public string Id { get; set; }
@@ -25,9 +26,10 @@ namespace betauia.Models
         public int x { get; set; }
         public int y { get; set; }
 
+
         public bool IsAvailable { get; set; }
         public bool IsReserved { get; set; }
         public string ReserverId { get; set; }
-
+        public string TicketId { get; set; }
     }
 }
