@@ -20,6 +20,10 @@ export default new Router({
             path: '/disclaimer',
             component: () => import('./components/Legal/Disclaimer.vue'),
         },
+            {
+                path: '/termsofsale',
+                component: () => import('./components/Legal/SalgsBetingelserBetaside.vue'),
+            },
         {
             path: '/blog',
             component: () => import('./views/Blog.vue'),
@@ -111,6 +115,10 @@ export default new Router({
                 {
                     path: '/admin/blog',
                     component: () => import('./components/Admin/Blog.vue'),
+                },
+                {
+                    path: '/admin/dash',
+                    component: () => import('./components/Admin/AdminDashboard.vue'),
                 },
                 {
                     path: '/admin/blog/add',

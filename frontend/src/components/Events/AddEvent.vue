@@ -18,28 +18,28 @@ IsPublic = isPublic;
             <!-- Text input-->
             <div class="field">
                 <label class="label" for="title">Title</label>
-                <b-input
+                <input
                     id="title"
                     name="title"
                     type="text"
                     placeholder="Your Title Here"
-                    class="control"
+                    class="input is-primary"
                     required
-                ></b-input>
+                />
             </div>
 
             <!-- Text input-->
             <div class="field">
                 <label class="label" for="description">Description</label>
                 <div class="control">
-                    <b-input
+                    <input
                         id="description"
                         name="description"
                         type="text"
                         placeholder="A short description of the event."
-                        class="control"
+                        class="input is-primary"
                         required
-                    ></b-input>
+                    />
                 </div>
             </div>
 
@@ -47,7 +47,7 @@ IsPublic = isPublic;
             <div class="field">
                 <label class="label" for="content">Content</label>
                 <div class="control">
-                    <textarea class="textarea" id="textcontent" name="content"></textarea>
+                    <textarea class="textarea is-primary" id="textcontent" name="content"></textarea>
                 </div>
             </div>
 
@@ -57,7 +57,7 @@ IsPublic = isPublic;
                     <label class="label" for="eventIs">Public Event</label>
                     <div class="control">
                         <div class="select">
-                            <select id="eventIs" name="eventIs" v-model="ispublic">
+                            <select class="select is-primary" id="eventIs" name="eventIs" v-model="ispublic">
                                 <option>True</option>
                                 <option>False</option>
                             </select>
@@ -68,13 +68,14 @@ IsPublic = isPublic;
                     <div class="column is-half" id="startdate">
                         <b-field label="Start date" for="eventIs">
                             <datetime
-                                placeholder="Select a date..."
+                                placeholder="Click to set a date..."
                                 type="datetime"
                                 v-model="startdate"
                                 input-class="my-class"
                                 value-zone="Europe/Oslo"
                                 format="dd-MM-yyyy HH:mm"
                                 zone="Europe/Oslo"
+                                class="is-primary"
                                 :phrases="{ok: 'Continue', cancel: 'Exit'}"
                                 :hour-step="1"
                                 :minute-step="5"
@@ -107,14 +108,14 @@ IsPublic = isPublic;
                              label="End date" for="eventIs"
                              icon="calendar-today">
                         <datetime
-                            placeholder="Select a date..."
+                            placeholder="Click to set a date..."
                             type="datetime"
                             v-model="enddate"
                             input-class="my-class"
                             value-zone="Europe/Oslo"
                             format="dd-MM-yyyy HH:mm"
                             zone="Europe/Oslo"
-                            class="theme-blue"
+                            class="is-primary"
                             :phrases="{ok: 'Continue', cancel: 'Exit'}"
                             :hour-step="1"
                             :minute-step="5"
@@ -177,7 +178,7 @@ IsPublic = isPublic;
                 <div class="column" v-if="hasSeatMap.state==true">
                     <label class="label" for="seatmap">Select seatmap</label>
                     <div class="select">
-                        <select>
+                        <select v-model="selectedSeatmap">
                             <option
                                 v-for="item in seatmaps"
                                 :value="item"
@@ -192,7 +193,7 @@ IsPublic = isPublic;
         </div>
         <!-- Button -->
         <b-button
-            class="is-family-secondary"
+            class="column is-half is-primary"
             id="publish" name="publish"
             v-on:click="addEvent"
         >Publish

@@ -6,7 +6,7 @@
           <p class="menu-label">General</p>
           <ul class="menu-list">
             <li>
-              <router-link to="/admin/dashboard">Dashboard</router-link>
+              <router-link to="/admin/dash">Dashboard</router-link>
             </li>
             <li>
               <router-link to="/admin/addsponsor">Add sponsor</router-link>

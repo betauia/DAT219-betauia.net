@@ -1,5 +1,6 @@
 <template>
     <div id="orders">
+        <b-table :data="orders" :columns="columns"></b-table>
         <tr>
             <th>Order number</th>
             <th>Event</th>
@@ -25,7 +26,32 @@ export default {
     name: 'AccountOrders',
     data() {
         return {
-          orders: [],
+            orders: [],
+            columns: [
+                {
+                    field: 'id',
+                    label: 'Order Number',
+                    width: '40',
+                    numeric: true,
+                },
+                {
+                    field: 'eventTitle',
+                    label: 'Event',
+                },
+                {
+                    field: '',
+                    label: 'Time Purchased',
+                },
+                {
+                    field: 'status',
+                    label: 'Status',
+                    centered: true,
+                },
+                {
+                    field: 'status',
+                    label: 'Details',
+                }
+            ],
         };
       },
       created() {

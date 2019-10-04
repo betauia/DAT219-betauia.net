@@ -3,6 +3,7 @@
     <title>Betauia.net</title>
         <Navbar>
         </Navbar>
+        <br><br>
         <router-view/>
     <cookie-law>
       <div slot="message">

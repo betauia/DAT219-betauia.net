@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer is-fixed-bottom is-transparent">
+  <footer class="footer is-bottom">
     <div class="container">
       <div class="columns">
         <div class="column is-3 left">

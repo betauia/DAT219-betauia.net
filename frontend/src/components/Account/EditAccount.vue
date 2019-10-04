@@ -1,24 +1,20 @@
 <template>
   <div class="UserEdit center">
     <div class="Input">
-      <label>Username:</label>
-      <br>
-      <input type="text" name="username" v-model="user.userName">
+      <label class="label">Username:</label>
+      <input class="input is-primary" type="text" name="username" v-model="user.userName">
     </div>
     <div class="Input">
-      <label>Email:</label>
-      <br>
-      <input type="text" name="email" v-model="user.email">
+        <label class="label">Email:</label>
+      <input class="input is-primary" type="text" name="email" v-model="user.email"/>
     </div>
     <div class="Input">
-      <label>Firstname:</label>
-      <br>
-      <input type="text" name="firstname" v-model="user.firstName">
+      <label class="label">Firstname:</label>
+      <input class="input is-primary" type="text" name="firstname" v-model="user.firstName">
     </div>
     <div class="Input">
-      <label>Lastname:</label>
-      <br>
-      <input type="text" name="lastname" v-model="user.lastName">
+      <label class="label">Lastname:</label>
+      <input class="input is-primary" type="text" name="lastname" v-model="user.lastName">
     </div>
     <div class="center">
       <span>
