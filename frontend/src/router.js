@@ -161,12 +161,32 @@ export default new Router({
                     component: () => import('./components/Admin/AddSponsors.vue'),
                 },
                 {
+                    path: '/admin/sponsors',
+                    component: () => import('./components/Admin/Sponsors.vue'),
+                },
+                {
+                    path: '/admin/sponsordetail/:id',
+                    component: () => import('./components/Admin/SponsorDetail.vue'),
+                },
+                {
                     path: '/admin/roles',
                     component: () => import('./components/Admin/RolePanel.vue')
                 },
                 {
                     path: '/admin/roleinfo/:id',
                     component: () => import('./components/Admin/RoleInfo.vue')
+                },
+                {
+                    path: '/admin/addjob',
+                    component: () => import('./components/Admin/AddJob.vue')
+                },
+                {
+                    path: '/admin/jobs',
+                    component: () => import('./components/Admin/Jobs.vue')
+                },
+                {
+                    path: '/admin/jobdetail/:id',
+                    component: () => import('./components/Admin/JobDetail.vue')
                 }
             ]
 

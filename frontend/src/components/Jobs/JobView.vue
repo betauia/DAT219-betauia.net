@@ -21,7 +21,7 @@
     created() {
       const self = this;
       axios
-        .get("/api/jobs")
+        .get("/api/job")
         .then(function (response) {
           console.log(response.data);
           self.jobs = response.data;

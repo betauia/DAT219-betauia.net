@@ -8,9 +8,6 @@
             <li>
               <router-link to="/admin/dashboard">Dashboard</router-link>
             </li>
-            <li>
-              <router-link to="/admin/addsponsor">Add sponsor</router-link>
-            </li>
           </ul>
           <p class="menu-label">User Administration</p>
           <ul class="menu-list">
@@ -46,6 +43,24 @@
                 </li>
                 <li>
                     <router-link to="/admin/event">Edit events</router-link>
+                </li>
+            </ul>
+            <p class="menu-label">Sponsor</p>
+            <ul class="menu-list">
+                <li>
+                    <router-link to="/admin/addsponsor">Add sponsor</router-link>
+                </li>
+                <li>
+                    <router-link to="/admin/sponsors">Edit sponsors</router-link>
+                </li>
+            </ul>
+            <p class="menu-label">Job</p>
+            <ul class="menu-list">
+                <li>
+                    <router-link to="/admin/addjob">Add job</router-link>
+                </li>
+                <li>
+                    <router-link to="/admin/jobs">Edit job</router-link>
                 </li>
             </ul>
         </aside>
