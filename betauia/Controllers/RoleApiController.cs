@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
 using betauia.Tokens;
@@ -22,18 +23,18 @@ namespace betauia.Controllers
         private readonly TokenFactory _tf;
 
         public RoleApiController(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager, ITokenManager tokenManager)
         {
             _um = userManager;
             _rm = roleManager;
             _db = db;
-            _tf = new TokenFactory(_um, _rm);
+            _tf = new TokenFactory(_um, _rm,tokenManager);
         }
 
         //get all roles
         [Authorize("Roles.read")]
         [HttpGet]
-        public IActionResult GetAllRoles()
+        public async Task<IActionResult> GetAllRoles()
         {
             var roles = _rm.Roles.ToList();
             return Ok(roles);
@@ -43,7 +44,7 @@ namespace betauia.Controllers
         [Authorize("Roles.read")]
         [HttpGet]
         [Route("{id}")]
-        public IActionResult GetRole(string id)
+        public async Task<IActionResult> GetRole(string id)
         {
             var role = _rm.FindByIdAsync(id).Result;
             if (role == null)
@@ -56,7 +57,7 @@ namespace betauia.Controllers
         [Authorize("Roles.write")]
         [HttpPost]
         [Route("{name}")]
-        public IActionResult AddRole(string name)
+        public async Task<IActionResult> AddRole(string name)
         {
             var role = new IdentityRole(name);
             _rm.CreateAsync(role).Wait();
@@ -66,7 +67,7 @@ namespace betauia.Controllers
         [Authorize("Roles.write")]
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult DeleteRole(string id)
+        public async Task<IActionResult> DeleteRole(string id)
         {
             var role = _rm.FindByIdAsync(id).Result;
             if (role == null) return NotFound();

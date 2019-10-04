@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace betauia.Controllers
 {
   [ApiController]
-  [Route("api/jobs")]
+  [Route("api/job")]
 
   public class JobApplicationApi : ControllerBase
   {
@@ -18,15 +19,15 @@ namespace betauia.Controllers
     }
 
     [HttpGet]
-    public IActionResult GetAllJobs()
+    public async Task<IActionResult> GetAllJobs()
     {
       return Ok(_dbContext.JobApplications.ToList());
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetJob(int id)
+    public async Task<IActionResult> GetJob(int id)
     {
-      var job = _dbContext.JobApplications.Find(id);
+      var job = await _dbContext.JobApplications.FindAsync(id);
       if (job == null)
       {
         return BadRequest();
@@ -35,15 +36,15 @@ namespace betauia.Controllers
     }
 
     [HttpPost]
-    public IActionResult PostJob(JobApplication job)
+    public async Task<IActionResult> PostJob(JobApplication job)
     {
-      _dbContext.JobApplications.Add(job);
-      _dbContext.SaveChanges();
+      await _dbContext.JobApplications.AddAsync(job);
+      await _dbContext.SaveChangesAsync();
       return Ok(job);
     }
 
     [HttpPut("{id}")]
-    public IActionResult EditJob(int id, JobApplication jobModel)
+    public async Task<IActionResult> EditJob(int id, JobApplication jobModel)
     {
       if (id != jobModel.Id)
       {
@@ -55,12 +56,12 @@ namespace betauia.Controllers
       job.Title = jobModel.Title;
       job.Url = jobModel.Url;
       _dbContext.JobApplications.Update(job);
-      _dbContext.SaveChanges();
+      await _dbContext.SaveChangesAsync();
       return Ok(job);
     }
 
     [HttpDelete("{id}")]
-    public IActionResult DeleteJob(int id)
+    public async Task<IActionResult> DeleteJob(int id)
     {
       var job = _dbContext.JobApplications.Find(id);
       if (job == null) return BadRequest();
@@ -70,7 +71,7 @@ namespace betauia.Controllers
       job.Url = null;
 
       _dbContext.JobApplications.Update(job);
-      _dbContext.SaveChanges();
+      await _dbContext.SaveChangesAsync();
       return Ok(job);
     }
   }

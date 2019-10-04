@@ -281,7 +281,7 @@ import axios from 'axios';
           headers: {Authorization: "bearer " + token}
         };
         axios
-          .delete("/api/event/"+this.post.id,config)
+          .delete("/api/event/"+this.event.eventModel.id,config)
           .then(function (response) {
             console.log(response.data);
             location.reload();

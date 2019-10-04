@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using betauia.Controllers;
 using betauia.Data;
 using betauia.Models;
@@ -19,12 +20,13 @@ namespace betauia.Controllers
     private readonly RoleManager<IdentityRole> _rm;
     private readonly TokenFactory _tf;
 
-    public EventSignupApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+    public EventSignupApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager,
+      RoleManager<IdentityRole> roleManager,ITokenManager tokenManager)
     {
       _db = db;
       _um = userManager;
       _rm = roleManager;
-      _tf = new TokenFactory(_um,_rm);
+      _tf = new TokenFactory(_um,_rm,tokenManager);
     }
 
     [Authorize("Event.write")]
@@ -81,11 +83,11 @@ namespace betauia.Controllers
 
     [Authorize("AccountVerified")]
     [HttpPost("user/{id}")]
-    public IActionResult SignUpEventUser(int id, [FromHeader] string Authorization)
+    public async Task<IActionResult> SignUpEventUser(int id, [FromHeader] string Authorization)
     {
       var token = Authorization.Split(' ')[1];
 
-      var userid = _tf.AuthenticateUser(token);
+      var userid = await _tf.AuthenticateUserAsync(token);
       if (userid == null)
       {
         return BadRequest("301");
@@ -133,7 +135,7 @@ namespace betauia.Controllers
     }
 
     [HttpPost("email/{id}")]
-    public IActionResult SignUpEventEmail(int id,[FromBody]EventAtendee atendee)
+    public async Task<IActionResult> SignUpEventEmail(int id,[FromBody]EventAtendee atendee)
     {
       var eventAtendeeTest = _db.EventAtendees.Where(a => a.EventId == id && a.Email == atendee.Email).ToList();
       if (eventAtendeeTest.Count != 0)

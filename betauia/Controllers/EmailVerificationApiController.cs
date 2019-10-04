@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Net.Mail;
+using System.Threading.Tasks;
 
 namespace betauia.Controllers
 {
@@ -17,20 +18,21 @@ namespace betauia.Controllers
         private readonly RoleManager<IdentityRole> _rm;
         private readonly TokenFactory _tf;
 
-        public EmailVerificationApiController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public EmailVerificationApiController(UserManager<ApplicationUser> userManager,
+          RoleManager<IdentityRole> roleManager,ITokenManager tokenManager)
         {
             _um = userManager;
             _rm = roleManager;
-            _tf = new TokenFactory(_um,_rm);
+            _tf = new TokenFactory(_um,_rm,tokenManager);
         }
 
         [HttpGet]
         [Authorize("User")]
         [Route("api/getemailverification")]
-        public IActionResult SendEmailVerification([FromHeader] string Authorization)
+        public async Task<IActionResult> SendEmailVerification([FromHeader] string Authorization)
         {
           var usertoken = Authorization.Split(' ')[1];
-          var userid = _tf.AuthenticateUser(usertoken);
+          var userid = await _tf.AuthenticateUserAsync(usertoken);
 
             var user = _um.FindByIdAsync(userid).Result;
             if (user == null)
@@ -48,7 +50,7 @@ namespace betauia.Controllers
                 return BadRequest("205");
             }
 
-            var token = _tf.GetEmailVerificationToken(user);
+            var token = await _tf.GetEmailVerificationTokenAsync(user);
             var url = "http://localhost:8081/verifyemail/" + token;
 
             SmtpClient smtp = new SmtpClient("smtp.gtm.no");
@@ -62,9 +64,9 @@ namespace betauia.Controllers
 
         [HttpGet]
         [Route("api/verifyemail/{token}")]
-        public IActionResult VerifyEmail(string token)
+        public async Task<IActionResult> VerifyEmail(string token)
         {
-            var id = _tf.VerifyEmail(token);
+            var id = await _tf.VerifyEmailAsync(token);
             if (id == null)
             {
                 return BadRequest("301");

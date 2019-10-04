@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -25,50 +26,50 @@ namespace betauia.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetSponser(string id)
+        public async Task<IActionResult> GetSponser(string id)
         {
-            var sponsor = _db.Sponsors.Find(id);
+            var sponsor = await _db.Sponsors.FindAsync(id);
             if (sponsor == null) return NotFound();
             return Ok(sponsor);
         }
 
         [Authorize("Sponsor.write")]
         [HttpPost]
-        public IActionResult AddSponsor(SponsorModel sponsorModel)
+        public async Task<IActionResult> AddSponsor(SponsorModel sponsorModel)
         {
           sponsorModel.Id = sponsorModel.Title.ToLower().Replace(" ","");
-            if (_db.Sponsors.Find(sponsorModel.Id) != null) return BadRequest();
+          if (await _db.Sponsors.FindAsync(sponsorModel.Id) != null) return BadRequest();
 
-          _db.Sponsors.Add(sponsorModel);
-          _db.SaveChanges();
+          await _db.Sponsors.AddAsync(sponsorModel);
+          await _db.SaveChangesAsync();
           return Ok(sponsorModel);
         }
 
         [Authorize("Sponsor.write")]
         [HttpPut("{id}")]
-        public IActionResult EditSponsor(string id, SponsorModel sponsorModel)
+        public async Task<IActionResult> EditSponsor(string id, SponsorModel sponsorModel)
         {
             if (id != sponsorModel.Id)
             {
                 return BadRequest();
             }
 
-            var sponsor = _db.Sponsors.Find(id);
+            var sponsor = await _db.Sponsors.FindAsync(id);
 
             sponsor.Description = sponsorModel.Description;
             sponsor.Title = sponsorModel.Title;
             sponsor.Url = sponsorModel.Url;
 
             _db.Update(sponsor);
-            _db.SaveChanges();
-            return Ok(sponsorModel);
+            await _db.SaveChangesAsync();
+            return Ok(sponsor);
         }
 
         [Authorize("Sponsor.write")]
         [HttpDelete("{id}")]
-        public IActionResult DeleteSponsor(string id)
+        public async Task<IActionResult> DeleteSponsor(string id)
         {
-            var sponsor = _db.Sponsors.Find(id);
+            var sponsor = await _db.Sponsors.FindAsync(id);
 
             if (sponsor == null)
             {
@@ -80,7 +81,7 @@ namespace betauia.Controllers
             sponsor.Url = null;
 
             _db.Update(sponsor);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             return Ok();
         }
     }

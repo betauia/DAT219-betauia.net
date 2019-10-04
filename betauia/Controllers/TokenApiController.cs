@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using betauia.Models;
 using betauia.Tokens;
 using Microsoft.AspNetCore.Identity;
@@ -11,25 +12,35 @@ namespace betauia.Controllers
         private readonly UserManager<ApplicationUser> _um;
         private readonly RoleManager<IdentityRole> _rm;
         private readonly TokenFactory _tf;
-        
-        public TokenApiController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        private readonly ITokenManager _tokenManager;
+        public TokenApiController(UserManager<ApplicationUser> userManager,
+          RoleManager<IdentityRole> roleManager, ITokenManager tokenManager)
         {
             _um = userManager;
             _rm = roleManager;
-            _tf = new TokenFactory(_um,_rm);
+            _tf = new TokenFactory(_um,_rm,tokenManager);
+            _tokenManager = tokenManager;
+        }
+
+        [HttpGet]
+        [Route("api/token/test/{token}")]
+        public async Task<IActionResult> DelteToken(string token)
+        {
+          await _tokenManager.RemoveUserTokensAsync(token);
+          return Ok();
         }
 
         [HttpPost]
         [Route("api/token/valid/{token}")]
-        public IActionResult ValidateToken(string token)
+        public async Task<IActionResult> ValidateTokenAsync(string token)
         {
-            var id = _tf.AuthenticateUser(token);
+            var id = await _tf.AuthenticateUserAsync(token);
             if (id == null)
             {
                 return BadRequest("301");
             }
 
-            var user = _um.FindByIdAsync(id).Result;
+            var user = await _um.FindByIdAsync(id);
             if (user == null)
             {
                 return BadRequest("101");
@@ -47,18 +58,18 @@ namespace betauia.Controllers
 
             return Ok();
         }
-        
+
         [HttpPost]
         [Route("api/token/role/{token}")]
-        public IActionResult ValidateAdmin(string token)
+        public async Task<IActionResult> ValidateAdmin(string token)
         {
-            var id = _tf.AuthenticateUser(token);
+            var id = await _tf.AuthenticateUserAsync(token);
             if (id == null)
             {
                 return BadRequest("301");
             }
 
-            var user = _um.FindByIdAsync(id).Result;
+            var user = await _um.FindByIdAsync(id);
             if (user == null)
             {
                 return BadRequest("101");
@@ -76,6 +87,6 @@ namespace betauia.Controllers
 
             var roles = _um.GetRolesAsync(user).Result;
             return Ok(roles);
-        }    
+        }
     }
 }

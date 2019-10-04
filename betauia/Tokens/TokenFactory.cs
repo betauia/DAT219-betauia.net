@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using betauia.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -14,13 +15,15 @@ namespace betauia.Tokens
     {
         private readonly UserManager<ApplicationUser> _um;
         private readonly RoleManager<IdentityRole> _rm;
+        private readonly ITokenManager _tokenManager;
 
-        public TokenFactory(UserManager<ApplicationUser> um, RoleManager<IdentityRole> rm)
+        public TokenFactory(UserManager<ApplicationUser> um, RoleManager<IdentityRole> rm, ITokenManager tokenManager)
         {
             _um = um;
             _rm = rm;
+            _tokenManager = tokenManager;
         }
-        public string GetToken(ApplicationUser user)
+        public async Task<string> GetTokenAsync(ApplicationUser user)
         {
             var claims = _um.GetClaimsAsync(user).Result;
             //claims.Add(new Claim(JwtRegisteredClaimNames.NameId, user.UserName));
@@ -47,10 +50,12 @@ namespace betauia.Tokens
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg")), SecurityAlgorithms.HmacSha256)
                 );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var stoken = new JwtSecurityTokenHandler().WriteToken(token);
+            await _tokenManager.AddUserTokenAsync(user.Id, stoken);
+            return stoken;
         }
 
-        public string AuthenticateUser(string token)
+        public async Task<string> AuthenticateUserAsync(string token)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg"));
             var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha256);
@@ -70,7 +75,8 @@ namespace betauia.Tokens
 
             if (validator.CanReadToken(token))
             {
-                ClaimsPrincipal principal;
+              if (!await _tokenManager.IsActiveAsync(token)) return string.Empty;
+              ClaimsPrincipal principal;
                 try
                 {
                     principal = validator.ValidateToken(token, validationParameters, out validateToken);
@@ -87,7 +93,7 @@ namespace betauia.Tokens
             return string.Empty;
         }
 
-        public string GetEmailVerificationToken(ApplicationUser user)
+        public async Task<string> GetEmailVerificationTokenAsync(ApplicationUser user)
         {
             var claims = new Claim[]
             {
@@ -102,10 +108,12 @@ namespace betauia.Tokens
                 expires: DateTime.Now.AddDays(1),
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg")), SecurityAlgorithms.HmacSha256)
             );
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var stoken = new JwtSecurityTokenHandler().WriteToken(token);
+            await _tokenManager.AddTokenAsync(stoken);
+            return stoken;
         }
 
-        public string VerifyEmail(string token)
+        public async Task<string> VerifyEmailAsync(string token)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg"));
             var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha256);
@@ -125,6 +133,7 @@ namespace betauia.Tokens
 
             if (validator.CanReadToken(token))
             {
+              await _tokenManager.RemoveUserTokensAsync(token);
                 ClaimsPrincipal principal;
                 try
                 {
@@ -148,7 +157,7 @@ namespace betauia.Tokens
             return string.Empty;
         }
 
-        public string GetPasswordRestToken(ApplicationUser user)
+        public async Task<string> GetPasswordRestTokenAsync(ApplicationUser user)
         {
             var claims = new Claim[]
             {
@@ -163,10 +172,12 @@ namespace betauia.Tokens
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg")), SecurityAlgorithms.HmacSha256)
             );
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var stoken = new JwtSecurityTokenHandler().WriteToken(token);
+            await _tokenManager.AddTokenAsync(stoken);
+            return stoken;
         }
 
-        public string VerifyPasswordResetToken(string token)
+        public async Task<string> VerifyPasswordResetTokenAsync(string token)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg"));
             var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha256);

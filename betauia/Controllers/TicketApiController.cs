@@ -28,28 +28,28 @@ namespace betauia.Controllers
     private readonly VippsApiController vipps;
 
     public TicketApiController(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
-      RoleManager<IdentityRole> roleManager)
+      RoleManager<IdentityRole> roleManager,ITokenManager tokenManager)
     {
       // Set the databasecontext
       _db = db;
       _um = userManager;
       _rm = roleManager;
-      _tf = new TokenFactory(_um, _rm);
+      _tf = new TokenFactory(_um, _rm,tokenManager);
       vipps = new VippsApiController();
     }
 
     [Route("get")]
     [HttpGet]
-    public IActionResult GetAllTicketOnUser([FromHeader] string Authorization)
+    public async Task<IActionResult> GetAllTicketOnUser([FromHeader] string Authorization)
     {
       var token = Authorization.Split(' ')[1];
-      var userid = _tf.AuthenticateUser(token);
+      var userid = await _tf.AuthenticateUserAsync(token);
       if (userid == null)
       {
         return BadRequest("301");
       }
 
-      var user = _um.FindByIdAsync(userid).Result;
+      var user = await _um.FindByIdAsync(userid);
       if (user == null)
       {
         return BadRequest("101");
@@ -76,10 +76,10 @@ namespace betauia.Controllers
 
     [Route("get/{id}")]
     [HttpGet]
-    public IActionResult GetTicket([FromRoute] int id,[FromHeader] string Authorization)
+    public async Task<IActionResult> GetTicket([FromRoute] int id,[FromHeader] string Authorization)
     {
       var token = Authorization.Split(' ')[1];
-      var userid = _tf.AuthenticateUser(token);
+      var userid = await _tf.AuthenticateUserAsync(token);
       if (userid == null)
       {
         return BadRequest("301");
@@ -112,10 +112,10 @@ namespace betauia.Controllers
     [Authorize("Ticket.read")]
     [Route("user/get/{id}")]
     [HttpGet]
-    public IActionResult GetUserTickets([FromHeader] string Authorization,[FromRoute] string id)
+    public async Task<IActionResult> GetUserTickets([FromHeader] string Authorization,[FromRoute] string id)
     {
       var token = Authorization.Split(' ')[1];
-      var userid = _tf.AuthenticateUser(token);
+      var userid = await _tf.AuthenticateUserAsync(token);
       if (userid == null)
       {
         return BadRequest("301");
@@ -148,10 +148,10 @@ namespace betauia.Controllers
 
     [HttpPost]
     [Route("newticket")]
-    public IActionResult NewTicket([FromHeader] string Authorization, [FromBody] NewTicketModel ticketModel)
+    public async Task<IActionResult> NewTicket([FromHeader] string Authorization, [FromBody] NewTicketModel ticketModel)
     {
       var token = Authorization.Split(' ')[1];
-      var userid = _tf.AuthenticateUser(token);
+      var userid = await _tf.AuthenticateUserAsync(token);
       if (userid == null)
       {
         return BadRequest("301");
@@ -211,10 +211,10 @@ namespace betauia.Controllers
 
     [Route("initiatepayment")]
     [HttpPost]
-    public IActionResult InitiatePayment([FromHeader] string Authorization, InitiatePaymentModel paymentModel)
+    public async Task<IActionResult> InitiatePayment([FromHeader] string Authorization, InitiatePaymentModel paymentModel)
     {
       var token = Authorization.Split(' ')[1];
-      var userid = _tf.AuthenticateUser(token);
+      var userid = await _tf.AuthenticateUserAsync(token);
       if (userid == null)
       {
         return BadRequest("301");
@@ -247,7 +247,7 @@ namespace betauia.Controllers
         return BadRequest();
       }
 
-      ticket.TimePurchased = DateTime.UtcNow.ToString("MM/dd/yyyy HH:mm:ss.fffZ",CultureInfo.InvariantCulture);
+      ticket.TimePurchased = DateTime.UtcNow.ToString("MM/dd/yyyy HH:mm:ss.fff",CultureInfo.InvariantCulture);
       ticket.Status = "INITIATE";
       ticket.VippsOrderId = initpayment.orderId;
       ticket.MobileNumber = paymentModel.MobileNumber;
@@ -263,10 +263,10 @@ namespace betauia.Controllers
 
     [Route("paymentstatus/{id}")]
     [HttpGet]
-    public IActionResult getTicketStatus([FromRoute] string id,[FromHeader] string Authorization)
+    public async Task<IActionResult> getTicketStatus([FromRoute] string id,[FromHeader] string Authorization)
     {
       var token = Authorization.Split(' ')[1];
-      var userid = _tf.AuthenticateUser(token);
+      var userid = await _tf.AuthenticateUserAsync(token);
       if (userid == null)
       {
         return BadRequest("301");
@@ -319,9 +319,8 @@ namespace betauia.Controllers
           {
             ticket.Status = "CAPTURE";
             ticket.TimePurchased = capture.transactionInfo.timeStamp;
-            //Generate QR code//
             _db.SaveChanges();
-
+            //Generate QR code//
             var ticketview = new TicketViewModel(ticket,title);
             ticketview.Seats = _db.EventSeats.Where(a => a.TicketId == ticket.Id.ToString()).ToList();
             return Ok(ticketview);

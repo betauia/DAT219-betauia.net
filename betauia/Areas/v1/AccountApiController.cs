@@ -22,17 +22,18 @@ namespace betauia.Areas.v1
         private readonly RoleManager<IdentityRole> _rm;
         private readonly TokenFactory _tf;
 
-        public AccountApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public AccountApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager,
+          RoleManager<IdentityRole> roleManager,ITokenManager tokenManager)
         {
             _um = userManager;
             _rm = roleManager;
             _db = db;
-            _tf = new TokenFactory(_um,_rm);
+            _tf = new TokenFactory(_um,_rm,tokenManager);
         }
 
         [HttpPost]
         [Route("api/account/register")]
-        public IActionResult Register([FromBody]RegisterModel registerModel)
+        public async Task<IActionResult> Register([FromBody]RegisterModel registerModel)
         {
             if (!ModelState.IsValid)
             {
@@ -81,14 +82,14 @@ namespace betauia.Areas.v1
                 _userManager.AddClaimAsync(user, new Claim("email", user.Email));
                 _userManager.AddClaimAsync(user, new Claim("role", role));
                 */
-                return Ok(_tf.GetToken(user));
+                return Ok(await _tf.GetTokenAsync(user));
             }
             return BadRequest(result.Errors);
         }
 
         [Route("/api/account/login")]
         [HttpPost]
-        public IActionResult Create([FromBody]Loginmodel loginmodel)
+        public async Task<IActionResult> Create([FromBody]Loginmodel loginmodel)
         {
             var user = _um.FindByNameAsync(loginmodel.Username).Result;
             if (user == null)
@@ -107,7 +108,7 @@ namespace betauia.Areas.v1
 
             if (_um.CheckPasswordAsync(user, loginmodel.Password).Result)
             {
-                var token = _tf.GetToken(user);
+                var token = await _tf.GetTokenAsync(user);
                 return Ok(token);
             }
             return BadRequest();
@@ -116,10 +117,10 @@ namespace betauia.Areas.v1
         [Route("/api/account/get")]
         [Authorize(Policy = "User")]
         [HttpPost]
-        public IActionResult GetAccountInfo([FromHeader] string Authorization)
+        public async Task<IActionResult> GetAccountInfo([FromHeader] string Authorization)
         {
            var token = Authorization.Split(' ')[1];
-            var id = _tf.AuthenticateUser(token);
+            var id = await _tf.AuthenticateUserAsync(token);
             var user = _um.FindByIdAsync(id).Result;
             if (user == null)
             {
@@ -137,10 +138,10 @@ namespace betauia.Areas.v1
         [Route("/api/account/edit")]
         [HttpPut]
         [Authorize(Policy = "User")]
-        public IActionResult EditAccount([FromHeader] string Authorization, ProfileViewModel Profile)
+        public async Task<IActionResult> EditAccount([FromHeader] string Authorization, ProfileViewModel Profile)
         {
           var token = Authorization.Split(' ')[1];
-          var id = _tf.AuthenticateUser(token);
+          var id = await _tf.AuthenticateUserAsync(token);
 
           if (id == string.Empty) return BadRequest();
           if (id != Profile.Id) return BadRequest();
@@ -167,7 +168,7 @@ namespace betauia.Areas.v1
             user.UserName = Profile.UserName;
           }
 
-          _um.UpdateAsync(user).Wait();
+          await _um.UpdateAsync(user);
           return Ok(new AdminUserView(user));
         }
     }

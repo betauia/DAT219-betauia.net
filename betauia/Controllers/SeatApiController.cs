@@ -27,7 +27,7 @@ namespace betauia.Controllers
 
         // GET: Get all Seats
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
             // Return with 200 OK status code
             return Ok(_context.Seats.ToList());
@@ -35,7 +35,7 @@ namespace betauia.Controllers
 
         // GET: Returns a list with the given owner id
         [HttpGet("{id}")]
-        public IActionResult GetAllById(string id)
+        public async Task<IActionResult> GetAllById(string id)
         {
             var seat = _context.Seats.Find(id);
             seat.Owner = _context.SeatMaps.Find(seat.OwnerId);
@@ -74,7 +74,7 @@ namespace betauia.Controllers
         // Receive a list of seats (JSON) and adding them all
         [Authorize("Seatmap.write")]
         [HttpPost]
-        public IActionResult Post(List<SeatModel> seats) {
+        public async Task<IActionResult> Post(List<SeatModel> seats) {
 
             foreach (var seat in seats)
             {

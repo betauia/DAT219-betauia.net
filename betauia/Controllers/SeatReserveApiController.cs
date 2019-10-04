@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
 using betauia.Tokens;
@@ -17,20 +18,21 @@ namespace betauia.Controllers
     private readonly RoleManager<IdentityRole> _rm;
     private readonly TokenFactory _tf;
 
-    public SeatReserveApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+    public SeatReserveApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager,
+      RoleManager<IdentityRole> roleManager,ITokenManager tokenManager)
     {
       _db = db;
       _um = userManager;
       _rm = roleManager;
-      _tf = new TokenFactory(_um,_rm);
+      _tf = new TokenFactory(_um,_rm,tokenManager);
     }
 
     [HttpPost]
-    public IActionResult ReserveSeat([FromHeader] string Authorization, IEnumerable<EventSeat> eventSeats)
+    public async Task<IActionResult> ReserveSeat([FromHeader] string Authorization, IEnumerable<EventSeat> eventSeats)
     {
       var token = Authorization.Split(' ')[1];
 
-      var userid = _tf.AuthenticateUser(token);
+      var userid = await _tf.AuthenticateUserAsync(token);
       if (userid == null)
       {
         return BadRequest("301");
