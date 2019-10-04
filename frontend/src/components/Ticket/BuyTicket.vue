@@ -1,5 +1,16 @@
 <template>
     <div id="buyTicket">
+        <div>
+            <p class="is-italic">Billettene til BetaLAN er forhåndskjøpte
+                og du som kunden vil ikke motta tjenesten før BetaLAN er
+                gjennomført i sin helhet. Ved å klikke kjøp nederst på siden
+                vil du automatisk godta disse vilkårene og
+                <router-link to="/salgsbetingelser" class="has-text-info">
+                    kjøpsavtalen
+                </router-link>
+                vår. </p>
+        </div>
+
         <p>Confirm purchase of seat:</p>
         <p v-for="seat of seats" v-bind:key="seat">{{seat.number}}</p>
         <p>Choose phone number for payment</p>
