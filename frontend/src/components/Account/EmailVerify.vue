@@ -10,18 +10,19 @@ import axios from "axios";
 export default {
   data() {
     return {
-      message: String
+      message: ""
     };
   },
   created() {
     var token = this.$route.params.id;
+    const self = this;
     axios
       .get("/api/verifyemail/" + token)
       .then(function(response) {
-        this.message = "Successful";
+        self.message = "Successful";
       })
       .catch(function(error) {
-        this.message = "An error occured";
+        self.message = "An error occured, lease contact support";
       });
   }
 };

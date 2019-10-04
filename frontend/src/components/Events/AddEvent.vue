@@ -104,15 +104,17 @@ IsPublic = isPublic;
 
                         <span class="control">
                          <b-field
-                             placeholder="Type or select a date..."
+                             label="End date" for="eventIs"
                              icon="calendar-today">
                         <datetime
+                            placeholder="Select a date..."
                             type="datetime"
                             v-model="enddate"
                             input-class="my-class"
                             value-zone="Europe/Oslo"
                             format="dd-MM-yyyy HH:mm"
                             zone="Europe/Oslo"
+                            class="theme-blue"
                             :phrases="{ok: 'Continue', cancel: 'Exit'}"
                             :hour-step="1"
                             :minute-step="5"
@@ -227,7 +229,7 @@ IsPublic = isPublic;
                 },
                 selectedSponsors: [],
                 startdate: '0000-00-00T00:00:00.000Z',
-                enddate: '2019-10-01T16:50:00.000Z',
+                enddate: '0000-00-00T00:00:00.000Z',
             };
         },
         methods: {

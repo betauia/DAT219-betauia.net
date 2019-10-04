@@ -2,6 +2,24 @@
   <div id="userPanel">
     <user v-bind:user="user"></user>
     <SimpleTable :rows="claims" :nowrap="true"></SimpleTable>
+      <div class="tickets">
+          <tr>
+              <th>Order number</th>
+              <th>Event</th>
+              <th>Time purchased</th>
+              <th>Status</th>
+              <td>Details</td>
+          </tr>
+          <tr v-for="order of tickets" v-bind:key="order">
+              <td>{{order.id}}</td>
+              <td>{{order.eventTitle}}</td>
+              <td>{{order.status}}</td>
+              <td>{{order.status}}</td>
+              <td>
+                 <a>See orderdetails</a>
+              </td>
+          </tr>
+      </div>
   </div>
 </template>
 
@@ -18,7 +36,8 @@ export default {
   data() {
     return {
       user: Object,
-      claims: []
+      claims: [],
+      tickets:[]
     };
   },
   created() {
@@ -51,6 +70,16 @@ export default {
       .catch(function(error) {
         var code = error.response.data;
         console.log(code);
+      });
+
+    axios
+      .get("/api/ticket/user/get/"+id,config)
+      .then(function (response) {
+        console.log(response.data);
+        self.tickets = response.data;
+      })
+      .catch(function (error) {
+        console.log(error.data);
       });
   }
 };
@@ -147,5 +176,35 @@ roles .simple-table-vue #scrollableDiv {
 .simple-table-vue input[type="checkbox"] {
   margin: 0;
   padding: 0;
+}
+
+.tickets table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.tickets td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+.tickets tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+.tickets a{
+    color: blue;
+}
+
+.tickets a:link{
+    color:blue;
+}
+.tickets a:visited{
+    color: blue;
+}
+.tickets a:hover{
+    color: black;
 }
 </style>

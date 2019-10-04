@@ -8,32 +8,30 @@
         </div>
       </div>
     </section>
-    <section class="about hero is-fullheight is-warning">
+    <section class="about hero is-fullheight is-link">
       <div class="hero-body">
         <div class="container is-widescreen">
           <h1 class="title is-2 " >About Beta</h1>
           <p class="subtitle is-3">
-            Beta er linjeforeningen for Data Ingeniør Studenter ved Universitetet i Agder.
-            Beta er en non-profit organisasjon. Det betyr at Beta driver ikke for å tjene penger,
-            men heller bruker fortjenesten sin på dems medlemmer.
-            Alle data ingeniør studenter ved UiA er automatisk medlem
-            av Beta dersom en ikke aktivt melder seg ut.
+              BETA ENGINEERING & TECHNOLOGY ASSOCIATION is a student organization that covers students studying computer engineering and IT at the University of Agder, campus Grimstad. BETA is managed by volunteering students, with the goal of bringing students and companies closer together. In addition to this we want to create a thriving social community for the students by holding social and educational events ourselves.
           </p>
         </div>
       </div>
     </section>
-    <section class="help hero is-fullheight retro-img">
+      <!--
+    <section class="help hero is-fullheight is-light">
       <div class="hero-body">
         <div class="container is-widescreeen">
           <h1 class="title is-2 fontBlack">Har du lyst til å være med å hjelpe til?</h1>
           <p class="subtitle fontBlack">lyst til bli med i styret for BETA ?</p>
         </div>
       </div>
+      -->
     </section>
     <section class="board-members hero is-fullheight is-bold">
       <div class="hero-body">
         <div class="container is-widescreeen">
-          <h1 class="title has-text-centered is-1 fontStyret" >Styret</h1>
+          <h1 class="title has-text-centered is-1 fontStyret">Administration Committee</h1>
           <p class="subtitle">
             <BoardMemebers></BoardMemebers>
           </p>

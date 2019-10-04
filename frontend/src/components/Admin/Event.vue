@@ -12,7 +12,8 @@
                 <td>{{event.title}}</td>
                 <td>{{event.description}}</td>
                 <td>
-                    <a @click="detailClick(event.id)">Details/Edit</a>|
+                    <a @click="detailClick(event.id)">Details/Edit</a>
+                    <a @click="attendeeClick(event.id)">Attendees</a>
                     <a @click="deleteClick(event.id)">Delete me</a>
                 </td>
             </tr>
@@ -49,6 +50,9 @@
         })
     },
     methods:{
+      attendeeClick(id){
+        this.$router.push('/admin/eventattendees/'+id);
+      },
       detailClick(id){
         this.$router.push('/admin/event/'+id);
       },

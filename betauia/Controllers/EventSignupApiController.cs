@@ -27,6 +27,58 @@ namespace betauia.Controllers
       _tf = new TokenFactory(_um,_rm);
     }
 
+    [Authorize("Event.write")]
+    [HttpGet("attendee/get/{id}")]
+    public IActionResult GetAllAttendees([FromRoute] string id)
+    {
+      var attendees = _db.EventAtendees.Where(a => a.EventId.ToString() == id).ToList();
+      var attendeesView =  new List<EventAttendView>();
+      foreach (var atendee in attendees)
+      {
+        if (atendee.Email == null)
+        {
+          var user = _um.FindByIdAsync(atendee.Userid).Result;
+          atendee.Email = user.Email;
+          atendee.Firstname = user.FirstName;
+          atendee.Lastname = user.LastName;
+        }
+
+        var attview = new EventAttendView
+        {
+          Email = atendee.Email,
+          Firstname = atendee.Firstname,
+          Lastname = atendee.Lastname
+        };
+        attendeesView.Add(attview);
+      }
+
+
+      var tickets = _db.Tickets.Where(a => a.EventId.ToString() == id).ToList();
+      var ticketviews = new List<SimpleTicketView>();
+      foreach (var ticket in tickets)
+      {
+        var user = _um.FindByIdAsync(ticket.UserId).Result;
+        var ticketView = new SimpleTicketView
+        {
+          Id = ticket.Id.ToString(),
+          Email = user.Email,
+          Firstname = user.FirstName,
+          Lastname = user.LastName,
+          Status = ticket.Status,
+          Vippsid = ticket.VippsOrderId,
+          Seats = _db.EventSeats.Where(a => a.TicketId == ticket.Id.ToString()).ToList()
+        };
+        ticketviews.Add(ticketView);
+      }
+
+      var eventattview = new EventAttTickView
+      {
+        AttendViews = attendeesView,
+        TicketViews = ticketviews
+      };
+      return Ok(eventattview);
+    }
+
     [Authorize("AccountVerified")]
     [HttpPost("user/{id}")]
     public IActionResult SignUpEventUser(int id, [FromHeader] string Authorization)
@@ -94,6 +146,29 @@ namespace betauia.Controllers
       _db.Events.Find(id).Atendees++;
       _db.SaveChanges();
       return Ok();
+    }
+
+    public class EventAttTickView
+    {
+      public List<EventAttendView> AttendViews { get; set; }
+      public List<SimpleTicketView> TicketViews { get; set; }
+    }
+    public class EventAttendView
+    {
+      public string Email{ get; set; }
+      public string Firstname{ get; set; }
+      public string Lastname{ get; set; }
+    }
+
+    public class SimpleTicketView
+    {
+      public string Id { get; set; }
+      public string Email{ get; set; }
+      public string Firstname{ get; set; }
+      public string Lastname{ get; set; }
+      public string Status{ get; set; }
+      public string Vippsid{ get; set; }
+      public List<EventSeat> Seats{ get; set; }
     }
   }
 }

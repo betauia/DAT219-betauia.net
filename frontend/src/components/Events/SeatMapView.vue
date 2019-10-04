@@ -55,6 +55,7 @@ export default {
       };
 
       const bodyParam = {
+        eventId:this.seatmapmodel.eventId,
         seats: seatsToBuy
       };
 

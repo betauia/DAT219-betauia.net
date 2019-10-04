@@ -19,7 +19,7 @@ namespace betauia.Models
     public int Amount { get; set; }
     public string Status { get; set; }
     public string MobileNumber { get; set; }
-    public List<EventSeat> EventSeats { get; set; }
+    public List<EventSeat> Seats { get; set; }
     public string EventTitle { get; set; }
   }
 }

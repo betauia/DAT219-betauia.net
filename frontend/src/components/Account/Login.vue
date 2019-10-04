@@ -20,6 +20,17 @@
     <div class="field" grouped>
       <button v-on:click="login" class="button is-primary">Login</button>
     </div>
+
+    <div class="field" grouped v-if="forgotPassword==false">
+      <button v-on:click="forgotPasswordClick" class="button is-primary">Forgot password</button>
+    </div>
+
+      <div class="field" grouped v-if="forgotPassword==true">
+          <input type="email" placeholder="Account email" class="input" v-model="email">
+          <div v-if="message!=null">{{message}}</div>
+          <button v-on:click="resetPassword" class="button is-primary">Send reset password email</button>
+      </div>
+
   </section>
 </template>
 
@@ -31,7 +42,10 @@ export default {
       input: {
         username: "",
         password: ""
-      }
+      },
+      forgotPassword: false,
+      email:"",
+      message:"",
     };
   },
   methods: {
@@ -62,6 +76,29 @@ export default {
           console.log(error.response);
           console.log(error.response.data);
         });
+    },
+    forgotPasswordClick(){
+      this.forgotPassword = true;
+    },
+    resetPassword(){
+      if(this.email == ""){
+        alert("Please type in your email");
+      }
+
+      var bodyParam ={
+        email:this.email
+      };
+      const self = this;
+      axios
+        .post("/api/resetpassword/get",bodyParam)
+        .then(function (response) {
+          console.log(response.data);
+          self.message = "An email was sent with instruction."
+        })
+        .catch(function (error) {
+          console.log(error.response)
+          self.message = "An error occurred. Please try again later."
+        })
     }
   }
 };

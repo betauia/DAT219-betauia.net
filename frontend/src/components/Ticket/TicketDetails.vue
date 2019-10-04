@@ -1,12 +1,11 @@
 <template>
     <div id="TicketDetails">
-        <p>Confirm purchase of seat:</p>
-        <p v-for="seat of seats" v-bind:key="seat">{{seat.number}}</p>
-        <p>Choose phone number for payment</p>
-        <input id="phoneNumber" type="text" v-model="ticket.phoneNumber" required>
-        <p>Total price: {{ticket.amount}}</p>
-        <p>Payment status: {{ticket.status}}</p>
-        <p>Time purchased: {{ticket.timePurchased}}</p>
+        <p>Purchased seat:</p>
+        <p v-for="seat of ticketModel.seats" v-bind:key="seat">{{seat.number}}</p>
+        <p>Phone number {{ticketModel.mobileNumber}}</p>
+        <p>Total price: {{ticketModel.amount}}</p>
+        <p>Payment status: {{ticketModel.status}}</p>
+        <p>Time purchased: {{ticketModel.timePurchased}}</p>
     </div>
 </template>
 
@@ -29,7 +28,7 @@
       };
 
       axios
-        .get("/api/ticket/ticketpaymentstatus/"+id,config)
+        .get("/api/ticket/paymentstatus/"+id,config)
         .then(function(response){
           console.log(response.data);
           self.ticketModel = response.data;

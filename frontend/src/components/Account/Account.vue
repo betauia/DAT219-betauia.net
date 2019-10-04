@@ -11,6 +11,12 @@
             <li>
               <router-link to="/account/edit/${user.id}">Edit</router-link>
             </li>
+              <li>
+                  <router-link to="/account/accountorders">Orders</router-link>
+              </li>
+              <li>
+                  <button @click="resetPassword">Reset password</button>
+              </li>
           </ul>
         </aside>
       </div>
@@ -32,7 +38,8 @@ export default {
   data() {
     return {
       user: [],
-      errors: []
+      errors: [],
+      passwordReset: "",
     };
   },
   created() {
@@ -56,6 +63,26 @@ export default {
       .catch(function(error) {
         console.log(error.response.data);
       });
+  },
+  methods:{
+    resetPassword(){
+        const self = this;
+          var token = localStorage.getItem("token");
+
+          var config = {
+            headers: { Authorization: "bearer " + token }
+          };
+        axios
+          .get('/api/resetpassword/get',config)
+          .then(function (response) {
+            self.passwordReset = "An email was sent with instruction for resetting you password";
+          })
+          .catch(function (error) {
+            console.log(error.response);
+            self.passwordReset = "An error occurred, please try again later or contact support"
+          });
+      alert(self.passwordReset);
+    }
   }
 };
 </script>

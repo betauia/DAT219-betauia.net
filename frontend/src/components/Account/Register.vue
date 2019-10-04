@@ -70,6 +70,7 @@ export default {
       var confirmpassword = document.querySelector("input[name=again_password]")
         .value;
 
+      var self = this;
       axios
         .post("/api/account/register", {
           username: username,
@@ -80,12 +81,23 @@ export default {
           confirmpassword: confirmpassword
         })
         .then(function(response) {
-          console.log(response["data"]);
-          console.log(response);
+                localStorage.setItem("token", response["data"]);
+                var config = {
+                  headers: { Authorization: "bearer " + response["data"] }
+                };
+                    axios
+                      .get("/api/getemailverification",config)
+                      .then(function(response) {
+                      })
+                      .catch(function(error) {
+                        console.log(error);
+                      });
+                self.$router.push({ path: "/account/registered" }, () => {
+                location.reload();
+          });
         })
         .catch(function(error) {
           console.log(error.response);
-          console.log(error.response.data)
         });
     }
   }

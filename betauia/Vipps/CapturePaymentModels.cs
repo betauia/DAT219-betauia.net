@@ -4,8 +4,19 @@ namespace betauia.Vipps
   {
     public class CapturePaymentRequestModel
     {
-      public MerchantInfoModel merchantInfo { get; set; }
-      public TransactionModel transaction { get; set; }
+      public capturemerchantinfo merchantInfo { get; set; }
+      public transactioncapture transaction { get; set; }
+    }
+
+    public class capturemerchantinfo
+    {
+      public string merchantSerialNumber { get; set; }
+    }
+
+    public class transactioncapture
+    {
+      public int amount { get; set; }
+      public string transactionText { get; set; }
     }
 
     public class CapturePaymentResponseModel
