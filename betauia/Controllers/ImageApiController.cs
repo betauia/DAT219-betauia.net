@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using betauia.Data;
+using betauia.FileReader;
 using betauia.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
@@ -19,17 +20,19 @@ namespace betauia.Controllers
   public class ImageApiController : ControllerBase
   {
     private readonly ApplicationDbContext _dbContext;
+    private readonly IimageIO _imageIo;
 
-    public ImageApiController(ApplicationDbContext db)
+    public ImageApiController(ApplicationDbContext db,IimageIO imageIo)
     {
       _dbContext = db;
+      _imageIo = imageIo;
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetImage(string id)
     {
-      var imageModel = _dbContext.Images.Find(id);
-      var image = System.IO.File.OpenRead(imageModel.Location);
+      var imageModel = await _dbContext.Images.FindAsync(id);
+      var image = await _imageIo.GetFile(imageModel.Location);
       return File(image, "image/" + imageModel.ImageType);
     }
 
@@ -47,15 +50,10 @@ namespace betauia.Controllers
 
         var name = id + "." + type;
         var filepath = "wwwroot/Uploads/" +name;
-
-        using (var fileStream = new FileStream(filepath, FileMode.Create))
-        {
-          image.CopyTo(fileStream);
-        }
-
+        await _imageIo.WriteFile(filepath,image);
         var dbimage = new ImageModel(id,filepath,type);
-        _dbContext.Images.Add(dbimage);
-        _dbContext.SaveChanges();
+        await _dbContext.Images.AddAsync(dbimage);
+        await _dbContext.SaveChangesAsync();
 
         return Ok(id);
       }

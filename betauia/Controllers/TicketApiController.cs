@@ -319,9 +319,8 @@ namespace betauia.Controllers
           {
             ticket.Status = "CAPTURE";
             ticket.TimePurchased = capture.transactionInfo.timeStamp;
-            //Generate QR code//
             _db.SaveChanges();
-
+            //Generate QR code//
             var ticketview = new TicketViewModel(ticket,title);
             ticketview.Seats = _db.EventSeats.Where(a => a.TicketId == ticket.Id.ToString()).ToList();
             return Ok(ticketview);
