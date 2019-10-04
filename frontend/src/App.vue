@@ -23,6 +23,11 @@ export default {
     Footer,
     CookieLaw,
   },
+  methods:{
+    test(id){
+
+    },
+  }
 };
 </script>
 

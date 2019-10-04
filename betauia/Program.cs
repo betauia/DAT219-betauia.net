@@ -23,18 +23,16 @@ namespace betauia
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
-                
+
                 var db = services.GetService<ApplicationDbContext>();
-                
+
                 var um = services.GetRequiredService<UserManager<ApplicationUser>>();
                 var rm = services.GetRequiredService<RoleManager<IdentityRole>>();
-                
-                //adds roles and claims
-                //Config.AddRoles(um,rm);
+
                 DbInitializer.Initialize(db, um,rm);
             }
 
-            host.Run();        
+            host.Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

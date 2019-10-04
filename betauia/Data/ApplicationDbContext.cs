@@ -28,9 +28,7 @@ namespace betauia.Data
         public DbSet<EventSeat> EventSeats { get; set; }
         public DbSet<SeatModel> Seats { get; set; }
         public DbSet<TicketModel> Tickets { get; set; }
-
-        public DbSet<ImageModel> Images { get; set; }
-
         public DbSet<JobApplication> JobApplications { get; set; }
+        public DbSet<ImageModel> Images { get; set; }
     }
 }

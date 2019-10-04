@@ -49,6 +49,7 @@
         })
         .catch(function (error) {
           console.log(error.response);
+          self.test(id);
         })
     }
   };

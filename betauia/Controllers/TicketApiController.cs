@@ -247,7 +247,7 @@ namespace betauia.Controllers
         return BadRequest();
       }
 
-      ticket.TimePurchased = DateTime.UtcNow.ToString("MM/dd/yyyy HH:mm:ss.fff",CultureInfo.InvariantCulture);
+      ticket.TimePurchased = DateTime.UtcNow.ToString("MM/dd/yyyy HH:mm:ss.fffZ",CultureInfo.InvariantCulture);
       ticket.Status = "INITIATE";
       ticket.VippsOrderId = initpayment.orderId;
       ticket.MobileNumber = paymentModel.MobileNumber;

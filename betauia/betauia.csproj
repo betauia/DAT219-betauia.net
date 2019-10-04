@@ -31,4 +31,8 @@
     <Compile Include="Models\TicketModel.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Uploads" />
+  </ItemGroup>
+
 </Project>
