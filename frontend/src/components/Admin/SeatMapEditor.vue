@@ -1,19 +1,14 @@
 <template>
   <div class="seatmapeditor">
     <div id="editor">
-      <div class="editblock">
-        <b-field label="Seatmap name">
-          <input :value="Seatmap" id="seatmapname" name="seatmapname" placeholder="Map name">
-        </b-field>
-      </div>
-      <div class="editblock" id="groupedit">
+            <div class="editblock" id="groupedit">
         <b-field label="Add group"></b-field>
 
         <div class="inputblock">
           <div class="row">
-            <input :value="row" name placeholder="rows" id="row">
-            <input :value="row" name placeholder="columns" id="column">
-            <button v-on:click="createGroup">Create seat group</button>
+              <b-input type="text" :value="row" name placeholder="rows" id="row"></b-input>
+              <b-input type="text" :value="row" name placeholder="columns" id="column"></b-input>
+            <v-btn v-on:click="createGroup">Create seat group</v-btn>
           </div>
         </div>
       </div>
@@ -22,8 +17,13 @@
           <p>{{count}}</p>
         </b-field>
       </div>
+        <div class="editblock">
+            <b-field label="Seatmap name">
+                <b-input :value="Seatmap" id="seatmapname" name="seatmapname" placeholder="Map name"></b-input>
+            </b-field>
+        </div>
       <div class="editblock">
-        <button v-on:click="saveSeatMap" id="saveSeatmap">Save seatmap</button>
+        <v-btn v-on:click="saveSeatMap" id="saveSeatmap">Save seatmap</v-btn>
       </div>
     </div>
     <div id="grid">
@@ -35,57 +35,58 @@
 </template>
 
 <script>
-import axios from "axios";
-import Vue from "vue";
-import SeatGroup from "@/components/SeatMap/SeatGroup.vue";
+import axios from 'axios';
+import Vue from 'vue';
+import SeatGroup from '@/components/SeatMap/SeatGroup.vue';
+
 export default {
   components: {
-    SeatGroup: SeatGroup
+    SeatGroup,
   },
-  data: function() {
+  data() {
     return {
       count: 0,
       seats: [],
-      groups: []
+      groups: [],
     };
   },
   methods: {
-    changeMapSize: function(event) {
-      this.width = document.getElementById("mapwidth").value;
-      this.height = document.getElementById("mapHeight").value;
-      document.getElementById("grid").style.width = this.width + "px";
-      document.getElementById("grid").style.height = this.height + "px";
+    changeMapSize(event) {
+      this.width = document.getElementById('mapwidth').value;
+      this.height = document.getElementById('mapHeight').value;
+      document.getElementById('grid').style.width = `${this.width}px`;
+      document.getElementById('grid').style.height = `${this.height}px`;
     },
-    createSeat: function(event) {
-      var newseat = {
+    createSeat(event) {
+      const newseat = {
         id: this.count + 1,
-        width: "5%",
-        height: "5%",
-        x: "0%",
-        y: "0%"
+        width: '5%',
+        height: '5%',
+        x: '0%',
+        y: '0%',
       };
       this.seats[this.count] = newseat;
       this.$forceUpdate();
       this.count++;
     },
-    createGroup: function(event) {
-      var rows = document.getElementById("row").value;
-      var columns = document.getElementById("column").value;
+    createGroup(event) {
+      const rows = document.getElementById('row').value;
+      const columns = document.getElementById('column').value;
 
-      if (rows == "" || columns == "") {
-        alert("bad request");
+      if (rows == '' || columns == '') {
+        alert('bad request');
         return;
       }
 
-      var group = {};
+      const group = {};
       group.rows = rows;
       group.columns = columns;
 
-      var seats = [];
-      for (var x = 0; x < rows; x++) {
-        for (var y = 0; y < columns; y++) {
+      const seats = [];
+      for (let x = 0; x < rows; x++) {
+        for (let y = 0; y < columns; y++) {
           this.count++;
-          var seat = {};
+          const seat = {};
           seat.x = x * 20;
           seat.y = y * 20;
           seat.id = this.count;
@@ -94,64 +95,64 @@ export default {
       }
       group.seats = seats;
       this.groups.push(group);
-      //alert(JSON.stringify(group, null, 2));
+      // alert(JSON.stringify(group, null, 2));
     },
-    saveSeatMap: function(event) {
-      var name = document.querySelector("input[name=seatmapname]").value;
-      var seatmap = {};
+    saveSeatMap(event) {
+      const name = document.querySelector('input[name=seatmapname]').value;
+      const seatmap = {};
       seatmap.id = name;
       seatmap.numseats = this.count;
-      var out = JSON.stringify(this.seats, null, 2);
-      var groups = this.$el.querySelectorAll(".seatgroup");
+      const out = JSON.stringify(this.seats, null, 2);
+      const groups = this.$el.querySelectorAll('.seatgroup');
 
-      //alert(seats[0].offsetLeft);
-      var jseats = [];
-      groups.forEach(function(group) {
-        var x = group.offsetLeft;
-        var y = group.offsetTop;
-        var seats = group.getElementsByClassName("seat");
-        for (var i = 0; i < seats.length; i++) {
-          var jseat = {};
+      // alert(seats[0].offsetLeft);
+      const jseats = [];
+      groups.forEach((group) => {
+        const x = group.offsetLeft;
+        const y = group.offsetTop;
+        const seats = group.getElementsByClassName('seat');
+        for (let i = 0; i < seats.length; i++) {
+          const jseat = {};
           jseat.number = seats[i].textContent;
           jseat.x = seats[i].offsetLeft + x;
           jseat.y = seats[i].offsetTop + y;
-          //jseat.ownerid = name;
+          // jseat.ownerid = name;
           jseats.push(jseat);
         }
       });
-      var output = {};
+      const output = {};
       output.seatmapmodel = seatmap;
       output.seats = jseats;
 
-      //alert(JSON.parse(jseats, null, 2));
+      // alert(JSON.parse(jseats, null, 2));
 
-      //seats = group.getElementsByClassName("seat");
-      //alert(seats[1].offsetLeft);
+      // seats = group.getElementsByClassName("seat");
+      // alert(seats[1].offsetLeft);
 
-      var token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
 
-      var config = {
-        headers: { Authorization: "bearer " + token }
+      const config = {
+        headers: { Authorization: `bearer ${token}` },
       };
 
-      var body = {
+      const body = {
         seatmapmodel: seatmap,
-        seats: jseats
+        seats: jseats,
       };
       console.log(body);
 
-      var self = this;
+      const self = this;
       axios
-        .post("/api/seatmap", body, config)
-        .then(function(response) {
+        .post('/api/seatmap', body, config)
+        .then((response) => {
           console.log(response.data);
-          self.$router.push("/admin/seatmapdetail/"+response.data.seatMapModel.id)
+          self.$router.push(`/admin/seatmapdetail/${response.data.seatMapModel.id}`);
         })
-        .catch(function(error) {
+        .catch((error) => {
           console.log(error);
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

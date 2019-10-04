@@ -11,7 +11,7 @@
         <figcaption>
             <ul>
                 <li class="MemeberName">Kristoffer Solli</li>
-                <li class="MemeberPosition">Leder</li>
+                <li class="MemeberPosition">Head</li>
             </ul>
         </figcaption>
     </figure>
@@ -22,7 +22,7 @@
         <figcaption>
             <ul>
                 <li class="MemeberName">Even Eilertsen</li>
-                <li class="MemeberPosition">Nestleder</li>
+                <li class="MemeberPosition">Deputy head</li>
             </ul>
         </figcaption>
     </figure>
@@ -35,7 +35,7 @@
         <figcaption>
             <ul>
                 <li class="MemeberName">Christer Mathisen</li>
-                <li class="MemeberPosition">Økonomi</li>
+                <li class="MemeberPosition">Banking and finance committee</li>
             </ul>
         </figcaption>
     </figure>
@@ -45,8 +45,8 @@
         <img class="is-rounded" src="../assets/img/board/placeholder.png">
         <figcaption>
             <ul>
-                <li class="MemeberName">Aslak Skailand</li>
-                <li class="MemeberPosition">BedKom</li>
+                <li class="MemeberName">Anders Godstad</li>
+                <li class="MemeberPosition">Business relations committee</li>
             </ul>
         </figcaption>
     </figure>
@@ -57,7 +57,7 @@
         <figcaption>
             <ul>
                 <li class="MemeberName">Martin Bråten</li>
-                <li class="MemeberPosition">EventKom</li>
+                <li class="MemeberPosition">Social event committee</li>
             </ul>
         </figcaption>
     </figure>
@@ -68,7 +68,7 @@
         <figcaption>
             <ul>
                 <li class="MemeberName">Mattias  Coelho</li>
-                <li class="MemeberPosition">Betalan Ansvarlig</li>
+                <li class="MemeberPosition">Betalan Head</li>
             </ul>
         </figcaption>
     </figure>

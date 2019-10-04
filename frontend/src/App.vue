@@ -4,10 +4,11 @@
         <Navbar></Navbar>
         <router-view/>
     <cookie-law>
-  <div slot="message">
-    This website uses cookies to ensure you get the best experience on our website. for more info <router-link to="/privacy" class="black">Click here</router-link>
-  </div>
-</cookie-law>
+      <div slot="message">
+          This website uses cookies to ensure you get the best experience on our website. for more info <router-link to="/privacy" class="black">Click here</router-link>
+      </div>
+    </cookie-law>
+      <link rel="stylesheet" href="https://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css">
     <Footer></Footer>
   </div>
 </template>
@@ -23,12 +24,13 @@ export default {
     Footer,
     CookieLaw,
   },
-  methods:{
-    test(id){
+  methods: {
+    test(id) {
 
     },
-  }
-};
+  },
+}
+
 </script>
 
 <style lang='scss'>

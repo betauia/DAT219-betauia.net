@@ -4,10 +4,14 @@ import Router from 'vue-router';
 Vue.use(Router);
 
 export default new Router({
-    routes: [{
-        path: '/',
-        component: () => import('./views/Intro.vue'),
-    },
+        routes: [{
+            path: '/',
+            component: () => import('./views/Intro.vue'),
+        },
+        {
+            path: '/upload',
+            component: () => import('./components/Upload/ImageUpload.vue'),
+        },
         {
             path: '/privacy',
             component: () => import('./components/Legal/PrivacyPolicy.vue'),
@@ -166,15 +170,15 @@ export default new Router({
                 }
             ]
 
-        },
-        {
-            path: '/verifyemail/:id',
-            component: () => import('./components/Account/EmailVerify.vue')
-        },
-        {
-            path: '*',
-            component: () => import('./components/Error/NotFound.vue'),
-        }
-    ],
+  },
+  {
+    path: '/verifyemail/:id',
+    component: () => import('./components/Account/EmailVerify.vue'),
+  },
+  {
+    path: '*',
+    component: () => import('./components/Error/NotFound.vue'),
+  },
+  ],
   mode: 'history',
 });
