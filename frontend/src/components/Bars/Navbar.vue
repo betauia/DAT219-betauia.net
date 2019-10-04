@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar has-navbar-fixed-top" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-fixed-top is-transparent" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link class="navbar-item" to="/">
         <img src="@/assets/img/logo.png">

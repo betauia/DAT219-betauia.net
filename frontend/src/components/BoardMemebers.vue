@@ -67,7 +67,7 @@
         <img class="is-rounded" src="../assets/img/board/placeholder.png">
         <figcaption>
             <ul>
-                <li class="MemeberName">Mattias  Coelho</li>
+                <li class="MemeberName">Mattias A. Coelho</li>
                 <li class="MemeberPosition">Betalan Head</li>
             </ul>
         </figcaption>
