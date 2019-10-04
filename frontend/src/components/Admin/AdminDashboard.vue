@@ -88,6 +88,22 @@
                         </article>
                     </router-link>
                 </div>
+                <div class="tile is-parent">
+                    <router-link to="/admin/addjob">
+                        <article class="tile is-child box">
+                            <p class="title">Add Job</p>
+                            <p class="subtitle">Add a new job to post on jobs</p>
+                        </article>
+                    </router-link>
+                </div>
+                <div class="tile is-parent">
+                    <router-link to="/admin/jobs">
+                        <article class="tile is-child box">
+                            <p class="title">Edit Jobs</p>
+                            <p class="subtitle">Edit an existing job, here you get a list of previously posted jobs</p>
+                        </article>
+                    </router-link>
+                </div>
             </div>
         </div>
     </div>
