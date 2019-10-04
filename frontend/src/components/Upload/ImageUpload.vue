@@ -1,54 +1,67 @@
 <template>
-    <div class="file">
-        <form id="imageFrom" @submit.prevent="onSubmit" enctype="multipart/form-data">
-            <div class="fields">
-                <label>Upload Image</label>
-                <input type="file" ref="file" @change="onSelect"/>
-            </div>
-            <div class="fields">
-                <button @click="onSubmit">Submit</button>
-            </div>
-            <div class="message">
-                <h3>{{message}}</h3>
-            </div>
-        </form>
+    <div id="image-upload" class="mt-0">
+        <v-container grid-list-xl>
+            <image-input v-model="image">
+                <div slot="activator">
+                    <div size="150px" v-ripple v-if="!image" class="grey lighten-3 mb-3">
+                        <v-btn>Click to add image</v-btn>
+                    </div>
+                    <v-avatar size="150px" v-ripple v-else class="mb-3">
+                        <img :src="image.imageURL" alt="avatar">
+                    </v-avatar>
+                </div>
+            </image-input>
+            <v-slide-x-transition>
+                <div v-if="image && saved === false">
+                    <v-btn class="primary" @click="uploadImage" :loading="saving">Save Image</v-btn>
+                </div>
+            </v-slide-x-transition>
+        </v-container>
     </div>
 </template>
+
 <script>
-import axios from 'axios';
+import ImageInput from './ImageInput.vue';
 
 export default {
-  name: 'ImageUpload',
+  name: 'image-upload',
   data() {
     return {
-      file: null,
-      message: '',
+      image: null,
+      saving: false,
+      saved: false,
     };
   },
-  methods: {
-    onSelect(event) {
-      console.log(event);
-      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
-      const file = this.$refs.file.files[0];
-      this.file = file;
-      if (!allowedTypes.includes(file.type)) {
-        this.message = 'Only images are allowed!';
-      }
-      if (file.size > 5000000) {
-        this.message = 'Too large! Max image size is 500GB';
-      }
+  components: {
+    ImageInput,
+  },
+  watch: {
+    image: {
+      handler() {
+        this.saved = false;
+      },
+      deep: true,
     },
-    async onSubmit() {
-      const formData = new FormData();
-      formData.append('file', this.file, this.file.name);
-      try {
-        await axios.post('../assets/img/uploads', formData, {});
-        this.message = 'Uploaded successfully!';
-      } catch (e) {
-        console.log(e);
-        this.message = 'Oops, something screwed up!';
-      }
+  },
+  methods: {
+    uploadImage() {
+      this.saving = true;
+      setTimeout(() => this.savedAvatar(), 1000);
+    },
+    savedAvatar() {
+      this.saving = false;
+      this.saved = true;
     },
   },
 };
 </script>
+
+<style>
+    #image-upload {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-align: center;
+        color: #2c3e50;
+        margin-top: 60px;
+    }
+</style>

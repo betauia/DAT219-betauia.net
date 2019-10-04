@@ -17,6 +17,10 @@ export default new Router({
     component: () => import('./components/Legal/Disclaimer.vue'),
   },
   {
+    path: '/imageInput',
+    component: () => import('./components/Upload/ImageInput.vue'),
+  },
+  {
     path: '/upload',
     component: () => import('./components/Upload/ImageUpload.vue'),
   },
