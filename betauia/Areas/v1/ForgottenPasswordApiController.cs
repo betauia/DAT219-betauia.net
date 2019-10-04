@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
 using betauia.Tokens;
@@ -19,21 +20,22 @@ namespace betauia.Areas.v1
     private readonly RoleManager<IdentityRole> _rm;
     private readonly TokenFactory _tf;
 
-    public ForgottenPasswordApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+    public ForgottenPasswordApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager,
+      RoleManager<IdentityRole> roleManager,ITokenManager tokenManager)
     {
       _um = userManager;
       _rm = roleManager;
       _db = db;
-      _tf = new TokenFactory(_um,_rm);
+      _tf = new TokenFactory(_um,_rm,tokenManager);
     }
 
     [HttpGet]
     //[Authorize("User")]
     [Route("api/resetpassword/get")]
-    public IActionResult GetPasswordEmail([FromHeader] string Authorization)
+    public async Task<IActionResult> GetPasswordEmail([FromHeader] string Authorization)
     {
       var token = Authorization.Split(' ')[1];
-      var id = _tf.AuthenticateUser(token);
+      var id = await _tf.AuthenticateUserAsync(token);
       var user = _um.FindByIdAsync(id).Result;
       if (user == null)
       {
@@ -44,7 +46,7 @@ namespace betauia.Areas.v1
         return BadRequest("102");
       }
 
-      token = _tf.GetPasswordRestToken(user);
+      token = await _tf.GetPasswordRestTokenAsync(user);
       var url = "http://localhost:8081/resetpassword/" + token;
 
       SmtpClient smtp = new SmtpClient("smtp.gtm.no");
@@ -57,7 +59,7 @@ namespace betauia.Areas.v1
 
     [HttpPost]
     [Route("api/resetpassword/get")]
-    public IActionResult GetPasswordEmailFromEmail(ForgottenPasswordModel forgottenPasswordModel)
+    public async Task<IActionResult> GetPasswordEmailFromEmail(ForgottenPasswordModel forgottenPasswordModel)
     {
       var user = _um.FindByEmailAsync(forgottenPasswordModel.Email).Result;
       if (user == null)
@@ -65,7 +67,7 @@ namespace betauia.Areas.v1
         return NotFound();
       }
 
-      var token = _tf.GetPasswordRestToken(user);
+      var token = await _tf.GetPasswordRestTokenAsync(user);
       var url = "http://localhost:8081/resetpassword/" + token;
 
       SmtpClient smtp = new SmtpClient("smtp.gtm.no");
@@ -78,9 +80,9 @@ namespace betauia.Areas.v1
 
     [HttpPost]
     [Route("api/resetpassword/post")]
-    public IActionResult ResetPassword(PasswordResetModel passwordResetModel)
+    public async Task<IActionResult> ResetPassword(PasswordResetModel passwordResetModel)
     {
-      var id = _tf.VerifyPasswordResetToken(passwordResetModel.Token);
+      var id = await _tf.VerifyPasswordResetTokenAsync(passwordResetModel.Token);
       if (id == null)
       {
         return BadRequest("301");
@@ -93,9 +95,9 @@ namespace betauia.Areas.v1
       }
 
       var t = _um.GeneratePasswordResetTokenAsync(user).Result;
-      var result =  _um.ResetPasswordAsync(user, t, passwordResetModel.Password);
-      if (result.IsCompletedSuccessfully) return Ok();
-      return BadRequest(result.Status);
+      var result =  await  _um.ResetPasswordAsync(user, t, passwordResetModel.Password);
+      if (result.Succeeded) return Ok();
+      return BadRequest(result);
     }
 
     public class PasswordResetModel

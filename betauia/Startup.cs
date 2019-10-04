@@ -26,6 +26,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System.Timers;
+using betauia.Tokens;
 
 namespace betauia
 {
@@ -101,6 +102,14 @@ namespace betauia
             {
                 Config.Addpolicies(options);
             });
+
+            services.AddTransient<ITokenManager, TokenManager>();
+            services.AddDistributedRedisCache(option =>
+            {
+              option.Configuration = "127.0.0.1";
+              option.InstanceName = "master";
+            });
+
             var vipps = new VippsApiController();
             vipps.GetVippsToken();
         }

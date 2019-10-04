@@ -25,14 +25,15 @@ namespace betauia.Controllers
         private readonly UserManager<ApplicationUser> _um;
         private readonly RoleManager<IdentityRole> _rm;
         private readonly TokenFactory _tf;
-        
-        public UserApiController(ApplicationDbContext context,UserManager<ApplicationUser> um, RoleManager<IdentityRole> rm)
+
+        public UserApiController(ApplicationDbContext context,UserManager<ApplicationUser> um,
+          RoleManager<IdentityRole> rm,ITokenManager tokenManager)
         {
             // Set the databasecontext
             _context = context;
             _um = um;
             _rm = rm;
-            _tf = new TokenFactory(um,rm);
+            _tf = new TokenFactory(um,rm,tokenManager);
         }
 
         // GET: Get all users
@@ -83,7 +84,7 @@ namespace betauia.Controllers
                 VerifiedEmail = user.VerifiedEmail
             });
         }
-        
+
         // PUT: Update user by id
         [Authorize("Account.write")]
         [HttpPut("{id}")]
@@ -92,10 +93,10 @@ namespace betauia.Controllers
             // Check if id matches user id
             if (id != applicationUser.Id) return BadRequest();
 
-           
+
             // Set the current state to say that some or all of its properties has been modified
             _context.Entry(applicationUser).State = EntityState.Modified;
-            
+
             try
             {
                 // Save changes
@@ -107,7 +108,7 @@ namespace betauia.Controllers
                 if (!ApplicationUserExists(id)) return NotFound();
                 else throw;
             }
-            
+
             return Ok(applicationUser);
         }
 
@@ -127,7 +128,7 @@ namespace betauia.Controllers
                 user.Email = adminUserView.Email;
             }
 
-            if (adminUserView.UserName != "" && adminUserView.UserName != user.UserName) 
+            if (adminUserView.UserName != "" && adminUserView.UserName != user.UserName)
             {
                 if (_um.FindByNameAsync(adminUserView.UserName).Result != null) return BadRequest("202");
                 user.UserName = adminUserView.UserName;
@@ -136,11 +137,11 @@ namespace betauia.Controllers
             user.Active = adminUserView.Active;
             user.ForceLogOut = adminUserView.ForceLogout;
             user.VerifiedEmail = adminUserView.VerifiedEmail;
-            
+
             _um.UpdateAsync(user).Wait();
             return Ok(new AdminUserView(user));
         }
-        
+
         // POST: Add new user
         [Authorize("Account.write")]
         [HttpPost]
@@ -157,7 +158,7 @@ namespace betauia.Controllers
             {
                 return BadRequest("202");
             }
-            
+
             //Check if email is taken
             tUser = null;
             tUser = _um.FindByEmailAsync(registerModel.Email).Result;
@@ -169,23 +170,23 @@ namespace betauia.Controllers
             //create user
             var user = new ApplicationUser
             {
-                Email = registerModel.Email, 
+                Email = registerModel.Email,
                 UserName = registerModel.UserName,
-                FirstName = registerModel.FirstName, 
+                FirstName = registerModel.FirstName,
                 LastName = registerModel.LastName
             };
 
             var result = _um.CreateAsync(user, registerModel.Password).Result;
-            
+
             const string role = "User";
             _um.AddClaimAsync(user, new Claim("Role", "User"));
-            
+
             if (result.Succeeded)
             {
                 if (_rm.FindByNameAsync(role) == null)
                 {
                     _rm.CreateAsync(new IdentityRole(role)).Wait();
-                } 
+                }
                 _um.AddToRoleAsync(user, role).Wait();
                 /*
                 _userManager.AddClaimAsync(user, new Claim("username", user.UserName));
@@ -198,13 +199,13 @@ namespace betauia.Controllers
             }
             return BadRequest(result.Errors);
         }
-        
+
         // DELETE: Delete user by id
         [Authorize("User")]
         [HttpDelete("{id}")]
-        public IActionResult DeleteApplicationUser([FromBody] TokenModel tokenModel)
+        public async Task<IActionResult> DeleteApplicationUser([FromBody] TokenModel tokenModel)
         {
-            var id = _tf.AuthenticateUser(tokenModel.Token);
+            var id = await _tf.AuthenticateUserAsync(tokenModel.Token);
 
             // Receive and check if user is valid
             var user = _context.Users.FindAsync(id).Result;
@@ -213,12 +214,12 @@ namespace betauia.Controllers
             //deactivate account
             user.Active = false;
             user.ForceLogOut = true;
-            
+
             //Delete information
             user.FirstName = null;
             user.LastName = null;
             user.UserName = null;
-            
+
             //deletes password
             _um.RemovePasswordAsync(user).Wait();
             _um.AddPasswordAsync(user, "Password1.").Wait();

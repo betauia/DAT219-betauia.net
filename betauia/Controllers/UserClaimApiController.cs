@@ -20,12 +20,12 @@ namespace betauia.Controllers
         private readonly TokenFactory _tf;
 
         public UserClaimApiController(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,ITokenManager tokenManager)
         {
             _um = userManager;
             _rm = roleManager;
             _db = db;
-            _tf = new TokenFactory(_um, _rm);
+            _tf = new TokenFactory(_um, _rm,tokenManager);
         }
 
         [Authorize("Claims.read")]
