@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
 using Microsoft.AspNetCore.Http;
@@ -25,7 +26,7 @@ namespace betauia.Controllers
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetImage(string id)
+    public async Task<IActionResult> GetImage(string id)
     {
       var imageModel = _dbContext.Images.Find(id);
       var image = System.IO.File.OpenRead(imageModel.Location);
@@ -33,7 +34,7 @@ namespace betauia.Controllers
     }
 
     [HttpPost]
-    public ActionResult PostImage([FromForm] ImageModelView imageModelView)
+    public async Task<IActionResult> PostImage([FromForm] ImageModelView imageModelView)
     {
       var image = imageModelView.Image;
       if (image.Length > 0)

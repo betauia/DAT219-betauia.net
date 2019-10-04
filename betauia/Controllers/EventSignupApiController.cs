@@ -135,7 +135,7 @@ namespace betauia.Controllers
     }
 
     [HttpPost("email/{id}")]
-    public IActionResult SignUpEventEmail(int id,[FromBody]EventAtendee atendee)
+    public async Task<IActionResult> SignUpEventEmail(int id,[FromBody]EventAtendee atendee)
     {
       var eventAtendeeTest = _db.EventAtendees.Where(a => a.EventId == id && a.Email == atendee.Email).ToList();
       if (eventAtendeeTest.Count != 0)

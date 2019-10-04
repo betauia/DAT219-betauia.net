@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
 using betauia.Tokens;
@@ -32,7 +33,7 @@ namespace betauia.Controllers
         [Authorize("Account.read")]
         [HttpGet]
         [Route("api/allclaims/user/{id}")]
-        public IActionResult GetAllClaims(string id)
+        public async Task<IActionResult> GetAllClaims(string id)
         {
             var user = _um.FindByIdAsync(id).Result;
             if (user != null)
@@ -66,7 +67,7 @@ namespace betauia.Controllers
         [Authorize("Account.read")]
         [HttpGet]
         [Route("api/claim/user/{id}")]
-        public IActionResult GetUserClaims(string id)
+        public async Task<IActionResult> GetUserClaims(string id)
         {
             var user = _um.FindByIdAsync(id).Result;
             if (user == null) return NotFound();
@@ -80,7 +81,7 @@ namespace betauia.Controllers
         [Authorize("Account.write")]
         [HttpPut]
         [Route("api/claim/user/{id}")]
-        public IActionResult AddClaimToUser(string id, ClaimModel claimModel)
+        public async Task<IActionResult> AddClaimToUser(string id, ClaimModel claimModel)
         {
             var user = _um.FindByIdAsync(id).Result;
             if (user == null)
@@ -115,7 +116,7 @@ namespace betauia.Controllers
         [Authorize("Account.write")]
         [HttpDelete]
         [Route("api/claim/user/{id}")]
-        public IActionResult DeleteClaimFromUser(string id, ClaimModel claimModel)
+        public async Task<IActionResult> DeleteClaimFromUser(string id, ClaimModel claimModel)
         {
             var user = _um.FindByIdAsync(id).Result;
             if (user == null)

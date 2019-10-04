@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -25,7 +26,7 @@ namespace betauia.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetSponser(string id)
+        public async Task<IActionResult> GetSponser(string id)
         {
             var sponsor = _db.Sponsors.Find(id);
             if (sponsor == null) return NotFound();
@@ -34,7 +35,7 @@ namespace betauia.Controllers
 
         [Authorize("Sponsor.write")]
         [HttpPost]
-        public IActionResult AddSponsor(SponsorModel sponsorModel)
+        public async Task<IActionResult> AddSponsor(SponsorModel sponsorModel)
         {
           sponsorModel.Id = sponsorModel.Title.ToLower().Replace(" ","");
             if (_db.Sponsors.Find(sponsorModel.Id) != null) return BadRequest();
@@ -46,7 +47,7 @@ namespace betauia.Controllers
 
         [Authorize("Sponsor.write")]
         [HttpPut("{id}")]
-        public IActionResult EditSponsor(string id, SponsorModel sponsorModel)
+        public async Task<IActionResult> EditSponsor(string id, SponsorModel sponsorModel)
         {
             if (id != sponsorModel.Id)
             {
@@ -66,7 +67,7 @@ namespace betauia.Controllers
 
         [Authorize("Sponsor.write")]
         [HttpDelete("{id}")]
-        public IActionResult DeleteSponsor(string id)
+        public async Task<IActionResult> DeleteSponsor(string id)
         {
             var sponsor = _db.Sponsors.Find(id);
 

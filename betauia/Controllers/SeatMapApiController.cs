@@ -26,7 +26,7 @@ namespace betauia.Controllers
         // GET: Get all SeatMaps
         [Authorize("Seatmap.write")]
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
             // Return with 200 OK status code
             return Ok(_context.SeatMaps.ToList());
@@ -105,7 +105,7 @@ namespace betauia.Controllers
         // POST: Add new SeatMap
         [Authorize("Seatmap.write")]
         [HttpPost]
-        public IActionResult Post(SeatMap seatMap)
+        public async Task<IActionResult> Post(SeatMap seatMap)
         {
             var seatMapModel = seatMap.seatMapModel;
             // Return if id is set to avoid overwriting an existing SeatMap

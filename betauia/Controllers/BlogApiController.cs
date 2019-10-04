@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -23,7 +24,7 @@ namespace betauia.Controllers
         //[Authorize(Policy = "Blog.write")]
         [AllowAnonymous]
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
             // Return with 200 OK status code
             return Ok(_context.Posts.ToList());
@@ -31,7 +32,7 @@ namespace betauia.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public IActionResult GetBlogPost(int id)
+        public async Task<IActionResult> GetBlogPost(int id)
         {
             var blogPostModel = _context.Posts.Find(id);
 
@@ -44,7 +45,7 @@ namespace betauia.Controllers
         //[Authorize(Roles = "Admin")]
         [Authorize(Policy = "Blog.write")]
         [HttpPost]
-        public IActionResult Post([FromBody]BlogPost blogPost)
+        public async Task<IActionResult> Post([FromBody]BlogPost blogPost)
         {
             if (blogPost.Id != 0)
                 return BadRequest();
@@ -56,7 +57,7 @@ namespace betauia.Controllers
 
         [Authorize(Policy = "Blog.write")]
         [HttpPut("{id}")]
-        public IActionResult Put([FromBody]BlogPost blogPost)
+        public async Task<IActionResult> Put([FromBody]BlogPost blogPost)
         {
             if (!_context.Posts.Any(p => p.Id == blogPost.Id))
                 return NotFound();
@@ -74,7 +75,7 @@ namespace betauia.Controllers
 
         [Authorize(Policy = "Blog.write")]
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var post = _context.Posts.Find(id);
             if (post == null)

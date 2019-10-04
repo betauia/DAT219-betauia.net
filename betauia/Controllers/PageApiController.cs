@@ -19,10 +19,10 @@ namespace betauia.Controllers
             // Set the dbcontext
             _context = context;
         }
-        
+
         // GET: Get all pages
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
             // Return with 200 OK status code
             return Ok(_context.Pages.ToList());
@@ -30,11 +30,11 @@ namespace betauia.Controllers
 
         // GET: Get user by id
         [HttpGet("{id}")]
-        public IActionResult GetApplicationUser(int id)
+        public async Task<IActionResult> GetApplicationUser(int id)
         {
             // Get user by id
             var pageModel = _context.Pages.Find(id);
-            
+
             // Check if user is valid
             if (pageModel == null)
                 return NotFound();
@@ -42,7 +42,7 @@ namespace betauia.Controllers
             // Return user
             return Ok(pageModel);
         }
-        
+
         // PUT: Update user by id
         [HttpPut("{id}")]
         public async Task<IActionResult> PutApplicationUser(int id, PageModel pageModel)
@@ -50,14 +50,14 @@ namespace betauia.Controllers
             // Check if id matches user id
             if (id != pageModel.Id) return BadRequest();
             pageModel.UpdateEditTime();
-            
+
             var page = _context.Pages.Find(id);
             pageModel.CreationTime = page.CreationTime;
             _context.Entry(page).State = EntityState.Detached;
-            
+
             // Set the current state to say that some or all of its properties has been modified
             _context.Entry(pageModel).State = EntityState.Modified;
-            
+
             try
             {
                 // Save changes
@@ -71,24 +71,24 @@ namespace betauia.Controllers
             }
             return Ok(pageModel);
         }
- 
+
         // POST: Add new user
         [HttpPost]
         public IActionResult Post(PageModel pageModel)
         {
             // Return if id is set to avoid overwriting an existing user
             if (pageModel.Id != 0) return BadRequest();
-            
+
             // Add and save
             _context.Add(pageModel);
             _context.SaveChanges();
 
             return CreatedAtAction(nameof(GetApplicationUser), new {id = pageModel.Id}, pageModel);
         }
-        
+
         // DELETE: Delete user by id
         [HttpDelete("{id}")]
-        public IActionResult DeleteApplicationUser(int id)
+        public async Task<IActionResult> DeleteApplicationUser(int id)
         {
             // Receive and check if user is valid
             var pageModel = _context.Pages.Find(id);

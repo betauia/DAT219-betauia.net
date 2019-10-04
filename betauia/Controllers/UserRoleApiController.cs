@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
 using betauia.Tokens;
@@ -33,7 +34,7 @@ namespace betauia.Controllers
         [Authorize("Roles.read")]
         [HttpGet]
         [Route("api/user/role/{id}")]
-        public IActionResult GetUsersInRole(string id)
+        public async Task<IActionResult> GetUsersInRole(string id)
         {
             var role = _rm.FindByIdAsync(id).Result;
             if (role == null)
@@ -66,7 +67,7 @@ namespace betauia.Controllers
         [Authorize("Roles.read")]
         [HttpGet]
         [Route("api/user/nrole/{id}")]
-        public IActionResult GetUsersNotInRole(string id)
+        public async Task<IActionResult> GetUsersNotInRole(string id)
         {
             var role = _rm.FindByIdAsync(id).Result;
             if (role == null) return NotFound();
@@ -98,7 +99,7 @@ namespace betauia.Controllers
         [Authorize("Roles.read")]
         [HttpPost]
         [Route("api/user/role/{userid}/{roleid}")]
-        public IActionResult SetUserRoles(string userid, string roleid)
+        public async Task<IActionResult> SetUserRoles(string userid, string roleid)
         {
             var user = _um.FindByIdAsync(userid).Result;
             if (user == null)
@@ -118,7 +119,7 @@ namespace betauia.Controllers
         [Authorize("Roles.read")]
         [HttpDelete]
         [Route("api/user/role/{id}")]
-        public IActionResult DeleteUserFromRole(string id, RoleList roleList)
+        public async Task<IActionResult> DeleteUserFromRole(string id, RoleList roleList)
         {
             var user = _um.FindByIdAsync(id).Result;
             if (user == null)

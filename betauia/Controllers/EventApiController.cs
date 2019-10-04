@@ -25,7 +25,7 @@ namespace betauia.Controllers
         // Tested and working
         // GET: Get all events
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
             // Return with 200 OK status code
             var events = _context.Events.ToList();
@@ -53,7 +53,7 @@ namespace betauia.Controllers
         // Tested and working
         // GET: Get event by id
         [HttpGet("{id}")]
-        public IActionResult GetEventModel(int id)
+        public async Task<IActionResult> GetEventModel(int id)
         {
             // Get user by id
             var eventModel = _context.Events.Find(id);
@@ -126,7 +126,7 @@ namespace betauia.Controllers
         // POST: Add new event
         [Authorize("Event.write")]
         [HttpPost]
-        public IActionResult Post(EventCreater eventCreater)
+        public async Task<IActionResult> Post(EventCreater eventCreater)
         {
             // Return if id is set to avoid overwriting an existing event
             if (eventCreater.eventModel.Id != 0) return BadRequest();

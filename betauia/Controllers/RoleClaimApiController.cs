@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
 using betauia.Tokens;
@@ -31,7 +32,7 @@ namespace betauia.Controllers
         [Authorize("Claims.read")]
         [HttpGet]
         [Route("api/claim/role/{id}")]
-        public IActionResult GetRoleClaims(string id)
+        public async Task<IActionResult> GetRoleClaims(string id)
         {
             var role = _rm.FindByIdAsync(id).Result;
             if (role == null)
@@ -52,7 +53,7 @@ namespace betauia.Controllers
         [Authorize("Claims.write")]
         [HttpPost]
         [Route("api/claim/role/{id}")]
-        public IActionResult SetRoleClaims(string id, ClaimList claimList)
+        public async Task<IActionResult> SetRoleClaims(string id, ClaimList claimList)
         {
             var role = _rm.FindByNameAsync(id).Result;
             if (role == null)
@@ -72,7 +73,7 @@ namespace betauia.Controllers
         [Authorize("Claims.write")]
         [HttpPut]
         [Route("api/claim/role/{id}")]
-        public IActionResult PutRoleToClaim(string id, ClaimModel claimModel)
+        public async Task<IActionResult> PutRoleToClaim(string id, ClaimModel claimModel)
         {
             var role = _rm.FindByIdAsync(id).Result;
             if (role == null)
@@ -106,7 +107,7 @@ namespace betauia.Controllers
         [Authorize("Claims.write")]
         [HttpDelete]
         [Route("api/claim/role{id}")]
-        public IActionResult DeleteClaimFromRole(string id, ClaimModel claimModel)
+        public async Task<IActionResult> DeleteClaimFromRole(string id, ClaimModel claimModel)
         {
             var role = _rm.FindByIdAsync(id).Result;
             if (role == null)

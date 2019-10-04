@@ -43,7 +43,7 @@ namespace betauia.Tokens
 
     public async Task DeactivateAsync(string token)
     {
-      await _cache.SetStringAsync(token, null);
+      await _cache.RemoveAsync(token);
     }
   }
 }

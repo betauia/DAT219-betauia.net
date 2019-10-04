@@ -39,7 +39,7 @@ namespace betauia.Controllers
         // GET: Get all users
         [Authorize("Account.read")]
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
             // Return with 200 OK status code
             var userlist = new List<AdminUserView>();
@@ -64,7 +64,7 @@ namespace betauia.Controllers
         // GET: Get user by id
         [Authorize("Account.read")]
         [HttpGet("{id}")]
-        public IActionResult GetApplicationUser(string id)
+        public async Task<IActionResult> GetApplicationUser(string id)
         {
             var user = _um.FindByIdAsync(id).Result;
             if (user == null)
@@ -114,7 +114,7 @@ namespace betauia.Controllers
 
         [Authorize("Account.write")]
         [HttpPut]
-        public IActionResult UpdateApplicationUser([FromBody]AdminUserView adminUserView)
+        public async Task<IActionResult> UpdateApplicationUser([FromBody]AdminUserView adminUserView)
         {
             var user = _um.FindByIdAsync(adminUserView.Id).Result;
             if (user == null) return NotFound("101");
@@ -145,7 +145,7 @@ namespace betauia.Controllers
         // POST: Add new user
         [Authorize("Account.write")]
         [HttpPost]
-        public IActionResult Post([FromBody]RegisterModel registerModel)
+        public async Task<IActionResult> Post([FromBody]RegisterModel registerModel)
         {
             if (!ModelState.IsValid)
             {

@@ -22,6 +22,14 @@ namespace betauia.Controllers
             _tokenManager = tokenManager;
         }
 
+        [HttpGet]
+        [Route("api/token/test/{token}")]
+        public async Task<IActionResult> DelteToken(string token)
+        {
+          await _tokenManager.RemoveUserTokensAsync(token);
+          return Ok();
+        }
+
         [HttpPost]
         [Route("api/token/valid/{token}")]
         public async Task<IActionResult> ValidateTokenAsync(string token)

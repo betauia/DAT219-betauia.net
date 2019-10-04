@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -18,13 +19,13 @@ namespace betauia.Controllers
     }
 
     [HttpGet]
-    public IActionResult GetAllJobs()
+    public async Task<IActionResult> GetAllJobs()
     {
       return Ok(_dbContext.JobApplications.ToList());
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetJob(int id)
+    public async Task<IActionResult> GetJob(int id)
     {
       var job = _dbContext.JobApplications.Find(id);
       if (job == null)
@@ -35,7 +36,7 @@ namespace betauia.Controllers
     }
 
     [HttpPost]
-    public IActionResult PostJob(JobApplication job)
+    public async Task<IActionResult> PostJob(JobApplication job)
     {
       _dbContext.JobApplications.Add(job);
       _dbContext.SaveChanges();
@@ -60,7 +61,7 @@ namespace betauia.Controllers
     }
 
     [HttpDelete("{id}")]
-    public IActionResult DeleteJob(int id)
+    public async Task<IActionResult> DeleteJob(int id)
     {
       var job = _dbContext.JobApplications.Find(id);
       if (job == null) return BadRequest();
