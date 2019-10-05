@@ -177,12 +177,12 @@ IsPublic = isPublic;
                 <div class="column" v-if="hasSeatMap.state==true">
                     <label class="label" for="seatmap">Select seatmap</label>
                     <div class="select">
-                        <select>
+                        <select v-model="selectedSeatmap">
                             <option
                                 v-for="item in seatmaps"
                                 :value="item"
                                 v-bind:key="item"
-                            >{{item.id}}, with {{item.numSeats}} spots
+                            >{{item.id}}, with {{item.numSeats}} seats
                             </option>
                             <option v-if="seatmaps.length==0">No stored seat maps</option>
                         </select>

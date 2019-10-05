@@ -15,16 +15,14 @@ namespace betauia.Controllers
   {
     private readonly ApplicationDbContext _db;
     private readonly UserManager<ApplicationUser> _um;
-    private readonly RoleManager<IdentityRole> _rm;
-    private readonly TokenFactory _tf;
+    private readonly ITokenVerifier _tokenVerifier;
 
     public SeatReserveApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager,
-      RoleManager<IdentityRole> roleManager,ITokenManager tokenManager)
+      ITokenVerifier tokenVerifier)
     {
       _db = db;
       _um = userManager;
-      _rm = roleManager;
-      _tf = new TokenFactory(_um,_rm,tokenManager);
+      _tokenVerifier = tokenVerifier;
     }
 
     [HttpPost]
@@ -32,27 +30,7 @@ namespace betauia.Controllers
     {
       var token = Authorization.Split(' ')[1];
 
-      var userid = await _tf.AuthenticateUserAsync(token);
-      if (userid == null)
-      {
-        return BadRequest("301");
-      }
-
-      var user = _um.FindByIdAsync(userid).Result;
-      if (user == null)
-      {
-        return BadRequest("101");
-      }
-
-      if (user.Active == false)
-      {
-        return BadRequest("102");
-      }
-
-      if (user.ForceLogOut)
-      {
-        return BadRequest("103");
-      }
+      var userid = await _tokenVerifier.GetTokenUser(token);
 
       foreach (var eseat in eventSeats)
       {

@@ -17,13 +17,15 @@ namespace betauia.Controllers
         private readonly UserManager<ApplicationUser> _um;
         private readonly RoleManager<IdentityRole> _rm;
         private readonly TokenFactory _tf;
+        private readonly ITokenVerifier _tokenVerifier;
 
         public EmailVerificationApiController(UserManager<ApplicationUser> userManager,
-          RoleManager<IdentityRole> roleManager,ITokenManager tokenManager)
+          RoleManager<IdentityRole> roleManager,ITokenManager tokenManager,ITokenVerifier tokenVerifier)
         {
             _um = userManager;
             _rm = roleManager;
             _tf = new TokenFactory(_um,_rm,tokenManager);
+            _tokenVerifier = tokenVerifier;
         }
 
         [HttpGet]
@@ -32,23 +34,8 @@ namespace betauia.Controllers
         public async Task<IActionResult> SendEmailVerification([FromHeader] string Authorization)
         {
           var usertoken = Authorization.Split(' ')[1];
-          var userid = await _tf.AuthenticateUserAsync(usertoken);
-
-            var user = _um.FindByIdAsync(userid).Result;
-            if (user == null)
-            {
-                return BadRequest("101");
-            }
-
-            if (user.Active == false)
-            {
-                return BadRequest("102");
-            }
-
-            if (user.VerifiedEmail)
-            {
-                return BadRequest("205");
-            }
+          var userid = await _tokenVerifier.GetTokenUser(usertoken);
+          var user = await _um.FindByIdAsync(userid);
 
             var token = await _tf.GetEmailVerificationTokenAsync(user);
             var url = "http://localhost:8081/verifyemail/" + token;

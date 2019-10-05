@@ -20,15 +20,16 @@ namespace betauia.Controllers
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _um;
         private readonly RoleManager<IdentityRole> _rm;
-        private readonly TokenFactory _tf;
-
+        private readonly ITokenManager _tokenManager;
+        private readonly ITokenVerifier _tokenVerifier;
         public RoleApiController(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager, ITokenManager tokenManager)
+            RoleManager<IdentityRole> roleManager, ITokenManager tokenManager,ITokenVerifier tokenVerifier)
         {
             _um = userManager;
             _rm = roleManager;
             _db = db;
-            _tf = new TokenFactory(_um, _rm,tokenManager);
+            _tokenManager = tokenManager;
+            _tokenVerifier = tokenVerifier;
         }
 
         //get all roles

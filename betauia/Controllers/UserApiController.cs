@@ -24,16 +24,16 @@ namespace betauia.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _um;
         private readonly RoleManager<IdentityRole> _rm;
-        private readonly TokenFactory _tf;
+        private readonly ITokenVerifier _tokenVerifier;
 
         public UserApiController(ApplicationDbContext context,UserManager<ApplicationUser> um,
-          RoleManager<IdentityRole> rm,ITokenManager tokenManager)
+          RoleManager<IdentityRole> rm,ITokenVerifier tokenVerifier)
         {
             // Set the databasecontext
             _context = context;
             _um = um;
             _rm = rm;
-            _tf = new TokenFactory(um,rm,tokenManager);
+            _tokenVerifier = tokenVerifier;
         }
 
         // GET: Get all users
@@ -205,7 +205,7 @@ namespace betauia.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteApplicationUser([FromBody] TokenModel tokenModel)
         {
-            var id = await _tf.AuthenticateUserAsync(tokenModel.Token);
+            var id = await _tokenVerifier.GetTokenUser(tokenModel.Token);
 
             // Receive and check if user is valid
             var user = _context.Users.FindAsync(id).Result;

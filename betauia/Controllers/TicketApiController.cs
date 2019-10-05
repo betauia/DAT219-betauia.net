@@ -23,19 +23,18 @@ namespace betauia.Controllers
   {
     private readonly ApplicationDbContext _db;
     private readonly UserManager<ApplicationUser> _um;
-    private readonly RoleManager<IdentityRole> _rm;
-    private readonly TokenFactory _tf;
-    private readonly VippsApiController vipps;
+    private readonly IVippsPayment vipps;
+    private readonly ITokenVerifier _tokenVerifier;
 
     public TicketApiController(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
-      RoleManager<IdentityRole> roleManager,ITokenManager tokenManager)
+      ITokenVerifier tokenVerifier,IVippsPayment vippsPayment)
+
     {
       // Set the databasecontext
       _db = db;
       _um = userManager;
-      _rm = roleManager;
-      _tf = new TokenFactory(_um, _rm,tokenManager);
-      vipps = new VippsApiController();
+      vipps = vippsPayment;
+      _tokenVerifier = tokenVerifier;
     }
 
     [Route("get")]
@@ -43,26 +42,7 @@ namespace betauia.Controllers
     public async Task<IActionResult> GetAllTicketOnUser([FromHeader] string Authorization)
     {
       var token = Authorization.Split(' ')[1];
-      var userid = await _tf.AuthenticateUserAsync(token);
-      if (userid == null)
-      {
-        return BadRequest("301");
-      }
-
-      var user = await _um.FindByIdAsync(userid);
-      if (user == null)
-      {
-        return BadRequest("101");
-      }
-      if (user.Active == false)
-      {
-        return BadRequest("102");
-      }
-
-      if (user.ForceLogOut)
-      {
-        return BadRequest("103");
-      }
+      var userid = await _tokenVerifier.GetTokenUser(token);
 
       var tickets = _db.Tickets.Where(a => a.UserId == userid).ToList();
       var viewtickets = new List<TicketViewModel>();
@@ -79,30 +59,11 @@ namespace betauia.Controllers
     public async Task<IActionResult> GetTicket([FromRoute] int id,[FromHeader] string Authorization)
     {
       var token = Authorization.Split(' ')[1];
-      var userid = await _tf.AuthenticateUserAsync(token);
-      if (userid == null)
-      {
-        return BadRequest("301");
-      }
-
-      var user = _um.FindByIdAsync(userid).Result;
-      if (user == null)
-      {
-        return BadRequest("101");
-      }
+      var userid = await _tokenVerifier.GetTokenUser(token);
 
       var ticket = _db.Tickets.Find(id);
       if (ticket == null) return NotFound();
       if (userid != ticket.UserId) return BadRequest();
-      if (user.Active == false)
-      {
-        return BadRequest("102");
-      }
-
-      if (user.ForceLogOut)
-      {
-        return BadRequest("103");
-      }
 
       var ticketview = new TicketPreviewModel(ticket);
       ticketview.EventSeats = _db.EventSeats.Where(a => a.TicketId == Convert.ToString(ticket.Id)).ToList();
@@ -115,26 +76,7 @@ namespace betauia.Controllers
     public async Task<IActionResult> GetUserTickets([FromHeader] string Authorization,[FromRoute] string id)
     {
       var token = Authorization.Split(' ')[1];
-      var userid = await _tf.AuthenticateUserAsync(token);
-      if (userid == null)
-      {
-        return BadRequest("301");
-      }
-
-      var user = _um.FindByIdAsync(userid).Result;
-      if (user == null)
-      {
-        return BadRequest("101");
-      }
-      if (user.Active == false)
-      {
-        return BadRequest("102");
-      }
-
-      if (user.ForceLogOut)
-      {
-        return BadRequest("103");
-      }
+      var userid = await _tokenVerifier.GetTokenUser(token);
 
       var tickets = _db.Tickets.Where(a => a.UserId == id).ToList();
       var viewtickets = new List<TicketViewModel>();
@@ -151,28 +93,9 @@ namespace betauia.Controllers
     public async Task<IActionResult> NewTicket([FromHeader] string Authorization, [FromBody] NewTicketModel ticketModel)
     {
       var token = Authorization.Split(' ')[1];
-      var userid = await _tf.AuthenticateUserAsync(token);
-      if (userid == null)
-      {
-        return BadRequest("301");
-      }
+      var userid = await _tokenVerifier.GetTokenUser(token);
 
       var user = _um.FindByIdAsync(userid).Result;
-      if (user == null)
-      {
-        return BadRequest("101");
-      }
-
-      if (user.Active == false)
-      {
-        return BadRequest("102");
-      }
-
-      if (user.ForceLogOut)
-      {
-        return BadRequest("103");
-      }
-
       var t = new TicketModel
       {
         UserId = userid,
@@ -214,7 +137,7 @@ namespace betauia.Controllers
     public async Task<IActionResult> InitiatePayment([FromHeader] string Authorization, InitiatePaymentModel paymentModel)
     {
       var token = Authorization.Split(' ')[1];
-      var userid = await _tf.AuthenticateUserAsync(token);
+      var userid = await _tokenVerifier.GetTokenUser(token);
       if (userid == null)
       {
         return BadRequest("301");
@@ -241,7 +164,7 @@ namespace betauia.Controllers
       }
 
       string orderid = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
-      var initpayment = vipps.InitiatePayment(paymentModel.MobileNumber, orderid, 100, "test hello world");
+      var initpayment = await vipps.InitiatePayment(paymentModel.MobileNumber, orderid, 100, "test hello world");
       if (initpayment == null)
       {
         return BadRequest();
@@ -266,17 +189,9 @@ namespace betauia.Controllers
     public async Task<IActionResult> getTicketStatus([FromRoute] string id,[FromHeader] string Authorization)
     {
       var token = Authorization.Split(' ')[1];
-      var userid = await _tf.AuthenticateUserAsync(token);
-      if (userid == null)
-      {
-        return BadRequest("301");
-      }
+      var userid = await _tokenVerifier.GetTokenUser(token);
 
       var user = _um.FindByIdAsync(userid).Result;
-      if (user == null)
-      {
-        return BadRequest("101");
-      }
 
       var ticket = _db.Tickets.Where(a=>a.VippsOrderId == id).ToList()[0];
       if (ticket == null) return NotFound();
@@ -292,7 +207,7 @@ namespace betauia.Controllers
         return BadRequest("103");
       }
 
-      var t = vipps.GetPaymentDetails(ticket.VippsOrderId);
+      var t = await vipps.GetPaymentDetails(ticket.VippsOrderId);
       var lastlog = t.transactionLogHistory[0];
 
       var title = _db.Events.Find(ticket.EventId).Title;
@@ -312,7 +227,7 @@ namespace betauia.Controllers
       ////////////////////
       if (lastlog.operation == "RESERVE" && lastlog.operationSuccess == true && lastlog.amount == ticket.Amount)
       {
-        var capture = vipps.CapturePayment(ticket.VippsOrderId);
+        var capture = await vipps.CapturePayment(ticket.VippsOrderId);
         if (capture.orderId != null)
         {
           if (capture.transactionSummary.capturedAmount == capture.transactionInfo.amount)
