@@ -34,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\PaymentModels" />
     <Folder Include="wwwroot\Uploads" />
   </ItemGroup>
 

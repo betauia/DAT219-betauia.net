@@ -95,7 +95,7 @@ export default {
     console.log(token);
     var self = this;
     axios
-      .post("/api/token/role/" + token, {})
+      .get("/api/token/role/" + token, {})
       .then(function(response) {
         var roles = response["data"];
         if (roles == null || roles == "User" || roles == "") {

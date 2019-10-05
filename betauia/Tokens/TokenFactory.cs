@@ -54,45 +54,6 @@ namespace betauia.Tokens
             await _tokenManager.AddUserTokenAsync(user.Id, stoken);
             return stoken;
         }
-
-        public async Task<string> AuthenticateUserAsync(string token)
-        {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg"));
-            var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha256);
-            List<Exception> validationFailures = null;
-            SecurityToken validateToken;
-            var validator = new JwtSecurityTokenHandler();
-
-            TokenValidationParameters validationParameters = new TokenValidationParameters();
-            validationParameters.ValidateIssuer = true;
-            validationParameters.ValidIssuer = "betauia";
-
-            validationParameters.ValidateAudience = true;
-            validationParameters.ValidAudience = "https://localhost:5001";
-
-            validationParameters.IssuerSigningKey = key;
-            validationParameters.ValidateIssuerSigningKey = true;
-
-            if (validator.CanReadToken(token))
-            {
-              if (!await _tokenManager.IsActiveAsync(token)) return string.Empty;
-              ClaimsPrincipal principal;
-                try
-                {
-                    principal = validator.ValidateToken(token, validationParameters, out validateToken);
-                    if (principal.HasClaim(c => c.Type == "id"))
-                    {
-                        return principal.Claims.Where(c => c.Type == "id").First().Value;
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
-            }
-            return string.Empty;
-        }
-
         public async Task<string> GetEmailVerificationTokenAsync(ApplicationUser user)
         {
             var claims = new Claim[]

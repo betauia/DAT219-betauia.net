@@ -66,7 +66,7 @@ export default {
     }
     var self = this;
     axios
-      .post("/api/token/valid/" + token, {})
+      .get("/api/token/valid/" + token, {})
       .then(function(response) {
         console.log("is logged in");
         self.isLoggedIn = true;

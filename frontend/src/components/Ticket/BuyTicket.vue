@@ -1,30 +1,35 @@
 <template>
-    <div id="buyTicket" class="container is-center">
-        <div class="card">
+    <div id="buyTicket" class="columns is-centered">
+        <div class="card column is-8">
             <div class="card-header">
                 <h1 class="card-header-title title is-1">
-                    Confirm purchase
+                    Bekreft Kjøpshandling
                 </h1>
             </div>
-            <div class="media-content">
-                <div class="label">Selected Seats:
-                    <div class="content">seat:
-                        <span v-for="seat of seats" v-bind:key="seat">{{seat.number}}<span v-if="seats.length" text="."></span></span>
+            <div class="media-content is-grouped-centered">
+                <div class="label">Valgte Seter:
+                    <div class="content">
+                        <div v-for="seat of seats" v-bind:key="seat">{{seat.number}}
+                            <span v-if="seats.length" text="."></span>
+                        </div>
                     </div>
                 </div>
                 <div class="content">
-                    <p>Choose phone number for payment</p>
-                    <input id="phoneNumber" type="text" v-model="ticket.phoneNumber" required>
                     <p>Total price: {{ticket.amount}}</p>
                 </div>
-                <img src="@/assets/img/Betal med Vipps - 250px@3x.png" class="button is-paddingless" @click="initiateVippsPayment"/>
+
             </div>
-            <div class="card-footer">
+            <div class="column card-footer">
                 <div class="is-italic">Billettene til BetaLAN er forhåndskjøpte
                     og du som kunden vil ikke motta tjenesten før BetaLAN er
-                    gjennomført i sin helhet. Ved å klikke Betal med vipps
-                    vil du automatisk godta disse vilkårene og
-                    vår. </div>
+                    gjennomført i sin helhet. Ved å klikke 'Aksepter betingelser'
+                    vil du automatisk godta disse vilkårene og <SalgsBetingelserBetaside></SalgsBetingelserBetaside>
+                    vår.
+                </div>
+            </div>
+            <div class="card-footer-item is-three-quarters"></div>
+            <div class="card-footer-item">
+                <img src="@/assets/img/Betal med Vipps - 250px@3x.png" class="button is-paddingless is-medium" @click="initiateVippsPayment"/>
             </div>
         </div>
     </div>
@@ -32,10 +37,12 @@
 
 <script>
 import axios from 'axios';
+import SalgsBetingelserBetaside from '../Legal/SalgsBetingelserBetaside.vue';
 
 export default {
   name: 'TicketInit',
   components: {
+      SalgsBetingelserBetaside,
   },
   data() {
     return {
