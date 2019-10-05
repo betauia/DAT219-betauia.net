@@ -1,4 +1,6 @@
+using System.Linq;
 using System.Threading.Tasks;
+using betauia.Data;
 using betauia.Models;
 using betauia.Tokens;
 using Microsoft.AspNetCore.Authorization;
@@ -10,13 +12,17 @@ namespace betauia.Controllers
     [ApiController]
     public class TokenApiController : Controller
     {
+      private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _um;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ITokenManager _tokenManager;
         private readonly ITokenVerifier _tokenVerifier;
-        public TokenApiController(UserManager<ApplicationUser> userManager,
-          ITokenManager tokenManager, ITokenVerifier tokenVerifier)
+        public TokenApiController(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
+          RoleManager<IdentityRole> rm, ITokenManager tokenManager, ITokenVerifier tokenVerifier)
         {
+            _db = db;
             _um = userManager;
+            _roleManager = rm;
             _tokenManager = tokenManager;
             _tokenVerifier = tokenVerifier;
         }
@@ -73,6 +79,17 @@ namespace betauia.Controllers
         [Route("api/token/adminpanel")]
         public async Task<IActionResult> ValidateAdmin()
         {
+          return Ok();
+        }
+
+        [HttpGet]
+        [Route("api/token/accountverified")]
+        public async Task<IActionResult> VerifiedAccount([FromHeader] string Authorization)
+        {
+          var id = await _tokenVerifier.GetTokenUser(Authorization.Split(' ')[1]);
+          var userid =await _um.FindByIdAsync(id);
+          var claims = await _um.GetClaimsAsync(userid);
+          int i = 1;
           return Ok();
         }
     }

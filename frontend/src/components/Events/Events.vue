@@ -85,7 +85,7 @@ import Sponsors from "../Sponsors/Sponsors";
       }
       var self = this;
       axios
-        .post("/api/token/valid/" + token, {})
+        .get("/api/token/valid/" + token, {})
         .then(function(response) {
         })
         .catch(function(error) {
@@ -100,13 +100,12 @@ import Sponsors from "../Sponsors/Sponsors";
     joinEventByUser(){
         if(this.loggedInUser()==true){
           var token = localStorage.getItem("token");
-          var bodyParameter = {};
           var config = {
             headers: { Authorization: "bearer " + token }
           };
           var self = this;
           axios
-            .post("api/eventsignup/user/"+this.event.eventModel.id,bodyParameter,config)
+            .get("api/eventsignup/user/"+this.event.eventModel.id,config)
             .then(function(response){
               console.log(response.data);
               self.event.eventModel.atendees++;

@@ -19,7 +19,7 @@ namespace betauia.Controllers
     private readonly UserManager<ApplicationUser> _um;
     private readonly ITokenVerifier _tokenVerifier;
     public EventSignupApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager,
-      RoleManager<IdentityRole> roleManager,ITokenVerifier tokenVerifier)
+      ITokenVerifier tokenVerifier)
     {
       _db = db;
       _um = userManager;
@@ -79,8 +79,9 @@ namespace betauia.Controllers
     }
 
     [Authorize("AccountVerified")]
-    [HttpPost("user/{id}")]
-    public async Task<IActionResult> SignUpEventUser(int id, [FromHeader] string Authorization)
+    [HttpGet]
+    [Route("user/{id}")]
+    public async Task<IActionResult> SignUpEventUser([FromRoute] int id, [FromHeader] string Authorization)
     {
       var token = Authorization.Split(' ')[1];
 
