@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using betauia.Controllers;
 using betauia.Models;
+using betauia.Tokens;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,5 +31,8 @@ namespace betauia.Data
         public DbSet<TicketModel> Tickets { get; set; }
         public DbSet<JobApplication> JobApplications { get; set; }
         public DbSet<ImageModel> Images { get; set; }
+
+        //Development
+        public DbSet<TokenUserModel> TokenUserModels { get; set; }
     }
 }

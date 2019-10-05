@@ -13,6 +13,10 @@ export default new Router({
             component: () => import('./components/Upload/ImageUpload.vue'),
         },
         {
+            path: '/image/:id',
+            component: () => import('./components/Images/Image.vue'),
+        },
+        {
             path: '/privacy',
             component: () => import('./components/Legal/PrivacyPolicy.vue'),
         },

@@ -36,6 +36,24 @@ namespace betauia.Controllers
       return File(image, "image/" + imageModel.ImageType);
     }
 
+    [Route("64/{id}")]
+    [HttpGet]
+    public async Task<IActionResult> GetImageBase64([FromRoute] string id)
+    {
+      var imagemodel = await _dbContext.Images.FindAsync(id);
+      var image = await _imageIo.GetFile(imagemodel.Location);
+      if (image.Length > 0)
+      {
+        using (var ms = new MemoryStream())
+        {
+          image.CopyTo(ms);
+          var filebytes = ms.ToArray();
+          return Ok(Convert.ToBase64String(filebytes));
+        }
+      }
+      return BadRequest();
+    }
+
     [HttpPost]
     public async Task<IActionResult> PostImage([FromForm] ImageModelView imageModelView)
     {
