@@ -73,7 +73,6 @@ export default {
           self.$forceUpdate();
         })
         .catch(function(error) {
-          console.log(error.response);
           console.log(error.response.data);
         });
     },

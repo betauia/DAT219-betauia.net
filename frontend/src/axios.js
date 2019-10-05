@@ -4,9 +4,10 @@ import axios from 'axios'
 axios.interceptors.response.use(function (response){
     return response;
 },function (error) {
-    console.log(error.response);
     if(error.response.status === 401){
-        router.push("/noe")
+        router.push("/account/login")
+    }else if(error.response.data === 602){
+        router.push("/account/banned")
     }
     return Promise.reject((error))
 });
