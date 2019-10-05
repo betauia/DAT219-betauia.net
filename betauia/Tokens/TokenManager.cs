@@ -27,10 +27,14 @@ namespace betauia.Tokens
 
     public async Task RemoveUserTokensAsync(string id)
     {
-      var tokenList = _cache.GetStringAsync(id).Result.Split(",");
+      var allTokens = await _cache.GetStringAsync(id);
+      var tokenList = allTokens.Split(",");
       foreach (var token in tokenList)
       {
-        await _cache.SetStringAsync(token, "0");
+        if (token != string.Empty)
+        {
+          await _cache.SetStringAsync(token, "0");
+        }
       }
     }
 
@@ -62,7 +66,7 @@ namespace betauia.Tokens
 
     private string GetCurrentAsync()
     {
-      var authorizationHeader = _httpContextAccessor.HttpContext.Request.Headers["authorization"];
+      var authorizationHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
       return authorizationHeader == StringValues.Empty
         ? string.Empty
         : authorizationHeader.Single().Split(" ").Last();

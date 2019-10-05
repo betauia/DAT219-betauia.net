@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from"@/axios.js";
 import { constants } from "crypto";
 
 export default {

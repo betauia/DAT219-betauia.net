@@ -12,6 +12,6 @@ namespace betauia.Data
 
     }
 
-    
+
   }
 }

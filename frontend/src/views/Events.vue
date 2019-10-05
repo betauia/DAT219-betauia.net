@@ -17,7 +17,7 @@
 
 
 <script>
-import axios from "axios";
+import axios from"@/axios.js";
 import Events from "@/components/Events/Events.vue";
 
 export default {

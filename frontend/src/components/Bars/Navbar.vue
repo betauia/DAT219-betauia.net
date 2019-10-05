@@ -50,7 +50,7 @@
 
 
 <script>
-import axios from "axios";
+import axios from"@/axios.js";
 export default {
   data: () => ({
     isActive: false,
@@ -73,10 +73,10 @@ export default {
         self.$forceUpdate();
       })
       .catch(function(error) {
-        console.log(error);
+        console.log(error.response);
+        localStorage.removeItem("token");
         self.isLoggedIn = false;
         self.$router.push("/account/login");
-        return;
       });
   },
   methods: {

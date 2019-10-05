@@ -7,19 +7,15 @@ namespace betauia.Models
         public string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        
+
         public string UserName { get; set; }
         public string Email { get; set; }
-        
-        public bool Active { get; set; }
-        
-        public bool ForceLogout { get; set; }
-
+        public bool Banned { get; set; }
         public bool VerifiedEmail { get; set; }
 
         public AdminUserView()
         {
-            
+
         }
         public AdminUserView(ApplicationUser user)
         {
@@ -28,8 +24,7 @@ namespace betauia.Models
             LastName = user.LastName;
             Email = user.Email;
             UserName = user.UserName;
-            Active = user.Active;
-            ForceLogout = user.ForceLogOut;
+            Banned = user.Banned;
             VerifiedEmail = user.VerifiedEmail;
         }
     }

@@ -102,13 +102,13 @@ namespace betauia.Areas.v1
                 user = _um.FindByEmailAsync(loginmodel.Username).Result;
                 if (user == null)
                 {
-                    return BadRequest("101");
+                    return BadRequest("601");
                 }
             }
 
-            if (user.Active == false)
+            if (user.Banned)
             {
-                return BadRequest("102");
+                return BadRequest("602");
             }
 
             if (_um.CheckPasswordAsync(user, loginmodel.Password).Result)
@@ -166,6 +166,30 @@ namespace betauia.Areas.v1
 
           await _um.UpdateAsync(user);
           return Ok(new AdminUserView(user));
+        }
+
+        // DELETE: Delete user by id
+        [Authorize("User")]
+        [Route("/api/account/delete")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteApplicationUser([FromBody] TokenModel tokenModel)
+        {
+          var id = await _tokenVerifier.GetTokenUser(tokenModel.Token);
+
+          // Receive and check if user is valid
+          var user = _db.Users.FindAsync(id).Result;
+          if (user == null) return NotFound();
+
+          //Delete information
+          user.FirstName = null;
+          user.LastName = null;
+          user.UserName = null;
+
+          //deletes password
+          _um.RemovePasswordAsync(user).Wait();
+          _um.AddPasswordAsync(user, "Password1.").Wait();
+
+          return Ok();
         }
     }
 }

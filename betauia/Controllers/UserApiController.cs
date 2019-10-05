@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using AutoMapper;
 using betauia.Tokens;
 
 /* Author: Chris */
@@ -25,15 +26,16 @@ namespace betauia.Controllers
         private readonly UserManager<ApplicationUser> _um;
         private readonly RoleManager<IdentityRole> _rm;
         private readonly ITokenVerifier _tokenVerifier;
-
+        private readonly ITokenManager _tokenManager;
         public UserApiController(ApplicationDbContext context,UserManager<ApplicationUser> um,
-          RoleManager<IdentityRole> rm,ITokenVerifier tokenVerifier)
+          RoleManager<IdentityRole> rm,ITokenVerifier tokenVerifier,ITokenManager tokenManager)
         {
             // Set the databasecontext
             _context = context;
             _um = um;
             _rm = rm;
             _tokenVerifier = tokenVerifier;
+            _tokenManager = tokenManager;
         }
 
         // GET: Get all users
@@ -53,8 +55,6 @@ namespace betauia.Controllers
                     LastName = user.LastName,
                     UserName = user.UserName,
                     Email = user.Email,
-                    Active = user.Active,
-                    ForceLogout = user.ForceLogOut,
                     VerifiedEmail = user.VerifiedEmail
                 });
             }
@@ -79,8 +79,6 @@ namespace betauia.Controllers
                 LastName = user.LastName,
                 UserName = user.UserName,
                 Email = user.Email,
-                Active = user.Active,
-                ForceLogout = user.ForceLogOut,
                 VerifiedEmail = user.VerifiedEmail
             });
         }
@@ -134,8 +132,6 @@ namespace betauia.Controllers
                 user.UserName = adminUserView.UserName;
             }
 
-            user.Active = adminUserView.Active;
-            user.ForceLogOut = adminUserView.ForceLogout;
             user.VerifiedEmail = adminUserView.VerifiedEmail;
 
             _um.UpdateAsync(user).Wait();
@@ -202,18 +198,15 @@ namespace betauia.Controllers
 
         // DELETE: Delete user by id
         [Authorize("User")]
+        [Authorize("Account.write")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteApplicationUser([FromBody] TokenModel tokenModel)
+        public async Task<IActionResult> DeleteApplicationUser(string id,[FromBody] TokenModel tokenModel)
         {
-            var id = await _tokenVerifier.GetTokenUser(tokenModel.Token);
-
+            var userid = await _tokenVerifier.GetTokenUser(tokenModel.Token);
+            if (userid != id) return BadRequest();
             // Receive and check if user is valid
             var user = _context.Users.FindAsync(id).Result;
             if (user == null) return NotFound();
-
-            //deactivate account
-            user.Active = false;
-            user.ForceLogOut = true;
 
             //Delete information
             user.FirstName = null;
@@ -225,6 +218,20 @@ namespace betauia.Controllers
             _um.AddPasswordAsync(user, "Password1.").Wait();
 
             return Ok();
+        }
+
+
+        [Route("ban/{id}")]
+        [HttpGet]
+        [Authorize("Account.write")]
+        public async Task<IActionResult> BanApplicationUser([FromRoute] string id)
+        {
+          var user = await _context.Users.FindAsync(id);
+          if (user == null) return NotFound();
+          user.Banned = true;
+          await _tokenManager.RemoveUserTokensAsync(id);
+          await _context.SaveChangesAsync();
+          return Ok(new ProfileViewModel(user));
         }
 
         // Function to check if a user by id exists

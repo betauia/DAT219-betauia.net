@@ -32,9 +32,7 @@
 </style>
 
 <script>
-import axios from "axios";
-
-export default {
+import axios from"@/axios.js";export default {
   data() {
     return {
       user: [],

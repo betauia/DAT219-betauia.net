@@ -20,6 +20,7 @@ namespace betauia.Tokens
 
     public async Task<string> GetTokenUser(string token)
     {
+      if (await _tokenManager.IsActiveAsync(token) == false) return null;
       var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg"));
       var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha256);
       List<Exception> validationFailures = null;

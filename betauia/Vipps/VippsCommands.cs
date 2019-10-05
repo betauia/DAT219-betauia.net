@@ -82,7 +82,7 @@ namespace betauia.Vipps {
           var client = new RestClient("https://api.vipps.no/ecomm/v2/payments/");
           var request = new RestRequest(Method.POST);
           request.AddHeader("cache-control", "no-cache");
-          request.AddHeader("Authorization", "Bearer " + GetToken());
+          request.AddHeader("Authorization", "Bearer " + await GetToken());
           request.AddHeader("Ocp-Apim-Subscription-Key", OcpApimSubscriptionKey);
           request.AddHeader("Content-Type", "application/json");
 
@@ -147,7 +147,7 @@ namespace betauia.Vipps {
           var client = new RestClient("https://api.vipps.no/ecomm/v2/payments/"+orderid+"/details");
           var request = new RestRequest(Method.GET);
           request.AddHeader("cache-control", "no-cache");
-          request.AddHeader("Authorization", "Bearer " + GetToken());
+          request.AddHeader("Authorization", "Bearer " + await GetToken());
           request.AddHeader("Ocp-Apim-Subscription-Key", OcpApimSubscriptionKey);
           request.AddHeader("Content-Type", "application/json");
 
@@ -174,7 +174,7 @@ namespace betauia.Vipps {
           var client = new RestClient("https://api.vipps.no/ecomm/v2/payments/"+orderid+"/capture");
           var request = new RestRequest(Method.POST);
           request.AddHeader("cache-control", "no-cache");
-          request.AddHeader("Authorization", "Bearer " + GetToken());
+          request.AddHeader("Authorization", "Bearer " + await GetToken());
           request.AddHeader("Ocp-Apim-Subscription-Key", OcpApimSubscriptionKey);
           request.AddHeader("Content-Type", "application/json");
 
@@ -223,7 +223,7 @@ namespace betauia.Vipps {
           var client = new RestClient("https://api.vipps.no/ecomm/v2/payments/"+orderid+"/cancel");
           var request = new RestRequest(Method.PUT);
           request.AddHeader("cache-control", "no-cache");
-          request.AddHeader("Authorization", "Bearer " + GetToken());
+          request.AddHeader("Authorization", "Bearer " + await GetToken());
           request.AddHeader("Ocp-Apim-Subscription-Key", OcpApimSubscriptionKey);
           request.AddHeader("Content-Type", "application/json");
 
@@ -269,7 +269,7 @@ namespace betauia.Vipps {
           var client = new RestClient("https://api.vipps.no/ecomm/v2/payments/"+orderid+"/refund");
           var request = new RestRequest(Method.PUT);
           request.AddHeader("cache-control", "no-cache");
-          request.AddHeader("Authorization", "Bearer " + GetToken());
+          request.AddHeader("Authorization", "Bearer " + await GetToken());
           request.AddHeader("Ocp-Apim-Subscription-Key", OcpApimSubscriptionKey);
           request.AddHeader("Content-Type", "application/json");
 

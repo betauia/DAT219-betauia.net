@@ -93,6 +93,10 @@ export default new Router({
             component:()=>import('./components/Account/Registered.vue')
         },
         {
+            path: '/account/banned',
+            component:()=>import('./components/Account/AccountBanned.vue')
+        },
+        {
             path: '/account',
             component: () => import('./components/Account/Account.vue'),
             children: [{
