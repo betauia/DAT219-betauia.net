@@ -1,21 +1,21 @@
 <template>
     <div id="image-upload" class="mt-0">
         <v-container grid-list-xl>
+            <img :src="image.imageURL" alt="avatar" v-if="image">
             <image-input v-model="image">
                 <div slot="activator">
-                    <div size="150px" v-ripple v-if="!image" class="grey lighten-3 mb-3">
+                    <div size="150px" v-if="!image" class="grey lighten-3 mb-3">
                         <v-btn>Click to add image</v-btn>
                     </div>
-                    <v-avatar size="150px" v-ripple v-else class="mb-3">
-                        <img :src="image.imageURL" alt="avatar">
-                    </v-avatar>
                 </div>
             </image-input>
-            <v-slide-x-transition>
-                <div v-if="image && saved === false">
-                    <v-btn class="primary" @click="uploadImage" :loading="saving">Save Image</v-btn>
+            <image-input v-model="image">
+                <div slot="activator">
+                    <div size="150px" v-if="image" class="grey lighten-3 mb-3">
+                        <v-btn>Change image</v-btn>
+                    </div>
                 </div>
-            </v-slide-x-transition>
+            </image-input>
         </v-container>
     </div>
 </template>
@@ -25,7 +25,7 @@ import ImageInput from './ImageInput.vue';
 import axios from "axios";
 
 export default {
-  name: 'ImageUpload',
+  name: 'ImageUploadWidget',
   data() {
     return {
       image: null,
@@ -50,6 +50,8 @@ export default {
       var formData = new FormData();
       var imageFile = this.image.file;
       formData.append("image",imageFile[0]);
+      const self = this;
+      var ret;
       axios
         .post("/api/image", formData,{
           headers: {
@@ -57,14 +59,16 @@ export default {
           }
         })
         .then(function (response) {
-          console.log(response.data);
+          console.log(response);
+          self.ret = response.data;
         })
         .catch(function (error) {
-          console.log(error);
+          console.log(error.response);
+          self.ret = error.response;
         });
-
       this.saving = true;
       setTimeout(() => this.savedAvatar(), 1000);
+      return ret;
     },
     savedAvatar() {
       this.saving = false;
@@ -79,7 +83,6 @@ export default {
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
-        color: #2c3e50;
         margin-top: 60px;
     }
 </style>

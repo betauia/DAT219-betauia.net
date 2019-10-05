@@ -189,24 +189,29 @@ IsPublic = isPublic;
                     </div>
                 </div>
             </div>
+            <div class="column">
+                <ImageUploadWidget ref="imageupload"></ImageUploadWidget>
+            </div>
+
+            <!-- Button -->
+            <b-button
+                class="is-family-secondary"
+                id="publish" name="publish"
+                v-on:click="addEvent"
+            >Publish
+            </b-button>
         </div>
-        <!-- Button -->
-        <b-button
-            class="is-family-secondary"
-            id="publish" name="publish"
-            v-on:click="addEvent"
-        >Publish
-        </b-button>
     </div>
 </template>
 
 <script>
     import axios from 'axios';
     import {Datetime} from 'vue-datetime';
-
+    import ImageUploadWidget from '../Upload/ImageUploadWidget.vue';
     export default {
-        comments: {
+        components: {
             datetime: Datetime,
+            ImageUploadWidget,
         },
         data() {
             return {
@@ -234,6 +239,11 @@ IsPublic = isPublic;
         },
         methods: {
             addEvent() {
+                console.log(this.$refs.imageupload.uploadImage());
+                const t = null;
+                if(t==null){
+                  return;
+                }
                 const token = localStorage.getItem('token');
                 const title = document.querySelector('input[name=title]').value;
                 const description = document.querySelector('input[name=description]').value;
