@@ -88,8 +88,7 @@ export default {
   created() {
     var token = localStorage.getItem("token");
     if (token == null) {
-      alert("No access");
-      this.$router.push("/");
+      this.$router.push("/account/login");
       return;
     }
     var config = {
