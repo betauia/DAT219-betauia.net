@@ -23,14 +23,16 @@ namespace betauia.Areas.v1
         private readonly UserManager<ApplicationUser> _um;
         private readonly RoleManager<IdentityRole> _rm;
         private readonly TokenFactory _tf;
+        private readonly ITokenVerifier _tokenVerifier;
 
         public AccountApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager,
-          RoleManager<IdentityRole> roleManager,ITokenManager tokenManager)
+          RoleManager<IdentityRole> roleManager,ITokenManager tokenManager,ITokenVerifier tokenVerifier)
         {
             _um = userManager;
             _rm = roleManager;
             _db = db;
             _tf = new TokenFactory(_um,_rm,tokenManager);
+            _tokenVerifier = tokenVerifier;
         }
 
         [HttpPost]
@@ -123,17 +125,8 @@ namespace betauia.Areas.v1
         public async Task<IActionResult> GetAccountInfo([FromHeader] string Authorization)
         {
             var token = Authorization.Split(' ')[1];
-            var id = await _tf.AuthenticateUserAsync(token);
+            var id = await _tokenVerifier.GetTokenUser(token);
             var user = _um.FindByIdAsync(id).Result;
-            if (user == null)
-            {
-                return BadRequest("301");
-            }
-            if (user.Active == false)
-            {
-                return BadRequest("102");
-            }
-
             var profile = new ProfileViewModel(user);
             return Ok(profile);
         }
@@ -144,7 +137,7 @@ namespace betauia.Areas.v1
         public async Task<IActionResult> EditAccount([FromHeader] string Authorization, ProfileViewModel Profile)
         {
           var token = Authorization.Split(' ')[1];
-          var id = await _tf.AuthenticateUserAsync(token);
+          var id = await _tokenVerifier.GetTokenUser(token);
 
           if (id == string.Empty) return BadRequest();
           if (id != Profile.Id) return BadRequest();

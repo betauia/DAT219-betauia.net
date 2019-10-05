@@ -104,6 +104,7 @@ namespace betauia
                 Config.Addpolicies(options);
             });
 
+            services.AddTransient<ITokenVerifier, TokenVerifier>();
             services.AddTransient<TokenManagerMiddleware>();
             services.AddTransient<ITokenManager, TokenManager>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
