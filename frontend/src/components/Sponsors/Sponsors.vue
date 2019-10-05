@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from"@/axios.js";
 import SponsorBlock from "@/components/Sponsors/Sponsorblock.vue";
 
 export default {
@@ -27,11 +27,12 @@ export default {
   },
 
   created() {
+    var self = this;
     axios
       .get("/api/sponsor")
       .then(response => {
-        this.sponsors = response.data;
-        console.log(this.sponsors);
+        self.sponsors = response.data;
+        console.log(self.sponsors);
       })
       .catch(e => {
         this.errors.push(e);

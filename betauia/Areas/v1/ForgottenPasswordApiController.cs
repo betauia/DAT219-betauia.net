@@ -19,14 +19,16 @@ namespace betauia.Areas.v1
     private readonly UserManager<ApplicationUser> _um;
     private readonly RoleManager<IdentityRole> _rm;
     private readonly TokenFactory _tf;
+    private readonly ITokenVerifier _tokenVerifier;
 
     public ForgottenPasswordApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager,
-      RoleManager<IdentityRole> roleManager,ITokenManager tokenManager)
+      RoleManager<IdentityRole> roleManager,ITokenManager tokenManager,ITokenVerifier tokenVerifier)
     {
       _um = userManager;
       _rm = roleManager;
       _db = db;
       _tf = new TokenFactory(_um,_rm,tokenManager);
+      _tokenVerifier = tokenVerifier;
     }
 
     [HttpGet]
@@ -35,16 +37,8 @@ namespace betauia.Areas.v1
     public async Task<IActionResult> GetPasswordEmail([FromHeader] string Authorization)
     {
       var token = Authorization.Split(' ')[1];
-      var id = await _tf.AuthenticateUserAsync(token);
+      var id = await _tokenVerifier.GetTokenUser(token);
       var user = _um.FindByIdAsync(id).Result;
-      if (user == null)
-      {
-        return BadRequest("301");
-      }
-      if (user.Active == false)
-      {
-        return BadRequest("102");
-      }
 
       token = await _tf.GetPasswordRestTokenAsync(user);
       var url = "http://localhost:8081/resetpassword/" + token;

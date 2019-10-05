@@ -77,7 +77,7 @@
 </style>
 
 <script>
-import axios from "axios";
+  import axios from "@/axios.js";
 
 export default {
   data() {
@@ -88,24 +88,19 @@ export default {
   created() {
     var token = localStorage.getItem("token");
     if (token == null) {
-      alert("No access");
-      this.$router.push("/");
+      this.$router.push("/account/login");
       return;
     }
+    var config = {
+      headers: { Authorization: "bearer " + token }
+    };
     console.log(token);
     var self = this;
     axios
-      .post("/api/token/role/" + token, {})
+      .get("/api/token/adminpanel/",config)
       .then(function(response) {
-        var roles = response["data"];
-        if (roles == null || roles == "User" || roles == "") {
-          //window.location.href = "/";
-          alert("No access");
-          self.$router.push("/");
-        }
       })
       .catch(function(error) {
-        console.log(error);
       });
   }
 };

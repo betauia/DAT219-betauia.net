@@ -13,6 +13,10 @@ export default new Router({
             component: () => import('./components/Upload/ImageUpload.vue'),
         },
         {
+            path: '/image/:id',
+            component: () => import('./components/Images/Image.vue'),
+        },
+        {
             path: '/privacy',
             component: () => import('./components/Legal/PrivacyPolicy.vue'),
         },
@@ -87,6 +91,10 @@ export default new Router({
         {
           path: '/account/registered',
             component:()=>import('./components/Account/Registered.vue')
+        },
+        {
+            path: '/account/banned',
+            component:()=>import('./components/Account/AccountBanned.vue')
         },
         {
             path: '/account',

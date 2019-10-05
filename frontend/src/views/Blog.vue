@@ -13,7 +13,7 @@
 
 
 <script>
-import axios from "axios";
+import axios from"@/axios.js";
 import BlogPost from "@/components/Blog/BlogPost.vue";
 
 export default {

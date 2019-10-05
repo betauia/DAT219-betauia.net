@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using betauia.Data;
 using betauia.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
 namespace betauia.Areas.v1
@@ -15,20 +16,23 @@ namespace betauia.Areas.v1
     [Area("v1")]
     //[Route("api/v1/user")]
     [ApiController]
+    [Authorize]
     public class AccountApiController : Controller
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _um;
         private readonly RoleManager<IdentityRole> _rm;
         private readonly TokenFactory _tf;
+        private readonly ITokenVerifier _tokenVerifier;
 
         public AccountApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager,
-          RoleManager<IdentityRole> roleManager,ITokenManager tokenManager)
+          RoleManager<IdentityRole> roleManager,ITokenManager tokenManager,ITokenVerifier tokenVerifier)
         {
             _um = userManager;
             _rm = roleManager;
             _db = db;
             _tf = new TokenFactory(_um,_rm,tokenManager);
+            _tokenVerifier = tokenVerifier;
         }
 
         [HttpPost]
@@ -87,6 +91,7 @@ namespace betauia.Areas.v1
             return BadRequest(result.Errors);
         }
 
+        [AllowAnonymous]
         [Route("/api/account/login")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]Loginmodel loginmodel)
@@ -97,13 +102,13 @@ namespace betauia.Areas.v1
                 user = _um.FindByEmailAsync(loginmodel.Username).Result;
                 if (user == null)
                 {
-                    return BadRequest("101");
+                    return BadRequest("601");
                 }
             }
 
-            if (user.Active == false)
+            if (user.Banned)
             {
-                return BadRequest("102");
+                return BadRequest("602");
             }
 
             if (_um.CheckPasswordAsync(user, loginmodel.Password).Result)
@@ -119,18 +124,9 @@ namespace betauia.Areas.v1
         [HttpPost]
         public async Task<IActionResult> GetAccountInfo([FromHeader] string Authorization)
         {
-           var token = Authorization.Split(' ')[1];
-            var id = await _tf.AuthenticateUserAsync(token);
+            var token = Authorization.Split(' ')[1];
+            var id = await _tokenVerifier.GetTokenUser(token);
             var user = _um.FindByIdAsync(id).Result;
-            if (user == null)
-            {
-                return BadRequest("301");
-            }
-            if (user.Active == false)
-            {
-                return BadRequest("102");
-            }
-
             var profile = new ProfileViewModel(user);
             return Ok(profile);
         }
@@ -141,7 +137,7 @@ namespace betauia.Areas.v1
         public async Task<IActionResult> EditAccount([FromHeader] string Authorization, ProfileViewModel Profile)
         {
           var token = Authorization.Split(' ')[1];
-          var id = await _tf.AuthenticateUserAsync(token);
+          var id = await _tokenVerifier.GetTokenUser(token);
 
           if (id == string.Empty) return BadRequest();
           if (id != Profile.Id) return BadRequest();
@@ -170,6 +166,30 @@ namespace betauia.Areas.v1
 
           await _um.UpdateAsync(user);
           return Ok(new AdminUserView(user));
+        }
+
+        // DELETE: Delete user by id
+        [Authorize("User")]
+        [Route("/api/account/delete")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteApplicationUser([FromBody] TokenModel tokenModel)
+        {
+          var id = await _tokenVerifier.GetTokenUser(tokenModel.Token);
+
+          // Receive and check if user is valid
+          var user = _db.Users.FindAsync(id).Result;
+          if (user == null) return NotFound();
+
+          //Delete information
+          user.FirstName = null;
+          user.LastName = null;
+          user.UserName = null;
+
+          //deletes password
+          _um.RemovePasswordAsync(user).Wait();
+          _um.AddPasswordAsync(user, "Password1.").Wait();
+
+          return Ok();
         }
     }
 }

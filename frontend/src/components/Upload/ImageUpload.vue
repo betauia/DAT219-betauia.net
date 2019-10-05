@@ -22,9 +22,10 @@
 
 <script>
 import ImageInput from './ImageInput.vue';
+import axios from"@/axios.js";
 
 export default {
-  name: 'image-upload',
+  name: 'ImageUpload',
   data() {
     return {
       image: null,
@@ -45,6 +46,23 @@ export default {
   },
   methods: {
     uploadImage() {
+      console.log(this.image);
+      var formData = new FormData();
+      var imageFile = this.image.file;
+      formData.append("image",imageFile[0]);
+      axios
+        .post("/api/image", formData,{
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        .then(function (response) {
+          console.log(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
       this.saving = true;
       setTimeout(() => this.savedAvatar(), 1000);
     },

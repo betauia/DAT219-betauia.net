@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from"@/axios.js";
 export default {
   data() {
     return {
@@ -73,7 +73,6 @@ export default {
           self.$forceUpdate();
         })
         .catch(function(error) {
-          console.log(error.response);
           console.log(error.response.data);
         });
     },

@@ -9,5 +9,7 @@ namespace betauia.Tokens
     Task<bool> IsActiveAsync(string token);
     Task AddTokenAsync(string token);
     Task DeactivateAsync(string token);
+    Task DeactivateCurrentAsync();
+    Task<bool> IsCurrentActiveAsync();
   }
 }

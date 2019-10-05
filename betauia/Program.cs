@@ -30,6 +30,9 @@ namespace betauia
                 var rm = services.GetRequiredService<RoleManager<IdentityRole>>();
 
                 DbInitializer.Initialize(db, um,rm);
+
+                var paymentDb = services.GetService<PaymentDbContext>();
+                PaymentDbInitializer.Initialize(paymentDb);
             }
 
             host.Run();

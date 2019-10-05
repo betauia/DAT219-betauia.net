@@ -26,19 +26,14 @@
       <input type="text" name="id" v-model="user.id" disabled>
     </div>
     <div class="Input">
-      <label>Active account:</label>
+      <label>Banned account:</label>
       <br>
-      <input type="text" name="active" v-model="user.active">
+      <input type="text" name="banned" v-model="user.banned">
     </div>
     <div class="Input">
       <label>VerifiedEmail:</label>
       <br>
       <input type="text" name="verifiedemail" v-model="user.verifiedEmail">
-    </div>
-    <div class="Input">
-      <label>Force logout:</label>
-      <br>
-      <input type="text" name="forcelogout" v-model="user.forceLogout">
     </div>
     <button
       v-on:click="updateUser"
@@ -52,11 +47,18 @@
       name="savebutton"
       class="button is-danger"
     >Delete User</button>
+    <button
+        v-on:click="banUser"
+        id="savebutton"
+        name="savebutton"
+        class="button is-danger"
+        >Ban user</button>
+
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import axios from"@/axios.js";
 
 export default {
   name: "User",
@@ -82,10 +84,8 @@ export default {
       var firstname = document.querySelector("input[name=firstname]").value;
       var lastname = document.querySelector("input[name=lastname]").value;
       var id = document.querySelector("input[name=id]").value;
-      var active = document.querySelector("input[name=active]").value;
-      var verifiedemail = document.querySelector("input[name=verifiedemail]")
-        .value;
-      var forcelogout = document.querySelector("input[name=forcelogout]").value;
+      var banned = document.querySelector("input[name=banned]").value;
+      var verifiedemail = document.querySelector("input[name=verifiedemail]").value;
 
       var bodyParamters = {
         username: username,
@@ -93,9 +93,8 @@ export default {
         firstname: firstname,
         lastname: lastname,
         id: id,
-        active: active,
         verifiedemail: verifiedemail,
-        forcelogout: forcelogout
+        banned: banned
       };
 
       axios
@@ -127,9 +126,10 @@ export default {
       var config = {
         headers: { Authorization: "bearer " + token }
       };
-      var bodyParameters = {}
+      var id = document.querySelector("input[name=id]").value;
+
       axios
-        .delete("/api/user/delete/"+user.id,bodyParameters,config)
+        .delete("/api/user/delete/"+id,config)
         .then(function(response){
           console.log(response);
         })
@@ -138,6 +138,24 @@ export default {
         })
       self.$forceUpdate();
     },
+    banUser(){
+      var self = this;
+      var token = localStorage.getItem("token");
+      var id = document.querySelector("input[name=id]").value;
+
+      var config = {
+        headers: { Authorization: "bearer " + token }
+      };
+      axios
+        .get("/api/user/ban/"+id,config)
+        .then(function(response){
+          console.log(response);
+        })
+        .catch(function(response){
+          console.log(response);
+        })
+      self.$forceUpdate();
+    }
   },
 };
 </script>

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from"@/axios.js";
 import Vue from "vue";
 import Seat from "@/components/SeatMap/Seat.vue";
 export default {

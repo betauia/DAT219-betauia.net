@@ -183,14 +183,26 @@ IsPublic = isPublic;
                                 v-for="item in seatmaps"
                                 :value="item"
                                 v-bind:key="item"
-                            >{{item.id}}, with {{item.numSeats}} spots
+                            >{{item.id}}, with {{item.numSeats}} seats
                             </option>
                             <option v-if="seatmaps.length==0">No stored seat maps</option>
                         </select>
                     </div>
                 </div>
             </div>
+            <div class="column">
+                <ImageUploadWidget ref="imageupload"></ImageUploadWidget>
+            </div>
+
+            <!-- Button -->
+            <b-button
+                class="is-family-secondary"
+                id="publish" name="publish"
+                v-on:click="addEvent"
+            >Publish
+            </b-button>
         </div>
+<<<<<<< HEAD
         <!-- Button -->
         <b-button
             class="column is-half is-primary"
@@ -198,16 +210,19 @@ IsPublic = isPublic;
             v-on:click="addEvent"
         >Publish
         </b-button>
+=======
+>>>>>>> dfb59d417d1445d5265d1923bc41a3332b0fe8eb
     </div>
 </template>
 
 <script>
     import axios from 'axios';
     import {Datetime} from 'vue-datetime';
-
+    import ImageUploadWidget from '../Upload/ImageUploadWidget.vue';
     export default {
-        comments: {
+        components: {
             datetime: Datetime,
+            ImageUploadWidget,
         },
         data() {
             return {
@@ -234,7 +249,9 @@ IsPublic = isPublic;
             };
         },
         methods: {
-            addEvent() {
+            async addEvent() {
+                var image = await this.$refs.imageupload.uploadImage();
+
                 const token = localStorage.getItem('token');
                 const title = document.querySelector('input[name=title]').value;
                 const description = document.querySelector('input[name=description]').value;
@@ -254,8 +271,8 @@ IsPublic = isPublic;
                     isPublic: this.ispublic,
                     enddate,
                     startdate,
+                    image,
                 };
-
 
                 const bodyParameters = {
                     eventModel,
