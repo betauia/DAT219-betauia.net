@@ -104,7 +104,7 @@ namespace betauia
                 Config.Addpolicies(options);
             });
 
-            services.AddTransient<ITokenManager, TokenManagerDatabase>();
+            services.AddTransient<ITokenManager, TokenManager>();
             services.AddDistributedRedisCache(option =>
             {
               option.Configuration = "127.0.0.1";
