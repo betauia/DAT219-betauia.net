@@ -45,30 +45,27 @@ export default {
     },
   },
   methods: {
-    uploadImage() {
-      console.log(this.image);
+    async uploadImage() {
+      return await this.axiosResponse().then(response=>{
+        return response;
+      });
+    },
+    async axiosResponse(){
       var formData = new FormData();
       var imageFile = this.image.file;
       formData.append("image",imageFile[0]);
-      const self = this;
-      var ret;
-      axios
-        .post("/api/image", formData,{
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
+      return  await axios
+      .post("/api/image", formData,{
+        headers: {
+          'Content-Type': 'multipart/form-data'
+       }
+       })
         .then(function (response) {
-          console.log(response);
-          self.ret = response.data;
+          return response.data;
         })
         .catch(function (error) {
-          console.log(error.response);
-          self.ret = error.response;
+          return error.response;
         });
-      this.saving = true;
-      setTimeout(() => this.savedAvatar(), 1000);
-      return ret;
     },
     savedAvatar() {
       this.saving = false;

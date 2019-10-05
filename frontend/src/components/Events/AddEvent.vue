@@ -239,12 +239,9 @@ IsPublic = isPublic;
             };
         },
         methods: {
-            addEvent() {
-                console.log(this.$refs.imageupload.uploadImage());
-                const t = null;
-                if(t==null){
-                  return;
-                }
+            async addEvent() {
+                var image = await this.$refs.imageupload.uploadImage();
+
                 const token = localStorage.getItem('token');
                 const title = document.querySelector('input[name=title]').value;
                 const description = document.querySelector('input[name=description]').value;
@@ -264,8 +261,8 @@ IsPublic = isPublic;
                     isPublic: this.ispublic,
                     enddate,
                     startdate,
+                    image,
                 };
-
 
                 const bodyParameters = {
                     eventModel,
