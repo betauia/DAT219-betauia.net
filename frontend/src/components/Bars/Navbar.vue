@@ -24,7 +24,7 @@
           to="/sponsors"
         >Sponsors</router-link>
         <hr class="navbar-divider">
-        <router-link @click.native="isActive = false" class="navbar-item" to="/admin/dashboard">Admin</router-link>
+        <router-link @click.native="isActive = false" class="navbar-item" to="/admin/dash">Admin</router-link>
         <hr class="navbar-divider">
       </div>
       <template class="navbar-end" v-if="isLoggedIn == false">

@@ -1,7 +1,7 @@
 <template>
   <div class="AdminSide padding">
     <div class="columns">
-      <div class="column is-narrow">
+      <div class="column is-narrow-desktop is-full-mobile">
         <aside class="menu">
           <p class="menu-label">General</p>
           <ul class="menu-list">
