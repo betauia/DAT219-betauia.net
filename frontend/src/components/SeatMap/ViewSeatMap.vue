@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from"@/axios.js";
 import Seat from "@/components/Events/Seat.vue";
 
 export default {

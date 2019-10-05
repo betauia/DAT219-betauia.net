@@ -77,7 +77,7 @@
 </style>
 
 <script>
-import axios from "/home/erik/betauia/frontend/src/axiosIntercept.js";
+  import axios from "@/axios.js";
 
 export default {
   data() {

@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from"@/axios.js";
 import Sponsors from "../Sponsors/Sponsors";
   export default {
   name: "Events",

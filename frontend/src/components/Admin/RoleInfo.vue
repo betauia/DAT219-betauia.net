@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from"@/axios.js";
 import { SimpleTable } from "simple-table-vue";
 
 export default {
