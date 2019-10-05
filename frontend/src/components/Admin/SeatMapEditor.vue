@@ -4,11 +4,11 @@
             <div class="editblock" id="groupedit">
         <b-field label="Add group"></b-field>
 
-        <div class="inputblock">
+        <div class="">
           <div class="row">
-              <b-input type="text" :value="row" name placeholder="rows" id="row"></b-input>
-              <b-input type="text" :value="row" name placeholder="columns" id="column"></b-input>
-            <v-btn v-on:click="createGroup">Create seat group</v-btn>
+              <b-input class="is-primary" type="text" :value="row" name placeholder="rows" id="row"></b-input>
+              <b-input class="is-primary" type="text" :value="row" name placeholder="columns" id="column"></b-input>
+            <b-button class="is-light is-large" v-on:click="createGroup">Create seat group</b-button>
           </div>
         </div>
       </div>
@@ -19,11 +19,11 @@
       </div>
         <div class="editblock">
             <b-field label="Seatmap name">
-                <b-input :value="Seatmap" id="seatmapname" name="seatmapname" placeholder="Map name"></b-input>
+                <b-input class="is-primary" :value="Seatmap" id="seatmapname" name="seatmapname" placeholder="Map name"></b-input>
             </b-field>
         </div>
       <div class="editblock">
-        <v-btn v-on:click="saveSeatMap" id="saveSeatmap">Save seatmap</v-btn>
+        <b-button class="is-primary is-large" v-on:click="saveSeatMap" id="saveSeatmap">Save seatmap</b-button>
       </div>
     </div>
     <div id="grid">

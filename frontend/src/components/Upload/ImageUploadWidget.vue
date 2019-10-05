@@ -5,14 +5,14 @@
             <image-input v-model="image">
                 <div slot="activator">
                     <div size="150px" v-if="!image" class="grey lighten-3 mb-3">
-                        <v-btn>Click to add image</v-btn>
+                        <b-button class="is-light is-large is-outlined is-inverted">Click to add image</b-button>
                     </div>
                 </div>
             </image-input>
             <image-input v-model="image">
                 <div slot="activator">
                     <div size="150px" v-if="image" class="grey lighten-3 mb-3">
-                        <v-btn>Change image</v-btn>
+                        <b-button>Change image</b-button>
                     </div>
                 </div>
             </image-input>

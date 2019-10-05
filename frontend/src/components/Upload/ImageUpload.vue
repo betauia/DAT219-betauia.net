@@ -4,7 +4,7 @@
             <image-input v-model="image">
                 <div slot="activator">
                     <div size="150px" v-ripple v-if="!image" class="grey lighten-3 mb-3">
-                        <v-btn>Click to add image</v-btn>
+                        <b-button>Click to add image</b-button>
                     </div>
                     <v-avatar size="150px" v-ripple v-else class="mb-3">
                         <img :src="image.imageURL" alt="avatar">

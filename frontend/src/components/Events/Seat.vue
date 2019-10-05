@@ -50,13 +50,14 @@ export default {
     },
   },
   created() {
-    var grid = document.getElementById("grid");
+    var grid = document.getElementById('grid');
 
     var top = this.getY(grid);
     var left = this.getX(grid);
 
-    this.rect.x = left + this.seat.x;
-    this.rect.y = top + this.seat.y;
+
+    this.rect.x = (this.seat.x);
+    this.rect.y = (this.seat.y);
     this.reserved = this.seat.isReserved;
     this.setColor()
   },

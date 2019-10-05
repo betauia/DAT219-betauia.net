@@ -1,5 +1,5 @@
 <template>
-  <div id="viewSeatMap">
+  <div class="column is-8 is-offset-2 card" id="viewSeatMap">
     <div id="grid">
       <div v-for="seat in seats" v-bind:key="seat">
         <Seat v-bind:seat="seat"></Seat>

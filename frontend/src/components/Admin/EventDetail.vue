@@ -1,6 +1,8 @@
 <template>
     <div class="form-horizontal padding center addevent" enctype="multipart/form-data">
-        <p>Hello world</p>
+        <div class="is-1 title">Edit Event</div>
+
+        <image-upload-widget ref="imageupload"></image-upload-widget>
 
         <!-- Text input-->
         <div class="field">
@@ -10,8 +12,7 @@
                     id="title"
                     name="title"
                     type="text"
-                    placeholder="Betalan #420"
-                    class="input"
+                    class="input is-primary"
                     v-model="event.eventModel.title"
                     required
                 >
@@ -26,8 +27,7 @@
                     id="description"
                     name="description"
                     type="text"
-                    placeholder="Semesterets feeteste LAN"
-                    class="input"
+                    class="input is-primary"
                     v-model="event.eventModel.description"
                     required
                 >
@@ -38,7 +38,7 @@
         <div class="field">
             <label class="label" for="content">Content</label>
             <div class="control">
-                <textarea class="textarea" id="content" name="content">{{event.eventModel.content}}</textarea>
+                <textarea class="textarea is-primary" id="content" name="content">{{event.eventModel.content}}</textarea>
             </div>
         </div>
 
@@ -55,63 +55,76 @@
             </div>
         </div>
 
-        <div class="eventOptions">
-            <label class="Event options">Choose event options</label>
+
+        <div class="columns">
+            <div class="column is-half">
+                <div class="field" id="startdate">
+                    <label class="label" for="eventIs">Startdate</label>
+                    <div class="control">
+                        <datetime
+                            type="datetime"
+                            v-model="startdate"
+                            input-class="my-class"
+                            value-zone="Europe/Oslo"
+                            format="dd-MM-yyyy HH:mm"
+                            zone="Europe/Oslo"
+                            :phrases="{ok: 'Continue', cancel: 'Exit'}"
+                            :hour-step="1"
+                            :minute-step="5"
+                            :week-start="1"
+                            use24-hour
+                            auto
+                        ></datetime>
+                    </div>
+                </div>
+            </div>
+            <div class="field" id="enddate">
+                <label class="label" for="eventIs">Enddate</label>
+                <div class="control">
+                    <datetime
+                        type="datetime"
+                        v-model="enddate"
+                        input-class="my-class"
+                        value-zone="Europe/Oslo"
+                        format="dd-MM-yyyy HH:mm"
+                        zone="Europe/Oslo"
+                        :phrases="{ok: 'Continue', cancel: 'Exit'}"
+                        :hour-step="1"
+                        :minute-step="5"
+                        :min-datetime="startdate"
+                        :week-start="1"
+                        use24-hour
+                        auto
+                    ></datetime>
+                </div>
+            </div>
+        </div>
+        <div>
             <div>
-                <label>Has Sponsor
-                    <button :style="sponsorStyle" type="button" @click="hasSponsorClick">Click me</button>
-                </label>
+                <div>
+                    <div class="eventOptions">
+                        <label class="label">Choose event options</label>
+                        <div class="columns">
+                            <div class="column is-one-third">Has Sponsor
+                                <b-button :style="sponsorStyle" @click="hasSponsorClick">Click me</b-button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div class="field" id="startdate">
-            <label class="label" for="eventIs">Startdate</label>
-            <div class="control">
-                <datetime
-                    type="datetime"
-                    v-model="startdate"
-                    input-class="my-class"
-                    value-zone="Europe/Oslo"
-                    format="dd-MM-yyyy HH:mm"
-                    zone="Europe/Oslo"
-                    :phrases="{ok: 'Continue', cancel: 'Exit'}"
-                    :hour-step="1"
-                    :minute-step="5"
-                    :week-start="1"
-                    use24-hour
-                    auto
-                ></datetime>
-            </div>
-        </div>
-        <div class="field" id="enddate">
-            <label class="label" for="eventIs">Enddate</label>
-            <div class="control">
-                <datetime
-                    type="datetime"
-                    v-model="enddate"
-                    input-class="my-class"
-                    value-zone="Europe/Oslo"
-                    format="dd-MM-yyyy HH:mm"
-                    zone="Europe/Oslo"
-                    :phrases="{ok: 'Continue', cancel: 'Exit'}"
-                    :hour-step="1"
-                    :minute-step="5"
-                    :min-datetime="startdate"
-                    :week-start="1"
-                    use24-hour
-                    auto
-                ></datetime>
-            </div>
-        </div>
-
         <div class="field" v-if="hasSponsor.state==true">
             <label class="label" for="sponsor">Added sponsors</label>
             <div v-for="sponsor of selectedSponsors">
-                <button class="addSponsorB" v-on:click="removeSponsor(sponsor)">{{sponsor}}</button>
+                <b-button class="addSponsorB has-background-success" v-on:click="removeSponsor(sponsor)">
+                    {{sponsor}}
+                </b-button>
             </div>
-            <label class="lable">Sponsors to choose from</label>
+            <label class="label">Sponsors to choose from</label>
             <div v-for="sponsor of sponsors">
-                <button class="addSponsorB" v-on:click="addSponsor(sponsor)">{{sponsor}}</button>
+                <b-button class="addSponsorB has-background-danger" v-on:click="addSponsor(sponsor)">
+                    {{sponsor}}
+                </b-button>
             </div>
         </div>
 
@@ -126,19 +139,21 @@
         <span>
         <button
             v-on:click="deleteEvent"
-            id="savebutton"
-            name="savebutton"
+            id="deletebutton"
+            name="deletebutton"
             class="button is-danger"
-        >Delete blog post</button>
+        >Delete event</button>
         </span>
     </div>
 </template>
 
 <script>
 import axios from 'axios';
+import ImageUploadWidget from "../Upload/ImageUploadWidget";
   export default {
     name: 'EventDetail',
-    data(){
+      components: {ImageUploadWidget},
+      data(){
       return{
         sponsors: [],
         seatmaps: [],
@@ -157,8 +172,6 @@ import axios from 'axios';
           state:false,
           color:"red",
         },
-        startdate:"0000-00-00T00:00:00.000Z",
-        enddate:"0000-00-00T00:00:00.000Z",
       }
     },
     created() {
@@ -230,7 +243,8 @@ import axios from 'axios';
       }
     },
     methods:{
-        updateEvent(){
+        async updateEvent(){
+          var image = await this.$refs.imageupload.uploadImage();
           var token = localStorage.getItem("token");
           var title = document.querySelector("input[name=title]").value;
           var description = document.querySelector("input[name=description]").value;
@@ -250,7 +264,8 @@ import axios from 'axios';
             content: content,
             isPublic: this.ispublic,
             enddate:enddate,
-            startdate:startdate
+            startdate:startdate,
+            image: image,
           };
 
           var bodyParameters = {
@@ -363,14 +378,12 @@ import axios from 'axios';
         text-align: center;
     }
     .eventOptions {
-        background-color: #bbbbbb;
+
     }
     .sidebyside30 button {
         width: 50%;
     }
     .field {
-        background-color: rgb(185, 185, 185);
-        padding: 2px;
     }
     .chooser {
         width: 100%;

@@ -114,8 +114,9 @@ namespace betauia
             services.AddTransient<IVippsPayment, VippsApiController>();
             services.AddTransient<ITokenVerifier, TokenVerifier>();
             services.AddTransient<TokenManagerMiddleware>();
-            services.AddTransient<ITokenManager, TokenManager>();
+            services.AddTransient<ITokenManager, TokenManagerDatabase>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
             services.AddDistributedRedisCache(option =>
             {
               option.Configuration = "127.0.0.1";

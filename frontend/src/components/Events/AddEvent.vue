@@ -15,6 +15,9 @@ IsPublic = isPublic;
         <div class="form-horizontal padding center addevent" enctype="multipart/form-data">
             <div class="is-1 title">Add Event</div>
 
+            <div class="column">
+                <ImageUploadWidget ref="imageupload"></ImageUploadWidget>
+            </div>
             <!-- Text input-->
             <div class="field">
                 <label class="label" for="title">Title</label>
@@ -190,18 +193,15 @@ IsPublic = isPublic;
                     </div>
                 </div>
             </div>
-            <div class="column">
-                <ImageUploadWidget ref="imageupload"></ImageUploadWidget>
-            </div>
-
             <!-- Button -->
             <b-button
-                class="is-family-secondary"
+                class="is-primary"
                 id="publish" name="publish"
                 v-on:click="addEvent"
             >Publish
             </b-button>
         </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
         <!-- Button -->
         <b-button
@@ -212,6 +212,9 @@ IsPublic = isPublic;
         </b-button>
 =======
 >>>>>>> dfb59d417d1445d5265d1923bc41a3332b0fe8eb
+=======
+
+>>>>>>> bd3a5afada8fa1f65816a13d912f2ab6b6644610
     </div>
 </template>
 
