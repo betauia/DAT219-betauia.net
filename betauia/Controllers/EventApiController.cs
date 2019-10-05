@@ -6,6 +6,7 @@ using betauia.Data;
 using betauia.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
 namespace betauia.Controllers
@@ -47,6 +48,7 @@ namespace betauia.Controllers
               eventView.sponsors = sponsors;
               eventViews.Add(eventView);
             }
+            eventViews.Reverse();
             return Ok(eventViews);
         }
 
@@ -189,7 +191,7 @@ namespace betauia.Controllers
             eventModel.MaxAtendees = 0;
             eventModel.SubTitle = null;
 
-            _context.Update(eventModel);
+            _context.Remove(eventModel);
             _context.SaveChanges();
             return Ok(eventModel);
         }

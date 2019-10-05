@@ -10,13 +10,13 @@
                   <image-widget v-bind:image-id="event.eventModel.image"></image-widget>
               </figure>
           </div>
-        <div class="card-content columns">
-          <div class="content column is-two-thirds">
+        <div class="card-content">
+          <div class="content">
               <div class="label">{{event.eventModel.description}}</div>
               <div class="content">{{event.eventModel.content}}</div>
-              <li>Starter : {{event.eventModel.startdate}}</li>
-                <li>ending at: {{event.eventModel.enddate}}</li>
-              <div class="column">
+              <li>Starter: {{event.eventModel.startdate}}</li>
+                <li>Slutter: {{event.eventModel.enddate}}</li>
+              <div>
                   <div class="label" v-if="event.sponsors.length>0">Sponset av:
                       <div class="content" v-for="sponsor of event.sponsors">
                           <p>{{sponsor.title}}</p>
@@ -25,32 +25,33 @@
                       </div>
                   </div>
               </div>
-
-            <div class="column is-right" v-if="event.eventModel.maxAtendees>=0">
-                <div class="label">Bli med!</div>
-                <div v-if="event.eventModel.atendees < event.eventModel.maxAtendees">
-                    <p>Antall påmeldte: {{event.eventModel.atendees}}</p>
-                    <p>Ledige plasser: {{event.eventModel.maxAtendees - event.eventModel.atendees}}</p>
-                    <span>
-                        <button class="button is-link" v-on:click="joinEventByUser">Reserve by account</button>
-                        <button class="button is-valid" v-on:click="emailClick">Reserve by email</button>
+                <div v-if="event.eventModel.maxAtendees>=0">
+                    <p class="label">Bli med!</p>
+                    <span v-if="event.eventModel.atendees < event.eventModel.maxAtendees">
+                            <p>Antall påmeldte: {{event.eventModel.atendees}}</p>
+                            <p>Ledige plasser: {{event.eventModel.maxAtendees - event.eventModel.atendees}}</p>
                     </span>
-                    <div id="emailSignup" v-if="showEmail==true">
-                        <form>
-                            <item><input type="text" name="firstname" placeholder="Fornavn"></item>
-                            <item><input type="text" name="lastname" placeholder="Etternavn"></item>
-                            <item><input type="text" name="email" placeholder="email@address.com"></item>
-                        </form>
-                </div>
-                    <button class="button is-link" v-on:click="joinEventByEmail">Sign me up!!</button>
+                    <footer class="card-footer">
+                        <div class="card-footer-item">
+                            <b-button v-on:click="joinEventByUser">Reserver med BETA konto</b-button>
+                        </div>
+                        <div class="card-footer-item">
+                            <b-button v-on:click="showEmail=!showEmail">Reserver med epost</b-button>
+                        </div>
+                        <span v-if="showEmail">
+                            <p><input class="input is-primary" type="text" name="firstname" placeholder="Fornavn"/></p>
+                            <p><input class="input is-primary" type="text" name="lastname" placeholder="Etternavn"/></p>
+                            <p><input class="input is-primary" type="text" name="email" placeholder="email@address.com"/></p>
+                            <button class="button is-link" v-on:click="joinEventByEmail">Sign me up!!</button>
+                        </span>
+                    </footer>
                 </div>
 
-            </div>
             <div v-if="event.eventModel.seatMap!=null">
                 <p>Number of seats: {{event.eventModel.seatMap.numSeats}}</p>
                 <p>Atendees: {{event.eventModel.seatMap.numSeats - event.eventModel.seatMap.numSeatsAvailable}}</p>
                 <p>Seats left: {{event.eventModel.seatMap.numSeatsAvailable}}</p>
-                <button class="button is-link" v-on:click="buyticket">Buy ticket</button>
+                <button class="button is-link" v-on:click="buyticket">Kjøp billett</button>
             </div>
           </div>
         </div>
@@ -64,7 +65,10 @@ import axios from"@/axios.js";
 import Sponsors from "../Sponsors/Sponsors";
   export default {
   name: "Events",
-      components: {Sponsors},
+      components: {
+      showEmail: false,
+      Sponsors,
+      },
       props: {
     event: Object
   },
@@ -117,7 +121,6 @@ import Sponsors from "../Sponsors/Sponsors";
         }
     },
     emailClick(){
-        this.showEmail=true;
         console.log(this.showEmail);
     },
     joinEventByEmail(){

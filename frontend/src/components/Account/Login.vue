@@ -1,5 +1,5 @@
 <template>
-  <section class="padding center">
+  <section class="card">
     <b-field label="Email">
       <b-input
         type="email"

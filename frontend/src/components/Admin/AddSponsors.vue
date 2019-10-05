@@ -1,9 +1,11 @@
 <template>
   <div class="form-horizontal padding center" enctype="multipart/form-data">
     <div class="is-1 title">Add sponsor</div>
+      <!--Image upload-->
+      <ImageUploadWidget ref="imageupload"></ImageUploadWidget>
     <!-- Text input-->
     <div class="field">
-      <label class="label" for="sponsorTitle">Title</label>
+      <label class="label" for="sponsorTitle">Name</label>
       <div class="control">
         <input
           id="sponsorTitle"
@@ -61,10 +63,14 @@
 
 <script>
 import axios from"@/axios.js";
+import ImageUploadWidget from "../Upload/ImageUploadWidget";
 
 export default {
-  data() {
-    return {};
+    components: {ImageUploadWidget},
+    data() {
+    return {
+        ImageUploadWidget,
+    };
   },
   methods: {
     addSponsor() {

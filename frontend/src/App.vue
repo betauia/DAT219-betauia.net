@@ -4,7 +4,7 @@
         <Navbar>
         </Navbar>
         <br><br>
-        <router-view/>
+        <router-view class="has-background-grey-lighter"/>
     <cookie-law>
       <div slot="message">
           This website uses cookies to ensure you get the best experience on our website. for more info <router-link to="/privacy" class="black">Click here</router-link>
@@ -50,6 +50,10 @@ export default {
 
 a {
     color: #0085ff;
+}
+
+.color-bg {
+    color: #1b1e21;
 }
 
 // Imports

@@ -11,7 +11,7 @@
         </router-link>
     </div>
     <div class="tile is-parent">
-        <router-link to="/admin/r">
+        <router-link to="/admin/sponsors">
         <article class="tile is-child box">
             <p class="title">Edit Sponsor</p>
             <p class="subtitle">Edit the details of a sponsor</p>
