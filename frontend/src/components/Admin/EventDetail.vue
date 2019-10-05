@@ -2,6 +2,8 @@
     <div class="form-horizontal padding center addevent" enctype="multipart/form-data">
         <div class="is-1 title">Edit Event</div>
 
+        <image-upload-widget ref="imageupload"></image-upload-widget>
+
         <!-- Text input-->
         <div class="field">
             <label class="label" for="title">Title</label>
@@ -106,12 +108,6 @@
                             <div class="column is-one-third">Has Sponsor
                                 <b-button :style="sponsorStyle" @click="hasSponsorClick">Click me</b-button>
                             </div>
-                            <div class="column">Is bookable
-                                <b-button :style="bookableStyle" @click="isBookableClick">Click me</b-button>
-                            </div>
-                            <div class="column">Has seatmap
-                                <b-button :style="seatmapStyle" @click="hasSeatMapClick">Click me</b-button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -120,14 +116,14 @@
         <div class="field" v-if="hasSponsor.state==true">
             <label class="label" for="sponsor">Added sponsors</label>
             <div v-for="sponsor of selectedSponsors">
-                <b-button class="addSponsorB has-background-success" v-on:click="removeSponsor(sponsor.id)">
-                    {{sponsor.id}}
+                <b-button class="addSponsorB has-background-success" v-on:click="removeSponsor(sponsor)">
+                    {{sponsor}}
                 </b-button>
             </div>
             <label class="label">Sponsors to choose from</label>
             <div v-for="sponsor of sponsors">
-                <b-button class="addSponsorB has-background-danger" v-on:click="addSponsor(sponsor.id)">
-                    {{sponsor.id}}
+                <b-button class="addSponsorB has-background-danger" v-on:click="addSponsor(sponsor)">
+                    {{sponsor}}
                 </b-button>
             </div>
         </div>
@@ -153,9 +149,11 @@
 
 <script>
 import axios from 'axios';
+import ImageUploadWidget from "../Upload/ImageUploadWidget";
   export default {
     name: 'EventDetail',
-    data(){
+      components: {ImageUploadWidget},
+      data(){
       return{
         sponsors: [],
         seatmaps: [],
@@ -174,8 +172,6 @@ import axios from 'axios';
           state:false,
           color:"red",
         },
-        startdate:"0000-00-00T00:00:00.000Z",
-        enddate:"0000-00-00T00:00:00.000Z",
       }
     },
     created() {
@@ -247,7 +243,8 @@ import axios from 'axios';
       }
     },
     methods:{
-        updateEvent(){
+        async updateEvent(){
+          var image = await this.$refs.imageupload.uploadImage();
           var token = localStorage.getItem("token");
           var title = document.querySelector("input[name=title]").value;
           var description = document.querySelector("input[name=description]").value;
@@ -267,7 +264,8 @@ import axios from 'axios';
             content: content,
             isPublic: this.ispublic,
             enddate:enddate,
-            startdate:startdate
+            startdate:startdate,
+            image: image,
           };
 
           var bodyParameters = {

@@ -1,43 +1,50 @@
 <template>
   <div class="Events">
-    <div class="column padding">
+    <div class="column is-8 is-offset-2">
       <div class="card">
         <header class="card-header">
-          <p class="card-header-title">{{event.eventModel.title}}</p>
+          <h1 class="card-header-title title">{{event.eventModel.title}}</h1>
         </header>
-        <div class="card-content">
-          <div class="content">
-            <ul>
-              <li>Description: {{event.eventModel.description}}</li>
-              <li>Content: {{event.eventModel.content}}</li>
-              <li>Starting at: {{event.eventModel.startdate}}</li>
+          <div class="card-img">
+              <figure class="image is-grouped-centered">
+                  <image-widget v-bind:image-id="event.eventModel.image"></image-widget>
+              </figure>
+          </div>
+        <div class="card-content columns">
+          <div class="content column is-two-thirds">
+              <div class="label">{{event.eventModel.description}}</div>
+              <div class="content">{{event.eventModel.content}}</div>
+              <li>Starter : {{event.eventModel.startdate}}</li>
                 <li>ending at: {{event.eventModel.enddate}}</li>
-            </ul>
-              <div v-if="event.sponsors.length>0">
-                  <div v-for="sponsor of event.sponsors">
-                      <p>{{sponsor.title}}</p>
-                      <p>{{sponsor.description}}</p>
-                      <p>{{sponsor.url}}</p>
+              <div class="column">
+                  <div class="label" v-if="event.sponsors.length>0">Sponset av:
+                      <div class="content" v-for="sponsor of event.sponsors">
+                          <p>{{sponsor.title}}</p>
+                          <p>{{sponsor.description}}</p>
+                          <p>{{sponsor.url}}</p>
+                      </div>
                   </div>
               </div>
-            <br>
-            <div v-if="event.eventModel.maxAtendees>=0">
-                <h1>Join our event</h1>
-                <p>People joining: {{event.eventModel.atendees}}</p>
-                <span>
-                    <button class="button is-link" v-on:click="joinEventByUser">Reserve by account</button>
-                    <button class="button is-valid" v-on:click="emailClick">Reserve by email</button>
-                </span>
 
-                <div id="emailSignup" v-if="showEmail==true">
-                    <form>
-                        <item><input type="text" name="firstname" placeholder="Fornavn"></item>
-                        <item><input type="text" name="lastname" placeholder="Etternavn"></item>
-                        <item><input type="text" name="email" placeholder="email@address.com"></item>
-                    </form>
-
+            <div class="column is-right" v-if="event.eventModel.maxAtendees>=0">
+                <div class="label">Bli med!</div>
+                <div v-if="event.eventModel.atendees < event.eventModel.maxAtendees">
+                    <p>Antall påmeldte: {{event.eventModel.atendees}}</p>
+                    <p>Ledige plasser: {{event.eventModel.maxAtendees - event.eventModel.atendees}}</p>
+                    <span>
+                        <button class="button is-link" v-on:click="joinEventByUser">Reserve by account</button>
+                        <button class="button is-valid" v-on:click="emailClick">Reserve by email</button>
+                    </span>
+                    <div id="emailSignup" v-if="showEmail==true">
+                        <form>
+                            <item><input type="text" name="firstname" placeholder="Fornavn"></item>
+                            <item><input type="text" name="lastname" placeholder="Etternavn"></item>
+                            <item><input type="text" name="email" placeholder="email@address.com"></item>
+                        </form>
+                </div>
                     <button class="button is-link" v-on:click="joinEventByEmail">Sign me up!!</button>
                 </div>
+
             </div>
             <div v-if="event.eventModel.seatMap!=null">
                 <p>Number of seats: {{event.eventModel.seatMap.numSeats}}</p>

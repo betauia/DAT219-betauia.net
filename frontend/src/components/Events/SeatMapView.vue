@@ -1,20 +1,29 @@
 <template>
     <div class="seatmap">
-        <div id="info">
-          <div id="eventInfo">
-              <p>Plasser for dette arrangementet: {{seatmapmodel.numSeats}}</p>
-              <p>Ledige plasser: {{seatmapmodel.numSeatsAvailable}}</p>
-          </div>
-
-          <div id="buyInfo">
-              <button class="button is-link" @click="buyTickets">Til betaling</button>
-          </div>
-        </div>
-
-        <div id="grid">
-          <div v-for="seat in seats" v-bind:key="seat">
-            <Seat v-bind:seat="seat" @clicked="onSeatClick"></Seat>
-          </div>
+        <div class="column is-7 is-offset-3 card" id="grid">
+            <div class="card-img">
+                <figure class="image is-grouped-centered" >
+                    <img src="https://i.imgur.com/6BryTTm.jpg" width="900px" height="900px" id="img-info"/>
+                    <div>
+                        <div v-for="seat in seats" v-bind:key="seat">
+                            <Seat v-bind:seat="seat" @clicked="onSeatClick"></Seat>
+                        </div>
+                    </div>
+                </figure>
+            </div>
+            <div class="card-content">
+                <div class="content">
+                    <div id="eventInfo">
+                        <p>Plasser for dette arrangementet: {{seatmapmodel.numSeats}}</p>
+                        <p>Ledige plasser: {{seatmapmodel.numSeatsAvailable}}</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <div id="buyInfo">
+                        <button class="button is-link" @click="buyTickets">Til betaling</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -103,11 +112,6 @@ export default {
 
 <style>
 #grid {
-  background-image: url("https://i.imgur.com/6BryTTm.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 900px;
-  height: 900px;
 }
 #info{
     margin:10px;
