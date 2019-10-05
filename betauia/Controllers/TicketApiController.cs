@@ -23,17 +23,17 @@ namespace betauia.Controllers
   {
     private readonly ApplicationDbContext _db;
     private readonly UserManager<ApplicationUser> _um;
-    private readonly VippsApiController vipps;
+    private readonly IVippsPayment vipps;
     private readonly ITokenVerifier _tokenVerifier;
 
     public TicketApiController(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
-      ITokenVerifier tokenVerifier)
+      ITokenVerifier tokenVerifier,IVippsPayment vippsPayment)
 
     {
       // Set the databasecontext
       _db = db;
       _um = userManager;
-      vipps = new VippsApiController();
+      vipps = vippsPayment;
       _tokenVerifier = tokenVerifier;
     }
 
@@ -164,7 +164,7 @@ namespace betauia.Controllers
       }
 
       string orderid = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
-      var initpayment = vipps.InitiatePayment(paymentModel.MobileNumber, orderid, 100, "test hello world");
+      var initpayment = await vipps.InitiatePayment(paymentModel.MobileNumber, orderid, 100, "test hello world");
       if (initpayment == null)
       {
         return BadRequest();
@@ -207,7 +207,7 @@ namespace betauia.Controllers
         return BadRequest("103");
       }
 
-      var t = vipps.GetPaymentDetails(ticket.VippsOrderId);
+      var t = await vipps.GetPaymentDetails(ticket.VippsOrderId);
       var lastlog = t.transactionLogHistory[0];
 
       var title = _db.Events.Find(ticket.EventId).Title;
@@ -227,7 +227,7 @@ namespace betauia.Controllers
       ////////////////////
       if (lastlog.operation == "RESERVE" && lastlog.operationSuccess == true && lastlog.amount == ticket.Amount)
       {
-        var capture = vipps.CapturePayment(ticket.VippsOrderId);
+        var capture = await vipps.CapturePayment(ticket.VippsOrderId);
         if (capture.orderId != null)
         {
           if (capture.transactionSummary.capturedAmount == capture.transactionInfo.amount)

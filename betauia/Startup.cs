@@ -57,6 +57,13 @@ namespace betauia
                     Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddDbContext<PaymentDbContext>(options =>
+            {
+              options.EnableSensitiveDataLogging();
+              options.UseSqlite(
+                Configuration.GetConnectionString("Payment"));
+            });
+
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddRoles<IdentityRole>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
@@ -104,6 +111,7 @@ namespace betauia
                 Config.Addpolicies(options);
             });
 
+            services.AddTransient<IVippsPayment, VippsApiController>();
             services.AddTransient<ITokenVerifier, TokenVerifier>();
             services.AddTransient<TokenManagerMiddleware>();
             services.AddTransient<ITokenManager, TokenManager>();
@@ -115,8 +123,8 @@ namespace betauia
             });
             services.AddTransient<IimageIO, ImageIO>();
 
-            var vipps = new VippsApiController();
-            vipps.GetVippsToken();
+            //var vipps = new VippsApiController();
+            //vipps.GetVippsToken();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
