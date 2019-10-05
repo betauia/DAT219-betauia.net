@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using betauia.Models;
 using betauia.Tokens;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,22 +45,12 @@ namespace betauia.Controllers
                 return BadRequest("101");
             }
 
-            if (user.Active == false)
-            {
-                return BadRequest("102");
-            }
-
-            if (user.ForceLogOut)
-            {
-                return BadRequest("103");
-            }
-
             return Ok();
         }
 
         [HttpGet]
         [Route("api/token/role/{token}")]
-        public async Task<IActionResult> ValidateAdmin(string token)
+        public async Task<IActionResult> GetRole(string token)
         {
             var id = await _tokenVerifier.GetTokenUser(token);
             if (id == null)
@@ -73,18 +64,16 @@ namespace betauia.Controllers
                 return BadRequest("101");
             }
 
-            if (user.Active == false)
-            {
-                return BadRequest("102");
-            }
-
-            if (user.ForceLogOut)
-            {
-                return BadRequest("103");
-            }
-
             var roles = _um.GetRolesAsync(user).Result;
             return Ok(roles);
+        }
+
+        [HttpGet]
+        [Authorize("Adminpanel")]
+        [Route("api/token/adminpanel")]
+        public async Task<IActionResult> ValidateAdmin()
+        {
+          return Ok();
         }
     }
 }

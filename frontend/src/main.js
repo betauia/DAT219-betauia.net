@@ -25,6 +25,12 @@ Vue.use(vuetify);
 Vue.use(Datetime);
 Vue.component('imageWidget',imageWidget);
 
+Vue.config.errorHandler = function (err, vm, info) {
+    console.log(err)
+    console.log(vm)
+    console.log(info)
+};
+
 new Vue({
   router,
   vuetify,

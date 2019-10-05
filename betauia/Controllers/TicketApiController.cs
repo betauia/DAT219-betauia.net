@@ -153,16 +153,6 @@ namespace betauia.Controllers
       if (ticket == null) return NotFound();
       if (userid != ticket.UserId) return BadRequest();
 
-      if (user.Active == false)
-      {
-        return BadRequest("102");
-      }
-
-      if (user.ForceLogOut)
-      {
-        return BadRequest("103");
-      }
-
       string orderid = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
       var initpayment = await vipps.InitiatePayment(paymentModel.MobileNumber, orderid, 100, "test hello world");
       if (initpayment == null)
@@ -196,16 +186,6 @@ namespace betauia.Controllers
       var ticket = _db.Tickets.Where(a=>a.VippsOrderId == id).ToList()[0];
       if (ticket == null) return NotFound();
       if (userid != ticket.UserId) return BadRequest();
-
-      if (user.Active == false)
-      {
-        return BadRequest("102");
-      }
-
-      if (user.ForceLogOut)
-      {
-        return BadRequest("103");
-      }
 
       var t = await vipps.GetPaymentDetails(ticket.VippsOrderId);
       var lastlog = t.transactionLogHistory[0];

@@ -44,7 +44,8 @@ namespace betauia
                 new Claim("Seatmap","read",ClaimValueTypes.String),
                 new Claim("Sponsor","write",ClaimValueTypes.String),
                 new Claim("Job","write",ClaimValueTypes.String),
-                new Claim("Ticket","read",ClaimValueTypes.String)
+                new Claim("Ticket","read",ClaimValueTypes.String),
+                new Claim("Adminpanel","true",ClaimValueTypes.String),
             };
 
             foreach (var claim in userClaims)
@@ -114,6 +115,7 @@ namespace betauia
             options.AddPolicy("Admin", policy=>policy.RequireClaim("Role","SuperAdmin","Admin"));
             options.AddPolicy("Mod",policy=>policy.RequireClaim("Role","SuperAdmin","Admin","Mod"));
             options.AddPolicy("User",policy=>policy.RequireClaim("id"));
+            options.AddPolicy("Adminpanel",policy=>policy.RequireClaim("Adminpanel","true"));
 
             options.AddPolicy("Roles.write",policy=>policy.RequireClaim("Roles","write"));
             options.AddPolicy("Roles.read",policy=>policy.RequireClaim("Roles","read","write"));

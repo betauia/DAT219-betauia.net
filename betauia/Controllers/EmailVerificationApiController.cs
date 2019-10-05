@@ -79,7 +79,6 @@ namespace betauia.Controllers
             result = _um.AddClaimAsync(user, claim).Result;
             if (result.Succeeded)
             {
-                user.ForceLogOut = true;
                 return Ok();
             }
             return BadRequest(result.Errors);

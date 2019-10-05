@@ -138,7 +138,7 @@ import Sponsors from "../Sponsors/Sponsors";
       var token = localStorage.getItem("token");
       var self = this;
       axios
-        .post("/api/token/valid/" + token, {})
+        .get("/api/token/valid/" + token, {})
         .then(function(response) {
             return true;
         })

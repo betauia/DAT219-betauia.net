@@ -77,7 +77,7 @@
 </style>
 
 <script>
-import axios from "axios";
+import axios from "/home/erik/betauia/frontend/src/axiosIntercept.js";
 
 export default {
   data() {
@@ -92,20 +92,16 @@ export default {
       this.$router.push("/");
       return;
     }
+    var config = {
+      headers: { Authorization: "bearer " + token }
+    };
     console.log(token);
     var self = this;
     axios
-      .get("/api/token/role/" + token, {})
+      .get("/api/token/adminpanel/",config)
       .then(function(response) {
-        var roles = response["data"];
-        if (roles == null || roles == "User" || roles == "") {
-          //window.location.href = "/";
-          alert("No access");
-          self.$router.push("/");
-        }
       })
       .catch(function(error) {
-        console.log(error);
       });
   }
 };

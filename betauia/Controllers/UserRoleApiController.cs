@@ -54,8 +54,6 @@ namespace betauia.Controllers
                     LastName = user.LastName,
                     UserName = user.UserName,
                     Email = user.Email,
-                    Active = user.Active,
-                    ForceLogout = user.ForceLogOut,
                     VerifiedEmail = user.VerifiedEmail
                 });
             }
@@ -87,8 +85,6 @@ namespace betauia.Controllers
                     LastName = user.LastName,
                     UserName = user.UserName,
                     Email = user.Email,
-                    Active = user.Active,
-                    ForceLogout = user.ForceLogOut,
                     VerifiedEmail = user.VerifiedEmail
                 });
             }
