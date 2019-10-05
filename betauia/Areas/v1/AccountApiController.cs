@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using betauia.Data;
 using betauia.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 
 namespace betauia.Areas.v1
@@ -15,6 +16,7 @@ namespace betauia.Areas.v1
     [Area("v1")]
     //[Route("api/v1/user")]
     [ApiController]
+    [Authorize]
     public class AccountApiController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -87,6 +89,7 @@ namespace betauia.Areas.v1
             return BadRequest(result.Errors);
         }
 
+        [AllowAnonymous]
         [Route("/api/account/login")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]Loginmodel loginmodel)
@@ -119,7 +122,7 @@ namespace betauia.Areas.v1
         [HttpPost]
         public async Task<IActionResult> GetAccountInfo([FromHeader] string Authorization)
         {
-           var token = Authorization.Split(' ')[1];
+            var token = Authorization.Split(' ')[1];
             var id = await _tf.AuthenticateUserAsync(token);
             var user = _um.FindByIdAsync(id).Result;
             if (user == null)

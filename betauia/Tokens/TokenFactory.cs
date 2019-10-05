@@ -75,7 +75,6 @@ namespace betauia.Tokens
 
             if (validator.CanReadToken(token))
             {
-              if (!await _tokenManager.IsActiveAsync(token)) return string.Empty;
               ClaimsPrincipal principal;
                 try
                 {

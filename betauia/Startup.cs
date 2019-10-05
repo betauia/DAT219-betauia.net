@@ -104,7 +104,9 @@ namespace betauia
                 Config.Addpolicies(options);
             });
 
+            services.AddTransient<TokenManagerMiddleware>();
             services.AddTransient<ITokenManager, TokenManager>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddDistributedRedisCache(option =>
             {
               option.Configuration = "127.0.0.1";
@@ -137,6 +139,7 @@ namespace betauia
 
             IdentityModelEventSource.ShowPII = true;
             app.UseAuthentication();
+            app.UseMiddleware<TokenManagerMiddleware>();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

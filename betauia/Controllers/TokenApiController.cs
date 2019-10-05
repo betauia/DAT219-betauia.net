@@ -22,15 +22,15 @@ namespace betauia.Controllers
             _tokenManager = tokenManager;
         }
 
-        [HttpGet]
-        [Route("api/token/test/{token}")]
-        public async Task<IActionResult> DelteToken(string token)
+        [HttpDelete]
+        [Route("api/token/{token}")]
+        public async Task<IActionResult> DeleteToken(string token)
         {
           await _tokenManager.RemoveUserTokensAsync(token);
           return Ok();
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("api/token/valid/{token}")]
         public async Task<IActionResult> ValidateTokenAsync(string token)
         {
@@ -59,7 +59,7 @@ namespace betauia.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("api/token/role/{token}")]
         public async Task<IActionResult> ValidateAdmin(string token)
         {
