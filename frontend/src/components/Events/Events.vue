@@ -15,9 +15,9 @@
               <div class="label">{{event.eventModel.description}}</div>
               <div class="content">{{event.eventModel.content}}</div>
               <li>Starter : {{event.eventModel.startdate}}</li>
-                <li>ending at: {{event.eventModel.enddate}}</li>
+                <li>Slutter : {{event.eventModel.enddate}}</li>
               <div class="column">
-                  <div class="label" v-if="event.sponsors.length>0">Sponset av:
+                  <div class="label" v-if="event.sponsors.length>0">Sponset av:o,age
                       <div class="content" v-for="sponsor of event.sponsors">
                           <p>{{sponsor.title}}</p>
                           <p>{{sponsor.description}}</p>
@@ -43,6 +43,7 @@
                         </form>
                 </div>
                     <button class="button is-link" v-on:click="joinEventByEmail">Sign me up!!</button>
+                    <div v-if="emailsignupResponse!=null">{{emailsignupResponse}}</div>
                 </div>
 
             </div>
@@ -74,6 +75,7 @@ import Sponsors from "../Sponsors/Sponsors";
     data(){
         return{
             showEmail:false,
+            emailsignupResponse:null,
         }
     },
   methods: {
@@ -153,9 +155,15 @@ import Sponsors from "../Sponsors/Sponsors";
         .then(function(response){
           console.log(response);
           self.event.eventModel.atendees++;
+          self.emailsignupResponse = "A confirmation email has been sent, it expires in 1 hour";
         })
         .catch(function(error){
-          console.log(error);
+          console.log(error.response);
+          if(error.response.data == "Email already registered"){
+            self.emailsignupResponse = "Email already registered for event, please use another"
+          }else{
+            self.emailsignupResponse = "An error occured, please try again later";
+          }
         })
     },
   }

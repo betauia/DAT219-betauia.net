@@ -1,22 +1,24 @@
 <template>
     <div id="orders">
         <b-table :data="orders" :columns="columns"></b-table>
-        <tr>
-            <th>Order number</th>
-            <th>Event</th>
-            <th>Time purchased</th>
-            <th>Status</th>
-            <td>Details</td>
-        </tr>
-        <tr v-for="order of orders" v-bind:key="order" v-if="order.id != null">
-            <td>{{order.id}}</td>
-            <td>{{order.eventTitle}}</td>
-            <td>{{order.status}}</td>
-            <td>{{order.status}}</td>
-            <td>
-                <a @click="detailClick(order.id)">See orderdetails</a>
-            </td>
-        </tr>
+        <table>
+            <tr>
+                <th>Order number</th>
+                <th>Event</th>
+                <th>Time purchased</th>
+                <th>Status</th>
+                <td>Details</td>
+            </tr>
+            <tr v-for="order of orders" v-bind:key="order" v-if="order.id != null">
+                <td>{{order.id}}</td>
+                <td>{{order.eventTitle}}</td>
+                <td>{{order.status}}</td>
+                <td>{{order.status}}</td>
+                <td>
+                    <a @click="detailClick(order.id)">See orderdetails</a>
+                </td>
+            </tr>
+        </table>
     </div>
 </template>
 
@@ -76,7 +78,7 @@ export default {
         detailClick(id){
           this.$router.push("/ticketdetails/"+id);
         }
-      }
+      },
   };
 </script>
 

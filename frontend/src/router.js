@@ -216,6 +216,10 @@ export default new Router({
     component: () => import('./components/Account/EmailVerify.vue'),
   },
   {
+      path: '/attendeeemailconfirm/:id',
+      component: () => import('./components/Events/ConfirmEventEmail.vue'),
+  },
+  {
     path: '*',
     component: () => import('./components/Error/NotFound.vue'),
   },

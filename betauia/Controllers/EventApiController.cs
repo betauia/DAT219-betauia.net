@@ -94,27 +94,26 @@ namespace betauia.Controllers
           Event.IsPublic = eventModel.IsPublic;
           Event.Enddate = eventModel.Enddate;
           Event.Startdate = eventModel.Startdate;
+          Event.Image = null;
+          if (eventModel.Image != null)
+          {
+            Event.Image = eventModel.Image;
+          }
 
           //Set sponsors
-          if (eventEditor.sponsors.Count > 0)
-          {
-            var t = _context.EventSponsors.Where(a => a.EventId == Event.Id).ToList();
-            foreach (var eventSponsor in t)
-            {
-              _context.EventSponsors.Remove(eventSponsor);
-            }
+          var sponsors = _context.EventSponsors.Where(a => a.EventId == id);
+          _context.EventSponsors.RemoveRange(sponsors);
 
-            foreach (var sponsor in eventEditor.sponsors)
+          foreach (var sponsor in eventEditor.sponsors)
+          {
+            if (!_context.EventSponsors.Any(p => p.SponsorId == sponsor && p.EventId == Event.Id))
             {
-              if (!_context.EventSponsors.Any(p => p.SponsorId == sponsor && p.EventId == Event.Id))
+              var eventSponsor = new EventSponsor
               {
-                var eventSponsor = new EventSponsor
-                {
-                  EventId = Event.Id,
-                  SponsorId = sponsor
-                };
-                _context.EventSponsors.Add(eventSponsor);
-              }
+                EventId = Event.Id,
+                SponsorId = sponsor
+              };
+              _context.EventSponsors.Add(eventSponsor);
             }
           }
           _context.Update(Event);

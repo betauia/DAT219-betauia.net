@@ -7,6 +7,11 @@
             <header>
               <p class="card-header-title">{{post.title}}</p>
             </header>
+              <div class="card-img">
+                  <figure class="image is-grouped-centered">
+                      <image-widget v-bind:image-id="post.image"></image-widget>
+                  </figure>
+              </div>
             <div>
               <h1 class="summary">{{post.summary}}</h1>
               <div class="content">

@@ -205,9 +205,9 @@ IsPublic = isPublic;
 </template>
 
 <script>
-    import axios from 'axios';
+    import axios from '@/axios.js';
     import {Datetime} from 'vue-datetime';
-    import ImageUploadWidget from '../Upload/ImageUploadWidget.vue';
+    import ImageUploadWidget from '@/components/Upload/ImageUploadWidget.vue';
     export default {
         components: {
             datetime: Datetime,
