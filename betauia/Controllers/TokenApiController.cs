@@ -89,8 +89,8 @@ namespace betauia.Controllers
           var id = await _tokenVerifier.GetTokenUser(Authorization.Split(' ')[1]);
           var userid =await _um.FindByIdAsync(id);
           var claims = await _um.GetClaimsAsync(userid);
-          int i = 1;
-          return Ok();
+          if (claims.Any(a => a.Type == "AccountVerified" && a.Value == "true")) return Ok();
+          return BadRequest(603);
         }
     }
 }
