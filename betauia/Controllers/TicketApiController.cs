@@ -115,6 +115,10 @@ namespace betauia.Controllers
       foreach (var seat in ticketModel.seats)
       {
         var seatmodel = _db.EventSeats.Find(seat);
+        if (seatmodel.ReserverId != null && seatmodel.ReserverId != userid)
+        {
+          return BadRequest("Seat registered to another user");
+        }
         seatmodels.Add(seatmodel);
       }
 
@@ -168,6 +172,7 @@ namespace betauia.Controllers
       foreach (var seat in seats)
       {
         seat.IsAvailable = false;
+        seat.IsReserved = true;
       }
 
       _db.SaveChanges();
@@ -180,8 +185,6 @@ namespace betauia.Controllers
     {
       var token = Authorization.Split(' ')[1];
       var userid = await _tokenVerifier.GetTokenUser(token);
-
-      var user = _um.FindByIdAsync(userid).Result;
 
       var ticket = _db.Tickets.Where(a=>a.VippsOrderId == id).ToList()[0];
       if (ticket == null) return NotFound();
@@ -202,6 +205,15 @@ namespace betauia.Controllers
         return Ok(ticketview);
       }
 
+      /////////////////////
+      //Cancelled Refunded/
+      /////////////////////
+      if (ticket.Status == "CANCEL" || ticket.Status == "REFUND")
+      {
+        var ticketview = new TicketViewModel(ticket,null);
+        return Ok(ticketview);
+      }
+
       ////////////////////
       //Reserve complete//
       ////////////////////
@@ -210,7 +222,7 @@ namespace betauia.Controllers
         var capture = await vipps.CapturePayment(ticket.VippsOrderId);
         if (capture.orderId != null)
         {
-          if (capture.transactionSummary.capturedAmount == capture.transactionInfo.amount)
+          if (capture.transactionSummary.capturedAmount == capture.transactionInfo.amount && capture.transactionInfo.status == "Captured")
           {
             ticket.Status = "CAPTURE";
             ticket.TimePurchased = capture.transactionInfo.timeStamp;
@@ -226,14 +238,27 @@ namespace betauia.Controllers
       /////////////////////////
       //TRANSACTION CANCELLED//
       /////////////////////////
-      if (lastlog.operationSuccess == true && lastlog.operation == "CANCEL")
+      if (lastlog.operationSuccess == true && (lastlog.operation == "CANCEL" || lastlog.operation == "VOID"))
       {
         ticket.CancelTicket(_db);
+        ticket.Status = "CANCEL";
         _db.SaveChanges();
         return Ok(new TicketViewModel(ticket, null));
       }
 
-      return Ok(new TicketViewModel(ticket,title));
+      ////////////////
+      //PAYMENT REFUND
+      ////////////////
+      if (lastlog.operationSuccess == true && lastlog.operation == "REFUND")
+      {
+        ticket.CancelTicket(_db);
+        ticket.Status = "REFUND";
+        _db.SaveChanges();
+        return Ok(new TicketViewModel(ticket, null));
+      }
+
+      //Error checking payment
+      return BadRequest("An error occured when processing your ticket");
     }
 
     public class NewTicketModel

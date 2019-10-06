@@ -201,20 +201,6 @@ IsPublic = isPublic;
             >Publish
             </b-button>
         </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <!-- Button -->
-        <b-button
-            class="column is-half is-primary"
-            id="publish" name="publish"
-            v-on:click="addEvent"
-        >Publish
-        </b-button>
-=======
->>>>>>> dfb59d417d1445d5265d1923bc41a3332b0fe8eb
-=======
-
->>>>>>> bd3a5afada8fa1f65816a13d912f2ab6b6644610
     </div>
 </template>
 

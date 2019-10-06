@@ -31,7 +31,6 @@ namespace betauia.Models
           }
           dbContext.SaveChanges();
         }
-
         public int Id { get; set; }
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
