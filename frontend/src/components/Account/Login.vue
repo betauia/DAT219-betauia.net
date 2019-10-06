@@ -26,8 +26,25 @@
         </section>
         <footer class="modal-card-foot level">
             <b-button class="button is-primary" v-on:click="login">Login</b-button>
-            <b-button class="has-text-black-bis" v-on:click="forgotPasswordClick">Forgot Password?</b-button>
+            <b-button class="" v-on:click="forgotPasswordClick" >Forgot Password?</b-button>
         </footer>
+
+        <section v-if="forgotPassword">
+            <section class="modal-card-body">
+                <b-field label="Email">
+                    <b-input
+                        type="email"
+                        placeholder="Account email"
+                        v-model="email"
+                        required>
+                    </b-input>
+                </b-field>
+            </section>
+
+            <footer class="modal-card-foot">
+                <b-button class="is-primary" v-on:click="resetPassword">Reset Password</b-button>
+            </footer>
+        </section>
     </div>
 </template>
 <!--<template>
@@ -111,7 +128,7 @@
                 self.$forceUpdate();
             },
             forgotPasswordClick(){
-                this.forgotPassword = true;
+                this.forgotPassword = !this.forgotPassword;
             },
             resetPassword(){
                 if(this.email == ""){
