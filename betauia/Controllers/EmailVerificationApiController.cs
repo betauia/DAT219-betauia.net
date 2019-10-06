@@ -38,7 +38,7 @@ namespace betauia.Controllers
           var user = await _um.FindByIdAsync(userid);
 
             var token = await _tf.GetEmailVerificationTokenAsync(user);
-            var url = "http://localhost:8081/verifyemail/" + token;
+            var url = "http://localhost:8080/verifyemail/" + token;
 
             SmtpClient smtp = new SmtpClient("smtp.gtm.no");
             smtp.EnableSsl = false;
