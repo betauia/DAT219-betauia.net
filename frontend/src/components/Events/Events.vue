@@ -89,7 +89,7 @@ import Sponsors from "../Sponsors/Sponsors";
       }
       var self = this;
       axios
-        .post("/api/token/valid/" + token, {})
+        .get("/api/token/valid/" + token, {})
         .then(function(response) {
         })
         .catch(function(error) {
@@ -101,24 +101,41 @@ import Sponsors from "../Sponsors/Sponsors";
         "/events/seatmap/" + this.event.eventModel.seatMapId
       );
     },
-    joinEventByUser(){
-        if(this.loggedInUser()==true){
-          var token = localStorage.getItem("token");
-          var bodyParameter = {};
-          var config = {
-            headers: { Authorization: "bearer " + token }
-          };
-          var self = this;
-          axios
-            .post("api/eventsignup/user/"+this.event.eventModel.id,bodyParameter,config)
-            .then(function(response){
-              console.log(response.data);
-              self.event.eventModel.atendees++;
-            })
-            .catch(function(error){
-              console.log(error);
-            });
-        }
+    async joinEventByUser(){
+      var token = localStorage.getItem("token");
+      var config = {
+        headers: { Authorization: "bearer " + token }
+      };
+      var exit = false;
+      var self = this;
+
+      await axios
+        .get("/api/token/accountverified", config)
+        .then(function(response) {
+
+        })
+        .catch(function(error) {
+          if(error.response.data == 603){
+            self.$router.push("/account/notverified");
+            exit = true;
+          }else{
+            self.isLoggedIn = false;
+            self.$router.push("/account/login");
+          }
+        });
+
+      if(exit)return ;
+
+      axios
+        .get("api/eventsignup/user/"+this.event.eventModel.id,config)
+        .then(function(response){
+          console.log(response.data);
+          self.event.eventModel.atendees++;
+        })
+        .catch(function(error){
+          console.log(error);
+        });
+
     },
     emailClick(){
         console.log(this.showEmail);
@@ -144,21 +161,6 @@ import Sponsors from "../Sponsors/Sponsors";
           console.log(error);
         })
     },
-    loggedInUser(){
-      var token = localStorage.getItem("token");
-      var self = this;
-      axios
-        .get("/api/token/valid/" + token, {})
-        .then(function(response) {
-            return true;
-        })
-        .catch(function(error) {
-          console.log(error);
-          self.isLoggedIn = false;
-          self.$router.push("/account/login");
-        });
-      return true;
-    }
   }
 };
 </script>

@@ -1,9 +1,7 @@
 import Vue from 'vue';
 import Buefy from 'buefy';
 import Vuex from 'vuex';
-
 import Vuetify from 'vuetify';
-
 import Datetime from 'vue-datetime';
 import 'vue-datetime/dist/vue-datetime.css';
 
@@ -21,7 +19,6 @@ Vue.config.productionTip = false;
 Vue.use(Buefy);
 Vue.use(Vuex);
 Vue.use(Vuetify);
-
 Vue.use(Datetime);
 Vue.component('imageWidget',imageWidget);
 

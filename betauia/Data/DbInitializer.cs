@@ -16,6 +16,8 @@ namespace betauia.Data
             Config.AddRoles(um,rm);
             var user = new ApplicationUser { Email = "user@gmail.com", UserName = "ksolli", FirstName = "Kristoffer",LastName = "Solli", NickName = "Nickname"};
             um.CreateAsync(user, "Password1.").Wait();
+            var claim = new Claim("AccountVerified","true",ClaimValueTypes.String);
+            um.AddClaimAsync(user, claim).Wait();
             um.AddToRoleAsync(user, "Admin").Wait();
 
             user = new ApplicationUser { Email = "erikaa17@uia.no", UserName = "erikdakool", FirstName = "Erik",LastName = "Aspen", NickName = "Nickname"};

@@ -201,7 +201,6 @@ IsPublic = isPublic;
             >Publish
             </b-button>
         </div>
-
     </div>
 </template>
 

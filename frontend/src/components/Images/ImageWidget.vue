@@ -15,6 +15,7 @@
       }
     },
     created() {
+      if(this.$props.imagiId == null)return
       const self = this;
       axios
         .get("/api/image/64/"+this.$props.imageId)

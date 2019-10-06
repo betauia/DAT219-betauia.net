@@ -94,8 +94,8 @@ namespace betauia.Tokens
 
             if (validator.CanReadToken(token))
             {
-              await _tokenManager.RemoveUserTokensAsync(token);
-                ClaimsPrincipal principal;
+              await _tokenManager.DeactivateAsync(token);
+              ClaimsPrincipal principal;
                 try
                 {
                     principal = validator.ValidateToken(token, validationParameters, out validateToken);
