@@ -1,4 +1,36 @@
 <template>
+    <div>
+        <section class="modal-card-body">
+            <b-field label="Email">
+                <b-input
+                    type="email"
+                    placeholder="Your email"
+                    :value="username"
+                    name="email"
+                    required>
+                </b-input>
+            </b-field>
+
+            <b-field label="Password">
+                <b-input
+                    type="password"
+                    name="password"
+                    password-reveal
+                    placeholder="Your password"
+                    required>
+                </b-input>
+            </b-field>
+
+            <b-checkbox>Remember me</b-checkbox>
+
+        </section>
+        <footer class="modal-card-foot level">
+            <b-button class="button is-primary" v-on:click="login">Login</b-button>
+            <b-button class="has-text-black-bis" v-model="forgotPassword">Forgot Password?</b-button>
+        </footer>
+    </div>
+</template>
+<!--<template>
   <section class="card">
     <b-field label="Email">
       <b-input
@@ -33,7 +65,7 @@
 
   </section>
 </template>
-
+-->
 <script>
 import axios from"@/axios.js";
 export default {
@@ -50,7 +82,7 @@ export default {
   },
   methods: {
     login() {
-      var user = document.querySelector("input[name=username]").value;
+      var user = document.querySelector("input[name=email]").value;
       var password = document.querySelector("input[name=password]").value;
       var jsond = new Object();
       jsond["username"] = user;

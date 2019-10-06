@@ -4,7 +4,7 @@
         <Navbar>
         </Navbar>
         <br><br>
-        <router-view class="has-background-grey-lighter"/>
+        <router-view class="has-background-light"/>
     <cookie-law>
       <div slot="message">
           This website uses cookies to ensure you get the best experience on our website. for more info <router-link to="/privacy" class="black">Click here</router-link>
