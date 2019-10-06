@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using betauia.Controllers;
 using betauia.Data;
@@ -18,12 +21,16 @@ namespace betauia.Controllers
     private readonly ApplicationDbContext _db;
     private readonly UserManager<ApplicationUser> _um;
     private readonly ITokenVerifier _tokenVerifier;
+    private readonly ITokenManager _tokenManager;
+    private readonly TokenFactory tokenFactory;
     public EventSignupApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager,
-      ITokenVerifier tokenVerifier)
+      ITokenManager tokenManager, ITokenVerifier tokenVerifier,RoleManager<IdentityRole> rm)
     {
       _db = db;
       _um = userManager;
+      _tokenManager = tokenManager;
       _tokenVerifier = tokenVerifier;
+      tokenFactory = new TokenFactory(_um,rm,tokenManager);
     }
 
     [Authorize("Event.write")]
@@ -46,7 +53,8 @@ namespace betauia.Controllers
         {
           Email = atendee.Email,
           Firstname = atendee.Firstname,
-          Lastname = atendee.Lastname
+          Lastname = atendee.Lastname,
+          Confirmed = atendee.Confirmed
         };
         attendeesView.Add(attview);
       }
@@ -106,6 +114,7 @@ namespace betauia.Controllers
         Email = user.Email,
         Firstname =  user.FirstName,
         Lastname = user.LastName,
+        Confirmed = true,
       };
       _db.EventAtendees.Add(eventAtendee);
       _db.Events.Find(id).Atendees++;
@@ -122,12 +131,37 @@ namespace betauia.Controllers
         return BadRequest("Email already registered");
       }
 
+      var Event = await _db.Events.FindAsync(atendee.EventId);
+      if (Event == null) return NoContent();
+
       atendee.EventId = id;
-      _db.EventAtendees.Add(atendee);
+      await _db.EventAtendees.AddAsync(atendee);
       _db.Events.Find(id).Atendees++;
-      _db.SaveChanges();
+      await _db.SaveChangesAsync();
+
+      var token = await tokenFactory.GetEventSignupToken(atendee.ID.ToString());
+      var url = "http://localhost:8080/attendeeemailconfirm/" + token;
+
+      SmtpClient smtp = new SmtpClient("smtp.gtm.no");
+      smtp.EnableSsl = false;
+      smtp.Port = 587;
+      smtp.Credentials = new NetworkCredential("betalan@betauia.net","8iFK0N2tdz");
+      smtp.Send("noreply@betauia.net","erikaspen1@gmail.com","Verify signup for event " + Event.Title,url);
+      return Ok(token);
+    }
+
+    [HttpGet]
+    [Route("confirmeventemail/{id}")]
+    public async Task<IActionResult> ConfirmEventEmail([FromRoute] string id)
+    {
+      var eventid = await _tokenVerifier.VerifyEventSignupToken(id);
+      var eventattendee =await _db.EventAtendees.FindAsync(Convert.ToInt32(eventid));
+      eventattendee.Confirmed = true;
+      await _db.SaveChangesAsync();
       return Ok();
     }
+
+
 
     public class EventAttTickView
     {
@@ -139,6 +173,7 @@ namespace betauia.Controllers
       public string Email{ get; set; }
       public string Firstname{ get; set; }
       public string Lastname{ get; set; }
+      public bool Confirmed { get; set; }
     }
 
     public class SimpleTicketView

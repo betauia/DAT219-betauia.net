@@ -19,6 +19,7 @@
                 <p>Email: {{attendee.email}}</p>
                 <p>Firstname: {{attendee.firstname}}</p>
                 <p>Lastname: {{attendee.lastname}}</p>
+                <p>Confirmed: {{attendee.confirmed}}</p>
             </div>
         </div>
     </div>

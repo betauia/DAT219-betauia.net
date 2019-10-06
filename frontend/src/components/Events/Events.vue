@@ -18,6 +18,7 @@
                 <li>Slutter: {{event.eventModel.enddate}}</li>
               <div>
                   <div class="label" v-if="event.sponsors.length>0">Sponset av:
+
                       <div class="content" v-for="sponsor of event.sponsors">
                           <p>{{sponsor.title}}</p>
                           <p>{{sponsor.description}}</p>
@@ -44,7 +45,17 @@
                             <p><input class="input is-primary" type="text" name="email" placeholder="email@address.com"/></p>
                             <button class="button is-link" v-on:click="joinEventByEmail">Sign me up!!</button>
                         </span>
-                    </footer>
+                    </footer> <!--
+                    <div id="emailSignup" v-if="showEmail==true">
+                        <form>
+                            <item><input type="text" name="firstname" placeholder="Fornavn"></item>
+                            <item><input type="text" name="lastname" placeholder="Etternavn"></item>
+                            <item><input type="text" name="email" placeholder="email@address.com"></item>
+                        </form>
+                </div>
+                    <button class="button is-link" v-on:click="joinEventByEmail">Sign me up!!</button>
+                    <div v-if="emailsignupResponse!=null">{{emailsignupResponse}}</div>
+>>>>>>> 5451abc30a45c8ed4857727733635a15baba47d1 -->
                 </div>
 
             <div v-if="event.eventModel.seatMap!=null">
@@ -78,6 +89,7 @@ import Sponsors from "../Sponsors/Sponsors";
     data(){
         return{
             showEmail:false,
+            emailsignupResponse:null,
         }
     },
   methods: {
@@ -156,9 +168,15 @@ import Sponsors from "../Sponsors/Sponsors";
         .then(function(response){
           console.log(response);
           self.event.eventModel.atendees++;
+          self.emailsignupResponse = "A confirmation email has been sent, it expires in 1 hour";
         })
         .catch(function(error){
-          console.log(error);
+          console.log(error.response);
+          if(error.response.data == "Email already registered"){
+            self.emailsignupResponse = "Email already registered for event, please use another"
+          }else{
+            self.emailsignupResponse = "An error occured, please try again later";
+          }
         })
     },
   }

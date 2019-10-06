@@ -5,8 +5,9 @@
     </header>
     <div class="card-content">
       <h1 class="summary">{{post.summary}}</h1>
-      <div class="content">
-        {{post.content}}
+        <image-widget :image-id="post.image"></image-widget>
+        <div class="content">
+          {{post.content}}
         <br>
         <div class="italic">Last edited at: {{post.lastEditDate}}</div>
       </div>
@@ -20,16 +21,18 @@ import axios from"@/axios.js";
 export default {
   data() {
     return {
-      post: Object
+      post: {}
     };
   },
   created() {
+    console.log(this.post)
     var id = this.$route.params.id;
     var self = this;
     axios
       .get("/api/blog/" + id)
       .then(function(response) {
         self.post = response.data;
+        console.log(response.data)
       })
       .catch(function(error) {
         console.log(error.response.data);

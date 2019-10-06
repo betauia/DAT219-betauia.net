@@ -57,12 +57,15 @@
           </b-dropdown>
       </nav>
       <nav class="navbar-end" v-else>
-        <router-link
+        <!--<router-link
           @click.native="isActive = false"
           class="navbar-item"
           to="/account/info"
-        >Your account</router-link>
+        >Your account</router-link>-->
+        <AccountDropdown></AccountDropdown>
+          <!--
         <router-link @click.native="logout" class="navbar-item" to="/">Logout</router-link>
+        -->
       </nav>
     </div>
   </nav>
@@ -72,9 +75,11 @@
 <script>
 import axios from"@/axios.js";
 import Login from "../Account/Login";
+import AccountDropdown from "../Account/AccountDropdown";
 
 export default {
     components: {
+        AccountDropdown,
         Login,
     },
   data: () => ({

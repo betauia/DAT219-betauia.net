@@ -1,5 +1,7 @@
 <template>
     <div class="blogdetailed">
+        <image-upload-widget ref="imageupload"></image-upload-widget>
+
         <div class="field">
             <label class="label" for="blogTitle">Title</label>
             <div class="control">
@@ -63,6 +65,7 @@
 
 <script>
 import axios from"@/axios.js";
+import ImageUploadWidget from '@/components/Upload/ImageUploadWidget.vue';
 
   export default {
     name: 'BlogDetail',
@@ -70,6 +73,9 @@ import axios from"@/axios.js";
       return{
         post:{},
       }
+    },
+    components:{
+      ImageUploadWidget,
     },
     created() {
       const id = this.$route.params.id;
@@ -85,7 +91,8 @@ import axios from"@/axios.js";
         })
     },
     methods:{
-      updateBlog(){
+      async updateBlog(){
+        var image = await this.$refs.imageupload.uploadImage();
         var token = localStorage.getItem("token");
         var title = document.querySelector("input[name=blogTitle]").value;
         var summary = document.querySelector("input[name=blogDescription]").value;
@@ -100,7 +107,9 @@ import axios from"@/axios.js";
         bodyParam.content = content;
         bodyParam.summary = summary;
         bodyParam.title = title;
-
+        if(image != ""){
+          bodyParam.image = image;
+        }
         console.log(bodyParam)
         var self = this;
         axios

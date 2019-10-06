@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace betauia.Models
 {
@@ -8,10 +9,34 @@ namespace betauia.Models
     {
       TimePurchased = t.TimePurchased;
       Amount = t.Amount;
-      Status = t.Status;
       MobileNumber = t.MobileNumber;
       Id = t.VippsOrderId;
       EventTitle = eventTitle;
+
+      switch (t.Status)
+      {
+        case "STARTED":
+          Status = "Ticket created";
+          break;
+        case "INITIATE":
+          Status = "Payment initiated";
+          break;
+        case "CANCEL" :
+          Status = "Ticket cancelled";
+          break;
+        case "RESERVE" :
+            Status = "Ticket delivered";
+            break;
+        case "REFUND" :
+            Status = "Ticket refunded";
+            break;
+        case "CAPTURE" :
+          Status = "Payment is being captured";
+          break;
+        default:
+          Status = "An error occured getting ticket staus";
+          break;
+      }
     }
 
     public string Id { get; set; }

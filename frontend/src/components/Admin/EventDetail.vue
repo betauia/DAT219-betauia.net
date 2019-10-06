@@ -148,8 +148,8 @@
 </template>
 
 <script>
-import axios from 'axios';
-import ImageUploadWidget from "../Upload/ImageUploadWidget";
+  import axios from"@/axios.js";
+  import ImageUploadWidget from '@/components/Upload/ImageUploadWidget.vue';
   export default {
     name: 'EventDetail',
       components: {ImageUploadWidget},
@@ -174,7 +174,7 @@ import ImageUploadWidget from "../Upload/ImageUploadWidget";
         },
       }
     },
-    created() {
+    async created() {
       const id = this.$route.params.id;
       const self = this;
       var token = localStorage.getItem("token");
@@ -182,13 +182,17 @@ import ImageUploadWidget from "../Upload/ImageUploadWidget";
         headers: { Authorization: "bearer " + token }
       };
 
-      axios
+      await axios
         .get("/api/event/"+id)
         .then(function (response) {
           console.log(response.data);
           self.event = response.data;
-          self.startdate = getParsedTime(response.data.eventModel.startdate);
-          self.enddate = getParsedTime(response.data.eventModel.enddate);
+          if(response.data.eventModel.startdate != ""){
+            self.startdate = getParsedTime(response.data.eventModel.startdate);
+          }
+          if(response.data.eventModel.enddate !=""){
+            self.enddate = getParsedTime(response.data.eventModel.enddate);
+          }
           if(response.data.sponsors.length >0){
             response.data.sponsors.forEach(function (a) {
               self.selectedSponsors.push(a.id);
@@ -198,10 +202,10 @@ import ImageUploadWidget from "../Upload/ImageUploadWidget";
           }
         })
         .catch(function (error) {
-          console.log(error.response);
+          console.log(error);
         });
 
-      axios
+      await axios
         .get("/api/sponsor", config)
         .then(function(response) {
           console.log(self.selectedSponsors);
@@ -265,8 +269,10 @@ import ImageUploadWidget from "../Upload/ImageUploadWidget";
             isPublic: this.ispublic,
             enddate:enddate,
             startdate:startdate,
-            image: image,
           };
+          if(image != ""){
+            eventModel.image = image;
+          }
 
           var bodyParameters = {
             eventModel:eventModel,

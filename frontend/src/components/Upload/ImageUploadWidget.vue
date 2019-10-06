@@ -51,6 +51,10 @@ export default {
       });
     },
     async axiosResponse(){
+      if(this.image == null){
+        return ""
+      }
+
       var formData = new FormData();
       var imageFile = this.image.file;
       formData.append("image",imageFile[0]);

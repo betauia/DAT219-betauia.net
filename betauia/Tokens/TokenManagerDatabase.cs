@@ -54,8 +54,8 @@ namespace betauia.Tokens
     {
       var t = new TokenUserModel
       {
-        User = "true",
-        Token = token
+        User = token,
+        Token = "true",
       };
       await db.TokenUserModels.AddAsync(t);
       await db.SaveChangesAsync();

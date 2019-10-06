@@ -101,6 +101,10 @@ export default new Router({
             component:()=>import('./components/Account/NotVerified.vue')
         },
         {
+            path: '/account/accountdrop',
+            component:()=>import('./components/Account/AccountDropdown.vue')
+        },
+        {
             path: '/account',
             component: () => import('./components/Account/Account.vue'),
             children: [{
@@ -214,6 +218,10 @@ export default new Router({
   {
     path: '/verifyemail/:id',
     component: () => import('./components/Account/EmailVerify.vue'),
+  },
+  {
+      path: '/attendeeemailconfirm/:id',
+      component: () => import('./components/Events/ConfirmEventEmail.vue'),
   },
   {
     path: '*',

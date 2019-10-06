@@ -8,8 +8,10 @@ namespace betauia.Models
       Email = null;
       Firstname = null;
       Lastname = null;
+      Confirmed = false;
     }
     public int ID { get; set; }
+    public bool Confirmed { get; set; }
     public int EventId { get; set; }
     public string Userid { get; set; }
     public string Email { get; set; }

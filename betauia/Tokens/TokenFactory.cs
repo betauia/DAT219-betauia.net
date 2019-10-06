@@ -46,7 +46,7 @@ namespace betauia.Tokens
                 audience: "https://localhost:5001",
                 claims: claims,
                 notBefore: DateTime.Now,
-                expires: DateTime.Now.AddDays(28),
+                expires: DateTime.Now.AddMinutes(2),
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg")), SecurityAlgorithms.HmacSha256)
                 );
 
@@ -179,6 +179,26 @@ namespace betauia.Tokens
                 }
             }
             return string.Empty;
+        }
+
+        public async Task<string> GetEventSignupToken(string id)
+        {
+          var claims = new Claim[]
+          {
+            new Claim("id", id),
+            new Claim("eventemail","true",ClaimValueTypes.String),
+          };
+
+          var token = new JwtSecurityToken(
+            issuer:"betauia",
+            audience:"https://localhost:5001",
+            claims: claims,
+            expires: DateTime.Now.AddHours(1),
+            signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg")), SecurityAlgorithms.HmacSha256)
+          );
+          var stoken = new JwtSecurityTokenHandler().WriteToken(token);
+          await _tokenManager.AddTokenAsync(stoken);
+          return stoken;
         }
     }
 }

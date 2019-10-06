@@ -1,6 +1,10 @@
 <template>
   <div class="form-horizontal padding center" enctype="multipart/form-data">
     <div class="is-1 title">Add Post</div>
+
+      <div class="column">
+          <ImageUploadWidget ref="imageupload"></ImageUploadWidget>
+      </div>
     <!-- Text input-->
     <div class="field">
       <label class="label" for="blogTitle">Title</label>
@@ -77,13 +81,19 @@
 
 <script>
 import axios from"@/axios.js";
+import ImageUploadWidget from '@/components/Upload/ImageUploadWidget.vue';
 
 export default {
+  components:{
+    ImageUploadWidget,
+  },
   data() {
     return {};
   },
   methods: {
-    addPost() {
+    async addPost() {
+      var image = await this.$refs.imageupload.uploadImage();
+
       var token = localStorage.getItem("token");
       var title = document.querySelector("input[name=blogTitle]").value;
       var summary = document.querySelector("input[name=blogDescription]").value;
@@ -96,7 +106,8 @@ export default {
       var bodyParamters = {
         title: title,
         summary: summary,
-        content: content
+        content: content,
+        image: image
       };
       var self = this;
       axios

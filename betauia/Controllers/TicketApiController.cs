@@ -37,6 +37,7 @@ namespace betauia.Controllers
       _tokenVerifier = tokenVerifier;
     }
 
+    [Authorize("User")]
     [Route("get")]
     [HttpGet]
     public async Task<IActionResult> GetAllTicketOnUser([FromHeader] string Authorization)
@@ -44,7 +45,7 @@ namespace betauia.Controllers
       var token = Authorization.Split(' ')[1];
       var userid = await _tokenVerifier.GetTokenUser(token);
 
-      var tickets = _db.Tickets.Where(a => a.UserId == userid).ToList();
+      var tickets = _db.Tickets.Where(a => a.UserId == userid && a.Status != "STARTED").ToList();
       var viewtickets = new List<TicketViewModel>();
       foreach (var ticket in tickets)
       {
@@ -55,6 +56,7 @@ namespace betauia.Controllers
     }
 
     [Route("get/{id}")]
+    [Authorize("User")]
     [HttpGet]
     public async Task<IActionResult> GetTicket([FromRoute] int id,[FromHeader] string Authorization)
     {
@@ -89,6 +91,7 @@ namespace betauia.Controllers
     }
 
     [HttpPost]
+    [Authorize("User")]
     [Route("newticket")]
     public async Task<IActionResult> NewTicket([FromHeader] string Authorization, [FromBody] NewTicketModel ticketModel)
     {
@@ -137,6 +140,7 @@ namespace betauia.Controllers
     }
 
     [Route("initiatepayment")]
+    [Authorize("User")]
     [HttpPost]
     public async Task<IActionResult> InitiatePayment([FromHeader] string Authorization, InitiatePaymentModel paymentModel)
     {
@@ -180,6 +184,7 @@ namespace betauia.Controllers
     }
 
     [Route("paymentstatus/{id}")]
+    [Authorize("User")]
     [HttpGet]
     public async Task<IActionResult> getTicketStatus([FromRoute] string id,[FromHeader] string Authorization)
     {
