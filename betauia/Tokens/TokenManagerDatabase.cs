@@ -21,6 +21,14 @@ namespace betauia.Tokens
 
     public async Task AddUserTokenAsync(string id,string token)
     {
+      var to = await db.TokenUserModels.FindAsync(id);
+      if (to != null)
+      {
+        to.Token = token;
+        db.TokenUserModels.Update(to);
+        await db.SaveChangesAsync();
+        return;
+      }
       var t = new TokenUserModel
       {
         User = id,
