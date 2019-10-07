@@ -28,33 +28,16 @@
         <hr class="navbar-divider">
       </div>
       <nav class="navbar-end" v-if="!isLoggedIn">
-        <router-link
-          @click.native="isActive = false"
-          class="navbar-item"
-          to="/account/register"
-        >Register</router-link>
 
-          <b-dropdown position="is-bottom-left" aria-role="menu" trap-focus>
-              <a
-                  class="navbar-item"
-                  slot="trigger"
-                  role="button">
-                  <span>Login</span>
-                  <b-icon icon="menu-down"></b-icon>
-              </a>
+          <hr class="navbar-divider">
+          <div
+              @click.native="isActive = false"
+              class="navbar-item">
+              <Register></Register>
+          </div>
+          <hr class="navbar-divider">
+          <Login></Login>
 
-              <b-dropdown-item
-                  aria-role="menu-item"
-                  :focusable="false"
-                  custom
-                  paddingless>
-                  <form action="">
-                      <div class="modal-card" style="width:300px;">
-                          <Login></Login>
-                      </div>
-                  </form>
-              </b-dropdown-item>
-          </b-dropdown>
       </nav>
       <nav class="navbar-end" v-else>
         <!--<router-link
@@ -76,11 +59,13 @@
 import axios from"@/axios.js";
 import Login from "../Account/Login";
 import AccountDropdown from "../Account/AccountDropdown";
+import Register from "../Account/Register";
 
 export default {
     components: {
         AccountDropdown,
         Login,
+        Register,
     },
   data: () => ({
     isActive: false,

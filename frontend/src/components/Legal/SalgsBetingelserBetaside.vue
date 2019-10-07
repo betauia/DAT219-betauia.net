@@ -1,10 +1,10 @@
 <template>
     <span>
-        <span v-on:click="isComponentModalActive=true">
+        <span v-on:click="isTermsOfSaleModalActive=true">
             <a>kjøpsavtalen</a>
         </span>
 
-        <b-modal class="is-centered" :active.sync="isComponentModalActive"
+        <b-modal class="is-centered" :active.sync="isTermsOfSaleModalActive"
                  full-screen has-modal-card :can-cancel="true">
             <div class="modal-card">
                 <header class="modal-card-head">
@@ -31,7 +31,7 @@
                 <footer class="modal-card-foot">
                     <div class="card-footer-item"></div>
                     <div class="card-footer-item">
-                        <b-button class="button" type="button" @click="isComponentModalActive=false">Lukk</b-button>
+                        <b-button class="button" type="button" @click="isTermsOfSaleModalActive=false">Lukk</b-button>
                     </div>
                 </footer>
             </div>
@@ -44,7 +44,7 @@
 export default {
     data() {
         return {
-            isComponentModalActive: false,
+            isTermsOfSaleModalActive: false,
             isAccepted: false,
         };
     },

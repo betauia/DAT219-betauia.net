@@ -1,55 +1,80 @@
 <template>
-  <section class="card column is-6 is-offset-3">
-    <b-field label="Firstname">
-      <b-input :value="firstname" name="firstname"></b-input>
-    </b-field>
+      <span class="navbar-item">
+          <span v-on:click="isRegisterModalActive=true">
+            <a>Register</a>
+          </span>
+          <b-modal
+              class="is-centered"
+              :active.sync="isRegisterModalActive"
+              full-screen
+              has-modal-card
+              :can-cancel="true">
+              <form action="">
+                  <div class="modal-card" style="width: auto">
+                      <form action="">
+                          <div class="modal-card" style="width: auto">
+                              <header class="modal-card-head">
+                                  <p class="modal-card-title">Register</p>
+                              </header>
+                              <section class="modal-card-body">
+                                  <b-field label="Firstname">
+                                      <b-input v-model="firstname" name="firstname" required></b-input>
+                                  </b-field>
 
-    <b-field label="Lastname">
-      <b-input :value="lastname" name="lastname"></b-input>
-    </b-field>
+                                  <b-field label="Lastname">
+                                      <b-input :value="lastname" name="lastname" required></b-input>
+                                  </b-field>
 
-    <b-field label="Email">
-      <b-input
-        type="email"
-        :value="email"
-        name="email"
-      ></b-input>
-    </b-field>
+                                  <b-field label="Username">
+                                      <b-input
+                                          type="username"
+                                          :value="username"
+                                          name="username"
+                                          required
+                                      ></b-input>
+                                  </b-field>
 
-    <b-field label="Username">
-      <b-input
-        type="username"
-        :value="username"
-        name="username"
-      ></b-input>
-    </b-field>
+                                  <b-field label="Email">
+                                      <b-input
+                                          type="email"
+                                          :value="email"
+                                          placeholder="Your email"
+                                          required>
+                                      </b-input>
+                                  </b-field>
 
-    <b-field
-      label="Password"
-    >
-      <b-input
-        :value="password"
-        type="password"
-        name="password"
-      ></b-input>
-    </b-field>
+                                  <b-field label="Password">
+                                      <b-input
+                                          type="password"
+                                          :value="password"
+                                          password-reveal
+                                          placeholder="Your password"
+                                          required>
+                                      </b-input>
+                                  </b-field>
 
-    <b-field
-      label="Password Again"
-    >
-      <b-input
-        :value="again_password"
-        type="password"
-        name="again_password"
-      ></b-input>
-    </b-field>
+                                  <b-field label="Password Again">
+                                      <b-input
+                                          :value="again_password"
+                                          type="password"
+                                          name="again_password"
+                                          required
+                                      ></b-input>
+                                  </b-field>
 
-    <div class="is-3 padding">Insert Recaptcha here for auth of humanoids</div>
+                                  <div class="is-3 padding">Insert Recaptcha here for auth of humanoids</div>
 
-    <p class="control">
-      <button v-on:click="register" class="button is-primary">Register</button>
-    </p>
-  </section>
+                              </section>
+                              <footer class="modal-card-foot">
+                                  <button class="button" type="button" @click="isRegisterModalActive=false">Close</button>
+                                  <button class="button is-primary" v-on:click="register">Register</button>
+                              </footer>
+                          </div>
+                      </form>
+                  </div>
+              </form>
+          </b-modal>
+      </span>
 </template>
 
 <script>
@@ -57,8 +82,19 @@ import axios from"@/axios.js";
 import { constants } from "crypto";
 
 export default {
+    name: 'register',
   data() {
-    return {};
+    return {
+        isRegisterModalActive: false,
+        registerProps: {
+            firstname: '',
+            lastname: '',
+            username: '',
+            email: '',
+            password: '',
+            password_again: '',
+        }
+    };
   },
   methods: {
     register() {
