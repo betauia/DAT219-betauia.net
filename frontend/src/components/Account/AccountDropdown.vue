@@ -7,31 +7,25 @@
             class="navbar-item"
             slot="trigger"
             role="button">
-            <span>Account</span>
+            <span class="has-text-white">Account</span>
             <b-icon icon="menu-down"></b-icon>
         </a>
-        <div class="is-primary">
+        <div class="label">
             <b-dropdown-item custom aria-role="menuitem">
                 Logged in successfully <b></b>
             </b-dropdown-item>
             <hr class="dropdown-divider">
-            <b-dropdown-item value="home" aria-role="menuitem">
-                <router-link to="/account/info">
+            <b-dropdown-item class="has-text-black" value="home" aria-role="menuitem" href="/account/info">
                     <b-icon icon="home"></b-icon>
                     Account Information
-                </router-link>
             </b-dropdown-item>
-            <b-dropdown-item value="products" aria-role="menuitem">
-                <router-link to="/account/accountorders">
+            <b-dropdown-item value="products" aria-role="menuitem" href="/account/accountorders">
                     <b-icon icon="cart"></b-icon>
                     Orders/Tickets
-                </router-link>
             </b-dropdown-item>
-            <b-dropdown-item value="blog" aria-role="menuitem">
-                <router-link to="/account/edit/${user.id}">
+            <b-dropdown-item value="blog" aria-role="menuitem" href="/account/edit/${user.id}">
                     <b-icon icon="book-open"></b-icon>
                     Edit Information
-                </router-link>
             </b-dropdown-item>
             <hr class="dropdown-divider">
             <b-dropdown-item value="logout" v-on:click="logout" aria-role="menuitem">
@@ -62,5 +56,7 @@
 </script>
 
 <style scoped>
-
+a {
+    color: #1b1e21;
+}
 </style>
