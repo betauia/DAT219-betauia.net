@@ -33,7 +33,7 @@ namespace betauia.Controllers
       tokenFactory = new TokenFactory(_um,rm,tokenManager);
     }
 
-    [Authorize("Event.read")]
+    [Authorize("Event.write")]
     [Authorize("Ticket.read")]
     [HttpGet("attendee/get/{id}")]
     public IActionResult GetAllAttendees([FromRoute] string id)

@@ -44,18 +44,10 @@
                             <p><input class="input is-primary" type="text" name="lastname" placeholder="Etternavn"/></p>
                             <p><input class="input is-primary" type="text" name="email" placeholder="email@address.com"/></p>
                             <button class="button is-link" v-on:click="joinEventByEmail">Sign me up!!</button>
+                            <div v-if="emailsignupResponse!=null">{{emailsignupResponse}}</div>
                         </span>
-                    </footer> <!--
-                    <div id="emailSignup" v-if="showEmail==true">
-                        <form>
-                            <item><input type="text" name="firstname" placeholder="Fornavn"></item>
-                            <item><input type="text" name="lastname" placeholder="Etternavn"></item>
-                            <item><input type="text" name="email" placeholder="email@address.com"></item>
-                        </form>
-                </div>
+                    </footer>
                     <button class="button is-link" v-if="showEmail==true" v-on:click="joinEventByEmail">Sign me up!!</button>
-                    <div v-if="emailsignupResponse!=null">{{emailsignupResponse}}</div>
->>>>>>> 5451abc30a45c8ed4857727733635a15baba47d1 -->
                 </div>
 
             <div v-if="event.eventModel.seatMap!=null">

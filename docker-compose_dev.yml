@@ -6,12 +6,8 @@ services:
     hostname: beta_backend
     build:
       context: ./betauia
-      dockerfile: Dockerfile
-    ports:
-      - 5001:80
-      - 59451:59451
-    links:
-      - beta_db
+      dockerfile: Dockerfile-Dev
+    network_mode: host
 
   beta_frontend:
     restart: always
@@ -19,7 +15,7 @@ services:
     hostname: beta_frontend
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-Dev
     network_mode: host
     depends_on:
       - beta_backend
@@ -30,16 +26,12 @@ services:
     container_name: beta_db
     hostname: beta_db
     environment:
-      MYSQL_DATABASE: 'beta_db'
-      MYSQL_USER: 'boiis'
-      MYSQL_PASSWORD: 'dM@&F%JZ8wbPA!8fYnx4Zh!PdX#kDd7avAJNMjSXNY%Un%au'
-      MYSQL_ROOT_PASSWORD: '5^k7Er%hr4@xHMgpkzG7wN#fK8g4b6m*JdD&ARB&z*pqf%5UM'
-    ports:
-      - '3306:3306'
-    expose:
-      - '3306'
+      MYSQL_DATABASE: ${mysql_db}
+      MYSQL_USER: ${mysql_user}
+      MYSQL_PASSWORD: ${mysql_passwd}
+      MYSQL_ROOT_PASSWORD: ${mysql_root_passwd}
     volumes:
-      - beta-db:/var/lib/mysql
+      - beta-db:/var/ib/mysql
 
   beta_redis:
     restart: always
@@ -48,11 +40,10 @@ services:
     hostname: beta_redis
     volumes:
      - beta-redis:/data
-    links:
-     - beta_backend
 
 volumes:
   beta-db:
     driver: local
   beta-redis:
     driver: local
+
