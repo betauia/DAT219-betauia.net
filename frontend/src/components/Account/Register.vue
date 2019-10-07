@@ -1,5 +1,5 @@
 <template>
-  <section class="padding center">
+  <section class="card column is-6 is-offset-3">
     <b-field label="Firstname">
       <b-input :value="firstname" name="firstname"></b-input>
     </b-field>
@@ -11,7 +11,7 @@
     <b-field label="Email">
       <b-input
         type="email"
-        :value="username"
+        :value="email"
         name="email"
       ></b-input>
     </b-field>
@@ -67,8 +67,7 @@ export default {
       var lastname = document.querySelector("input[name=lastname]").value;
       var email = document.querySelector("input[name=email]").value;
       var password = document.querySelector("input[name=password]").value;
-      var confirmpassword = document.querySelector("input[name=again_password]")
-        .value;
+      var confirmpassword = document.querySelector("input[name=again_password]").value;
 
       var self = this;
       axios
