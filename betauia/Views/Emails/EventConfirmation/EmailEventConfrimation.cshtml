@@ -2,10 +2,10 @@
 
 @{
   Layout = "_EmailLayoutHtml";
-  ViewContext.ViewData["EmailTitle"] = "Verify your BETA Account!";
+  ViewContext.ViewData["EmailTitle"] = "You successfully signed up to {{event.title}}";
 }
 
-<p>It looks like you may have just sent your first custom email!</p>
+<p>You have been added to the list of attendants to this event:</p>
 
 @await Html.PartialAsync("_EmailButton", new EmailButtonViewModel("Let's Go!", Model.ButtonLink))
 
