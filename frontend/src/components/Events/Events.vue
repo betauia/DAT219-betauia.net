@@ -34,10 +34,10 @@
                     </span>
                     <footer class="card-footer">
                         <div class="card-footer-item">
-                            <b-button v-on:click="joinEventByUser">Reserver med BETA konto</b-button>
+                            <b-button class="is-primary" v-on:click="joinEventByUser">Reserver med BETA konto</b-button>
                         </div>
                         <div class="card-footer-item">
-                            <b-button v-on:click="showEmail=!showEmail">Reserver med epost</b-button>
+                            <b-button class="is-primary" v-on:click="showEmail=!showEmail">Reserver med epost</b-button>
                         </div>
                         <span v-if="showEmail">
                             <p><input class="input is-primary" type="text" name="firstname" placeholder="Fornavn"/></p>

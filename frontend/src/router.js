@@ -211,6 +211,10 @@ export default new Router({
                 {
                     path: '/admin/jobdetail/:id',
                     component: () => import('./components/Admin/JobDetail.vue')
+                },
+                {
+                    path:'/admin/ticketverify/:id',
+                    component:()=>import('./components/Admin/TicketVerify.vue')
                 }
             ]
 

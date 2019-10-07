@@ -11,6 +11,7 @@
                 </p>
                 <p>Status: {{ticket.status}}</p>
                 <p>Vipps id: {{ticket.vippsid}}</p>
+                <p>Verified: {{ticket.verified}}</p>
             </div>
         </div>
 

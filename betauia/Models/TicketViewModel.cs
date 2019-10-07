@@ -12,7 +12,8 @@ namespace betauia.Models
       MobileNumber = t.MobileNumber;
       Id = t.VippsOrderId;
       EventTitle = eventTitle;
-
+      QR = t.QR;
+      Verified = t.Verified;
       switch (t.Status)
       {
         case "STARTED":
@@ -31,10 +32,10 @@ namespace betauia.Models
             Status = "Ticket refunded";
             break;
         case "CAPTURE" :
-          Status = "Payment is being captured";
+          Status = "Order successful";
           break;
         default:
-          Status = "An error occured getting ticket staus";
+          Status = "An error occured getting ticket status";
           break;
       }
     }
@@ -46,5 +47,7 @@ namespace betauia.Models
     public string MobileNumber { get; set; }
     public List<EventSeat> Seats { get; set; }
     public string EventTitle { get; set; }
+    public string QR { get; set; }
+    public bool Verified { get; set; }
   }
 }

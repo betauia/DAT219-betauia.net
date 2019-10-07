@@ -3,6 +3,7 @@
         <section class="modal-card-body">
             <b-field label="Email">
                 <b-input
+                    id="email"
                     type="email"
                     placeholder="Your email"
                     v-model="input.username"
@@ -13,8 +14,10 @@
 
             <b-field label="Password">
                 <b-input
+                    id="password"
                     type="password"
                     name="password"
+                    v-model="input.password"
                     password-reveal
                     placeholder="Your password"
                     required>
@@ -100,20 +103,22 @@
         },
         methods: {
             login() {
-                var user = document.querySelector("input[name=email]").value;
-                var password = document.querySelector("input[name=password]").value;
+                var user = document.getElementById("email").value;
+                var password = document.getElementById("password").value;
                 var jsond = new Object();
                 jsond["username"] = user;
                 jsond["password"] = password;
                 var jsondata = JSON.stringify(jsond);
 
                 var self = this;
+                var body ={
+                  username: this.input.username,
+                  password: this.input.password
+                };
+                console.log(body)
 
                 axios
-                    .post("/api/account/login", {
-                        username: user,
-                        password: password
-                    })
+                    .post("/api/account/login",body,{})
                     .then(function(response) {
                         console.log("Logged in");
                         console.log(response["data"]);
