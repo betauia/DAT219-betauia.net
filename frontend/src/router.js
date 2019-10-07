@@ -211,6 +211,10 @@ export default new Router({
                 {
                     path: '/admin/jobdetail/:id',
                     component: () => import('./components/Admin/JobDetail.vue')
+                },
+                {
+                    path:'/admin/ticketverify/:id',
+                    component:()=>import('./components/Admin/TicketVerify.vue')
                 }
             ]
 
@@ -223,6 +227,10 @@ export default new Router({
       path: '/attendeeemailconfirm/:id',
       component: () => import('./components/Events/ConfirmEventEmail.vue'),
   },
+{
+  path:'/maintenance',
+    component: () => import('./views/maintenance.vue'),
+},
   {
     path: '*',
     component: () => import('./components/Error/NotFound.vue'),

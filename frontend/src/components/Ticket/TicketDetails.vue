@@ -6,20 +6,22 @@
         <p>Total price: {{ticketModel.amount}}</p>
         <p>Payment status: {{ticketModel.status}}</p>
         <p>Time purchased: {{ticketModel.timePurchased}}</p>
+        <img :src="image">
     </div>
 </template>
 
 <script>
-  import axios from 'axios';
+  import axios from"@/axios.js";
 
   export default {
     name: 'TicketDetails',
     data(){
       return{
+        image:'',
         ticketModel:{},
       }
     },
-    created() {
+    async created() {
       const id = this.$route.params.id;
       const self = this;
       var token = localStorage.getItem("token");
@@ -27,11 +29,12 @@
         headers: { Authorization: "bearer " + token }
       };
 
-      axios
+      await axios
         .get("/api/ticket/paymentstatus/"+id,config)
         .then(function(response){
           console.log(response.data);
           self.ticketModel = response.data;
+          self.image = 'data:image/png;base64,'+response.data.qr
         })
         .catch(function(error){
           console.log(error.response.data);

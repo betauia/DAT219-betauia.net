@@ -1,0 +1,49 @@
+version: '3'
+services:
+  beta_backend:
+    restart: always
+    container_name: beta_backend
+    hostname: beta_backend
+    build:
+      context: ./betauia
+      dockerfile: Dockerfile-Dev
+    network_mode: host
+
+  beta_frontend:
+    restart: always
+    container_name: beta_frontend
+    hostname: beta_frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile-Dev
+    network_mode: host
+    depends_on:
+      - beta_backend
+
+  beta_db:
+    image: mysql:5.7
+    restart: always
+    container_name: beta_db
+    hostname: beta_db
+    environment:
+      MYSQL_DATABASE: ${mysql_db}
+      MYSQL_USER: ${mysql_user}
+      MYSQL_PASSWORD: ${mysql_passwd}
+      MYSQL_ROOT_PASSWORD: ${mysql_root_passwd}
+    volumes:
+      - beta-db:/var/ib/mysql
+
+  beta_redis:
+    restart: always
+    image: redis:alpine
+    container_name: beta_redis
+    hostname: beta_redis
+    volumes:
+     - beta-redis:/data
+
+volumes:
+  beta-db:
+    driver: local
+  beta-redis:
+    driver: local
+

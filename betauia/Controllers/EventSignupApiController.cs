@@ -34,6 +34,7 @@ namespace betauia.Controllers
     }
 
     [Authorize("Event.write")]
+    [Authorize("Ticket.read")]
     [HttpGet("attendee/get/{id}")]
     public IActionResult GetAllAttendees([FromRoute] string id)
     {
@@ -73,7 +74,8 @@ namespace betauia.Controllers
           Lastname = user.LastName,
           Status = ticket.Status,
           Vippsid = ticket.VippsOrderId,
-          Seats = _db.EventSeats.Where(a => a.TicketId == ticket.Id.ToString()).ToList()
+          Seats = _db.EventSeats.Where(a => a.TicketId == ticket.Id.ToString()).ToList(),
+          Verified = ticket.Verified,
         };
         ticketviews.Add(ticketView);
       }
@@ -185,6 +187,7 @@ namespace betauia.Controllers
       public string Status{ get; set; }
       public string Vippsid{ get; set; }
       public List<EventSeat> Seats{ get; set; }
+      public bool Verified { get; set; }
     }
   }
 }

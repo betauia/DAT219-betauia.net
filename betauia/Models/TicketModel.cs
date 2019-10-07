@@ -7,12 +7,12 @@ namespace betauia.Models
     {
         public TicketModel()
         {
-
+            Verified = false;
         }
 
         public void CancelTicket(ApplicationDbContext dbContext)
         {
-          Status = "CANCEL";
+          Status = "CANCEfaL";
           MobileNumber = null;
           Amount = 0;
           TimePurchased = null;
@@ -20,6 +20,8 @@ namespace betauia.Models
           EventId = 0;
           User = null;
           UserId = null;
+          QR = null;
+          Verified = false;
 
           var seats = dbContext.EventSeats.Where(a => a.TicketId == Id.ToString());
           foreach (var seat in seats)
@@ -40,5 +42,7 @@ namespace betauia.Models
         public string MobileNumber { get; set; }
         public string VippsOrderId { get; set; }
         public int EventId { get; set; }
+        public string QR { get; set; }
+        public bool Verified { get; set; }
     }
 }

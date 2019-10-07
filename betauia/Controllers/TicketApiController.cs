@@ -12,6 +12,9 @@ using Microsoft.EntityFrameworkCore;
 using betauia.Tokens;
 using betauia.Vipps;
 using Microsoft.AspNetCore.Authorization;
+using ZXing;
+using ZXing.Common;
+using ZXing.QrCode;
 
 // All requests tested and working
 
@@ -231,8 +234,10 @@ namespace betauia.Controllers
           {
             ticket.Status = "CAPTURE";
             ticket.TimePurchased = capture.transactionInfo.timeStamp;
-            _db.SaveChanges();
             //Generate QR code//
+            ticket.QR =  QRCode.GetQr("localhost:8080/admin/ticketverify/" + ticket.VippsOrderId);
+            _db.SaveChanges();
+
             var ticketview = new TicketViewModel(ticket,title);
             ticketview.Seats = _db.EventSeats.Where(a => a.TicketId == ticket.Id.ToString()).ToList();
             return Ok(ticketview);
@@ -264,6 +269,38 @@ namespace betauia.Controllers
 
       //Error checking payment
       return BadRequest("An error occured when processing your ticket");
+    }
+
+    [Authorize("Ticket.read")]
+    [HttpGet]
+    [Route("verify/{vippsid}")]
+    public async Task<IActionResult> GetVerifyTicket([FromRoute] string vippsid)
+    {
+      var ticket = _db.Tickets.Where(a=>a.VippsOrderId == vippsid).First();
+      var title = _db.Events.FindAsync(ticket.EventId).Result.Title;
+      var Seats = _db.EventSeats.Where(a => a.TicketId == ticket.Id.ToString()).ToList();
+      var ticketview = new TicketViewModel(ticket, title);
+      ticketview.Seats = Seats;
+      return Ok(ticketview);
+    }
+
+    [Authorize("Ticket.write")]
+    [HttpPost]
+    [Route("verify")]
+    public async Task<IActionResult> VerifyTicket(Ticketid ticketid)
+    {
+      var ticket = _db.Tickets.Where(a => a.VippsOrderId == ticketid.Id).First();
+      var title = _db.Events.FindAsync(ticket.EventId).Result.Title;
+      ticket.Verified = true;
+      await _db.SaveChangesAsync();
+      var Seats = _db.EventSeats.Where(a => a.TicketId == ticket.Id.ToString()).ToList();
+      var ticketview = new TicketViewModel(ticket, title);
+      ticketview.Seats = Seats;
+      return Ok(ticketview);    }
+
+    public class Ticketid
+    {
+      public string Id { get; set; }
     }
 
     public class NewTicketModel

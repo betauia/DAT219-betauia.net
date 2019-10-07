@@ -8,6 +8,8 @@ axios.interceptors.response.use(function (response){
         router.push("/account/login")
     }else if(error.response.data === 602){
         router.push("/account/banned")
+    }else if(error.response.status ===500){
+        router.push("/maintenance")
     }
     return Promise.reject((error))
 });

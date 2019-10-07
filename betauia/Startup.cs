@@ -91,11 +91,6 @@ namespace betauia
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.FromMinutes(5),
                     };
-                    //options.Authority = "https://localhost:5001/";
-                    //options.Audience = "api1";
-                    //options.RequireHttpsMetadata = false;
-                    //options.SaveToken = true;
-                    //options.Configuration = new OpenIdConnectConfiguration();
                 });
 
             services.AddHttpClient();
