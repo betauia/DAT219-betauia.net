@@ -79,7 +79,7 @@ import axios from"@/axios.js";export default {
             console.log(error.response);
             self.passwordReset = "An error occurred, please try again later or contact support"
           });
-      alert(self.passwordReset);
+      //alert(self.passwordReset);
     }
   }
 };

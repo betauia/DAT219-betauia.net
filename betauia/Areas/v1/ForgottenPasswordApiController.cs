@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
@@ -32,7 +33,7 @@ namespace betauia.Areas.v1
     }
 
     [HttpGet]
-    //[Authorize("User")]
+    [Authorize("User")]
     [Route("api/resetpassword/get")]
     public async Task<IActionResult> GetPasswordEmail([FromHeader] string Authorization)
     {
@@ -41,8 +42,8 @@ namespace betauia.Areas.v1
       var user = _um.FindByIdAsync(id).Result;
 
       token = await _tf.GetPasswordRestTokenAsync(user);
-      var url = "http://localhost:8081/resetpassword/" + token;
 
+      var url = "http://localhost:8081/resetpassword/" + token;
       SmtpClient smtp = new SmtpClient("smtp.gtm.no");
       smtp.EnableSsl = false;
       smtp.Port = 587;
@@ -71,7 +72,7 @@ namespace betauia.Areas.v1
       smtp.Send("noreply@betauia.net","erikaspen1@gmail.com","Go to reset your password",url);
       return Ok();
     }
-
+    
     [HttpPost]
     [Route("api/resetpassword/post")]
     public async Task<IActionResult> ResetPassword(PasswordResetModel passwordResetModel)

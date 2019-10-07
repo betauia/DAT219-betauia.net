@@ -42,7 +42,7 @@
                             <item><input type="text" name="email" placeholder="email@address.com"></item>
                         </form>
                 </div>
-                    <button class="button is-link" v-on:click="joinEventByEmail">Sign me up!!</button>
+                    <button class="button is-link" v-if="showEmail==true" v-on:click="joinEventByEmail">Sign me up!!</button>
                     <div v-if="emailsignupResponse!=null">{{emailsignupResponse}}</div>
                 </div>
 

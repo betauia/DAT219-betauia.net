@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -20,14 +21,19 @@ namespace betauia.Controllers
             _context = context;
         }
 
-        //[Authorize(Roles = "Admin")]
-        //[Authorize(Policy = "Blog.write")]
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             // Return with 200 OK status code
-            return Ok(_context.Posts.ToList());
+            var blogviews = new List<BlogViewModel>();
+            var blogs = _context.Posts.ToList();
+            foreach (var blog in blogs)
+            {
+              blogviews.Add(new BlogViewModel(blog));
+            }
+
+            return Ok(blogviews);
         }
 
         [AllowAnonymous]
@@ -39,7 +45,7 @@ namespace betauia.Controllers
             if (blogPostModel == null)
                 return NotFound();
 
-            return Ok(blogPostModel);
+            return Ok(new BlogViewModel(blogPostModel));
         }
 
         //[Authorize(Roles = "Admin")]

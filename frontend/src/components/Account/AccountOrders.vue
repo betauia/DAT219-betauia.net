@@ -1,8 +1,10 @@
 <template>
     <div id="orders">
+        <!--
         <b-table :data="orders" :columns="columns"></b-table>
+        -->
         <table>
-            <tr>
+        <tr>
                 <th>Order number</th>
                 <th>Event</th>
                 <th>Time purchased</th>

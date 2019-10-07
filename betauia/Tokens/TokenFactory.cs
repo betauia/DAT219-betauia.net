@@ -46,7 +46,7 @@ namespace betauia.Tokens
                 audience: "https://localhost:5001",
                 claims: claims,
                 notBefore: DateTime.Now,
-                expires: DateTime.Now.AddMinutes(2),
+                expires: DateTime.Now.AddDays(30),
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg")), SecurityAlgorithms.HmacSha256)
                 );
 
