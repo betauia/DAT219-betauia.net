@@ -1,6 +1,5 @@
-# webapp_beta
+# betauia.net
 
-> A Vue.js Project
 
 ## Build Setup
 
@@ -15,4 +14,14 @@ npm run dev
 npm run build
 ```
 
-For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## docker-compose
+```bash
+sudo docker-compose up -d --build
+```
+
+## enviroments variables
+```bash
+# edit prod-sample.env
+cp prod-sample.env .env
+
+```

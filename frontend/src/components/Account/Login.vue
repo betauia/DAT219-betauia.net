@@ -1,5 +1,54 @@
 <template>
-  <section class="padding center">
+    <div>
+        <section class="modal-card-body">
+            <b-field label="Email">
+                <b-input
+                    type="email"
+                    placeholder="Your email"
+                    v-model="input.username"
+                    name="email"
+                    required>
+                </b-input>
+            </b-field>
+
+            <b-field label="Password">
+                <b-input
+                    type="password"
+                    name="password"
+                    password-reveal
+                    placeholder="Your password"
+                    required>
+                </b-input>
+            </b-field>
+
+            <b-checkbox>Remember me</b-checkbox>
+
+        </section>
+        <footer class="modal-card-foot level">
+            <b-button class="button is-primary" v-on:click="login">Login</b-button>
+            <b-button class="" v-on:click="forgotPasswordClick" >Forgot Password?</b-button>
+        </footer>
+
+        <section v-if="forgotPassword">
+            <section class="modal-card-body">
+                <b-field label="Email">
+                    <b-input
+                        type="email"
+                        placeholder="Account email"
+                        v-model="email"
+                        required>
+                    </b-input>
+                </b-field>
+            </section>
+
+            <footer class="modal-card-foot">
+                <b-button class="is-primary" v-on:click="resetPassword">Reset Password</b-button>
+            </footer>
+        </section>
+    </div>
+</template>
+<!--<template>
+  <section class="card">
     <b-field label="Email">
       <b-input
         type="email"
@@ -33,72 +82,74 @@
 
   </section>
 </template>
-
+-->
 <script>
-import axios from"@/axios.js";
-export default {
-  data() {
-    return {
-      input: {
-        username: "",
-        password: ""
-      },
-      forgotPassword: false,
-      email:"",
-      message:"",
+    import axios from"@/axios.js";
+    export default {
+        data() {
+            return {
+                input: {
+                    username: "",
+                    password: ""
+                },
+                forgotPassword: false,
+                LoggedIn: false,
+                email:"",
+                message:"",
+            };
+        },
+        methods: {
+            login() {
+                var user = document.querySelector("input[name=email]").value;
+                var password = document.querySelector("input[name=password]").value;
+                var jsond = new Object();
+                jsond["username"] = user;
+                jsond["password"] = password;
+                var jsondata = JSON.stringify(jsond);
+
+                var self = this;
+
+                axios
+                    .post("/api/account/login", {
+                        username: user,
+                        password: password
+                    })
+                    .then(function(response) {
+                        console.log("Logged in");
+                        console.log(response["data"]);
+                        //console.log(JSON.stringify(response));
+                        localStorage.setItem("token", response["data"]);
+                        location.reload();
+                        self.$forceUpdate();
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+                self.$forceUpdate();
+            },
+            forgotPasswordClick(){
+                this.forgotPassword = !this.forgotPassword;
+            },
+            resetPassword(){
+                if(this.email == ""){
+                    alert("Please type in your email");
+                }
+
+                var bodyParam ={
+                    email:this.email
+                };
+                const self = this;
+                axios
+                    .post("/api/resetpassword/get",bodyParam)
+                    .then(function (response) {
+                        console.log(response.data);
+                        self.message = "An email was sent with instruction."
+                    })
+                    .catch(function (error) {
+                        console.log(error.response)
+                        self.message = "An error occurred. Please try again later."
+                    })
+            }
+        }
     };
-  },
-  methods: {
-    login() {
-      var user = document.querySelector("input[name=username]").value;
-      var password = document.querySelector("input[name=password]").value;
-      var jsond = new Object();
-      jsond["username"] = user;
-      jsond["password"] = password;
-      var jsondata = JSON.stringify(jsond);
-
-      var self = this;
-      axios
-        .post("/api/account/login", {
-          username: user,
-          password: password
-        })
-        .then(function(response) {
-          console.log(response["data"]);
-          //console.log(JSON.stringify(response));
-          localStorage.setItem("token", response["data"]);
-          self.$router.push({ path: "/" }, () => {
-            location.reload();
-          });
-          self.$forceUpdate();
-        })
-        .catch(function(error) {
-          console.log(error.response.data);
-        });
-    },
-    forgotPasswordClick(){
-      this.forgotPassword = true;
-    },
-    resetPassword(){
-      if(this.email == ""){
-        alert("Please type in your email");
-      }
-
-      var bodyParam ={
-        email:this.email
-      };
-      const self = this;
-      axios
-        .post("/api/resetpassword/get",bodyParam)
-        .then(function (response) {
-          console.log(response.data);
-          self.message = "An email was sent with instruction."
-        })
-        .catch(function (error) {
-          console.log(error.response)
-          self.message = "An error occurred. Please try again later."
-        })
-    }
-  }
-};
 </script>

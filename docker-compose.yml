@@ -1,6 +1,7 @@
 version: '3'
 services:
   beta_backend:
+    restart: always
     container_name: beta_backend
     hostname: beta_backend
     build:
@@ -8,14 +9,50 @@ services:
       dockerfile: Dockerfile
     ports:
       - 5001:80
+      - 59451:59451
+    links:
+      - beta_db
 
   beta_frontend:
+    restart: always
     container_name: beta_frontend
     hostname: beta_frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    ports:
-      - 80:80
+    network_mode: host
     depends_on:
       - beta_backend
+
+  beta_db:
+    image: mysql:5.7
+    restart: always
+    container_name: beta_db
+    hostname: beta_db
+    environment:
+      MYSQL_DATABASE: 'beta_db'
+      MYSQL_USER: 'boiis'
+      MYSQL_PASSWORD: 'dM@&F%JZ8wbPA!8fYnx4Zh!PdX#kDd7avAJNMjSXNY%Un%au'
+      MYSQL_ROOT_PASSWORD: '5^k7Er%hr4@xHMgpkzG7wN#fK8g4b6m*JdD&ARB&z*pqf%5UM'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - beta-db:/var/lib/mysql
+
+  beta_redis:
+    restart: always
+    image: redis:alpine
+    container_name: beta_redis
+    hostname: beta_redis
+    volumes:
+     - beta-redis:/data
+    links:
+     - beta_backend
+
+volumes:
+  beta-db:
+    driver: local
+  beta-redis:
+    driver: local

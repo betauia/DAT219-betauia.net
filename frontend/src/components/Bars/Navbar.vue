@@ -27,23 +27,46 @@
         <router-link @click.native="isActive = false" class="navbar-item" to="/admin/dash">Admin</router-link>
         <hr class="navbar-divider">
       </div>
-      <template class="navbar-end" v-if="isLoggedIn == false">
+      <nav class="navbar-end" v-if="!isLoggedIn">
         <router-link
           @click.native="isActive = false"
           class="navbar-item"
           to="/account/register"
         >Register</router-link>
 
-        <router-link @click.native="isActive = false" class="navbar-item" to="/account/login">Login</router-link>
-      </template>
-      <template class="navbar-end" v-else>
-        <router-link
+          <b-dropdown position="is-bottom-left" aria-role="menu" trap-focus>
+              <a
+                  class="navbar-item"
+                  slot="trigger"
+                  role="button">
+                  <span>Login</span>
+                  <b-icon icon="menu-down"></b-icon>
+              </a>
+
+              <b-dropdown-item
+                  aria-role="menu-item"
+                  :focusable="false"
+                  custom
+                  paddingless>
+                  <form action="">
+                      <div class="modal-card" style="width:300px;">
+                          <Login></Login>
+                      </div>
+                  </form>
+              </b-dropdown-item>
+          </b-dropdown>
+      </nav>
+      <nav class="navbar-end" v-else>
+        <!--<router-link
           @click.native="isActive = false"
           class="navbar-item"
           to="/account/info"
-        >Your account</router-link>
+        >Your account</router-link>-->
+        <AccountDropdown></AccountDropdown>
+          <!--
         <router-link @click.native="logout" class="navbar-item" to="/">Logout</router-link>
-      </template>
+        -->
+      </nav>
     </div>
   </nav>
 </template>
@@ -51,24 +74,32 @@
 
 <script>
 import axios from"@/axios.js";
+import Login from "../Account/Login";
+import AccountDropdown from "../Account/AccountDropdown";
+
 export default {
+    components: {
+        AccountDropdown,
+        Login,
+    },
   data: () => ({
     isActive: false,
-    isLoggedIn: false
+    isLoggedIn: false,
   }),
   created() {
-    console.log("creatededed");
+      var self = this;
+      console.log("creatededed");
     var token = localStorage.getItem("token");
     if (token == null) {
       console.log("no token");
-      this.isLoggedIn = false;
+      self.isLoggedIn = false;
       return;
     }
-    var self = this;
+    console.log("logged in status: " + self.isLoggedIn);
+
     axios
       .get("/api/token/valid/" + token, {})
       .then(function(response) {
-        console.log("is logged in");
         self.isLoggedIn = true;
         self.$forceUpdate();
       })
@@ -83,9 +114,8 @@ export default {
     logout() {
       localStorage.removeItem("token");
       this.isLoggedIn = false;
-      this.$router.push("/");
+      console.log("Logged out")
       this.$forceUpdate();
-      this.$session.destroy();
     }
   }
 };

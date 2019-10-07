@@ -14,11 +14,11 @@
                     </div>
                 </div>
                 <div class="content">
-                    <p>Total price: {{ticket.amount}}</p>
+                    <p><b>Pris</b>(inkl. mva)<b>:</b> {{ticket.amount / 100}}.00 kr </p>
                 </div>
 
             </div>
-            <div class="card-footer column">
+            <div class="card-columns is-half">
                 <div class="is-italic">Billettene til BetaLAN er forhåndskjøpte
                     og du som kunden vil ikke motta tjenesten før BetaLAN er
                     gjennomført i sin helhet. Ved å klikke 'Aksepter betingelser'
@@ -26,19 +26,24 @@
                     vår.
                 </div>
             </div>
-            <div class="card-footer-item is-center column is-half">
-                <p class="label">Choose phone number for payment</p>
-                <input
-                    class="input is-primary"
-                    id="phoneNumber"
-                    type="text"
-                    v-model="ticket.phoneNumber"
-                    required
-                >
-            </div>
-            <div class="card-footer-item">
-                <img src="@/assets/img/Betal med Vipps - 250px@3x.png" class="button is-paddingless is-medium" @click="initiateVippsPayment"/>
-            </div>
+            <footer class="card-footer">
+                <div class="card-footer-item">
+                    <b-checkbox v-model="isAccepted">Aksepter betingelser</b-checkbox>
+                </div>
+                <div class="card-footer-item" v-if="isAccepted">
+                    <img src="@/assets/img/Betal med Vipps - 250px@3x.png"
+                         class="button is-paddingless is-medium"
+                         @click="initiateVippsPayment"
+                    />
+                </div>
+                <div class="card-footer-item" v-else-if="!isAccepted">
+                    <img src="@/assets/img/Betal med Vipps - 250px@3x.png"
+                         class="button is-paddingless is-medium"
+                         disabled
+                    />
+                </div>
+            </footer>
+
         </div>
     </div>
 </template>
@@ -56,6 +61,7 @@ export default {
     return {
       ticket: {},
       seats: {},
+      isAccepted: false,
     };
   },
     created() {

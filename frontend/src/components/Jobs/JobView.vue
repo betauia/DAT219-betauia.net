@@ -1,11 +1,14 @@
 <template>
     <div class="Jobs">
-        <div class="job" v-for="job of jobs" v-bind:key="job">
-            <p>{{job.title}}</p>
-            <p>{{job.content}}</p>
-            <p>{{job.url}}</p>
+        <div class="job column is-8 is-offset-2" v-for="job of jobs" v-bind:key="job">
+            <div class="card is-centered">
+                <header class="card-header-title title">{{job.title}}</header>
+                <div class="card-content content">{{job.content}}</div>
+                <div class="card-footer content">{{job.url}}</div>
+            </div>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -34,9 +37,4 @@
 </script>
 
 <style scoped>
-.job{
-    margin: 5px;
-    background-color: darkgray;
-    width: 30%;
-}
 </style>

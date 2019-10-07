@@ -29,8 +29,11 @@
       }
     },
     created() {
+      if(this.$props.imageId == null)return;
+
       //alert(this.$props.imageId)
       if(this.$props.imageId == ''|| this.$props.imageId == null)return;
+
       const self = this;
       axios
         .get("/api/image/64/"+this.$props.imageId)

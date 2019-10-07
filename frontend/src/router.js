@@ -101,6 +101,10 @@ export default new Router({
             component:()=>import('./components/Account/NotVerified.vue')
         },
         {
+            path: '/account/accountdrop',
+            component:()=>import('./components/Account/AccountDropdown.vue')
+        },
+        {
             path: '/account',
             component: () => import('./components/Account/Account.vue'),
             children: [{

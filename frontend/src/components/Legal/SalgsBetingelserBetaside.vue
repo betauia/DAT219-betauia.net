@@ -29,10 +29,8 @@
                     </div>
                 </section>
                 <footer class="modal-card-foot">
+                    <div class="card-footer-item"></div>
                     <div class="card-footer-item">
-                        <b-checkbox v-model="isAccepted">Aksepter kjøpsavtale</b-checkbox>
-                    </div>
-                    <div class="card-footer-item is-right">
                         <b-button class="button" type="button" @click="isComponentModalActive=false">Lukk</b-button>
                     </div>
                 </footer>
@@ -53,6 +51,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+a {
+    color: blue;
+}
 </style>
