@@ -19,6 +19,7 @@ namespace betauia.Controllers
         private readonly UserManager<ApplicationUser> _um;
         private readonly RoleManager<IdentityRole> _rm;
         private readonly TokenFactory _tf;
+        private readonly ITokenManager _tokenManager;
 
         public UserClaimApiController(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,ITokenManager tokenManager)
@@ -27,6 +28,7 @@ namespace betauia.Controllers
             _rm = roleManager;
             _db = db;
             _tf = new TokenFactory(_um, _rm,tokenManager);
+            _tokenManager = tokenManager;
         }
 
         [Authorize("Claims.read")]
@@ -104,6 +106,7 @@ namespace betauia.Controllers
             var result = _um.AddClaimAsync(user, claim).Result;
             if (result.Succeeded)
             {
+                await _tokenManager.RemoveUserTokensAsync(id);
                 return Ok();
             }
             else
@@ -138,6 +141,7 @@ namespace betauia.Controllers
             var result = _um.RemoveClaimAsync(user, claim).Result;
             if (result.Succeeded)
             {
+                await _tokenManager.RemoveUserTokensAsync(id);
                 return Ok();
             }
             else

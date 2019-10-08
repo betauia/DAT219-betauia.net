@@ -7,7 +7,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Net.Mail;
+using System.Net.Mime;
+using System.Text;
 using System.Threading.Tasks;
+using betauia.Email;
+using betauia.Views.Emails.VerifyAccount;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Razor.Language;
 
 namespace betauia.Controllers
 {
@@ -18,14 +24,19 @@ namespace betauia.Controllers
         private readonly RoleManager<IdentityRole> _rm;
         private readonly TokenFactory _tf;
         private readonly ITokenVerifier _tokenVerifier;
+        private readonly ITokenManager _tokenManager;
+        private readonly IEmailRender _emailRender;
 
         public EmailVerificationApiController(UserManager<ApplicationUser> userManager,
-          RoleManager<IdentityRole> roleManager,ITokenManager tokenManager,ITokenVerifier tokenVerifier)
+            RoleManager<IdentityRole> roleManager, ITokenManager tokenManager, ITokenVerifier tokenVerifier,
+            IEmailRender emailrender)
         {
             _um = userManager;
             _rm = roleManager;
             _tf = new TokenFactory(_um,_rm,tokenManager);
             _tokenVerifier = tokenVerifier;
+            _tokenManager = tokenManager;
+            _emailRender = emailrender;
         }
 
         [HttpGet]
@@ -38,14 +49,25 @@ namespace betauia.Controllers
           var user = await _um.FindByIdAsync(userid);
 
             var token = await _tf.GetEmailVerificationTokenAsync(user);
+            
             var url = "http://localhost:8080/verifyemail/" + token;
+            var emailviewmodel = new EmailViewModel(url);
+            var htmlbody =
+                await _emailRender.RenderViewToStringAsync($"Views/Emails/VerifyAccount/EmailVerifyAccount.cshtml",emailviewmodel);
 
-            SmtpClient smtp = new SmtpClient("smtp.gtm.no");
-            smtp.EnableSsl = false;
-            smtp.Port = 587;
-            smtp.Credentials = new NetworkCredential("betalan@betauia.net","8iFK0N2tdz");
-            smtp.Send("noreply@betauia.net","erikaspen1@gmail.com","Verify you email at betauia.net",url);
-
+            var message = new MailMessage("noreply@betauia.net", "erikaspen1@gmail.com")
+            {
+                Subject = "hello",
+            };
+            message.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(htmlbody,Encoding.UTF8,MediaTypeNames.Text.Html));
+            using (var smtp = new SmtpClient("smtp.gtm.no", 587))
+            {
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new NetworkCredential("betalan@betauia.net","8iFK0N2tdz");
+                smtp.EnableSsl = false;
+                await smtp.SendMailAsync(message);
+            }
             return Ok(token);
         }
 
@@ -79,6 +101,7 @@ namespace betauia.Controllers
             result = _um.AddClaimAsync(user, claim).Result;
             if (result.Succeeded)
             {
+                await _tokenManager.RemoveUserTokensAsync(id);
                 return Ok();
             }
             return BadRequest(result.Errors);

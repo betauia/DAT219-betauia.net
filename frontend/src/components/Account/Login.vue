@@ -1,53 +1,65 @@
 <template>
     <div>
-        <section class="modal-card-body">
-            <b-field label="Email">
-                <b-input
-                    id="email"
-                    type="email"
-                    placeholder="Your email"
-                    v-model="input.username"
-                    name="email"
-                    required>
-                </b-input>
-            </b-field>
+        <b-dropdown-item
+            aria-role="menu-item"
+            :focusable="false"
+            custom
+            paddingless>
+            <form action="">
+                <div class="modal-card" style="width:300px;">
+                    <div>
+                        <section class="modal-card-body">
+                            <b-field label="Email">
+                                <b-input
+                                    id="email"
+                                    type="email"
+                                    placeholder="Your email"
+                                    v-model="loginProps.username"
+                                    name="email"
+                                    required>
+                                </b-input>
+                            </b-field>
 
-            <b-field label="Password">
-                <b-input
-                    id="password"
-                    type="password"
-                    name="password"
-                    v-model="input.password"
-                    password-reveal
-                    placeholder="Your password"
-                    required>
-                </b-input>
-            </b-field>
+                            <b-field label="Password">
+                                <b-input
+                                    id="password"
+                                    type="password"
+                                    name="password"
+                                    v-model="loginProps.password"
+                                    password-reveal
+                                    placeholder="Your password"
+                                    required>
+                                </b-input>
+                            </b-field>
 
-            <b-checkbox>Remember me</b-checkbox>
+                            <b-checkbox>Remember me</b-checkbox>
 
-        </section>
-        <footer class="modal-card-foot level">
-            <b-button class="button is-primary" v-on:click="login">Login</b-button>
-            <b-button class="" v-on:click="forgotPasswordClick" >Forgot Password?</b-button>
-        </footer>
+                        </section>
+                        <footer class="modal-card-foot level">
+                            <b-button class="button is-primary" v-on:click="login">Login</b-button>
+                            <b-button class="" v-on:click="forgotPasswordClick" >Forgot Password?</b-button>
+                        </footer>
 
-        <section v-if="forgotPassword">
-            <section class="modal-card-body">
-                <b-field label="Email">
-                    <b-input
-                        type="email"
-                        placeholder="Account email"
-                        v-model="email"
-                        required>
-                    </b-input>
-                </b-field>
-            </section>
+                        <section v-if="forgotPassword">
+                            <section class="modal-card-body">
+                                <b-field label="Email">
+                                    <b-input
+                                        type="email"
+                                        placeholder="Account email"
+                                        v-model="forgotProps.email"
+                                        required>
+                                    </b-input>
+                                </b-field>
+                            </section>
 
-            <footer class="modal-card-foot">
-                <b-button class="is-primary" v-on:click="resetPassword">Reset Password</b-button>
-            </footer>
-        </section>
+                            <footer class="modal-card-foot">
+                                <b-button class="is-primary" v-on:click="resetPassword">Reset Password</b-button>
+                            </footer>
+                        </section>
+                    </div>
+                </div>
+            </form>
+        </b-dropdown-item>
     </div>
 </template>
 <!--<template>
@@ -91,29 +103,24 @@
     export default {
         data() {
             return {
-                input: {
+                loginProps: {
                     username: "",
                     password: ""
                 },
                 forgotPassword: false,
                 LoggedIn: false,
-                email:"",
-                message:"",
+                forgotProps: {
+                    email:"",
+                    message:"",
+                },
             };
         },
         methods: {
             login() {
-                var user = document.getElementById("email").value;
-                var password = document.getElementById("password").value;
-                var jsond = new Object();
-                jsond["username"] = user;
-                jsond["password"] = password;
-                var jsondata = JSON.stringify(jsond);
-
                 var self = this;
                 var body ={
-                  username: this.input.username,
-                  password: this.input.password
+                  username: this.loginProps.username,
+                  password: this.loginProps.password,
                 };
                 console.log(body)
 
@@ -136,23 +143,23 @@
                 this.forgotPassword = !this.forgotPassword;
             },
             resetPassword(){
-                if(this.email == ""){
+                if(this.forgotProps.email == ""){
                     alert("Please type in your email");
                 }
 
                 var bodyParam ={
-                    email:this.email
+                    email:this.forgotProps.email,
                 };
                 const self = this;
                 axios
                     .post("/api/resetpassword/get",bodyParam)
                     .then(function (response) {
                         console.log(response.data);
-                        self.message = "An email was sent with instruction."
+                        self.forgotProps.message = "An email was sent with instruction."
                     })
                     .catch(function (error) {
                         console.log(error.response)
-                        self.message = "An error occurred. Please try again later."
+                        self.forgotProps.message = "An error occurred. Please try again later."
                     })
             }
         }

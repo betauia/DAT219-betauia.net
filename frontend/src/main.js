@@ -12,7 +12,7 @@ import 'vuetify/dist/vuetify.min.css';
 import App from './App.vue';
 import router from './router';
 
-import imageWidget from './components/Images/ImageWidget';
+import imageWidget from './components/Images/ImageWidget.vue';
 
 Vue.config.productionTip = false;
 

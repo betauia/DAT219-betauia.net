@@ -24,7 +24,7 @@ namespace betauia.Areas.v1
         private readonly RoleManager<IdentityRole> _rm;
         private readonly TokenFactory _tf;
         private readonly ITokenVerifier _tokenVerifier;
-
+        private readonly ITokenManager _tokenManager;
         public AccountApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager,
           RoleManager<IdentityRole> roleManager,ITokenManager tokenManager,ITokenVerifier tokenVerifier)
         {
@@ -32,6 +32,7 @@ namespace betauia.Areas.v1
             _rm = roleManager;
             _db = db;
             _tf = new TokenFactory(_um,_rm,tokenManager);
+            _tokenManager = tokenManager;
             _tokenVerifier = tokenVerifier;
         }
 
@@ -187,9 +188,9 @@ namespace betauia.Areas.v1
           user.UserName = null;
 
           //deletes password
-          _um.RemovePasswordAsync(user).Wait();
-          _um.AddPasswordAsync(user, "Password1.").Wait();
-
+          await _um.RemovePasswordAsync(user);
+          await _um.AddPasswordAsync(user, "Password1.");
+          await _tokenManager.RemoveUserTokensAsync(id);
           return Ok();
         }
     }

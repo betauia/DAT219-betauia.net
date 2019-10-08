@@ -26,6 +26,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System.Timers;
+using betauia.Email;
 using betauia.FileReader;
 using betauia.Ticket;
 using betauia.Tokens;
@@ -107,6 +108,7 @@ namespace betauia
                 Config.Addpolicies(options);
             });
 
+            services.AddTransient<IEmailRender, EmailRender>();
             services.AddTransient<IVippsPayment, VippsApiController>();
             services.AddTransient<ITokenVerifier, TokenVerifier>();
             services.AddTransient<TokenManagerMiddleware>();

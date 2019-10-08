@@ -95,7 +95,11 @@ namespace betauia.Areas.v1
 
       var t = _um.GeneratePasswordResetTokenAsync(user).Result;
       var result =  await  _um.ResetPasswordAsync(user, t, passwordResetModel.Password);
-      if (result.Succeeded) return Ok();
+      if (result.Succeeded)
+      {
+        await _tokenManager.RemoveUserTokensAsync(id);
+        return Ok();
+      }
       return BadRequest(result);
     }
 

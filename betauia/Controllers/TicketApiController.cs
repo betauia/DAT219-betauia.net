@@ -137,7 +137,7 @@ namespace betauia.Controllers
         seatmodel.IsReserved = true;
         seatmodel.ReserverId = userid;
       }
-      Thread thread= new Thread(()=>DeleteTicket.Delete(t.Id,(long)1000*10));
+      Thread thread= new Thread(()=>DeleteTicket.Delete(t.Id,(long)1000*60*10));
       thread.Start();
       _db.SaveChanges();
       return Ok(t);

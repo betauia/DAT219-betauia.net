@@ -1,0 +1,12 @@
+@model EmailViewModel
+
+@{
+  Layout = "_EmailLayoutHtml";
+  ViewContext.ViewData["EmailTitle"] = "Verify your BETA Account!";
+}
+
+<p>It looks like you may have just sent your first custom email!</p>
+
+@await Html.PartialAsync("_EmailButton", new EmailButtonViewModel("Verify Email", Model.ButtonLink))
+
+<p>Betauia</p>

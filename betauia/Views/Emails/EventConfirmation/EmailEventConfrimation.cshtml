@@ -1,0 +1,12 @@
+@model EmailViewModel
+
+@{
+  Layout = "_EmailLayoutHtml";
+  ViewContext.ViewData["EmailTitle"] = "You successfully signed up to {{event.title}}";
+}
+
+<p>You have been added to the list of attendants to this event:</p>
+
+@await Html.PartialAsync("_EmailButton", new EmailButtonViewModel("Let's Go!", Model.ButtonLink))
+
+<p>Betauia</p>

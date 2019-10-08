@@ -18,6 +18,7 @@ namespace betauia.Controllers
         private readonly UserManager<ApplicationUser> _um;
         private readonly RoleManager<IdentityRole> _rm;
         private readonly TokenFactory _tf;
+        private readonly ITokenManager _tokenManager;
 
         public UserRoleApiController(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,ITokenManager tokenManager)
@@ -26,6 +27,7 @@ namespace betauia.Controllers
             _rm = roleManager;
             _db = db;
             _tf = new TokenFactory(_um, _rm,tokenManager);
+            _tokenManager = tokenManager;
         }
 
 
@@ -107,7 +109,7 @@ namespace betauia.Controllers
             if (role == null) return NotFound();
 
             _um.AddToRoleAsync(user, role.Name).Wait();
-
+            await _tokenManager.RemoveUserTokensAsync(userid);
             return Ok();
         }
 
@@ -124,6 +126,7 @@ namespace betauia.Controllers
             }
 
             _um.RemoveFromRolesAsync(user, roleList.roles).Wait();
+            await _tokenManager.RemoveUserTokensAsync(id);
             return Ok();
         }
 
