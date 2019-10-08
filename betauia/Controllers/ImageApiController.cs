@@ -67,7 +67,7 @@ namespace betauia.Controllers
         string id = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
 
         var name = id + "." + type;
-        var filepath = "wwwroot/Uploads/" +name;
+        var filepath = "wwwroot/Uploads/" + name;
         await _imageIo.WriteFile(filepath,image);
         var dbimage = new ImageModel(id,filepath,type);
         await _dbContext.Images.AddAsync(dbimage);

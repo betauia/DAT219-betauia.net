@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -189,6 +191,24 @@ namespace betauia.Controllers
       return Ok(initpayment.url);
     }
 
+    [NonAction]
+    private async Task<ImageModel> SaveQrCode(string qr)
+    {
+      byte[] bytes = Convert.FromBase64String(qr);
+      Image image;
+      var id = Guid.NewGuid().ToString("N").ToUpper();
+      var loc = "wwwroot/qr/" + id;
+      using (MemoryStream ms = new MemoryStream(bytes))
+      {
+        using (Bitmap bm2 = new Bitmap(ms))
+        {
+          bm2.Save("wwwroot/qr/"+id);
+          
+        }
+      }
+      return new ImageModel(id,loc,"JPEG");
+    }
+
     [Route("paymentstatus/{id}")]
     [Authorize("User")]
     [HttpGet]
@@ -239,6 +259,9 @@ namespace betauia.Controllers
             ticket.TimePurchased = capture.transactionInfo.timeStamp;
             //Generate QR code//
             ticket.QR =  QRCode.GetQr("localhost:8080/admin/ticketverify/" + ticket.VippsOrderId);
+            var image = await SaveQrCode(ticket.QR);
+            ticket.QRID = image.Id;
+            _db.Images.Add(image);
             _db.SaveChanges();
 
             var ticketview = new TicketViewModel(ticket,title);

@@ -16,6 +16,7 @@ namespace betauia.Models
           Status = "CANCEL";
           QR = null;
           Verified = false;
+          QRID = null;
 
           var seats = dbContext.EventSeats.Where(a => a.TicketId == Id.ToString());
           foreach (var seat in seats)
@@ -36,6 +37,7 @@ namespace betauia.Models
         [Required]
         public int EventId { get; set; }
         public string QR { get; set; }
+        public string QRID { get; set; }
         public bool Verified { get; set; }
     }
 }
