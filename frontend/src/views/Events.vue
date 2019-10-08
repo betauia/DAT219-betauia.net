@@ -3,7 +3,7 @@
     <template>
       <div id="events">
         <ul v-if="events && events.length">
-          <div v-for="event of events.reverse()" v-bind:key="event">
+          <div v-for="event of events" v-bind:key="event">
             <event v-bind:event="event"></event>
           </div>
         </ul>
@@ -36,6 +36,7 @@ export default {
       .get("/api/event")
       .then(response => {
         this.events = response.data;
+        this.events = this.events.reverse();
         console.log(response.data);
       })
       .catch(e => {

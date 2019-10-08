@@ -55,9 +55,9 @@ namespace betauia.Controllers
             var htmlbody =
                 await _emailRender.RenderViewToStringAsync($"Views/Emails/VerifyAccount/EmailVerifyAccount.cshtml",emailviewmodel);
 
-            var message = new MailMessage("noreply@betauia.net", "erikaspen1@gmail.com")
+            var message = new MailMessage("noreply@betauia.net", user.Email)
             {
-                Subject = "hello",
+                Subject = "betauia email verification",
             };
             message.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(htmlbody,Encoding.UTF8,MediaTypeNames.Text.Html));
             using (var smtp = new SmtpClient("smtp.gtm.no", 587))
