@@ -273,23 +273,23 @@ namespace betauia.Vipps {
           request.AddHeader("Ocp-Apim-Subscription-Key", OcpApimSubscriptionKey);
           request.AddHeader("Content-Type", "application/json");
 
-          var minfo = new MerchantInfoModel
+          var minfo = new CapturePaymentModels.capturemerchantinfo
           {
             merchantSerialNumber = merchantSeiralNumber,
           };
 
-          var transaction = new TransactionModel
+          var transaction = new RefundPaymentModels.RefundOrderTransaction
           {
             transactionText = "Refund test"
           };
 
-          var capturemodel = new CapturePaymentModels.CapturePaymentRequestModel
+          var refundOrderRequest = new RefundPaymentModels.RefundOrderRequest
           {
-            //merchantInfo = minfo,
-            //transaction = transaction
+            merchantInfo = minfo,
+            transaction = transaction
           };
 
-          var json = JsonConvert.SerializeObject(capturemodel);
+          var json = JsonConvert.SerializeObject(refundOrderRequest);
           request.AddParameter("undefined",json.ToString(), ParameterType.RequestBody);
 
           IRestResponse response = client.Execute(request);

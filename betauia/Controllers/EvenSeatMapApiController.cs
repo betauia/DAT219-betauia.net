@@ -31,7 +31,6 @@ namespace betauia.Controllers
         {
           var token = Authorization.Split(' ')[1];
           var userid = await _tokenVerifier.GetTokenUser(token);
-          var user = await _um.FindByIdAsync(userid);
 
           var seatmap = _db.EventSeatMaps.Find(id);
           EventSeatm ret = new EventSeatm();
@@ -40,7 +39,7 @@ namespace betauia.Controllers
           var tseats = _db.EventSeats.Where(r => r.OwnerId == seatmap.Id).ToList();
           foreach (var seat in tseats)
           {
-            if (userid == seat.ReserverId)
+            if (userid == seat.ReserverId && seat.IsReserved)
             {
               seat.IsAvailable = true;
               seat.IsReserved = true;

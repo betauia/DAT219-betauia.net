@@ -36,6 +36,7 @@ namespace betauia.Areas.v1
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [Route("api/account/register")]
         public async Task<IActionResult> Register([FromBody]RegisterModel registerModel)
         {

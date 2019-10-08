@@ -18,7 +18,6 @@ namespace betauia.Vipps
       public int amount { get; set; }
       public string transactionText { get; set; }
     }
-
     public class CapturePaymentResponseModel
     {
       public string orderId { get; set; }

@@ -9,7 +9,6 @@ namespace betauia.Models
     {
       TimePurchased = t.TimePurchased;
       Amount = t.Amount;
-      MobileNumber = t.MobileNumber;
       Id = t.VippsOrderId;
       EventTitle = eventTitle;
       QR = t.QR;
@@ -44,7 +43,6 @@ namespace betauia.Models
     public string TimePurchased { get; set; }
     public int Amount { get; set; }
     public string Status { get; set; }
-    public string MobileNumber { get; set; }
     public List<EventSeat> Seats { get; set; }
     public string EventTitle { get; set; }
     public string QR { get; set; }

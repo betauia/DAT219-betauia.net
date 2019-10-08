@@ -1,18 +1,18 @@
 <template>
   <section class="padding center">
     <b-field label="Firstname">
-      <b-input :value="firstname" name="firstname"></b-input>
+      <b-input :value="firstname" name="registerfirstname"></b-input>
     </b-field>
 
     <b-field label="Lastname">
-      <b-input :value="lastname" name="lastname"></b-input>
+      <b-input :value="lastname" name="registerlastname"></b-input>
     </b-field>
 
     <b-field label="Email">
       <b-input
         type="email"
         :value="username"
-        name="email"
+        name="registeremail"
       ></b-input>
     </b-field>
 
@@ -20,7 +20,7 @@
       <b-input
         type="username"
         :value="username"
-        name="username"
+        name="registerusername"
       ></b-input>
     </b-field>
 
@@ -30,7 +30,7 @@
       <b-input
         :value="password"
         type="password"
-        name="password"
+        name="registerpassword"
       ></b-input>
     </b-field>
 
@@ -40,7 +40,7 @@
       <b-input
         :value="again_password"
         type="password"
-        name="again_password"
+        name="registeragain_password"
       ></b-input>
     </b-field>
 
@@ -62,12 +62,12 @@ export default {
   },
   methods: {
     register() {
-      var username = document.querySelector("input[name=username]").value;
-      var firstname = document.querySelector("input[name=firstname]").value;
-      var lastname = document.querySelector("input[name=lastname]").value;
-      var email = document.querySelector("input[name=email]").value;
-      var password = document.querySelector("input[name=password]").value;
-      var confirmpassword = document.querySelector("input[name=again_password]")
+      var username = document.querySelector("input[name=registerusername]").value;
+      var firstname = document.querySelector("input[name=registerfirstname]").value;
+      var lastname = document.querySelector("input[name=registerlastname]").value;
+      var email = document.querySelector("input[name=registeremail]").value;
+      var password = document.querySelector("input[name=registerpassword]").value;
+      var confirmpassword = document.querySelector("input[name=registeragain_password]")
         .value;
 
       var self = this;

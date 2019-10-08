@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Net.Mail;
@@ -21,6 +22,7 @@ namespace betauia.Areas.v1
     private readonly RoleManager<IdentityRole> _rm;
     private readonly TokenFactory _tf;
     private readonly ITokenVerifier _tokenVerifier;
+    private readonly ITokenManager _tokenManager;
 
     public ForgottenPasswordApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager,
       RoleManager<IdentityRole> roleManager,ITokenManager tokenManager,ITokenVerifier tokenVerifier)
@@ -29,6 +31,7 @@ namespace betauia.Areas.v1
       _rm = roleManager;
       _db = db;
       _tf = new TokenFactory(_um,_rm,tokenManager);
+      _tokenManager = tokenManager;
       _tokenVerifier = tokenVerifier;
     }
 
@@ -42,7 +45,7 @@ namespace betauia.Areas.v1
       var user = _um.FindByIdAsync(id).Result;
 
       token = await _tf.GetPasswordRestTokenAsync(user);
-
+      
       var url = "http://localhost:8081/resetpassword/" + token;
       SmtpClient smtp = new SmtpClient("smtp.gtm.no");
       smtp.EnableSsl = false;
@@ -63,6 +66,7 @@ namespace betauia.Areas.v1
       }
 
       var token = await _tf.GetPasswordRestTokenAsync(user);
+      
       var url = "http://localhost:8081/resetpassword/" + token;
 
       SmtpClient smtp = new SmtpClient("smtp.gtm.no");
