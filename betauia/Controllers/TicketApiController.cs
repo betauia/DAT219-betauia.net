@@ -2,10 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Net.Mime;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using betauia.Data;
+using betauia.Email;
 using betauia.Models;
 using betauia.Ticket;
 using Microsoft.AspNetCore.Identity;
@@ -13,6 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using betauia.Tokens;
 using betauia.Vipps;
+using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using ZXing;
 using ZXing.Common;
@@ -30,9 +36,10 @@ namespace betauia.Controllers
     private readonly UserManager<ApplicationUser> _um;
     private readonly IVippsPayment vipps;
     private readonly ITokenVerifier _tokenVerifier;
+    private readonly IEmailRender _emailRender;
 
     public TicketApiController(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
-      ITokenVerifier tokenVerifier,IVippsPayment vippsPayment)
+      ITokenVerifier tokenVerifier,IVippsPayment vippsPayment, IEmailRender emailrender)
 
     {
       // Set the databasecontext
@@ -40,6 +47,7 @@ namespace betauia.Controllers
       _um = userManager;
       vipps = vippsPayment;
       _tokenVerifier = tokenVerifier;
+      _emailRender = emailrender;
     }
 
     [Authorize("User")]
@@ -241,6 +249,8 @@ namespace betauia.Controllers
             ticket.QR =  QRCode.GetQr("localhost:8080/admin/ticketverify/" + ticket.VippsOrderId);
             _db.SaveChanges();
 
+            SendEmailTicket(ticket.Id);
+
             var ticketview = new TicketViewModel(ticket,title);
             ticketview.Seats = _db.EventSeats.Where(a => a.TicketId == ticket.Id.ToString()).ToList();
             return Ok(ticketview);
@@ -272,6 +282,41 @@ namespace betauia.Controllers
 
       //Error checking payment
       return BadRequest("An error occured when processing your ticket");
+    }
+    
+    [NonAction]
+    public async Task SendEmailTicket(int id)
+    {
+      var ticket = await _db.Tickets.FindAsync(id);
+      var user = await _um.FindByIdAsync(ticket.UserId);
+      var Event = await _db.Events.FindAsync(Convert.ToInt32(ticket.EventId));
+      var seats = _db.EventSeats.Where(a => a.TicketId == ticket.Id.ToString()).ToList();
+      
+      var seat = new List<string>();
+      foreach (var s in seats)
+      {
+        seat.Add(s.Number.ToString());
+      }
+      
+      var image = "data:image/png;base64,"+ticket.QR;
+
+      var emailticketviewmodel = new EmailTicketViewModel(image, seat, user.UserName, Event.Title, ticket.VippsOrderId);
+      var htmlbody =
+        await _emailRender.RenderViewToStringAsync($"Views/Emails/TicketConfirmation/EmailTicketConfirmation.cshtml",emailticketviewmodel);
+
+      var message = new MailMessage("noreply@betauia.net", user.Email)
+      {
+        Subject = "betauia email verification",
+      };
+      message.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(htmlbody,Encoding.UTF8,MediaTypeNames.Text.Html));
+      using (var smtp = new SmtpClient("smtp.gtm.no", 587))
+      {
+        smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+        smtp.UseDefaultCredentials = false;
+        smtp.Credentials = new NetworkCredential("betalan@betauia.net","8iFK0N2tdz");
+        smtp.EnableSsl = false;
+        await smtp.SendMailAsync(message);
+      }
     }
 
     [Authorize("Ticket.read")]

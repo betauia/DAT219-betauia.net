@@ -2,7 +2,7 @@
   <div class="Userinfo">
     <div class="columns">
       <div class="column is-narrow">
-        <aside class="meun">
+        <aside class="menu">
           <p class="menu-label">User</p>
           <ul class="menu-list">
             <li>
