@@ -72,7 +72,6 @@ namespace betauia
             }
             else
             {
-                var connection = @"server=beta_db;Port=3306;Database=betadb;user=boiis;password=dM@&F%JZ8wbPA!8fYnx4Zh!PdX#kDd7avAJNMjSXNY%Un%au;";
                 services.AddDbContext<ApplicationDbContext>(options =>
                 {
                     options.EnableSensitiveDataLogging();

@@ -99,7 +99,8 @@
 </template>
 -->
 <script>
-    import axios from"@/axios.js";
+  import EventBus from '@/eventBus.js'
+  import axios from"@/axios.js";
     export default {
         data() {
             return {
@@ -131,8 +132,10 @@
                         console.log(response["data"]);
                         //console.log(JSON.stringify(response));
                         localStorage.setItem("token", response["data"]);
-                        location.reload();
-                        self.$forceUpdate();
+                        EventBus.$emit('LOGGED_IN',true);
+                        if(self.$route.path === "/account/login"){
+                          self.$router.push("/");
+                        }
                     })
                     .catch(function(error) {
                         console.log(error);
