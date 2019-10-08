@@ -31,7 +31,7 @@ services:
       MYSQL_PASSWORD: ${mysql_passwd}
       MYSQL_ROOT_PASSWORD: ${mysql_root_passwd}
     volumes:
-      - beta-db:/var/ib/mysql
+      - ${mysql_volume}:/var/ib/mysql
 
   beta_redis:
     restart: always
@@ -39,11 +39,4 @@ services:
     container_name: beta_redis
     hostname: beta_redis
     volumes:
-     - beta-redis:/data
-
-volumes:
-  beta-db:
-    driver: local
-  beta-redis:
-    driver: local
-
+     - ${redis_volume}:/data

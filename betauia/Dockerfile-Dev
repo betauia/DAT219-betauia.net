@@ -1,6 +1,5 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2.105
 
-
 # Required inside Docker, otherwise file-change events may not trigger
 ENV DOTNET_USE_POLLING_FILE_WATCHER 1
 

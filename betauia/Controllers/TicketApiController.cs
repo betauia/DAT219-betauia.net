@@ -18,7 +18,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using betauia.Tokens;
 using betauia.Vipps;
-using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using ZXing;
 using ZXing.Common;
@@ -356,7 +355,7 @@ namespace betauia.Controllers
       
       var t = await vipps.GetPaymentDetails(ticket.VippsOrderId);
       var lastlog = t.transactionLogHistory[0];
-      if (lastlog.operationSuccess == true && lastlog.operation == "RESERVE")
+      if (lastlog.operationSuccess == true && lastlog.operation == "CAPTURE")
       {
         var result = await vipps.RefundPayment(ticket.VippsOrderId);
         if (result.transactionSummary.refundedAmount == ticket.Amount)

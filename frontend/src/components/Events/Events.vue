@@ -47,7 +47,6 @@
                             <div v-if="emailsignupResponse!=null">{{emailsignupResponse}}</div>
                         </span>
                     </footer>
-                    <button class="button is-link" v-if="showEmail==true" v-on:click="joinEventByEmail">Sign me up!!</button>
                 </div>
 
             <div v-if="event.eventModel.seatMap!=null">

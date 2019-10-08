@@ -30,14 +30,18 @@ using betauia.Email;
 using betauia.FileReader;
 using betauia.Ticket;
 using betauia.Tokens;
+using Microsoft.AspNetCore.Hosting;
 
 namespace betauia
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IHostingEnvironment _env;
+
+        public Startup(IConfiguration configuration,IHostingEnvironment env)
         {
             Configuration = configuration;
+            _env = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -52,19 +56,46 @@ namespace betauia
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
+            if (_env.IsDevelopment())
             {
-                options.EnableSensitiveDataLogging();
-                options.UseSqlite(
-                    Configuration.GetConnectionString("DefaultConnection"));
-            });
+                services.AddDbContext<ApplicationDbContext>(options =>
+                {
+                    options.EnableSensitiveDataLogging();
+                    options.UseSqlite(
+                        Configuration.GetConnectionString("DefaultConnection"));
+                });
+                services.AddDistributedRedisCache(option =>
+                {
+                    option.Configuration = "127.0.0.1";
+                    option.InstanceName = "master";
+                });
+            }
+            else
+            {
+                services.AddDbContext<ApplicationDbContext>(options =>
+                {
+                    options.EnableSensitiveDataLogging();
 
+                    options.UseMySQL(Configuration.GetConnectionString("BetaDB"));
+                });
+                services.AddDistributedRedisCache(option =>
+                {
+                    option.Configuration = "beta_redis";
+                    option.InstanceName = "master";
+                });
+            }
+            
+ 
+            
+/*          ////////////////////
+            Add at later pointer
+            ////////////////////
             services.AddDbContext<PaymentDbContext>(options =>
             {
               options.EnableSensitiveDataLogging();
               options.UseSqlite(
                 Configuration.GetConnectionString("Payment"));
-            });
+            });*/
 
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddRoles<IdentityRole>()
@@ -107,20 +138,14 @@ namespace betauia
             {
                 Config.Addpolicies(options);
             });
-
+            
+            services.AddTransient<IimageIO, ImageIO>();
             services.AddTransient<IEmailRender, EmailRender>();
             services.AddTransient<IVippsPayment, VippsApiController>();
             services.AddTransient<ITokenVerifier, TokenVerifier>();
             services.AddTransient<TokenManagerMiddleware>();
-            services.AddTransient<ITokenManager, TokenManagerDatabase>();
+            services.AddTransient<ITokenManager, TokenManager>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            services.AddDistributedRedisCache(option =>
-            {
-              option.Configuration = "127.0.0.1";
-              option.InstanceName = "master";
-            });
-            services.AddTransient<IimageIO, ImageIO>();
 
             //var vipps = new VippsApiController();
             //vipps.GetVippsToken();

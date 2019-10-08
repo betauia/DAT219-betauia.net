@@ -11,7 +11,7 @@
                     </div>
                 </figure>
             </div>
-            <div class="card-content">
+            <div class="card-content" id="buyTab">
                 <div class="content">
                     <div id="eventInfo">
                         <p>Plasser for dette arrangementet: {{seatmapmodel.numSeats}}</p>
@@ -131,5 +131,9 @@ export default {
 }
 #buyInfo button{
     width: 50%;
+}
+#buyTab {
+    background-color: #6c6c6c;
+    height: auto;
 }
 </style>

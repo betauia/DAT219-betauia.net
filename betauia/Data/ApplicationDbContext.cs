@@ -4,6 +4,7 @@ using System.Text;
 using betauia.Controllers;
 using betauia.Models;
 using betauia.Tokens;
+using Laball.Core.Common;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,22 @@ namespace betauia.Data
             : base(options)
         {
 
+        }
+        
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            foreach (var entityType in builder.Model.GetEntityTypes())
+            {
+                foreach (var property in entityType.GetProperties())
+                {
+                    if (property.ClrType == typeof(bool))
+                    {
+                        property.SetValueConverter(new BoolToIntConverter());
+                    }
+                }
+            }
         }
 
         public DbSet<PageModel> Pages { get; set; }

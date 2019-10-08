@@ -163,6 +163,7 @@ namespace betauia.Tokens
 
             if (validator.CanReadToken(token))
             {
+                await _tokenManager.DeactivateAsync(token);
                 ClaimsPrincipal principal;
                 try
                 {

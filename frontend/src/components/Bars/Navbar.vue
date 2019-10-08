@@ -63,6 +63,7 @@
 
 
 <script>
+import EventBus from '@/eventBus.js'
 import axios from"@/axios.js";
 import Login from "../Account/Login";
 import AccountDropdown from "../Account/AccountDropdown";
@@ -102,11 +103,16 @@ export default {
         self.$router.push("/account/login");
       });
   },
+  mounted(){
+    EventBus.$on('LOGGED_IN',(payload)=>{
+      this.isLoggedIn = payload;
+    })
+  },
   methods: {
     logout() {
       localStorage.removeItem("token");
       this.isLoggedIn = false;
-      console.log("Logged out")
+      console.log("Logged out");
       this.$forceUpdate();
     }
   }
