@@ -52,6 +52,9 @@ export default {
 
 <style>
 #grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   background-image: url("https://i.imgur.com/6BryTTm.jpg");
   background-repeat: no-repeat;
   background-size: cover;
