@@ -9,27 +9,32 @@
               full-screen
               has-modal-card
               :can-cancel="true">
-              <form action="">
-                  <div class="modal-card" style="width: auto">
-                      <form action="">
+
                           <div class="modal-card" style="width: auto">
                               <header class="modal-card-head">
                                   <p class="modal-card-title">Register</p>
                               </header>
                               <section class="modal-card-body">
                                   <b-field label="Firstname">
-                                      <b-input v-model="firstname" name="firstname" required></b-input>
+                                      <b-input
+                                          v-model="registerProps.firstname"
+                                          name="registerfirstname"
+                                          required>
+                                      </b-input>
                                   </b-field>
 
                                   <b-field label="Lastname">
-                                      <b-input :value="lastname" name="lastname" required></b-input>
+                                      <b-input
+                                          :value="lastname"
+                                          name="registerlastname"
+                                          required></b-input>
                                   </b-field>
 
                                   <b-field label="Username">
                                       <b-input
                                           type="username"
                                           :value="username"
-                                          name="username"
+                                          name="registerusername"
                                           required
                                       ></b-input>
                                   </b-field>
@@ -39,6 +44,7 @@
                                           type="email"
                                           :value="email"
                                           placeholder="Your email"
+                                          name="registeremail"
                                           required>
                                       </b-input>
                                   </b-field>
@@ -49,6 +55,7 @@
                                           :value="password"
                                           password-reveal
                                           placeholder="Your password"
+                                          name="registerpassword"
                                           required>
                                       </b-input>
                                   </b-field>
@@ -57,7 +64,7 @@
                                       <b-input
                                           :value="again_password"
                                           type="password"
-                                          name="again_password"
+                                          name="registeragain_password"
                                           required
                                       ></b-input>
                                   </b-field>
@@ -70,9 +77,6 @@
                                   <button class="button is-primary" v-on:click="register">Register</button>
                               </footer>
                           </div>
-                      </form>
-                  </div>
-              </form>
           </b-modal>
       </span>
 </template>
@@ -98,12 +102,13 @@ export default {
   },
   methods: {
     register() {
-      var username = document.querySelector("input[name=username]").value;
-      var firstname = document.querySelector("input[name=firstname]").value;
-      var lastname = document.querySelector("input[name=lastname]").value;
-      var email = document.querySelector("input[name=email]").value;
-      var password = document.querySelector("input[name=password]").value;
-      var confirmpassword = document.querySelector("input[name=again_password]").value;
+      var username = document.querySelector("input[name=registerusername]").value;
+      var firstname = document.querySelector("input[name=registerfirstname]").value;
+      var lastname = document.querySelector("input[name=registerlastname]").value;
+      var email = document.querySelector("input[name=registeremail]").value;
+      var password = document.querySelector("input[name=registerpassword]").value;
+      var confirmpassword = document.querySelector("input[name=registeragain_password]")
+        .value;
 
       var self = this;
       axios

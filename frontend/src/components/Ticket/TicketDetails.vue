@@ -2,7 +2,6 @@
     <div id="TicketDetails">
         <p>Purchased seat:</p>
         <p v-for="seat of ticketModel.seats" v-bind:key="seat">{{seat.number}}</p>
-        <p>Phone number {{ticketModel.mobileNumber}}</p>
         <p>Total price: {{ticketModel.amount}}</p>
         <p>Payment status: {{ticketModel.status}}</p>
         <p>Time purchased: {{ticketModel.timePurchased}}</p>

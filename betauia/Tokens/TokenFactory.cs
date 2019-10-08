@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using betauia.Models;
 using Microsoft.AspNetCore.Identity;
@@ -71,6 +72,8 @@ namespace betauia.Tokens
             );
             var stoken = new JwtSecurityTokenHandler().WriteToken(token);
             await _tokenManager.AddTokenAsync(stoken);
+            Thread t = new Thread(()=>DeleteToken.Delete(_tokenManager,stoken,(long)1000*60*60*24));
+            t.Start();
             return stoken;
         }
 
@@ -135,6 +138,8 @@ namespace betauia.Tokens
             );
             var stoken = new JwtSecurityTokenHandler().WriteToken(token);
             await _tokenManager.AddTokenAsync(stoken);
+            Thread t = new Thread(()=>DeleteToken.Delete(_tokenManager,stoken,(long)1000*30));
+            t.Start();
             return stoken;
         }
 
@@ -198,6 +203,8 @@ namespace betauia.Tokens
           );
           var stoken = new JwtSecurityTokenHandler().WriteToken(token);
           await _tokenManager.AddTokenAsync(stoken);
+          Thread t = new Thread(()=>DeleteToken.Delete(_tokenManager,stoken,(long)1000*60));
+          t.Start();
           return stoken;
         }
     }

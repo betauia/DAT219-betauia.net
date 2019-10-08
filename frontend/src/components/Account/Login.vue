@@ -1,13 +1,5 @@
 <template>
-    <b-dropdown position="is-bottom-left" aria-role="menu" trap-focus>
-        <a
-            class="navbar-item"
-            slot="trigger"
-            role="button">
-            <span>Login</span>
-            <b-icon icon="menu-down"></b-icon>
-        </a>
-
+    <div>
         <b-dropdown-item
             aria-role="menu-item"
             :focusable="false"
@@ -68,7 +60,7 @@
                 </div>
             </form>
         </b-dropdown-item>
-    </b-dropdown>
+    </div>
 </template>
 <!--<template>
   <section class="card">

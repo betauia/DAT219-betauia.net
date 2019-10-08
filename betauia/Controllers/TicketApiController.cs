@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
@@ -101,13 +102,11 @@ namespace betauia.Controllers
       var token = Authorization.Split(' ')[1];
       var userid = await _tokenVerifier.GetTokenUser(token);
 
-      var user = _um.FindByIdAsync(userid).Result;
       var t = new TicketModel
       {
         UserId = userid,
         Amount = 100,
         Status = "STARTED",
-        MobileNumber = user.PhoneNumber,
         EventId = ticketModel.eventId,
       };
 
@@ -137,7 +136,8 @@ namespace betauia.Controllers
         seatmodel.IsReserved = true;
         seatmodel.ReserverId = userid;
       }
-
+      Thread thread= new Thread(()=>DeleteTicket.Delete(_db,t.Id,(long)1000*60*10));
+      thread.Start();
       _db.SaveChanges();
       return Ok(t);
     }
@@ -174,15 +174,16 @@ namespace betauia.Controllers
       ticket.TimePurchased = DateTime.UtcNow.ToString("MM/dd/yyyy HH:mm:ss.fff",CultureInfo.InvariantCulture);
       ticket.Status = "INITIATE";
       ticket.VippsOrderId = initpayment.orderId;
-      ticket.MobileNumber = paymentModel.MobileNumber;
       var seats = _db.EventSeats.Where(a => a.TicketId == ticket.Id.ToString());
       foreach (var seat in seats)
       {
         seat.IsAvailable = false;
-        seat.IsReserved = true;
+        seat.IsReserved = false;
       }
 
       _db.SaveChanges();
+      Thread thread= new Thread(()=>DeleteTicket.CancelTransaction(_db,ticket.Id,(long)1000*60*6));
+      thread.Start();
       return Ok(initpayment.url);
     }
 
@@ -296,7 +297,38 @@ namespace betauia.Controllers
       var Seats = _db.EventSeats.Where(a => a.TicketId == ticket.Id.ToString()).ToList();
       var ticketview = new TicketViewModel(ticket, title);
       ticketview.Seats = Seats;
-      return Ok(ticketview);    }
+      return Ok(ticketview);    
+    }
+
+    [Authorize("Ticket.write")]
+    [HttpDelete]
+    [Route("delete/{id}")]
+    public async Task<IActionResult> Cancel(string id)
+    {
+      var ticket = _db.Tickets.Where(a => a.VippsOrderId == id).First();
+      
+      var t = await vipps.GetPaymentDetails(ticket.VippsOrderId);
+      var lastlog = t.transactionLogHistory[0];
+      if (lastlog.operationSuccess == true && lastlog.operation == "RESERVE")
+      {
+        var result = await vipps.RefundPayment(ticket.VippsOrderId);
+        if (result.transactionSummary.refundedAmount == ticket.Amount)
+        {
+          ticket.Status = "REFUND";
+          await _db.SaveChangesAsync();
+          return Ok();
+        }
+      }
+
+      if (lastlog.operationSuccess == true && lastlog.operation == "RESERVE")
+      {
+        var result = await vipps.CancelPayment(ticket.VippsOrderId);
+        ticket.Status = "CANCEL";
+        await _db.SaveChangesAsync();
+        return Ok();
+      }
+      return BadRequest();
+    }
 
     public class Ticketid
     {

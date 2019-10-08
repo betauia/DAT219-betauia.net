@@ -31,13 +31,20 @@
 
           <hr class="navbar-divider">
           <div
-              @click.native="isActive = false"
               class="navbar-item">
               <Register></Register>
           </div>
           <hr class="navbar-divider">
-          <Login></Login>
-
+          <b-dropdown position="is-bottom-left" aria-role="menu" trap-focus>
+              <a
+                  class="navbar-item"
+                  slot="trigger"
+                  role="button">
+                  <span>Login</span>
+                  <b-icon icon="menu-down"></b-icon>
+              </a>
+              <Login></Login>
+          </b-dropdown>
       </nav>
       <nav class="navbar-end" v-else>
         <!--<router-link

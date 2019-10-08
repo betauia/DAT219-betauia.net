@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using betauia.Data;
 
@@ -12,14 +13,7 @@ namespace betauia.Models
 
         public void CancelTicket(ApplicationDbContext dbContext)
         {
-          Status = "CANCEfaL";
-          MobileNumber = null;
-          Amount = 0;
-          TimePurchased = null;
-          VippsOrderId = null;
-          EventId = 0;
-          User = null;
-          UserId = null;
+          Status = "CANCEL";
           QR = null;
           Verified = false;
 
@@ -35,12 +29,11 @@ namespace betauia.Models
         }
         public int Id { get; set; }
         public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
         public string TimePurchased { get; set; }
         public int Amount { get; set; }
         public string Status { get; set; }
-        public string MobileNumber { get; set; }
         public string VippsOrderId { get; set; }
+        [Required]
         public int EventId { get; set; }
         public string QR { get; set; }
         public bool Verified { get; set; }
