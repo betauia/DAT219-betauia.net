@@ -311,7 +311,7 @@ namespace betauia.Controllers
       
       var t = await vipps.GetPaymentDetails(ticket.VippsOrderId);
       var lastlog = t.transactionLogHistory[0];
-      if (lastlog.operationSuccess == true && lastlog.operation == "RESERVE")
+      if (lastlog.operationSuccess == true && lastlog.operation == "CAPTURE")
       {
         var result = await vipps.RefundPayment(ticket.VippsOrderId);
         if (result.transactionSummary.refundedAmount == ticket.Amount)

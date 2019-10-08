@@ -59,12 +59,16 @@ namespace betauia
                     Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            
+/*          ////////////////////
+            Add at later pointer
+            ////////////////////
             services.AddDbContext<PaymentDbContext>(options =>
             {
               options.EnableSensitiveDataLogging();
               options.UseSqlite(
                 Configuration.GetConnectionString("Payment"));
-            });
+            });*/
 
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddRoles<IdentityRole>()

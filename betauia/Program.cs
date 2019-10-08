@@ -32,7 +32,6 @@ namespace betauia
                 DbInitializer.Initialize(db, um,rm);
 
                 var paymentDb = services.GetService<PaymentDbContext>();
-                PaymentDbInitializer.Initialize(paymentDb);
             }
 
             host.Run();
