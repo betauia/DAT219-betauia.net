@@ -20,8 +20,10 @@
           </ul>
         </aside>
       </div>
-      <div class="column">
-        <router-view/>
+      <div class="column is-6 is-offset-2">
+          <div class="box">
+              <router-view/>
+          </div>
       </div>
     </div>
   </div>

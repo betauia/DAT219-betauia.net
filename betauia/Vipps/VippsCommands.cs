@@ -26,9 +26,7 @@ namespace betauia.Vipps {
         private static string merchantSeiralNumber = "571822";
         private static string OcpApimSubscriptionKey = "9e641e435a7549e29bcf6f067c390ab1";
         private static string tokenpath = "Vipps/token.json";
-
-        private readonly PaymentDbContext _paymentDbContext;
-        public VippsApiController(PaymentDbContext paymentDbContext)
+        public VippsApiController()
         {
           GetVippsToken().Wait();
         }
