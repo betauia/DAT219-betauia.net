@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
+using betauia.Ticket;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -69,7 +70,7 @@ namespace betauia.Controllers
 
       var ticket = _db.Tickets.Find(id);
       if (ticket == null) return NotFound();
-      if (userid != ticket.UserId) return BadRequest();
+      if (userid != ticket.UserId) return BadRequest("Timed out");
 
       var ticketview = new TicketPreviewModel(ticket);
       ticketview.EventSeats = _db.EventSeats.Where(a => a.TicketId == Convert.ToString(ticket.Id)).ToList();
@@ -136,7 +137,7 @@ namespace betauia.Controllers
         seatmodel.IsReserved = true;
         seatmodel.ReserverId = userid;
       }
-      Thread thread= new Thread(()=>DeleteTicket.Delete(_db,t.Id,(long)1000*60*10));
+      Thread thread= new Thread(()=>DeleteTicket.Delete(t.Id,(long)1000*10));
       thread.Start();
       _db.SaveChanges();
       return Ok(t);
@@ -163,6 +164,7 @@ namespace betauia.Controllers
       var ticket = _db.Tickets.Find(paymentModel.Id);
       if (ticket == null) return NotFound();
       if (userid != ticket.UserId) return BadRequest();
+      if (ticket.Status != "STARTED") return BadRequest();
 
       string orderid = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
       var initpayment = await vipps.InitiatePayment(paymentModel.MobileNumber, orderid, 100, "test hello world");
@@ -182,7 +184,7 @@ namespace betauia.Controllers
       }
 
       _db.SaveChanges();
-      Thread thread= new Thread(()=>DeleteTicket.CancelTransaction(_db,ticket.Id,(long)1000*60*6));
+      Thread thread= new Thread(()=>DeleteTicket.Delete(ticket.Id,(long)1000*60*6));
       thread.Start();
       return Ok(initpayment.url);
     }

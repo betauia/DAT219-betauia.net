@@ -27,6 +27,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System.Timers;
 using betauia.FileReader;
+using betauia.Ticket;
 using betauia.Tokens;
 
 namespace betauia
