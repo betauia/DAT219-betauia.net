@@ -1,10 +1,12 @@
 <template>
-    <div id="Registered">
-        <p>A verification email was sent to you.</p>
-        <p>Please verify your email</p>
-        <p>Please check your spam mail</p>
-        <button @click="resendEmail">Resend verification email</button>
-        <p>{{message}}</p>
+    <div class="column is-6 is-offset-3">
+        <div class="box" id="Registered">
+            <p>A verification email was sent to you.</p>
+            <p>Please verify your email</p>
+            <p>Please check your spam mail</p>
+            <b-button class="is-primary " @click="resendEmail">Resend verification email</b-button>
+            <p>{{message}}</p>
+        </div>
     </div>
 </template>
 

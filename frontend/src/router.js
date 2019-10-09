@@ -105,6 +105,10 @@ export default new Router({
             component:()=>import('./components/Account/AccountDropdown.vue')
         },
         {
+            path: '/account/noaccess',
+            component:()=>import('./components/Account/NoAccess.vue')
+        },
+        {
             path: '/account',
             component: () => import('./components/Account/Account.vue'),
             children: [{
