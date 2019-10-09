@@ -319,14 +319,14 @@ namespace betauia.Controllers
       {
         seat.Add(s.Number.ToString());
       }
-      
-      var image = "data:image/png;base64,"+ticket.QR;
 
-      var emailticketviewmodel = new EmailTicketViewModel(image, seat, user.UserName, Event.Title, ticket.VippsOrderId);
+      var loc = "http://128.39.149.31/api/image/"+ticket.QRID;
+
+      var emailticketviewmodel = new EmailTicketViewModel(loc, seat, user.UserName, Event.Title, ticket.VippsOrderId);
       var htmlbody =
         await _emailRender.RenderViewToStringAsync($"Views/Emails/TicketConfirmation/EmailTicketConfirmation.cshtml",emailticketviewmodel);
 
-      var message = new MailMessage("noreply@betauia.net", user.Email)
+      var message = new MailMessage("noreply@betauia.net", "erikaspen1@gmail.com")
       {
         Subject = "betauia email verification",
       };
