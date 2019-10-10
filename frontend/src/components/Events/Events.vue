@@ -50,9 +50,8 @@
                 </div>
 
             <div v-if="event.eventModel.seatMap!=null">
-                <p>Number of seats: {{event.eventModel.seatMap.numSeats}}</p>
-                <p>Atendees: {{event.eventModel.seatMap.numSeats - event.eventModel.seatMap.numSeatsAvailable}}</p>
-                <p>Seats left: {{event.eventModel.seatMap.numSeatsAvailable}}</p>
+                <p>Plasser for dette arrangementet: {{event.eventModel.seatMap.numSeats}}</p>
+                <p>Ledige seter: {{event.eventModel.seatMap.numSeatsAvailable}}</p>
                 <button class="button is-link" v-on:click="buyticket">Kjøp billett</button>
             </div>
           </div>
@@ -72,7 +71,7 @@ import Sponsors from "../Sponsors/Sponsors";
       Sponsors,
       },
       props: {
-    event: Object
+        event: Object,
   },
   created() {
     console.log(this.event);

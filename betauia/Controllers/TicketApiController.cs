@@ -105,6 +105,51 @@ namespace betauia.Controllers
     }
 
     [HttpPost]
+    [Authorize("Ticket.free")]
+    [Route("free")]
+    public async Task<IActionResult> FreeTicket([FromHeader] string Authorization, [FromBody] NewTicketModel ticketModel)
+    {
+      var token = Authorization.Split(' ')[1];
+      var userid = await _tokenVerifier.GetTokenUser(token);
+
+      var t = new TicketModel
+      {
+        UserId = userid,
+        Amount = 0,
+        Status = "RESERVE",
+        EventId = ticketModel.eventId,
+        VippsOrderId = "CREW",
+        Verified = true,
+      };
+      var seatmodels = new List<EventSeat>();
+      foreach (var seat in ticketModel.seats)
+      {
+        var seatmodel = _db.EventSeats.Find(seat);
+        if (seatmodel.ReserverId != null && seatmodel.ReserverId != userid)
+        {
+          return BadRequest("Seat registered to another user");
+        }
+        seatmodels.Add(seatmodel);
+      }
+      
+      _db.Tickets.Add(t);
+      _db.SaveChanges();
+      foreach (var seatmodel in seatmodels)
+      {
+        seatmodel.TicketId = Convert.ToString(t.Id);
+        seatmodel.IsAvailable = false;
+        seatmodel.IsReserved = false;
+        seatmodel.ReserverId = userid;
+      }
+
+      var eventmodel = _db.EventSeatMaps.Where(a => a.EventId == ticketModel.eventId).First();
+      eventmodel.NumSeatsAvailable -= seatmodels.Count;
+      
+      _db.SaveChanges();
+      return Ok();
+    }
+    
+    [HttpPost]
     [Authorize("User")]
     [Route("newticket")]
     public async Task<IActionResult> NewTicket([FromHeader] string Authorization, [FromBody] NewTicketModel ticketModel)
@@ -115,7 +160,7 @@ namespace betauia.Controllers
       var t = new TicketModel
       {
         UserId = userid,
-        Amount = 100,
+        Amount = ticketModel.seats.Count*100*100,
         Status = "STARTED",
         EventId = ticketModel.eventId,
       };
@@ -146,8 +191,13 @@ namespace betauia.Controllers
         seatmodel.IsReserved = true;
         seatmodel.ReserverId = userid;
       }
+            
+      var eventmodel = _db.EventSeatMaps.Where(a => a.EventId == ticketModel.eventId).First();
+      eventmodel.NumSeatsAvailable -= seatmodels.Count;
+      
       Thread thread= new Thread(()=>DeleteTicket.Delete(t.Id,(long)1000*60*10));
       thread.Start();
+
       _db.SaveChanges();
       return Ok(t);
     }
@@ -176,7 +226,7 @@ namespace betauia.Controllers
       if (ticket.Status != "STARTED") return BadRequest();
 
       string orderid = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
-      var initpayment = await vipps.InitiatePayment(paymentModel.MobileNumber, orderid, 100, "test hello world");
+      var initpayment = await vipps.InitiatePayment(paymentModel.MobileNumber, orderid, ticket.Amount, "test hello world");
       if (initpayment == null)
       {
         return BadRequest();
@@ -265,7 +315,7 @@ namespace betauia.Controllers
             ticket.Status = "CAPTURE";
             ticket.TimePurchased = capture.transactionInfo.timeStamp;
             //Generate QR code//
-            ticket.QR =  QRCode.GetQr("http://128.39.149.31/admin/ticketverify/" + ticket.VippsOrderId);
+            ticket.QR =  QRCode.GetQr("https://betauia.net/admin/ticketverify/" + ticket.VippsOrderId);
             var image = await SaveQrCode(ticket.QR);
             ticket.QRID = image.Id;
             _db.Images.Add(image);
@@ -320,7 +370,7 @@ namespace betauia.Controllers
         seat.Add(s.Number.ToString());
       }
 
-      var loc = "http://128.39.149.31/api/image/"+ticket.QRID;
+      var loc = "https://betauia.net/api/image/"+ticket.QRID;
 
       var emailticketviewmodel = new EmailTicketViewModel(loc, seat, user.UserName, Event.Title, ticket.VippsOrderId);
       var htmlbody =

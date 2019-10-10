@@ -14,31 +14,11 @@ namespace betauia.Data
             db.Database.EnsureCreated();
 
             Config.AddRoles(um,rm);
-            var user = new ApplicationUser { Email = "user@gmail.com", UserName = "ksolli", FirstName = "Kristoffer",LastName = "Solli", NickName = "Nickname"};
+            var user = new ApplicationUser { Email = "erikaspen1@gmail.com", UserName = "erikdakool", FirstName = "Erik",LastName = "Aspen", NickName = "erikdakool"};
             um.CreateAsync(user, "Password1.").Wait();
             var claim = new Claim("AccountVerified","true",ClaimValueTypes.String);
             um.AddClaimAsync(user, claim).Wait();
             um.AddToRoleAsync(user, "Admin").Wait();
-
-            user = new ApplicationUser { Email = "erikaa17@uia.no", UserName = "erikdakool", FirstName = "Erik",LastName = "Aspen", NickName = "Nickname"};
-            um.CreateAsync(user, "Password1.").Wait();
-            um.AddToRoleAsync(user, "SuperAdmin").Wait();
-
-            user = new ApplicationUser { Email = "user2@gmail.com", UserName = "cmathisen", FirstName = "Christer",LastName = "Mathisen", NickName = "Nickname"};
-            um.CreateAsync(user, "Password1.").Wait();
-            um.AddToRoleAsync(user, "User").Wait();
-
-            user = new ApplicationUser { Email = "user3@gmail.com", UserName = "eeilertsen", FirstName = "Even",LastName = "Eilertsen", NickName = "Nickname"};
-            um.CreateAsync(user, "Password1.").Wait();
-            um.AddToRoleAsync(user, "User").Wait();
-
-            user = new ApplicationUser { Email = "user4@gmail.com", UserName = "askailand", FirstName = "Aslak",LastName = "Skailand", NickName = "Nickname"};
-            um.CreateAsync(user, "Password1.").Wait();
-            um.AddToRoleAsync(user, "User").Wait();
-
-            user = new ApplicationUser { Email = "user5@gmail.com", UserName = "mbraaten", FirstName = "Martin",LastName = "Baraaten", NickName = "Nickname"};
-            um.CreateAsync(user, "Password1.").Wait();
-            um.AddToRoleAsync(user, "User").Wait();
             
 /*
             const int numSeats = 20;

@@ -18,7 +18,7 @@ namespace betauia.Models
           Verified = false;
           QRID = null;
 
-          var seats = dbContext.EventSeats.Where(a => a.TicketId == Id.ToString());
+          var seats = dbContext.EventSeats.Where(a => a.TicketId == Id.ToString()).ToList();
           foreach (var seat in seats)
           {
             seat.IsAvailable = true;
@@ -26,6 +26,10 @@ namespace betauia.Models
             seat.ReserverId = null;
             seat.TicketId = null;
           }
+          
+                
+          var eventmodel = dbContext.EventSeatMaps.Where(a => a.EventId == EventId).First();
+          eventmodel.NumSeatsAvailable += seats.Count;
           dbContext.SaveChanges();
         }
         public int Id { get; set; }

@@ -23,7 +23,7 @@
           self.message = "Successfully signed up for event";
         })
         .catch(function(error) {
-          self.message = "An error occured, lease contact support";
+          self.message = "An error occured, please contact support";
         });
     }
   };

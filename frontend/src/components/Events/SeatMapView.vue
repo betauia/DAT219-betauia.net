@@ -21,6 +21,7 @@
                 <div class="content">
                     <div id="buyInfo">
                         <button class="button is-link" @click="buyTickets">Til betaling</button>
+                        <button class="button is-warning" v-if="free==true" v-on:click="freeClick">Gratis til crew</button>
                     </div>
                 </div>
             </div>
@@ -42,6 +43,7 @@ export default {
       seats: [],
       seatmapmodel: {},
       reservedSeats: {},
+      free:false,
     };
   },
   methods: {
@@ -68,7 +70,6 @@ export default {
         seats: seatsToBuy
       };
 
-      console.log(bodyParam)
       axios
         .post('/api/ticket/newticket',bodyParam,config)
         .then(function (response) {
@@ -79,6 +80,35 @@ export default {
           console.log(error.response);
         });
     },
+    freeClick(){
+      const seatsToBuy = [];
+      const self = this;
+      this.seats.forEach((seat) => {
+        if (self.reservedSeats[seat.id] == true) {
+          seatsToBuy.push(seat.id);
+        }
+      });
+
+
+      const token = localStorage.getItem('token');
+      const config = {
+        headers: { Authorization: "bearer " + token },
+      };
+
+      const bodyParam = {
+        eventId:this.seatmapmodel.eventId,
+        seats: seatsToBuy
+      };
+
+      axios
+        .post('/api/ticket/free',bodyParam,config)
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error.response);
+        });
+    }
   },
   created() {
     const eventid = this.$route.params;
@@ -106,6 +136,16 @@ export default {
       .catch((error) => {
         console.log(error);
       });
+
+    axios
+      .get("/api/token/freeticket",config)
+      .then(function(response){
+        self.free = true;
+      })
+      .catch(function (error) {
+        console.log(error.response);
+        self.free = false;
+      })
   },
 };
 </script>
@@ -131,9 +171,5 @@ export default {
 }
 #buyInfo button{
     width: 50%;
-}
-#buyTab {
-    background-color: #6c6c6c;
-    height: auto;
 }
 </style>

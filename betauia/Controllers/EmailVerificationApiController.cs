@@ -47,7 +47,7 @@ namespace betauia.Controllers
 
             var token = await _tf.GetEmailVerificationTokenAsync(user);
             
-            var url = "http://128.39.149.31/verifyemail/" + token;
+            var url = "https://betauia.net/verifyemail/" + token;
             var emailviewmodel = new EmailViewModel(url);
             var htmlbody =
                 await _emailRender.RenderViewToStringAsync($"Views/Emails/VerifyAccount/EmailVerifyAccount.cshtml",emailviewmodel);

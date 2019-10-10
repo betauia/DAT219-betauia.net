@@ -142,6 +142,7 @@ namespace betauia
 
             options.AddPolicy("Ticket.write",policy=>policy.RequireClaim("Ticket","write"));
             options.AddPolicy("Ticket.read",policy=>policy.RequireClaim("Ticket","read","write"));
+            options.AddPolicy("Ticket.free",policy=>policy.RequireClaim("Ticket","free","write"));
         }
     }
 }

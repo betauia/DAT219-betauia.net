@@ -82,6 +82,7 @@ export default {
             .catch(function (error) {
                 console.log(error.response);
             });
+
     },
     methods:{
         initiateVippsPayment(){
@@ -107,7 +108,7 @@ export default {
                 .catch(function (error) {
                     console.log(error.response);
                 });
-        }
+        },
     }
 };
 </script>

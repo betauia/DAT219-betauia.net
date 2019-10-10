@@ -27,7 +27,8 @@ export default {
   data() {
     return {
       events: [],
-      errors: []
+      errors: [],
+      free:false,
     };
   },
 

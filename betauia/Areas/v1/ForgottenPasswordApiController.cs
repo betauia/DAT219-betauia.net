@@ -46,7 +46,7 @@ namespace betauia.Areas.v1
 
       token = await _tf.GetPasswordRestTokenAsync(user);
       
-      var url = "http://128.39.149.31/resetpassword/" + token;
+      var url = "https://betauia.net/resetpassword/" + token;
       SmtpClient smtp = new SmtpClient("smtp.gtm.no");
       smtp.EnableSsl = false;
       smtp.Port = 587;
@@ -67,7 +67,7 @@ namespace betauia.Areas.v1
 
       var token = await _tf.GetPasswordRestTokenAsync(user);
       
-      var url = "http://128.39.149.31/resetpassword/" + token;
+      var url = "https://betauia.net/resetpassword/" + token;
 
       SmtpClient smtp = new SmtpClient("smtp.gtm.no");
       smtp.EnableSsl = false;

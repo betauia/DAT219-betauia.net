@@ -24,7 +24,7 @@
           to="/sponsors"
         >Sponsors</router-link>
         <hr class="navbar-divider">
-        <router-link @click.native="isActive = false" class="navbar-item" to="/admin/dash">Admin</router-link>
+        <button @click.native="isActive = false" class="navbar-item" @click="togoogleform">Report a bug</button>
         <hr class="navbar-divider">
       </div>
       <nav class="navbar-end" v-if="!isLoggedIn">
@@ -114,6 +114,9 @@ export default {
       this.isLoggedIn = false;
       console.log("Logged out");
       this.$forceUpdate();
+    },
+    togoogleform(){
+      window.location = "https://forms.gle/VGai7sSp3s3rJxx58"
     }
   }
 };

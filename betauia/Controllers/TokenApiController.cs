@@ -83,6 +83,14 @@ namespace betauia.Controllers
         }
 
         [HttpGet]
+        [Authorize("Ticket.free")]
+        [Route("api/token/freeticket")]
+        public async Task<IActionResult> FreeTicket()
+        {
+            return Ok();
+        }
+
+        [HttpGet]
         [Route("api/token/accountverified")]
         public async Task<IActionResult> VerifiedAccount([FromHeader] string Authorization)
         {
