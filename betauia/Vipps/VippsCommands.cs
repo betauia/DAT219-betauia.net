@@ -18,7 +18,6 @@ using System.Runtime.Serialization;
 using System.Timers;
 using betauia.Data;
 
-
 namespace betauia.Vipps {
     public class VippsApiController : IVippsPayment {
         private static string client_id = "451a3d2c-d526-4cbe-b59c-940be028ba7a";
@@ -91,7 +90,7 @@ namespace betauia.Vipps {
           {
             merchantSerialNumber = merchantSeiralNumber,
             callbackPrefix = "https://example.com/vipps/callbacks-for-payment-update",
-            fallBack = "http://128.39.149.31:8080/ticketdetails/"+orderid,
+            fallBack = "http://128.39.149.31/ticketdetails/"+orderid,
             authToken = g.ToString(),
             isApp = false
           };

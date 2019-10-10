@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace betauia.Controllers
 {
-    [Authorize]
     [ApiController]
     public class UserRoleApiController : ControllerBase
     {

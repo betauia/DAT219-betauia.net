@@ -31,7 +31,7 @@ export default {
     axios
       .get("/api/blog")
       .then(response => {
-        this.posts = response.data;
+        this.posts = response.data.slice().reverse();
       })
       .catch(e => {
         this.errors.push(e);

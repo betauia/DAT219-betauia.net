@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace betauia.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/role")]
     public class RoleApiController : ControllerBase

@@ -46,12 +46,12 @@ namespace betauia.Areas.v1
 
       token = await _tf.GetPasswordRestTokenAsync(user);
       
-      var url = "http://localhost:8081/resetpassword/" + token;
+      var url = "http://128.39.149.31/resetpassword/" + token;
       SmtpClient smtp = new SmtpClient("smtp.gtm.no");
       smtp.EnableSsl = false;
       smtp.Port = 587;
       smtp.Credentials = new NetworkCredential("betalan@betauia.net","8iFK0N2tdz");
-      smtp.Send("noreply@betauia.net","erikaspen1@gmail.com","Go to reset your password",url);
+      smtp.Send("noreply@betauia.net",user.Email,"Go to reset your password",url);
       return Ok();
     }
 
@@ -67,13 +67,13 @@ namespace betauia.Areas.v1
 
       var token = await _tf.GetPasswordRestTokenAsync(user);
       
-      var url = "http://localhost:8081/resetpassword/" + token;
+      var url = "http://128.39.149.31/resetpassword/" + token;
 
       SmtpClient smtp = new SmtpClient("smtp.gtm.no");
       smtp.EnableSsl = false;
       smtp.Port = 587;
       smtp.Credentials = new NetworkCredential("betalan@betauia.net","8iFK0N2tdz");
-      smtp.Send("noreply@betauia.net","erikaspen1@gmail.com","Go to reset your password",url);
+      smtp.Send("noreply@betauia.net",forgottenPasswordModel.Email,"Go to reset your password",url);
       return Ok();
     }
     

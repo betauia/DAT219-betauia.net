@@ -142,13 +142,13 @@ namespace betauia.Controllers
       await _db.SaveChangesAsync();
 
       var token = await tokenFactory.GetEventSignupToken(atendee.ID.ToString());
-      var url = "http://localhost:8080/attendeeemailconfirm/" + token;
+      var url = "http://128.39.149.31/attendeeemailconfirm/" + token;
 
       SmtpClient smtp = new SmtpClient("smtp.gtm.no");
       smtp.EnableSsl = false;
       smtp.Port = 587;
       smtp.Credentials = new NetworkCredential("betalan@betauia.net","8iFK0N2tdz");
-      smtp.Send("noreply@betauia.net","erikaspen1@gmail.com","Verify signup for event " + Event.Title,url);
+      smtp.Send("noreply@betauia.net",atendee.Email,"Verify signup for event " + Event.Title,url);
       return Ok(token);
     }
 

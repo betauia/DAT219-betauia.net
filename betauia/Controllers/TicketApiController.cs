@@ -265,7 +265,7 @@ namespace betauia.Controllers
             ticket.Status = "CAPTURE";
             ticket.TimePurchased = capture.transactionInfo.timeStamp;
             //Generate QR code//
-            ticket.QR =  QRCode.GetQr("localhost:8080/admin/ticketverify/" + ticket.VippsOrderId);
+            ticket.QR =  QRCode.GetQr("http://128.39.149.31/admin/ticketverify/" + ticket.VippsOrderId);
             var image = await SaveQrCode(ticket.QR);
             ticket.QRID = image.Id;
             _db.Images.Add(image);
@@ -326,7 +326,7 @@ namespace betauia.Controllers
       var htmlbody =
         await _emailRender.RenderViewToStringAsync($"Views/Emails/TicketConfirmation/EmailTicketConfirmation.cshtml",emailticketviewmodel);
 
-      var message = new MailMessage("noreply@betauia.net", "erikaspen1@gmail.com")
+      var message = new MailMessage("noreply@betauia.net",user.Email)
       {
         Subject = "betauia email verification",
       };

@@ -11,9 +11,6 @@ using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using betauia.Email;
-using betauia.Views.Emails.VerifyAccount;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.AspNetCore.Razor.Language;
 
 namespace betauia.Controllers
 {
@@ -50,7 +47,7 @@ namespace betauia.Controllers
 
             var token = await _tf.GetEmailVerificationTokenAsync(user);
             
-            var url = "http://localhost:8080/verifyemail/" + token;
+            var url = "http://128.39.149.31/verifyemail/" + token;
             var emailviewmodel = new EmailViewModel(url);
             var htmlbody =
                 await _emailRender.RenderViewToStringAsync($"Views/Emails/VerifyAccount/EmailVerifyAccount.cshtml",emailviewmodel);

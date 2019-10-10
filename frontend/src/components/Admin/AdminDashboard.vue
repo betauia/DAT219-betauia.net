@@ -122,7 +122,21 @@
 
 <script>
     export default {
-        name: "AdminDashboard.vue"
+        name: "AdminDashboard.vue",
+      created() {
+        var token = localStorage.getItem("token");
+        var config = {
+          headers: { Authorization: "bearer " + token }
+        };
+        console.log(token);
+        var self = this;
+        axios
+          .get("/api/token/adminpanel/",config)
+          .then(function(response) {
+          })
+          .catch(function(error) {
+          });
+      }
     }
 </script>
 
