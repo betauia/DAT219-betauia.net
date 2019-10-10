@@ -89,7 +89,7 @@ namespace betauia.Vipps {
           var minfo = new MerchantInfoModel
           {
             merchantSerialNumber = merchantSeiralNumber,
-            callbackPrefix = "https://example.com/vipps/callbacks-for-payment-update",
+            callbackPrefix = "http://128.39.149.31/api/vipps",
             fallBack = "http://128.39.149.31/ticketdetails/"+orderid,
             authToken = g.ToString(),
             isApp = false

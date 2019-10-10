@@ -65,7 +65,7 @@ export default {
 
       var self = this;
       axios
-        .post("/api/user/role/" + userid + "/" + this.$route.params.id, config)
+        .post("/api/user/role/" + userid + "/" + this.$route.params.id,{},config)
         .then(function(response) {
           self.addUserModalActive = false;
           self.addUsers = null;

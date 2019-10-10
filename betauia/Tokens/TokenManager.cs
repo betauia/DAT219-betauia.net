@@ -28,6 +28,9 @@ namespace betauia.Tokens
     public async Task RemoveUserTokensAsync(string id)
     {
       var allTokens = await _cache.GetStringAsync(id);
+      
+      if(allTokens == null) return;
+      
       var tokenList = allTokens.Split(",");
       foreach (var token in tokenList)
       {

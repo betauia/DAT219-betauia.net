@@ -78,7 +78,8 @@ namespace betauia.Controllers
                 LastName = user.LastName,
                 UserName = user.UserName,
                 Email = user.Email,
-                VerifiedEmail = user.VerifiedEmail
+                VerifiedEmail = user.VerifiedEmail,
+                Banned = user.Banned
             });
         }
 

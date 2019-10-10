@@ -93,7 +93,7 @@ namespace betauia.Controllers
         }
 
         [Authorize("Account.write")]
-        [Authorize("Roles.read")]
+        [Authorize("Roles.write")]
         [HttpPost]
         [Route("api/user/role/{userid}/{roleid}")]
         public async Task<IActionResult> SetUserRoles(string userid, string roleid)
