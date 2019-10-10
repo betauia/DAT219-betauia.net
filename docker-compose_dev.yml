@@ -31,7 +31,7 @@ services:
       MYSQL_PASSWORD: ${mysql_passwd}
       MYSQL_ROOT_PASSWORD: ${mysql_root_passwd}
     volumes:
-      - ${mysql_volume}:/var/ib/mysql
+      - ${mysql_volume}:/var/lib/mysql
 
   beta_redis:
     restart: always
