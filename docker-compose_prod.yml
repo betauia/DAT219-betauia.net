@@ -38,7 +38,8 @@ services:
       MYSQL_PASSWORD: ${mysql_passwd}
       MYSQL_ROOT_PASSWORD: ${mysql_root_passwd}
     volumes:
-      - ${mysql_store}:/var/ib/mysql
+      - db_data:/var/lib/mysql
+      - ./configs/my.cnf:/etc/my.cnf
     ports:
       - 3306:3306
 
@@ -50,3 +51,5 @@ services:
     volumes:
      - ${redis_store}:/data
 
+volumes:
+  db_data: {}

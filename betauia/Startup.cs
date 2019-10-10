@@ -62,7 +62,7 @@ namespace betauia
                 {
                     options.EnableSensitiveDataLogging();
                     options.UseSqlite(
-                        Configuration.GetConnectionString("DefaultConnection"));
+                        Configuration.GetConnectionString("local_sqlite_db"));
                 });
                 services.AddDistributedRedisCache(option =>
                 {
@@ -76,7 +76,7 @@ namespace betauia
                 {
                     options.EnableSensitiveDataLogging();
 
-                    options.UseMySQL(Configuration.GetConnectionString("BetaDB"));
+                    options.UseMySQL(Configuration.GetConnectionString("docker_mysql_db"));
                 });
                 services.AddDistributedRedisCache(option =>
                 {
