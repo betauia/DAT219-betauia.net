@@ -29,7 +29,7 @@ namespace betauia
                 var um = services.GetRequiredService<UserManager<ApplicationUser>>();
                 var rm = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-                //DbInitializer.Initialize(db, um,rm);
+                DbInitializer.Initialize(db, um,rm);
             }
 
             host.Run();
