@@ -5,8 +5,8 @@ services:
     container_name: beta_backend
     hostname: beta_backend
     volumes:
-     - ./betauia/wwwroot/qr/:/app/betauia/wwwroot/qr
-     - ./betauia/wwwroot/Uploads/:/app/betauia/wwwroot/Uploads
+     - ./betauia/wwwroot/qr/:/app/wwwroot/qr
+     - ./betauia/wwwroot/Uploads/:/app/wwwroot/Uploads
     build:
       context: ./betauia
       dockerfile: Dockerfile
