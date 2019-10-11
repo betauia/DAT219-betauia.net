@@ -1,6 +1,6 @@
 <template>
     <div class="seatmap">
-        <div class="column is-7 is-offset-3 card" id="grid">
+        <div id="grid">
             <div class="card-img">
                 <figure class="image is-grouped-centered" >
                     <img src="https://i.imgur.com/6BryTTm.jpg" width="900px" height="900px" id="img-info"/>
@@ -11,9 +11,11 @@
                     </div>
                 </figure>
             </div>
+        </div>
+        <div  class="column is-7 card">
             <div class="card-content" id="buyTab">
                 <div class="content">
-                    <div id="eventInfo">
+                    <div>
                         <p>Plasser for dette arrangementet: {{seatmapmodel.numSeats}}</p>
                         <p>Ledige plasser: {{seatmapmodel.numSeatsAvailable}}</p>
                     </div>
@@ -152,17 +154,14 @@ export default {
 
 <style>
 #grid {
-}
-#info{
-    margin:10px;
-    overflow: hidden;
-}
-#info div{
-}
-#eventInfo{
-    float:left;
-    width: 50%;
-    overflow:hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("https://i.imgur.com/6BryTTm.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 900px;
+    height: 900px;
 }
 #buyInfo{
     float: left;
