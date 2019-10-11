@@ -53,7 +53,7 @@ namespace betauia.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]BlogPost blogPost)
         {
-            if (blogPost.Id != 0)
+            if (blogPost.Id != 0)    
                 return BadRequest();
 
             _context.Add(blogPost);

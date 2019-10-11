@@ -18,7 +18,7 @@ namespace betauia.Ticket
                 delay -= currentDelay;
             }
 
-            var connectionstring = "server=beta_db;port=3306;database=db;user=user;password=hackmeuser";
+            var connectionstring = "Server=beta_db;Port=5432;Database=beta_db;User Id=boiis;Password=hackmeuser;";
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
             optionsBuilder.UseSqlite(connectionstring);
             var db = new ApplicationDbContext(optionsBuilder.Options);
