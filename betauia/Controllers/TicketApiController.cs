@@ -315,7 +315,7 @@ namespace betauia.Controllers
             ticket.Status = "CAPTURE";
             ticket.TimePurchased = capture.transactionInfo.timeStamp;
             //Generate QR code//
-            ticket.QR =  QRCode.GetQr("https://betauia.net/admin/ticketverify/" + ticket.VippsOrderId);
+            ticket.QR =  QRCode.GetQr("https://beta.betauia.net/admin/ticketverify/" + ticket.VippsOrderId);
             var image = await SaveQrCode(ticket.QR);
             ticket.QRID = image.Id;
             _db.Images.Add(image);
@@ -370,7 +370,7 @@ namespace betauia.Controllers
         seat.Add(s.Number.ToString());
       }
 
-      var loc = "https://betauia.net/api/image/"+ticket.QRID;
+      var loc = "https://beta.betauia.net/api/image/"+ticket.QRID;
 
       var emailticketviewmodel = new EmailTicketViewModel(loc, seat, user.UserName, Event.Title, ticket.VippsOrderId);
       var htmlbody =
