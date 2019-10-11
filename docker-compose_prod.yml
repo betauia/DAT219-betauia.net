@@ -4,6 +4,9 @@ services:
     restart: always
     container_name: beta_backend
     hostname: beta_backend
+    volumes:
+     - ./betauia/wwwroot/qr/:/app/betauia/wwwroot/qr
+     - ./betauia/wwwroot/Uploads/:/app/betauia/wwwroot/Uploads
     build:
       context: ./betauia
       dockerfile: Dockerfile-Prod
