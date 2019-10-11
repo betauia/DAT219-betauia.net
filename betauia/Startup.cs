@@ -76,7 +76,7 @@ namespace betauia
                 {
                     options.EnableSensitiveDataLogging();
 
-                    options.UseMySQL(Configuration.GetConnectionString("docker_mysql_db"));
+                    options.UseNpgsql(Configuration.GetConnectionString("docker_mysql_db"));
                 });
                 services.AddDistributedRedisCache(option =>
                 {
