@@ -49,7 +49,8 @@
                                       </b-input>
                                   </b-field>
 
-                                  <p class="has-text-black">Remember to use at least one captial letter, a number and a special symbol for your password.</p>
+                                  <p class="has-text-black">Remember to use at least one captial letter,
+                                      <br>a number and a special symbol for your password.</p>
                                   <p class="has-text-black">Example: Password1337!</p>
 
                                   <b-field label="Password">
