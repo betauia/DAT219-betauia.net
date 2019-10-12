@@ -378,7 +378,7 @@ namespace betauia.Controllers
 
       var message = new MailMessage("noreply@betauia.net",user.Email)
       {
-        Subject = "betauia email verification",
+        Subject = "Ticket for "+Event.Title,
       };
       message.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(htmlbody,Encoding.UTF8,MediaTypeNames.Text.Html));
       using (var smtp = new SmtpClient("smtp.gtm.no", 587))

@@ -10,7 +10,7 @@
               has-modal-card
               :can-cancel="true">
 
-                          <div class="modal-card" style="width: auto">
+                          <div class="modal-card" style="width: 600px">
                               <header class="modal-card-head">
                                   <p class="modal-card-title">Register</p>
                               </header>
@@ -49,6 +49,9 @@
                                       </b-input>
                                   </b-field>
 
+                                  <p class="has-text-black">Remember to use at least one captial letter, a number and a special symbol for your password.</p>
+                                  <p class="has-text-black">Example: Password1337!</p>
+
                                   <b-field label="Password">
                                       <b-input
                                           type="password"
@@ -64,6 +67,7 @@
                                       <b-input
                                           :value="again_password"
                                           type="password"
+                                          placeholder="Your password repeated"
                                           name="registeragain_password"
                                           required
                                       ></b-input>
