@@ -4,10 +4,20 @@ services:
     restart: always
     container_name: beta_backend
     hostname: beta_backend
+    volumes:
+     - ./betauia/wwwroot/qr/:/app/wwwroot/qr
+     - ./betauia/wwwroot/Uploads/:/app/wwwroot/Uploads
     build:
       context: ./betauia
-      dockerfile: Dockerfile-Dev
-    network_mode: host
+      dockerfile: Dockerfile
+    ports:
+      - 5001:80
+    links:
+      - beta_db
+      - beta_redis
+    depends_on:
+      - beta_db
+      - beta_redis
 
   beta_frontend:
     restart: always
@@ -15,23 +25,24 @@ services:
     hostname: beta_frontend
     build:
       context: ./frontend
-      dockerfile: Dockerfile-Dev
+      dockerfile: Dockerfile
     network_mode: host
     depends_on:
       - beta_backend
 
   beta_db:
-    image: mysql:5.7
+    image: postgres
     restart: always
     container_name: beta_db
     hostname: beta_db
-    environment:
-      MYSQL_DATABASE: ${mysql_db}
-      MYSQL_USER: ${mysql_user}
-      MYSQL_PASSWORD: ${mysql_passwd}
-      MYSQL_ROOT_PASSWORD: ${mysql_root_passwd}
     volumes:
-      - ${mysql_volume}:/var/lib/mysql
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: 'hackmeuser'
+      POSTGRES_USER: 'boiis'
+      POSTGRES_DB: 'beta_db'
+    ports:
+      - 5432:5432
 
   beta_redis:
     restart: always
@@ -39,4 +50,7 @@ services:
     container_name: beta_redis
     hostname: beta_redis
     volumes:
-     - ${redis_volume}:/data
+     - ${redis_store}:/data
+
+volumes:
+  pgdata:

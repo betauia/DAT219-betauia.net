@@ -18,7 +18,11 @@ namespace betauia.Data
             um.CreateAsync(user, "Password1.").Wait();
             var claim = new Claim("AccountVerified","true",ClaimValueTypes.String);
             um.AddClaimAsync(user, claim).Wait();
-            um.AddToRoleAsync(user, "Admin").Wait();
+            um.AddToRoleAsync(user, "SuperAdmin").Wait();
+
+            user = new ApplicationUser
+                {Email = "noe@noe.com", UserName = "testuser", FirstName = "test", LastName = "user"};
+            um.CreateAsync(user, "Password1.");
             
 /*
             const int numSeats = 20;
