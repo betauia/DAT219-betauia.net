@@ -10,7 +10,7 @@
               has-modal-card
               :can-cancel="true">
 
-                          <div class="modal-card" style="width: 600px">
+                          <div class="modal-card" style="width: auto">
                               <header class="modal-card-head">
                                   <p class="modal-card-title">Register</p>
                               </header>
