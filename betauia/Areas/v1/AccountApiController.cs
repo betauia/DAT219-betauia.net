@@ -113,10 +113,16 @@ namespace betauia.Areas.v1
                 return BadRequest("602");
             }
 
-            if (_um.CheckPasswordAsync(user, loginmodel.Password).Result)
+            var result = await _um.CheckPasswordAsync(user, loginmodel.Password);
+            
+            if (result)
             {
                 var token = await _tf.GetTokenAsync(user);
                 return Ok(token);
+            }
+            else
+            {
+                return BadRequest("606");
             }
             return BadRequest();
         }

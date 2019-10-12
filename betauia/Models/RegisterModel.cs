@@ -17,12 +17,12 @@ namespace betauia.Models
         public string Email { get; set; }
         
         [Required]
-        [DataType(DataType.Password)]
+        [DataType(DataType.Password,ErrorMessage = "604")]
         public string Password { get; set; }
         
         [Required]
         [DataType(DataType.Password)]
-        [Compare("Password",ErrorMessage = "203")]
+        [Compare("Password",ErrorMessage = "605")]
         public string ConfirmPassword { get; set; }
     }
 }

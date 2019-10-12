@@ -85,8 +85,6 @@ namespace betauia
                 });
             }
             
- 
-            
 /*          ////////////////////
             Add at later pointer
             ////////////////////

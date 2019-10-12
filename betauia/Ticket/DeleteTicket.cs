@@ -20,7 +20,7 @@ namespace betauia.Ticket
 
             var connectionstring = "Server=beta_db;Port=5432;Database=beta_db;User Id=boiis;Password=hackmeuser;";
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            optionsBuilder.UseSqlite(connectionstring);
+            optionsBuilder.UseNpgsql(connectionstring);
             var db = new ApplicationDbContext(optionsBuilder.Options);
             var ticket = await db.Tickets.FindAsync(id);
             if (ticket.Status == "STARTED" || ticket.Status == "INITIATE")
