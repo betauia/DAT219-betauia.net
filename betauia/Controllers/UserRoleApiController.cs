@@ -94,9 +94,9 @@ namespace betauia.Controllers
 
         [Authorize("Account.write")]
         [Authorize("Roles.write")]
-        [HttpPost]
+        [HttpGet]
         [Route("api/user/role/{userid}/{roleid}")]
-        public async Task<IActionResult> SetUserRoles(string userid, string roleid)
+        public async Task<IActionResult> SetUserRoles([FromRoute] string userid,[FromRoute] string roleid)
         {
             var user = _um.FindByIdAsync(userid).Result;
             if (user == null)

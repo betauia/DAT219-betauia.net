@@ -58,14 +58,13 @@ export default {
       var userid = user.id;
 
       var token = localStorage.getItem("token");
-
       var config = {
         headers: { Authorization: "bearer " + token }
       };
 
       var self = this;
       axios
-        .post("/api/user/role/" + userid + "/" + this.$route.params.id,{},config)
+        .get("/api/user/role/" + userid + "/" + this.$route.params.id,config)
         .then(function(response) {
           self.addUserModalActive = false;
           self.addUsers = null;
