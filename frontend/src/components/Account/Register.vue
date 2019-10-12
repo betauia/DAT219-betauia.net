@@ -71,10 +71,8 @@
                                           name="registeragain_password"
                                           required
                                       ></b-input>
-                                  </b-field>
-
-                                  <div class="is-3 padding">Insert Recaptcha here for auth of humanoids</div>
-
+                              </b-field>
+                             <p  v-if="message!=''" id="errormessage">{{message}}</p>
                               </section>
                               <footer class="modal-card-foot">
                                   <button class="button" type="button" @click="isRegisterModalActive=false">Close</button>
@@ -101,7 +99,8 @@ export default {
             email: '',
             password: '',
             password_again: '',
-        }
+        },
+        message:"",
     };
   },
   methods: {
@@ -141,9 +140,24 @@ export default {
           });
         })
         .catch(function(error) {
+          if(error.response.data==604){
+            self.message = "Password need one uppercase, one number and one special digit"
+          }else if(error.response.data == 605){
+            self.message = "Passwords are not the same"
+          }else if(error.response.data == 201){
+            self.message = "Email already registered"
+          }else if(error.response.data == 202){
+            self.message = "Username already registered"
+          }
           console.log(error.response);
         });
     }
   }
 };
 </script>
+
+<style scoped>
+#errormessage{
+    color: red;
+}
+</style>

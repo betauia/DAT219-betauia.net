@@ -35,6 +35,9 @@
                             <b-checkbox>Remember me</b-checkbox>
 
                         </section>
+                        <section class="modal-card-body" v-if="message!=''">
+                            <p>{{message}}</p>
+                        </section>
                         <footer class="modal-card-foot level">
                             <b-button class="button is-primary" v-on:click="login">Login</b-button>
                             <b-button class="" v-on:click="forgotPasswordClick" >Forgot Password?</b-button>
@@ -114,6 +117,7 @@
                     email:"",
                     message:"",
                 },
+                message: "",
             };
         },
         methods: {
@@ -138,8 +142,13 @@
                         }
                     })
                     .catch(function(error) {
+                        if(error.response.data == 601){
+                          self.message = "No account found with that email"
+                        }else if(error.response.data == 606){
+                          self.message = "The password doesn't match the account"
+                        }
                         console.log(error);
-                    });
+                    });toclet,p
                 self.$forceUpdate();
             },
             forgotPasswordClick(){

@@ -45,7 +45,7 @@ export default {
   }
 };
 </script>
-y
+
 <style>
 #userPanel {
   background-color: grey;

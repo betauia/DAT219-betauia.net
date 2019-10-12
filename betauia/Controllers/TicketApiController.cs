@@ -321,7 +321,7 @@ namespace betauia.Controllers
             _db.Images.Add(image);
             _db.SaveChanges();
 
-            SendEmailTicket(ticket.Id);
+            SendEmailTicket(ticket.Id).Wait();
 
             var ticketview = new TicketViewModel(ticket,title);
             ticketview.Seats = _db.EventSeats.Where(a => a.TicketId == ticket.Id.ToString()).ToList();
