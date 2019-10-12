@@ -226,7 +226,7 @@ namespace betauia.Controllers
       if (ticket.Status != "STARTED") return BadRequest();
 
       string orderid = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
-      var initpayment = await vipps.InitiatePayment(paymentModel.MobileNumber, orderid, ticket.Amount, "test hello world");
+      var initpayment = await vipps.InitiatePayment(paymentModel.MobileNumber, orderid, ticket.Amount, "BetaLAN tickets");
       if (initpayment == null)
       {
         return BadRequest();
