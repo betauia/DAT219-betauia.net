@@ -156,9 +156,6 @@ export default {
             }else if(error.response.data.errors.hasOwnProperty('ConfirmPassword')){
               self.message = "Passwords are not equal"
             }
-            console.log(error);
-            console.log(error.response)
-            alert(self.message);
           }catch (e) {
             self.message = "An error occurred, please contact support";
           }

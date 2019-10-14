@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using betauia.Models;
 using Microsoft.AspNetCore.Identity;
@@ -117,8 +118,31 @@ namespace betauia.Areas.v1
             
             if (result)
             {
+                var refreshDbToken = _db.RefreshTokens.SingleOrDefault(t => t.UserId == user.Id);
+                if (refreshDbToken != null)
+                {
+                    _db.RefreshTokens.Remove(refreshDbToken);
+                    await _db.SaveChangesAsync();
+                }
+
+                var newRefreshToken = new RefreshToken
+                {
+                    UserId = user.Id,
+                    Token = Guid.NewGuid().ToString(),
+                    IssuedUtc = DateTime.Now.ToUniversalTime(),
+                    ExpiresUtc = DateTime.Now.AddMonths(3).ToUniversalTime(),
+                };
+                _db.RefreshTokens.Add(newRefreshToken);
+                await _db.SaveChangesAsync();
+                
+                
                 var token = await _tf.GetTokenAsync(user);
-                return Ok(token);
+                var response = new TokenResponse
+                {
+                    AccessToken = token,
+                    RefreshToken = newRefreshToken.Token
+                };
+                return Ok(response);
             }
             else
             {

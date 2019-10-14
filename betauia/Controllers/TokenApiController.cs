@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using betauia.Data;
@@ -6,6 +7,7 @@ using betauia.Tokens;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace betauia.Controllers
 {
@@ -17,6 +19,7 @@ namespace betauia.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ITokenManager _tokenManager;
         private readonly ITokenVerifier _tokenVerifier;
+        private readonly TokenFactory _tokenFactory;
         public TokenApiController(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
           RoleManager<IdentityRole> rm, ITokenManager tokenManager, ITokenVerifier tokenVerifier)
         {
@@ -25,6 +28,7 @@ namespace betauia.Controllers
             _roleManager = rm;
             _tokenManager = tokenManager;
             _tokenVerifier = tokenVerifier;
+            _tokenFactory = new TokenFactory(_um,rm,tokenManager);
         }
 
         [HttpDelete]
@@ -99,6 +103,31 @@ namespace betauia.Controllers
           var claims = await _um.GetClaimsAsync(userid);
           if (claims.Any(a => a.Type == "AccountVerified" && a.Value == "true")) return Ok();
           return BadRequest(603);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("api/token/refresh")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshToken refreshToken)
+        {
+            var refreshTokenFromDatabase = _db.RefreshTokens.SingleOrDefault(i => i.Token == refreshToken.Token);
+
+            if (refreshTokenFromDatabase == null)
+                return BadRequest();
+            if (refreshTokenFromDatabase.ExpiresUtc < DateTime.Now.ToUniversalTime())
+                return Unauthorized();
+            var  user = await _um.FindByIdAsync(refreshTokenFromDatabase.UserId);
+            if (user.Banned)
+                return BadRequest(602);
+
+            var token = await _tokenFactory.GetTokenAsync(user);
+
+            var response = new TokenResponse
+            {
+                AccessToken = token,
+                RefreshToken = refreshTokenFromDatabase.Token,
+            };
+            return Ok(response);
         }
     }
 }

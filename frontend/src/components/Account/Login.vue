@@ -135,7 +135,7 @@
                         console.log("Logged in");
                         console.log(response["data"]);
                         //console.log(JSON.stringify(response));
-                        localStorage.setItem("token", response["data"]);
+                        localStorage.setItem("token", response.data.accessToken);
                         EventBus.$emit('LOGGED_IN',true);
                         if(self.$route.path === "/account/login"){
                           self.$router.push("/");

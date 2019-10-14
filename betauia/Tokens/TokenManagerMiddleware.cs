@@ -20,6 +20,13 @@ namespace betauia.Tokens
         await next(context);
         return;
       }
+
+      //if (context.Request.Path.Value.Contains("/token/refresh"))
+      if(!context.User.Identity.IsAuthenticated)
+      {
+        await next(context);
+        return;
+      }
       context.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
     }
   }

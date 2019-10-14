@@ -229,8 +229,13 @@ namespace betauia.Controllers
           var user = await _context.Users.FindAsync(id);
           if (user == null) return NotFound();
           user.Banned = true;
-          await _tokenManager.RemoveUserTokensAsync(id);
           await _context.SaveChangesAsync();
+          await _tokenManager.RemoveUserTokensAsync(id);
+
+          var refreshToken = _context.RefreshTokens.SingleOrDefault(a => a.UserId == user.Id);
+          if(refreshToken != null)
+              _context.RefreshTokens.Remove(refreshToken);
+          
           return Ok(new ProfileViewModel(user));
         }
 

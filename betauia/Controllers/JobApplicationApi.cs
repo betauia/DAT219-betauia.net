@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using betauia.Data;
 using betauia.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace betauia.Controllers
@@ -35,6 +36,7 @@ namespace betauia.Controllers
       return Ok(job);
     }
 
+    [Authorize("Job.write")]
     [HttpPost]
     public async Task<IActionResult> PostJob(JobApplication job)
     {
@@ -43,6 +45,7 @@ namespace betauia.Controllers
       return Ok(job);
     }
 
+    [Authorize("Job.write")]
     [HttpPut("{id}")]
     public async Task<IActionResult> EditJob(int id, JobApplication jobModel)
     {
@@ -60,6 +63,7 @@ namespace betauia.Controllers
       return Ok(job);
     }
     
+    [Authorize("Job.write")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteJob(int id)
     {

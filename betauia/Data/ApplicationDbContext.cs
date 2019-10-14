@@ -32,6 +32,16 @@ namespace betauia.Data
                     }
                 }
             }
+            
+            builder.Entity<RefreshToken>()
+                .HasAlternateKey(c => c.UserId)
+                .HasName("refreshToken_UserId");
+ 
+            builder.Entity<RefreshToken>()
+                .HasAlternateKey(c => c.Token)
+                .HasName("refreshToken_Token");
+ 
+            base.OnModelCreating(builder);
         }
 
         public DbSet<PageModel> Pages { get; set; }
@@ -51,5 +61,6 @@ namespace betauia.Data
 
         //Development
         public DbSet<TokenUserModel> TokenUserModels { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
     }
 }
