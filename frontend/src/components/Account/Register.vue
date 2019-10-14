@@ -85,7 +85,8 @@
 </template>
 
 <script>
-import axios from"@/axios.js";
+  import EventBus from '@/eventBus.js'
+  import axios from"@/axios.js";
 import { constants } from "crypto";
 
 export default {
@@ -125,8 +126,10 @@ export default {
           confirmpassword: confirmpassword
         })
         .then(function(response) {
-                localStorage.setItem("token", response["data"]);
-                var config = {
+            localStorage.setItem("token", response["data"]);
+            EventBus.$emit('LOGGED_IN',true);
+
+          var config = {
                   headers: { Authorization: "bearer " + response["data"] }
                 };
                     axios
@@ -159,7 +162,6 @@ export default {
           }catch (e) {
             self.message = "An error occurred, please contact support";
           }
-
         });
     }
   }
