@@ -27,7 +27,7 @@
                     <b-icon icon="book-open"></b-icon>
                     Edit Information
             </b-dropdown-item>
-            <b-dropdown-item value="admin" aria-role="menuitem" href="/admin/dash">
+            <b-dropdown-item value="admin" v-if="hasAdminPanel" aria-role="menuitem" href="/admin/dash">
                 <b-icon icon="admin"></b-icon>
                 Admin panel
             </b-dropdown-item>

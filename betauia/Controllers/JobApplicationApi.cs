@@ -59,7 +59,7 @@ namespace betauia.Controllers
       await _dbContext.SaveChangesAsync();
       return Ok(job);
     }
-
+    
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteJob(int id)
     {

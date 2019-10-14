@@ -140,16 +140,25 @@ export default {
           });
         })
         .catch(function(error) {
-          if(error.response.data==604){
-            self.message = "Password need one uppercase, one number and one special digit"
-          }else if(error.response.data == 605){
-            self.message = "Passwords are not the same"
-          }else if(error.response.data == 201){
-            self.message = "Email already registered"
-          }else if(error.response.data == 202){
-            self.message = "Username already registered"
+          try {
+            if(error.response.data == 201){
+              self.message = "Email already registered"
+            }else if(error.response.data == 202) {
+              self.message = "Username already registered"
+            }else if(error.response.data.length == 1){
+              self.message = error.response.data[0].description;
+            }else if(error.response.data.length == 2){
+              self.message = error.response.data[0].description + "\r\n" + error.response.data[1].description;
+            }else if(error.response.data.errors.hasOwnProperty('ConfirmPassword')){
+              self.message = "Passwords are not equal"
+            }
+            console.log(error);
+            console.log(error.response)
+            alert(self.message);
+          }catch (e) {
+            self.message = "An error occurred, please contact support";
           }
-          console.log(error.response);
+
         });
     }
   }

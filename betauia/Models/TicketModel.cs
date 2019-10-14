@@ -27,7 +27,6 @@ namespace betauia.Models
             seat.TicketId = null;
           }
           
-                
           var eventmodel = dbContext.EventSeatMaps.Where(a => a.EventId == EventId).First();
           eventmodel.NumSeatsAvailable += seats.Count;
           dbContext.SaveChanges();
