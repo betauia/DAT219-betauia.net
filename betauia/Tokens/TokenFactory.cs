@@ -6,20 +6,24 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using betauia.Data;
 using betauia.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace betauia.Tokens
 {
-    public class TokenFactory
+    public class TokenFactory : ITokenFactory
     {
+        private readonly ApplicationDbContext _dbContext;
         private readonly UserManager<ApplicationUser> _um;
         private readonly RoleManager<IdentityRole> _rm;
         private readonly ITokenManager _tokenManager;
 
-        public TokenFactory(UserManager<ApplicationUser> um, RoleManager<IdentityRole> rm, ITokenManager tokenManager)
+        public TokenFactory(UserManager<ApplicationUser> um, RoleManager<IdentityRole> rm, ITokenManager tokenManager,
+            ApplicationDbContext dbContext)
         {
+            _dbContext = dbContext;
             _um = um;
             _rm = rm;
             _tokenManager = tokenManager;
@@ -77,51 +81,8 @@ namespace betauia.Tokens
             return stoken;
         }
 
-        public async Task<string> VerifyEmailAsync(string token)
-        {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg"));
-            var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha256);
-            List<Exception> validationFailures = null;
-            SecurityToken validateToken;
-            var validator = new JwtSecurityTokenHandler();
 
-            TokenValidationParameters validationParameters = new TokenValidationParameters();
-            validationParameters.ValidateIssuer = true;
-            validationParameters.ValidIssuer = "betauia";
-
-            validationParameters.ValidateAudience = true;
-            validationParameters.ValidAudience = "https://localhost:5001";
-
-            validationParameters.IssuerSigningKey = key;
-            validationParameters.ValidateIssuerSigningKey = true;
-
-            if (validator.CanReadToken(token))
-            {
-              await _tokenManager.DeactivateAsync(token);
-              ClaimsPrincipal principal;
-                try
-                {
-                    principal = validator.ValidateToken(token, validationParameters, out validateToken);
-                    if (principal.HasClaim(c => c.Type == "EmailVerification"))
-                    {
-                        if (principal.Claims.Where(c => c.Type == "EmailVerification").First().Value == "true")
-                        {
-                            if (principal.HasClaim(c => c.Type == "id"))
-                            {
-                                return principal.Claims.Where(e => e.Type == "id").First().Value;
-                            }
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
-            }
-            return string.Empty;
-        }
-
-        public async Task<string> GetPasswordRestTokenAsync(ApplicationUser user)
+        public async Task<string> GetPasswordResetTokenAsync(ApplicationUser user)
         {
             var claims = new Claim[]
             {
@@ -142,52 +103,7 @@ namespace betauia.Tokens
             //t.Start();
             return stoken;
         }
-
-        public async Task<string> VerifyPasswordResetTokenAsync(string token)
-        {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("abcdefghijklmonopg"));
-            var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha256);
-            List<Exception> validationFailures = null;
-            SecurityToken validateToken;
-            var validator = new JwtSecurityTokenHandler();
-
-            TokenValidationParameters validationParameters = new TokenValidationParameters();
-            validationParameters.ValidateIssuer = true;
-            validationParameters.ValidIssuer = "betauia";
-
-            validationParameters.ValidateAudience = true;
-            validationParameters.ValidAudience = "https://localhost:5001";
-
-            validationParameters.IssuerSigningKey = key;
-            validationParameters.ValidateIssuerSigningKey = true;
-
-            if (validator.CanReadToken(token))
-            {
-                await _tokenManager.DeactivateAsync(token);
-                ClaimsPrincipal principal;
-                try
-                {
-                    principal = validator.ValidateToken(token, validationParameters, out validateToken);
-                    if (principal.HasClaim(c => c.Type == "password.reset"))
-                    {
-                        if (principal.Claims.Where(c => c.Type == "password.reset").First().Value == "true")
-                        {
-                            if (principal.HasClaim(c => c.Type == "id"))
-                            {
-                                return principal.Claims.Where(e => e.Type == "id").First().Value;
-                            }
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
-            }
-            return string.Empty;
-        }
-
-        public async Task<string> GetEventSignupToken(string id)
+        public async Task<string> GetEventSignupTokenAsync(string id)
         {
           var claims = new Claim[]
           {
@@ -207,6 +123,20 @@ namespace betauia.Tokens
           //Thread t = new Thread(()=>DeleteToken.Delete(_tokenManager,stoken,(long)1000*60));
           //t.Start();
           return stoken;
+        }
+
+        public async Task<string> GetRefreshTokenAsync(string userid)
+        {
+            var newRefreshToken = new RefreshToken
+            {
+                UserId = userid,
+                Token = Guid.NewGuid().ToString(),
+                IssuedUtc = DateTime.Now.ToUniversalTime(),
+                ExpiresUtc = DateTime.Now.AddMonths(3).ToUniversalTime(),
+            };
+            _dbContext.RefreshTokens.Add(newRefreshToken);
+            await _dbContext.SaveChangesAsync();
+            return newRefreshToken.Token;
         }
     }
 }

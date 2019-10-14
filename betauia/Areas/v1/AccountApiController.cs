@@ -23,16 +23,17 @@ namespace betauia.Areas.v1
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _um;
         private readonly RoleManager<IdentityRole> _rm;
-        private readonly TokenFactory _tf;
+        private readonly ITokenFactory _tf;
         private readonly ITokenVerifier _tokenVerifier;
         private readonly ITokenManager _tokenManager;
         public AccountApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager,
-          RoleManager<IdentityRole> roleManager,ITokenManager tokenManager,ITokenVerifier tokenVerifier)
+          RoleManager<IdentityRole> roleManager,ITokenManager tokenManager,ITokenVerifier tokenVerifier
+          ,ITokenFactory tf)
         {
             _um = userManager;
             _rm = roleManager;
             _db = db;
-            _tf = new TokenFactory(_um,_rm,tokenManager);
+            _tf = tf;
             _tokenManager = tokenManager;
             _tokenVerifier = tokenVerifier;
         }
@@ -125,22 +126,12 @@ namespace betauia.Areas.v1
                     await _db.SaveChangesAsync();
                 }
 
-                var newRefreshToken = new RefreshToken
-                {
-                    UserId = user.Id,
-                    Token = Guid.NewGuid().ToString(),
-                    IssuedUtc = DateTime.Now.ToUniversalTime(),
-                    ExpiresUtc = DateTime.Now.AddMonths(3).ToUniversalTime(),
-                };
-                _db.RefreshTokens.Add(newRefreshToken);
-                await _db.SaveChangesAsync();
-                
-                
+                var refreshToken = await _tf.GetRefreshTokenAsync(user.Id);
                 var token = await _tf.GetTokenAsync(user);
                 var response = new TokenResponse
                 {
                     AccessToken = token,
-                    RefreshToken = newRefreshToken.Token
+                    RefreshToken = refreshToken
                 };
                 return Ok(response);
             }

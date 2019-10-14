@@ -6,5 +6,7 @@ namespace betauia.Tokens
   {
     Task<string> GetTokenUser(string token);
     Task<string> VerifyEventSignupToken(string token);
+    Task<string> VerifyPasswordResetTokenAsync(string token);
+    Task<string> VerifyEmailAsync(string token);
   }
 }

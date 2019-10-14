@@ -18,16 +18,16 @@ namespace betauia.Controllers
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _um;
         private readonly RoleManager<IdentityRole> _rm;
-        private readonly TokenFactory _tf;
+        private readonly ITokenFactory _tf;
         private readonly ITokenManager _tokenManager;
 
         public UserClaimApiController(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager,ITokenManager tokenManager)
+            RoleManager<IdentityRole> roleManager,ITokenManager tokenManager,ITokenFactory tf)
         {
             _um = userManager;
             _rm = roleManager;
             _db = db;
-            _tf = new TokenFactory(_um, _rm,tokenManager);
+            _tf = tf;
             _tokenManager = tokenManager;
         }
 

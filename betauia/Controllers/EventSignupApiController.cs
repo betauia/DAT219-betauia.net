@@ -22,15 +22,15 @@ namespace betauia.Controllers
     private readonly UserManager<ApplicationUser> _um;
     private readonly ITokenVerifier _tokenVerifier;
     private readonly ITokenManager _tokenManager;
-    private readonly TokenFactory tokenFactory;
+    private readonly ITokenFactory tokenFactory;
     public EventSignupApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager,
-      ITokenManager tokenManager, ITokenVerifier tokenVerifier,RoleManager<IdentityRole> rm)
+      ITokenManager tokenManager, ITokenVerifier tokenVerifier,RoleManager<IdentityRole> rm,ITokenFactory tf)
     {
       _db = db;
       _um = userManager;
       _tokenManager = tokenManager;
       _tokenVerifier = tokenVerifier;
-      tokenFactory = new TokenFactory(_um,rm,tokenManager);
+      tokenFactory = tf;
     }
 
     [Authorize("Event.write")]
@@ -141,7 +141,7 @@ namespace betauia.Controllers
       _db.Events.Find(id).Atendees++;
       await _db.SaveChangesAsync();
 
-      var token = await tokenFactory.GetEventSignupToken(atendee.ID.ToString());
+      var token = await tokenFactory.GetEventSignupTokenAsync(atendee.ID.ToString());
       var url = "https://beta.betauia.net/attendeeemailconfirm/" + token;
 
       SmtpClient smtp = new SmtpClient("smtp.gtm.no");

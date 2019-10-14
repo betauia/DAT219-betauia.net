@@ -19,18 +19,18 @@ namespace betauia.Controllers
     {
         private readonly UserManager<ApplicationUser> _um;
         private readonly RoleManager<IdentityRole> _rm;
-        private readonly TokenFactory _tf;
+        private readonly ITokenFactory _tf;
         private readonly ITokenVerifier _tokenVerifier;
         private readonly ITokenManager _tokenManager;
         private readonly IEmailRender _emailRender;
 
         public EmailVerificationApiController(UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager, ITokenManager tokenManager, ITokenVerifier tokenVerifier,
-            IEmailRender emailrender)
+            IEmailRender emailrender, ITokenFactory tf)
         {
             _um = userManager;
             _rm = roleManager;
-            _tf = new TokenFactory(_um,_rm,tokenManager);
+            _tf = tf;
             _tokenVerifier = tokenVerifier;
             _tokenManager = tokenManager;
             _emailRender = emailrender;
@@ -72,7 +72,7 @@ namespace betauia.Controllers
         [Route("api/verifyemail/{token}")]
         public async Task<IActionResult> VerifyEmail(string token)
         {
-            var id = await _tf.VerifyEmailAsync(token);
+            var id = await _tokenVerifier.VerifyEmailAsync(token);
             if (id == null)
             {
                 return BadRequest("301");

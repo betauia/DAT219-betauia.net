@@ -20,17 +20,18 @@ namespace betauia.Areas.v1
     private readonly ApplicationDbContext _db;
     private readonly UserManager<ApplicationUser> _um;
     private readonly RoleManager<IdentityRole> _rm;
-    private readonly TokenFactory _tf;
+    private readonly ITokenFactory _tf;
     private readonly ITokenVerifier _tokenVerifier;
     private readonly ITokenManager _tokenManager;
 
     public ForgottenPasswordApiController(ApplicationDbContext db,UserManager<ApplicationUser> userManager,
-      RoleManager<IdentityRole> roleManager,ITokenManager tokenManager,ITokenVerifier tokenVerifier)
+      RoleManager<IdentityRole> roleManager,ITokenManager tokenManager,ITokenVerifier tokenVerifier,
+      TokenFactory tf)
     {
       _um = userManager;
       _rm = roleManager;
       _db = db;
-      _tf = new TokenFactory(_um,_rm,tokenManager);
+      _tf = tf;
       _tokenManager = tokenManager;
       _tokenVerifier = tokenVerifier;
     }
@@ -44,7 +45,7 @@ namespace betauia.Areas.v1
       var id = await _tokenVerifier.GetTokenUser(token);
       var user = _um.FindByIdAsync(id).Result;
 
-      token = await _tf.GetPasswordRestTokenAsync(user);
+      token = await _tf.GetPasswordResetTokenAsync(user);
       
       var url = "https://beta.betauia.net/resetpassword/" + token;
       SmtpClient smtp = new SmtpClient("smtp.gtm.no");
@@ -65,7 +66,7 @@ namespace betauia.Areas.v1
         return NotFound();
       }
 
-      var token = await _tf.GetPasswordRestTokenAsync(user);
+      var token = await _tf.GetPasswordResetTokenAsync(user);
       
       var url = "https://beta.betauia.net/resetpassword/" + token;
 
@@ -81,7 +82,7 @@ namespace betauia.Areas.v1
     [Route("api/resetpassword/post")]
     public async Task<IActionResult> ResetPassword(PasswordResetModel passwordResetModel)
     {
-      var id = await _tf.VerifyPasswordResetTokenAsync(passwordResetModel.Token);
+      var id = await _tokenVerifier.VerifyPasswordResetTokenAsync(passwordResetModel.Token);
       if (id == null)
       {
         return BadRequest("301");

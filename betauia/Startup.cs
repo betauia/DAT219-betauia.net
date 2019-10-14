@@ -136,7 +136,8 @@ namespace betauia
             {
                 Config.Addpolicies(options);
             });
-            
+
+            services.AddTransient<ITokenFactory, TokenFactory>();
             services.AddTransient<IimageIO, ImageIO>();
             services.AddTransient<IEmailRender, EmailRender>();
             services.AddTransient<IVippsPayment, VippsApiController>();

@@ -19,16 +19,16 @@ namespace betauia.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ITokenManager _tokenManager;
         private readonly ITokenVerifier _tokenVerifier;
-        private readonly TokenFactory _tokenFactory;
+        private readonly ITokenFactory _tokenFactory;
         public TokenApiController(ApplicationDbContext db, UserManager<ApplicationUser> userManager,
-          RoleManager<IdentityRole> rm, ITokenManager tokenManager, ITokenVerifier tokenVerifier)
+          RoleManager<IdentityRole> rm, ITokenManager tokenManager, ITokenVerifier tokenVerifier,ITokenFactory tf)
         {
             _db = db;
             _um = userManager;
             _roleManager = rm;
             _tokenManager = tokenManager;
             _tokenVerifier = tokenVerifier;
-            _tokenFactory = new TokenFactory(_um,rm,tokenManager);
+            _tokenFactory = tf;
         }
 
         [HttpDelete]
