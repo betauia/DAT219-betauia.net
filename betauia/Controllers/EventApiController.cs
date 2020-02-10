@@ -34,7 +34,10 @@ namespace betauia.Controllers
             foreach (var eventModel in events)
             {
               var seatmap = _context.EventSeatMaps.Find(eventModel.SeatMapId);
-              if (seatmap != null) eventModel.SeatMap = seatmap;
+              if (seatmap != null)
+              {
+                  eventModel.SeatMap = seatmap;
+              }
 
               var eventSponsors = _context.EventSponsors.Where(a => a.EventId == eventModel.Id).ToList();
               var sponsors = new List<SponsorModel>();
@@ -148,6 +151,7 @@ namespace betauia.Controllers
                 _context.EventSeats.AddRange(seats);
                 eventCreater.eventModel.SeatMapId = seatmap.Id;
                 eventCreater.eventModel.SeatMap = seatmap;
+                
             }
 
             foreach (var sponsorModel in eventCreater.sponsors)

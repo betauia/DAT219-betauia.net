@@ -144,10 +144,10 @@ namespace betauia.Controllers
       var token = await tokenFactory.GetEventSignupToken(atendee.ID.ToString());
       var url = "https://beta.betauia.net/attendeeemailconfirm/" + token;
 
-      SmtpClient smtp = new SmtpClient("smtp.gtm.no");
-      smtp.EnableSsl = false;
+      SmtpClient smtp = new SmtpClient("smtp.domeneshop.no");
+      smtp.EnableSsl = true;
       smtp.Port = 587;
-      smtp.Credentials = new NetworkCredential("betalan@betauia.net","8iFK0N2tdz");
+      smtp.Credentials = new NetworkCredential("noreply@betauia.net","musen-24-Kurva-Tids-Per");
       smtp.Send("noreply@betauia.net",atendee.Email,"Verify signup for event " + Event.Title,url);
       return Ok(token);
     }

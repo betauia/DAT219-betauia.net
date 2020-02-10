@@ -156,11 +156,11 @@ namespace betauia.Controllers
     {
       var token = Authorization.Split(' ')[1];
       var userid = await _tokenVerifier.GetTokenUser(token);
-
+      
       var t = new TicketModel
       {
         UserId = userid,
-        Amount = ticketModel.seats.Count*100*100,
+        Amount = ticketModel.seats.Count*100*_db.Events.Find(ticketModel.eventId).EventPrice,
         Status = "STARTED",
         EventId = ticketModel.eventId,
       };
@@ -381,12 +381,12 @@ namespace betauia.Controllers
         Subject = "Ticket for "+Event.Title,
       };
       message.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(htmlbody,Encoding.UTF8,MediaTypeNames.Text.Html));
-      using (var smtp = new SmtpClient("smtp.gtm.no", 587))
+      using (var smtp = new SmtpClient("smtp.domeneshop.no", 587))
       {
         smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
         smtp.UseDefaultCredentials = false;
-        smtp.Credentials = new NetworkCredential("betalan@betauia.net","8iFK0N2tdz");
-        smtp.EnableSsl = false;
+        smtp.Credentials = new NetworkCredential("noreply@betauia.net","musen-24-Kurva-Tids-Per");
+        smtp.EnableSsl = true;
         await smtp.SendMailAsync(message);
       }
     }

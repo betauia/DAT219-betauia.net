@@ -57,12 +57,12 @@ namespace betauia.Controllers
                 Subject = "betauia email verification",
             };
             message.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(htmlbody,Encoding.UTF8,MediaTypeNames.Text.Html));
-            using (var smtp = new SmtpClient("smtp.gtm.no", 587))
+            using (var smtp = new SmtpClient("smtp.domeneshop.no", 587))
             {
                 smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
                 smtp.UseDefaultCredentials = false;
-                smtp.Credentials = new NetworkCredential("betalan@betauia.net","8iFK0N2tdz");
-                smtp.EnableSsl = false;
+                smtp.Credentials = new NetworkCredential("noreply@betauia.net","musen-24-Kurva-Tids-Per");
+                smtp.EnableSsl = true;
                 await smtp.SendMailAsync(message);
             }
             return Ok(token);

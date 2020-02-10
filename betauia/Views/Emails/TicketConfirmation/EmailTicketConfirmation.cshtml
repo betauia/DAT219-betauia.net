@@ -10,6 +10,7 @@
 <p>Your order id is: @Model.OrderId</p>
 <p>Your recent order includes the seating of space: @foreach (var s in  @Model.SeatsReserved)
                                                     { <li>@s</li> }</p>
+<p></p>
 <p>Show this QR Code to staff in order to verify your seats 
     <img src="@Model.ImageLink"/>
   </p>

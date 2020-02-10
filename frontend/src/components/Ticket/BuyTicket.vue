@@ -19,8 +19,8 @@
 
             </div>
             <div class="card-columns is-half">
-                <div class="is-italic">Billettene til BetaLAN er forhåndskjøpte
-                    og du som kunden vil ikke motta tjenesten før BetaLAN er
+                <div class="is-italic">Billettene solgt på betauia.net er forhåndskjøpte
+                    og du som kunden vil ikke motta tjenesten før eventet er
                     gjennomført i sin helhet. Ved å klikke 'Aksepter betingelser'
                     vil du automatisk godta disse vilkårene og <SalgsBetingelserBetaside></SalgsBetingelserBetaside>
                     vår.
@@ -55,7 +55,7 @@ import SalgsBetingelserBetaside from '../Legal/SalgsBetingelserBetaside.vue';
 export default {
   name: 'TicketInit',
   components: {
-      SalgsBetingelserBetaside,
+    SalgsBetingelserBetaside,
   },
   data() {
     return {
@@ -64,52 +64,51 @@ export default {
       isAccepted: false,
     };
   },
-    created() {
-        const id = this.$route.params.id;
-        const self = this;
-        var token = localStorage.getItem("token");
-        var config = {
-            headers: { Authorization: "bearer " + token }
-        };
+  created() {
+    const { id } = this.$route.params;
+    const self = this;
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: { Authorization: `bearer ${token}` },
+    };
 
-        axios
-            .get("/api/ticket/get/"+id,config)
-            .then(function (response) {
-                console.log(response);
-                self.ticket = response.data;
-                self.seats = response.data.eventSeats;
-            })
-            .catch(function (error) {
-                console.log(error.response);
-            });
+    axios
+      .get(`/api/ticket/get/${id}`, config)
+      .then((response) => {
+        console.log(response);
+        self.ticket = response.data;
+        self.seats = response.data.eventSeats;
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
+  },
+  methods: {
+    initiateVippsPayment() {
+      const { id } = this.$route.params;
+      const self = this;
+      const token = localStorage.getItem('token');
+      const config = {
+        headers: { Authorization: `bearer ${token}` },
+      };
 
+      const bodyParam = {
+        id,
+        mobileNumber: this.ticket.phoneNumber,
+      };
+
+      console.log(bodyParam);
+      axios
+        .post('/api/ticket/initiatepayment', bodyParam, config)
+        .then((response) => {
+          console.log(response.data);
+          window.location = response.data;
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
     },
-    methods:{
-        initiateVippsPayment(){
-            const id = this.$route.params.id;
-            const self = this;
-            var token = localStorage.getItem("token");
-            var config = {
-                headers: { Authorization: "bearer " + token }
-            };
-
-            var bodyParam = {
-                id:id,
-                mobileNumber: this.ticket.phoneNumber,
-            };
-
-            console.log(bodyParam);
-            axios
-                .post("/api/ticket/initiatepayment",bodyParam,config)
-                .then(function (response) {
-                    console.log(response.data);
-                    window.location = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error.response);
-                });
-        },
-    }
+  },
 };
 </script>
 
