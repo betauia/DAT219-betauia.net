@@ -10,7 +10,7 @@ namespace betauia.Data
     {
         public static void Initialize(ApplicationDbContext db, UserManager<ApplicationUser> um,RoleManager<IdentityRole> rm)
         {
-            db.Database.EnsureDeleted();
+            //db.Database.EnsureDeleted();
             db.Database.EnsureCreated();
 
             Config.AddRoles(um,rm);
