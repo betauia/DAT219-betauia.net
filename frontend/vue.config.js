@@ -3,7 +3,7 @@ module.exports = {
         port: 80,
         proxy: {
             '^/api': {
-                target: 'https://betauia-backend.azurewebsites.net:443',
+                target: 'https://localhost:5001',
                 ws: true,
                 changeOrigin: true,
             },

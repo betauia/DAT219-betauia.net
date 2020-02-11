@@ -61,14 +61,13 @@ namespace betauia
                 services.AddDbContext<ApplicationDbContext>(options =>
                 {
                     options.EnableSensitiveDataLogging();
-                    options.UseSqlite(
-                        Configuration.GetConnectionString("local_sqlite_db"));
+                    options.UseSqlServer(Configuration.GetConnectionString("azure_sql_db"));
                 });
-                services.AddDistributedRedisCache(option =>
-                {
-                    option.Configuration = "127.0.0.1";
-                    option.InstanceName = "master";
-                });
+                //services.AddDistributedRedisCache(option =>
+                //{
+                //    option.Configuration = "127.0.0.1";
+                //    option.InstanceName = "master";
+                //});
             }
             else
             {
