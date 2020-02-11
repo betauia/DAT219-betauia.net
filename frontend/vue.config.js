@@ -1,9 +1,9 @@
 module.exports = {
     devServer: {
-        port: 8080,
+        port: 80,
         proxy: {
             '^/api': {
-                target: 'https://betauia-backend.azurewebsites.net',
+                target: 'https://betauia-backend.azurewebsites.net:443',
                 ws: true,
                 changeOrigin: true,
             },
