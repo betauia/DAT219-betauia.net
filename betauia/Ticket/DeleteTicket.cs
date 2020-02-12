@@ -18,7 +18,7 @@ namespace betauia.Ticket
                 delay -= currentDelay;
             }
 
-            var connectionstring = "Server=beta_db;Port=5432;Database=beta_db;User Id=boiis;Password=hackmeuser;";
+            var connectionstring = "Server=tcp:betauianet.database.windows.net,1433;Initial Catalog=betauia;Persist Security Info=False;User ID=adminroot;Password=#J#1LCwL6$5KGoE4H3;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
             optionsBuilder.UseNpgsql(connectionstring);
             var db = new ApplicationDbContext(optionsBuilder.Options);
