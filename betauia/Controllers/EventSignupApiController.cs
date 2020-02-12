@@ -142,7 +142,7 @@ namespace betauia.Controllers
       await _db.SaveChangesAsync();
 
       var token = await tokenFactory.GetEventSignupToken(atendee.ID.ToString());
-      var url = "https://beta.betauia.net/attendeeemailconfirm/" + token;
+      var url = "https://betauia.net/attendeeemailconfirm/" + token;
 
       SmtpClient smtp = new SmtpClient("smtp.domeneshop.no");
       smtp.EnableSsl = true;
