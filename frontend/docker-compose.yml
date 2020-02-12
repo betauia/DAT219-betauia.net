@@ -1,0 +1,11 @@
+version: '3'
+services:
+  beta_frontend:
+    restart: always
+    container_name: beta_frontend
+    hostname: beta_frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    network_mode: host
+

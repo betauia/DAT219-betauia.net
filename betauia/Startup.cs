@@ -56,19 +56,18 @@ namespace betauia
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            if (_env.IsDevelopment())
+            if (_env.IsDevelopment()==false)
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
                 {
                     options.EnableSensitiveDataLogging();
-                    options.UseSqlite(
-                        Configuration.GetConnectionString("local_sqlite_db"));
+                    options.UseSqlServer(Configuration.GetConnectionString("azure_sql_db"));
                 });
-                services.AddDistributedRedisCache(option =>
-                {
-                    option.Configuration = "127.0.0.1";
-                    option.InstanceName = "master";
-                });
+                //services.AddDistributedRedisCache(option =>
+                //{
+                //    option.Configuration = "127.0.0.1";
+                //    option.InstanceName = "master";
+                //});
             }
             else
             {
@@ -76,13 +75,14 @@ namespace betauia
                 {
                     options.EnableSensitiveDataLogging();
 
-                    options.UseNpgsql(Configuration.GetConnectionString("docker_mysql_db"));
+                    options.UseSqlServer(Configuration.GetConnectionString("azure_sql_db"));
                 });
-                services.AddDistributedRedisCache(option =>
-                {
-                    option.Configuration = "beta_redis";
-                    option.InstanceName = "master";
-                });
+                //services.BuildServiceProvider().GetService<ApplicationDbContext>().Database.Migrate();
+                //services.AddDistributedRedisCache(option =>
+                //{
+                //   option.Configuration = "beta_redis";
+                //    option.InstanceName = "master";
+                //});
             }
             
 /*          ////////////////////
@@ -164,7 +164,7 @@ namespace betauia
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
