@@ -386,7 +386,7 @@ namespace betauia.Controllers
         smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
         smtp.UseDefaultCredentials = false;
         smtp.Credentials = new NetworkCredential("betalan@betauia.net","8iFK0N2tdz");
-        smtp.EnableSsl = true;
+        smtp.EnableSsl = false;
         await smtp.SendMailAsync(message);
       }
     }
