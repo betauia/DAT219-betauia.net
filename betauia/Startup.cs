@@ -63,11 +63,11 @@ namespace betauia
                     options.EnableSensitiveDataLogging();
                     options.UseSqlServer(Configuration.GetConnectionString("azure_sql_db"));
                 });
-                //services.AddDistributedRedisCache(option =>
-                //{
-                //    option.Configuration = "127.0.0.1";
-                //    option.InstanceName = "master";
-                //});
+                services.AddDistributedRedisCache(option =>
+                {
+                    option.Configuration = "127.0.0.1";
+                    option.InstanceName = "master";
+                });
             }
             else
             {
@@ -142,7 +142,7 @@ namespace betauia
             services.AddTransient<IVippsPayment, VippsApiController>();
             services.AddTransient<ITokenVerifier, TokenVerifier>();
             services.AddTransient<TokenManagerMiddleware>();
-            services.AddTransient<ITokenManager, TokenManagerDatabase>();
+            services.AddTransient<ITokenManager, TokenManager>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //var vipps = new VippsApiController();
