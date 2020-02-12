@@ -27,6 +27,7 @@ services:
     network_mode: host
     depends_on:
       - beta_backend
+
   beta_redis:
     restart: always
     image: redis:alpine
@@ -34,3 +35,7 @@ services:
     hostname: beta_redis
     volumes:
      - ${redis_store}:/data
+
+volumes:
+  pgdata:
+

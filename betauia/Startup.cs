@@ -78,11 +78,11 @@ namespace betauia
                     options.UseSqlServer(Configuration.GetConnectionString("azure_sql_db"));
                 });
                 //services.BuildServiceProvider().GetService<ApplicationDbContext>().Database.Migrate();
-                //services.AddDistributedRedisCache(option =>
-                //{
-                //   option.Configuration = "beta_redis";
-                //    option.InstanceName = "master";
-                //});
+                services.AddDistributedRedisCache(option =>
+                {
+                   option.Configuration = "beta_redis";
+                    option.InstanceName = "master";
+                });
             }
             
 /*          ////////////////////
@@ -142,7 +142,7 @@ namespace betauia
             services.AddTransient<IVippsPayment, VippsApiController>();
             services.AddTransient<ITokenVerifier, TokenVerifier>();
             services.AddTransient<TokenManagerMiddleware>();
-            services.AddTransient<ITokenManager, TokenManager>();
+            services.AddTransient<ITokenManager, TokenManagerDatabase>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //var vipps = new VippsApiController();
