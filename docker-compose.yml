@@ -12,6 +12,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - 5001:80
+    links:
+      - beta_redis
+    depends_on:
+      - beta_redis
 
   beta_frontend:
     restart: always
@@ -23,6 +27,10 @@ services:
     network_mode: host
     depends_on:
       - beta_backend
-volumes:
-  pgdata:
-
+  beta_redis:
+    restart: always
+    image: redis:alpine
+    container_name: beta_redis
+    hostname: beta_redis
+    volumes:
+     - ${redis_store}:/data
