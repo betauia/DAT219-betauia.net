@@ -49,8 +49,7 @@ namespace betauia.Controllers
             
           var url = "https://betauia.net/verifyemail/" + token;
           var emailviewmodel = new EmailViewModel(url);
-          var htmlbody =
-              await _emailRender.RenderViewToStringAsync($"Views/Emails/VerifyAccount/EmailVerifyAccount.cshtml",emailviewmodel);
+          var htmlbody = await _emailRender.RenderViewToStringAsync($"Views/Emails/VerifyAccount/EmailVerifyAccount.cshtml",emailviewmodel);
 
           var message = new MailMessage("noreply@betauia.net", user.Email)
           {

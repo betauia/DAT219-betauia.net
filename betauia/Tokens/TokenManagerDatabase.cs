@@ -68,7 +68,6 @@ namespace betauia.Tokens
       {
         db.TokenUserModels.Remove(tokenmodel);
       }
-
       await db.SaveChangesAsync();
     }
 
