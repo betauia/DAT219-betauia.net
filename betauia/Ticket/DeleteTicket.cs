@@ -20,7 +20,7 @@ namespace betauia.Ticket
 
             var connectionstring = "Server=tcp:betauianet.database.windows.net,1433;Initial Catalog=betauia;Persist Security Info=False;User ID=adminroot;Password=#J#1LCwL6$5KGoE4H3;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            optionsBuilder.UseNpgsql(connectionstring);
+            optionsBuilder.UseSqlServer(connectionstring);
             var db = new ApplicationDbContext(optionsBuilder.Options);
             var ticket = await db.Tickets.FindAsync(id);
             if (ticket.Status == "STARTED" || ticket.Status == "INITIATE")

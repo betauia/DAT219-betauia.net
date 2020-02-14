@@ -195,7 +195,7 @@ namespace betauia.Controllers
       var eventmodel = _db.EventSeatMaps.Where(a => a.EventId == ticketModel.eventId).First();
       eventmodel.NumSeatsAvailable -= seatmodels.Count;
       
-      Thread thread= new Thread(()=>DeleteTicket.Delete(t.Id,(long)1000*60*10));
+      Thread thread= new Thread(()=> DeleteTicket.Delete(t.Id,(long)1000*60*10).Wait());
       thread.Start();
 
       _db.SaveChanges();
