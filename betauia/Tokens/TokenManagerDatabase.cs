@@ -63,7 +63,12 @@ namespace betauia.Tokens
 
     public async Task DeactivateAsync(string token)
     {
-      db.TokenUserModels.Remove(db.TokenUserModels.Where(a => a.Token == token).ToList()[0]);
+      var tokenmodels = db.TokenUserModels.Where(a => a.Token == token).ToList();
+      foreach (var tokenmodel in tokenmodels)
+      {
+        db.TokenUserModels.Remove(tokenmodel);
+      }
+
       await db.SaveChangesAsync();
     }
 
