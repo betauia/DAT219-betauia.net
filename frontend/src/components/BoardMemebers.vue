@@ -22,7 +22,7 @@
         <figcaption>
             <ul>
                 <li class="MemeberName">Theodor Middleton</li>
-                <li class="MemeberPosition">Deputy head</li>
+                <li class="MemeberPosition">Deputy Head</li>
             </ul>
         </figcaption>
     </figure>
@@ -35,29 +35,29 @@
         <figcaption>
             <ul>
                 <li class="MemeberName">Vinh Huu Vu</li>
-                <li class="MemeberPosition">Banking and finance committee</li>
+                <li class="MemeberPosition">Banking & Finance Committee</li>
             </ul>
         </figcaption>
     </figure>
     </div>
     <div class="column is-3">
     <figure class="image is-256x256">
-        <img class="is-rounded" src="../assets/img/board/Ingrid_Louise_Husevåg-Kristensen_(Bedrifts%20komité).jpg">
+        <img class="is-rounded" src="../assets/img/board/Ingrid_Louise_Husevåg-Kristensen_(Bedriftskomité).jpg">
         <figcaption>
             <ul>
                 <li class="MemeberName">Ingrid Louise Husevåg-Kristensen</li>
-                <li class="MemeberPosition">Business relations committee</li>
+                <li class="MemeberPosition">Business Relations Committee</li>
             </ul>
         </figcaption>
     </figure>
     </div>
    <div class="column is-3">
     <figure class="image is-256x256">
-        <img class="is-rounded" src="../assets/img/board/Jon_Inntveit_(Event%20komité).jpg">
+        <img class="is-rounded" src="../assets/img/board/Jon_Inntveit_(Eventkomité).jpg">
         <figcaption>
             <ul>
                 <li class="MemeberName">Jon Inntveit</li>
-                <li class="MemeberPosition">Social event committee</li>
+                <li class="MemeberPosition">Social Event Committee</li>
             </ul>
         </figcaption>
     </figure>
@@ -68,13 +68,37 @@
         <figcaption>
             <ul>
                 <li class="MemeberName">Adrian Risholm</li>
-                <li class="MemeberPosition">Betalan Head</li>
+                <li class="MemeberPosition">BetaLAN Committee</li>
             </ul>
         </figcaption>
     </figure>
     </div>
    </div>
-  </div>
+       <div class="columns">
+           <div class="column is-3 center">
+               <figure class="image is-256x256">
+                   <img class="is-rounded" src="../assets/img/board/placeholder.png">
+                   <figcaption>
+                       <ul>
+                           <li class="MemeberName">Even Eilertsen</li>
+                           <li class="MemeberPosition">Beta Security Committee</li>
+                       </ul>
+                   </figcaption>
+               </figure>
+           </div>
+           <div class="column is-3 center">
+               <figure class="image is-256x256">
+                   <img class="is-rounded" src="../assets/img/board/placeholder.png">
+                   <figcaption>
+                       <ul>
+                           <li class="MemeberName">TBD</li>
+                           <li class="MemeberPosition">Programming & Development Committee</li>
+                       </ul>
+                   </figcaption>
+               </figure>
+           </div>
+       </div>
+   </div>
 </template>
 
 <style lang="scss" scoped>
