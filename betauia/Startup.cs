@@ -56,13 +56,12 @@ namespace betauia
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            if (_env.IsDevelopment())
+            if (_env.IsDevelopment()==false)
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
                 {
                     options.EnableSensitiveDataLogging();
-                    options.UseSqlite(
-                        Configuration.GetConnectionString("local_sqlite_db"));
+                    options.UseSqlServer(Configuration.GetConnectionString("azure_sql_db"));
                 });
                 services.AddDistributedRedisCache(option =>
                 {
@@ -76,11 +75,12 @@ namespace betauia
                 {
                     options.EnableSensitiveDataLogging();
 
-                    options.UseNpgsql(Configuration.GetConnectionString("docker_mysql_db"));
+                    options.UseSqlServer(Configuration.GetConnectionString("azure_sql_db"));
                 });
+                //services.BuildServiceProvider().GetService<ApplicationDbContext>().Database.Migrate();
                 services.AddDistributedRedisCache(option =>
                 {
-                    option.Configuration = "beta_redis";
+                   option.Configuration = "beta_redis";
                     option.InstanceName = "master";
                 });
             }
@@ -143,7 +143,7 @@ namespace betauia
             services.AddTransient<IVippsPayment, VippsApiController>();
             services.AddTransient<ITokenVerifier, TokenVerifier>();
             services.AddTransient<TokenManagerMiddleware>();
-            services.AddTransient<ITokenManager, TokenManager>();
+            services.AddTransient<ITokenManager, TokenManagerDatabase>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //var vipps = new VippsApiController();
@@ -165,7 +165,7 @@ namespace betauia
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 

@@ -74,15 +74,15 @@ namespace betauia.Areas.v1
             var result = _um.CreateAsync(user, registerModel.Password).Result;
 
             const string role = "User";
-            _um.AddClaimAsync(user, new Claim("Role", "User"));
+            await _um.AddClaimAsync(user, new Claim("Role", "User"));
 
             if (result.Succeeded)
             {
-                if (_rm.FindByNameAsync(role) == null)
+                if (await _rm.FindByNameAsync(role) == null)
                 {
-                    _rm.CreateAsync(new IdentityRole(role)).Wait();
+                   await _rm.CreateAsync(new IdentityRole(role));
                 }
-                _um.AddToRoleAsync(user, role).Wait();
+                await _um.AddToRoleAsync(user, role);
                 /*
                 _userManager.AddClaimAsync(user, new Claim("username", user.UserName));
                 _userManager.AddClaimAsync(user, new Claim("firstName", user.FirstName));
@@ -100,10 +100,10 @@ namespace betauia.Areas.v1
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]Loginmodel loginmodel)
         {
-            var user = _um.FindByNameAsync(loginmodel.Username).Result;
+            var user = await _um.FindByNameAsync(loginmodel.Username);
             if (user == null)
             {
-                user = _um.FindByEmailAsync(loginmodel.Username).Result;
+                user = await _um.FindByEmailAsync(loginmodel.Username);
                 if (user == null)
                 {
                     return BadRequest("601");
@@ -149,7 +149,7 @@ namespace betauia.Areas.v1
         {
             var token = Authorization.Split(' ')[1];
             var id = await _tokenVerifier.GetTokenUser(token);
-            var user = _um.FindByIdAsync(id).Result;
+            var user = await _um.FindByIdAsync(id);
             var profile = new ProfileViewModel(user);
             return Ok(profile);
         }
@@ -165,7 +165,7 @@ namespace betauia.Areas.v1
           if (id == string.Empty) return BadRequest();
           if (id != Profile.Id) return BadRequest();
 
-          var user = _um.FindByIdAsync(Profile.Id).Result;
+          var user = await _um.FindByIdAsync(Profile.Id);
           if (user == null) return NotFound("101");
 
           if (Profile.FirstName == "") return BadRequest("206");
@@ -176,14 +176,14 @@ namespace betauia.Areas.v1
 
           if (Profile.Email != "" && Profile.Email != user.Email)
           {
-            if (_um.FindByEmailAsync(Profile.Email).Result != null) return BadRequest("201");
+            if (await _um.FindByEmailAsync(Profile.Email) != null) return BadRequest("201");
             if (new EmailAddressAttribute().IsValid(Profile.Email) == false) return BadRequest("204");
             user.Email = Profile.Email;
           }
 
           if (Profile.UserName != "" && Profile.UserName != user.UserName)
           {
-            if (_um.FindByNameAsync(Profile.UserName).Result != null) return BadRequest("202");
+            if (await _um.FindByNameAsync(Profile.UserName) != null) return BadRequest("202");
             user.UserName = Profile.UserName;
           }
 
@@ -200,7 +200,7 @@ namespace betauia.Areas.v1
           var id = await _tokenVerifier.GetTokenUser(tokenModel.Token);
 
           // Receive and check if user is valid
-          var user = _db.Users.FindAsync(id).Result;
+          var user = await _db.Users.FindAsync(id);
           if (user == null) return NotFound();
 
           //Delete information

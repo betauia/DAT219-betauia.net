@@ -156,11 +156,11 @@ namespace betauia.Controllers
     {
       var token = Authorization.Split(' ')[1];
       var userid = await _tokenVerifier.GetTokenUser(token);
-
+      
       var t = new TicketModel
       {
         UserId = userid,
-        Amount = ticketModel.seats.Count*100*100,
+        Amount = ticketModel.seats.Count*100*_db.Events.Find(ticketModel.eventId).EventPrice,
         Status = "STARTED",
         EventId = ticketModel.eventId,
       };
@@ -195,7 +195,7 @@ namespace betauia.Controllers
       var eventmodel = _db.EventSeatMaps.Where(a => a.EventId == ticketModel.eventId).First();
       eventmodel.NumSeatsAvailable -= seatmodels.Count;
       
-      Thread thread= new Thread(()=>DeleteTicket.Delete(t.Id,(long)1000*60*10));
+      Thread thread= new Thread(()=> DeleteTicket.Delete(t.Id,(long)1000*60*10).Wait());
       thread.Start();
 
       _db.SaveChanges();
@@ -226,7 +226,7 @@ namespace betauia.Controllers
       if (ticket.Status != "STARTED") return BadRequest();
 
       string orderid = Regex.Replace(Convert.ToBase64String(Guid.NewGuid().ToByteArray()), "[/+=]", "");
-      var initpayment = await vipps.InitiatePayment(paymentModel.MobileNumber, orderid, ticket.Amount, "BetaLAN ticket");
+      var initpayment = await vipps.InitiatePayment(paymentModel.MobileNumber, orderid, ticket.Amount, "Beta payment");
       if (initpayment == null)
       {
         return BadRequest();
@@ -315,7 +315,7 @@ namespace betauia.Controllers
             ticket.Status = "CAPTURE";
             ticket.TimePurchased = capture.transactionInfo.timeStamp;
             //Generate QR code//
-            ticket.QR =  QRCode.GetQr("https://beta.betauia.net/admin/ticketverify/" + ticket.VippsOrderId);
+            ticket.QR =  QRCode.GetQr("https://betauia.net/admin/ticketverify/" + ticket.VippsOrderId);
             var image = await SaveQrCode(ticket.QR);
             ticket.QRID = image.Id;
             _db.Images.Add(image);
@@ -370,7 +370,7 @@ namespace betauia.Controllers
         seat.Add(s.Number.ToString());
       }
 
-      var loc = "https://beta.betauia.net/api/image/"+ticket.QRID;
+      var loc = "https://betauia.net/api/image/"+ticket.QRID;
 
       var emailticketviewmodel = new EmailTicketViewModel(loc, seat, user.UserName, Event.Title, ticket.VippsOrderId);
       var htmlbody =

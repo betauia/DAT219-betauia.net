@@ -13,10 +13,8 @@ services:
     ports:
       - 5001:80
     links:
-      - beta_db
       - beta_redis
     depends_on:
-      - beta_db
       - beta_redis
 
   beta_frontend:
@@ -30,20 +28,6 @@ services:
     depends_on:
       - beta_backend
 
-  beta_db:
-    image: postgres
-    restart: always
-    container_name: beta_db
-    hostname: beta_db
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    environment:
-      POSTGRES_PASSWORD: 'hackmeuser'
-      POSTGRES_USER: 'boiis'
-      POSTGRES_DB: 'beta_db'
-    ports:
-      - 5432:5432
-
   beta_redis:
     restart: always
     image: redis:alpine
@@ -54,3 +38,4 @@ services:
 
 volumes:
   pgdata:
+

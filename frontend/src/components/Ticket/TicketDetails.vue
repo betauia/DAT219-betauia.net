@@ -1,11 +1,11 @@
 <template>
-    <div id="TicketDetails">
-        <p>Purchased seat:</p>
+    <div id="TicketDetails" class="column is-8 is-offset-2">
+        <p class="label">Purchased seat:</p>
         <p v-for="seat of ticketModel.seats" v-bind:key="seat">{{seat.number}}</p>
-        <p>Total price: {{ticketModel.amount}}</p>
+        <p>Total price: {{ticketModel.amount /100}} kr (NOK)</p>
         <p>Payment status: {{ticketModel.status}}</p>
         <p>Time purchased: {{ticketModel.timePurchased}}</p>
-        <img :src="image">
+        <img class="is-center" :src="image">
     </div>
 </template>
 

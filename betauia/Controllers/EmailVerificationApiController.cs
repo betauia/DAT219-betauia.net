@@ -45,26 +45,26 @@ namespace betauia.Controllers
           var userid = await _tokenVerifier.GetTokenUser(usertoken);
           var user = await _um.FindByIdAsync(userid);
 
-            var token = await _tf.GetEmailVerificationTokenAsync(user);
+          var token = await _tf.GetEmailVerificationTokenAsync(user);
             
-            var url = "https://beta.betauia.net/verifyemail/" + token;
-            var emailviewmodel = new EmailViewModel(url);
-            var htmlbody =
-                await _emailRender.RenderViewToStringAsync($"Views/Emails/VerifyAccount/EmailVerifyAccount.cshtml",emailviewmodel);
+          var url = "https://betauia.net/verifyemail/" + token;
+          var emailviewmodel = new EmailViewModel(url);
+          var htmlbody = await _emailRender.RenderViewToStringAsync($"Views/Emails/VerifyAccount/EmailVerifyAccount.cshtml",emailviewmodel);
 
-            var message = new MailMessage("noreply@betauia.net", user.Email)
-            {
-                Subject = "betauia email verification",
-            };
-            message.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(htmlbody,Encoding.UTF8,MediaTypeNames.Text.Html));
-            using (var smtp = new SmtpClient("smtp.gtm.no", 587))
-            {
-                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtp.UseDefaultCredentials = false;
-                smtp.Credentials = new NetworkCredential("betalan@betauia.net","8iFK0N2tdz");
-                smtp.EnableSsl = false;
-                await smtp.SendMailAsync(message);
-            }
+          var message = new MailMessage("noreply@betauia.net", user.Email)
+          {
+              Subject = "betauia email verification",
+          };
+          message.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(htmlbody,Encoding.UTF8,MediaTypeNames.Text.Html));
+          using (var smtp = new SmtpClient("smtp.gtm.no", 587))
+          {
+              smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+              smtp.UseDefaultCredentials = false;
+              smtp.Credentials = new NetworkCredential("betalan@betauia.net","8iFK0N2tdz");
+              smtp.EnableSsl = false;
+              await smtp.SendMailAsync(message);
+          }
+
             return Ok(token);
         }
 

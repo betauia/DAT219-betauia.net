@@ -191,6 +191,17 @@ IsPublic = isPublic;
                             <option v-if="seatmaps.length==0">No stored seat maps</option>
                         </select>
                     </div>
+                    <div>
+                        <label class="label">Price per seat (NOK)</label>
+                        <input
+                            id="eventprice"
+                            name="price"
+                            type="number"
+                            placeholder="100"
+                            class="input is-primary"
+                            required
+                        />
+                    </div>
                 </div>
             </div>
             <!-- Button -->
@@ -205,177 +216,180 @@ IsPublic = isPublic;
 </template>
 
 <script>
-    import axios from '@/axios.js';
-    import {Datetime} from 'vue-datetime';
-    import ImageUploadWidget from '@/components/Upload/ImageUploadWidget.vue';
-    export default {
-        components: {
-            datetime: Datetime,
-            ImageUploadWidget,
-        },
-        data() {
-            return {
-                numberAtt: 30,
-                seatmaps: [],
-                sponsors: [],
-                selectedSeatmap: null,
-                ispublic: null,
-                isBookable: {
-                    state: false,
-                    color: 'red',
-                },
-                hasSeatMap: {
-                    state: false,
-                    color: 'red',
-                },
-                hasSponsor: {
-                    state: false,
-                    color: 'red',
-                },
-                selectedSponsors: [],
-                startdate: '0000-00-00T00:00:00.000Z',
-                enddate: '0000-00-00T00:00:00.000Z',
-            };
-        },
-        methods: {
-            async addEvent() {
-                var image = await this.$refs.imageupload.uploadImage();
+import axios from '@/axios.js';
+import { Datetime } from 'vue-datetime';
+import ImageUploadWidget from '@/components/Upload/ImageUploadWidget.vue';
 
-                const token = localStorage.getItem('token');
-                const title = document.querySelector('input[name=title]').value;
-                const description = document.querySelector('input[name=description]').value;
-                const content = document.querySelector('#textcontent').value;
-                const startdatedoc = document.querySelector('#startdate');
-                const enddatedoc = document.querySelector('#enddate');
-                const enddate = enddatedoc.querySelector('.vdatetime-input').value;
-                const startdate = startdatedoc.querySelector('.vdatetime-input').value;
-                const config = {
-                    headers: {Authorization: `bearer ${token}`},
-                };
-
-                const eventModel = {
-                    title,
-                    description,
-                    content,
-                    isPublic: this.ispublic,
-                    enddate,
-                    startdate,
-                    image,
-                };
-
-                const bodyParameters = {
-                    eventModel,
-                    sponsors: [],
-                };
-
-                if (this.hasSponsor.state == true) {
-                    if (this.selectedSponsors.length > 0) {
-                        bodyParameters.sponsors = this.selectedSponsors;
-                    }
-                }
-                if (this.hasSeatMap.state == true) {
-                    if (this.selectedSeatmap != null) {
-                        bodyParameters.eventModel.seatmapid = this.selectedSeatmap.id;
-                    }
-                }
-                if (this.isBookable.state == true) {
-                    const atendees = document.getElementById('numberAtendees').value;
-                    bodyParameters.eventModel.MaxAtendees = atendees;
-                }
-
-                console.log(bodyParameters);
-                const self = this;
-                axios
-                    .post('/api/event', bodyParameters, config)
-                    .then((response) => {
-                        self.$router.push('/events/');
-                        console.log(response.data);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-            },
-            isBookableClick() {
-                this.isBookable.state = !this.isBookable.state;
-                if (this.isBookable.state == true) {
-                    this.isBookable.color = 'green';
-                } else {
-                    this.isBookable.color = 'red';
-                }
-
-                if (this.hasSeatMap.state == true) {
-                    this.hasSeatMap.state = false;
-                    this.hasSeatMap.color = 'red';
-                }
-            },
-            hasSponsorClick() {
-                this.hasSponsor.state = !this.hasSponsor.state;
-                if (this.hasSponsor.state == true) {
-                    this.hasSponsor.color = 'green';
-                } else {
-                    this.hasSponsor.color = 'red';
-                }
-                console.log(this.startdate);
-            },
-            hasSeatMapClick() {
-                this.hasSeatMap.state = !this.hasSeatMap.state;
-                if (this.hasSeatMap.state == true) {
-                    this.hasSeatMap.color = 'green';
-                } else {
-                    this.hasSeatMap.color = 'red';
-                }
-                if (this.isBookable.state == true) {
-                    this.isBookable.state = false;
-                    this.isBookable.color = 'red';
-                }
-            },
-            addSponsor(id) {
-                this.selectedSponsors.push(this.sponsors.filter(x => x.id == id)[0]);
-                this.sponsors = this.sponsors.filter(x => x.id != id);
-            },
-            removeSponsor(id) {
-                this.sponsors.push(this.selectedSponsors.filter(x => x.id == id)[0]);
-                this.selectedSponsors = this.selectedSponsors.filter(x => x.id != id);
-            },
-        },
-        created() {
-            const token = localStorage.getItem('token');
-            const config = {
-                headers: {Authorization: `bearer ${token}`},
-            };
-
-            const self = this;
-            axios
-                .get('/api/sponsor', config)
-                .then((response) => {
-                    self.sponsors = response.data;
-                    console.log(response.data);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-
-            axios
-                .get('/api/seatmap', config)
-                .then((response) => {
-                    self.seatmaps = response.data;
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        },
-        computed: {
-            sponsorStyle() {
-                return `backgroundColor:${this.hasSponsor.color}`;
-            },
-            bookableStyle() {
-                return `backgroundColor:${this.isBookable.color}`;
-            },
-            seatmapStyle() {
-                return `backgroundColor:${this.hasSeatMap.color}`;
-            },
-        },
+export default {
+  components: {
+    datetime: Datetime,
+    ImageUploadWidget,
+  },
+  data() {
+    return {
+      numberAtt: 30,
+      seatmaps: [],
+      sponsors: [],
+      selectedSeatmap: null,
+      ispublic: null,
+      isBookable: {
+        state: false,
+        color: 'red',
+      },
+      hasSeatMap: {
+        state: false,
+        color: 'red',
+      },
+      hasSponsor: {
+        state: false,
+        color: 'red',
+      },
+      selectedSponsors: [],
+      startdate: '0000-00-00T00:00:00.000Z',
+      enddate: '0000-00-00T00:00:00.000Z',
     };
+  },
+  methods: {
+    async addEvent() {
+      const image = await this.$refs.imageupload.uploadImage();
+
+      const token = localStorage.getItem('token');
+      const title = document.querySelector('input[name=title]').value;
+      const description = document.querySelector('input[name=description]').value;
+      const content = document.querySelector('#textcontent').value;
+      const startdatedoc = document.querySelector('#startdate');
+      const enddatedoc = document.querySelector('#enddate');
+      const enddate = enddatedoc.querySelector('.vdatetime-input').value;
+      const startdate = startdatedoc.querySelector('.vdatetime-input').value;
+      const config = {
+        headers: { Authorization: `bearer ${token}` },
+      };
+
+      const eventModel = {
+        title,
+        description,
+        content,
+        isPublic: this.ispublic,
+        enddate,
+        startdate,
+        image,
+      };
+
+      const bodyParameters = {
+        eventModel,
+        sponsors: [],
+      };
+
+      if (this.hasSponsor.state == true) {
+        if (this.selectedSponsors.length > 0) {
+          bodyParameters.sponsors = this.selectedSponsors;
+        }
+      }
+      if (this.hasSeatMap.state == true) {
+        if (this.selectedSeatmap != null) {
+          bodyParameters.eventModel.seatmapid = this.selectedSeatmap.id;
+          const eventprice = document.querySelector('input[name=price]').value;
+          bodyParameters.eventModel.EventPrice = eventprice;
+        }
+      }
+      if (this.isBookable.state == true) {
+        const atendees = document.getElementById('numberAtendees').value;
+        bodyParameters.eventModel.MaxAtendees = atendees;
+      }
+
+      console.log(bodyParameters);
+      const self = this;
+      axios
+        .post('/api/event', bodyParameters, config)
+        .then((response) => {
+          self.$router.push('/events/');
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    isBookableClick() {
+      this.isBookable.state = !this.isBookable.state;
+      if (this.isBookable.state == true) {
+        this.isBookable.color = 'green';
+      } else {
+        this.isBookable.color = 'red';
+      }
+
+      if (this.hasSeatMap.state == true) {
+        this.hasSeatMap.state = false;
+        this.hasSeatMap.color = 'red';
+      }
+    },
+    hasSponsorClick() {
+      this.hasSponsor.state = !this.hasSponsor.state;
+      if (this.hasSponsor.state == true) {
+        this.hasSponsor.color = 'green';
+      } else {
+        this.hasSponsor.color = 'red';
+      }
+      console.log(this.startdate);
+    },
+    hasSeatMapClick() {
+      this.hasSeatMap.state = !this.hasSeatMap.state;
+      if (this.hasSeatMap.state == true) {
+        this.hasSeatMap.color = 'green';
+      } else {
+        this.hasSeatMap.color = 'red';
+      }
+      if (this.isBookable.state == true) {
+        this.isBookable.state = false;
+        this.isBookable.color = 'red';
+      }
+    },
+    addSponsor(id) {
+      this.selectedSponsors.push(this.sponsors.filter(x => x.id == id)[0]);
+      this.sponsors = this.sponsors.filter(x => x.id != id);
+    },
+    removeSponsor(id) {
+      this.sponsors.push(this.selectedSponsors.filter(x => x.id == id)[0]);
+      this.selectedSponsors = this.selectedSponsors.filter(x => x.id != id);
+    },
+  },
+  created() {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: { Authorization: `bearer ${token}` },
+    };
+
+    const self = this;
+    axios
+      .get('/api/sponsor', config)
+      .then((response) => {
+        self.sponsors = response.data;
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    axios
+      .get('/api/seatmap', config)
+      .then((response) => {
+        self.seatmaps = response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+  computed: {
+    sponsorStyle() {
+      return `backgroundColor:${this.hasSponsor.color}`;
+    },
+    bookableStyle() {
+      return `backgroundColor:${this.isBookable.color}`;
+    },
+    seatmapStyle() {
+      return `backgroundColor:${this.hasSeatMap.color}`;
+    },
+  },
+};
 </script>
 
 <style>
